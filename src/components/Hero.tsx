@@ -28,41 +28,43 @@ export default function Hero() {
       transformBox: "fill-box",
     });
 
-    const tl = gsap.timeline({ delay: 0.4 });
+    const tl = gsap.timeline({ delay: 0.5 });
 
     // 2 — portrait fades in over the dark canvas
-    tl.to(".hero-portrait", { opacity: 1, duration: 0.8, ease: "power2.out" }, 0);
+    tl.to(".hero-portrait", { opacity: 1, duration: 1.2, ease: "power2.out" }, 0);
 
     // 3 — big ellipse traces in, small circle follows half-overlapped
-    tl.to(".hero-ellipse-big", { strokeDashoffset: 0, duration: 1.2, ease: "power2.inOut" }, 0.5);
-    tl.to(".hero-ellipse-small", { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut" }, 0.85);
+    tl.to(".hero-ellipse-big", { strokeDashoffset: 0, duration: 1.6, ease: "power2.inOut" }, 1.0);
+    tl.to(".hero-ellipse-small", { strokeDashoffset: 0, duration: 1.0, ease: "power2.inOut" }, 1.5);
 
     // 4 — name/designer, then tagline
-    tl.to(".hero-name-block", { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 1.8);
-    tl.to(".hero-tag-block", { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 2.0);
+    tl.to(".hero-name-block", { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 3.0);
+    tl.to(".hero-tag-block", { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 3.3);
 
-    // 5 — bg flips dark→white, portrait dissolves, ellipse + text invert
-    tl.to(".hero-bg", { backgroundColor: "#FFFFFF", duration: 1.2, ease: "power2.inOut" }, 3.5);
-    tl.to(".hero-portrait", { opacity: 0, duration: 1.0 }, 3.5);
-    tl.to(".hero-svg", { color: "#1F1F1F", duration: 0.7 }, 3.7);
-    tl.to(".hero-name, .hero-tag-main", { color: "#1F1F1F", duration: 0.7 }, 3.7);
-    tl.to(".hero-designer, .hero-tag-sub", { color: "#666666", duration: 0.7 }, 3.7);
+    // [beat — let the dark composition settle before flipping]
+
+    // 5 — bg flips dark→soft-white, portrait dissolves, ellipse + text invert
+    tl.to(".hero-bg", { backgroundColor: "#EEEEEE", duration: 1.4, ease: "power2.inOut" }, 5.5);
+    tl.to(".hero-portrait", { opacity: 0, duration: 1.0 }, 5.5);
+    tl.to(".hero-svg", { color: "#1F1F1F", duration: 0.9 }, 5.7);
+    tl.to(".hero-name, .hero-tag-main", { color: "#5D5D5D", duration: 0.9 }, 5.7);
+    tl.to(".hero-designer, .hero-tag-sub", { color: "#888888", duration: 0.9 }, 5.7);
 
     // 6 — shadow first lands on top of the logo, holds a beat, then stretches up-right.
     //   The shadow group renders the SAME shape as the logo — so at scale 1 / rotate 0 it
     //   overlaps perfectly. The stretch is pure CSS transform, eased with expo.out for the
     //   "스으윽" feel.
-    tl.to(".hero-shadow-group", { opacity: 0.2, duration: 0.35, ease: "power2.out" }, 5.0);
+    tl.to(".hero-shadow-group", { opacity: 0.2, duration: 0.5, ease: "power2.out" }, 7.0);
     tl.to(
       ".hero-shadow-group",
       {
         scaleX: 2.3,
         scaleY: 0.85,
         rotation: -14,
-        duration: 1.6,
+        duration: 1.8,
         ease: "expo.out",
       },
-      5.55,
+      7.7,
     );
 
     tl.play(0);
@@ -82,7 +84,7 @@ export default function Hero() {
         {/* Name + designer — mobile top, desktop top-right */}
         <div className="hero-name-block order-1 mb-2 w-full self-start lg:order-2 lg:col-start-2 lg:row-start-1 lg:mb-0 lg:w-auto lg:self-end">
           <h1 className="flex items-baseline gap-2">
-            <span className="hero-name text-7xl leading-none font-bold text-zinc-100 sm:text-8xl lg:text-9xl">
+            <span className="hero-name text-7xl leading-none font-black text-zinc-100 sm:text-8xl lg:text-9xl">
               Soonk
             </span>
             <span className="hero-designer text-base font-light text-zinc-500 sm:text-lg lg:text-xl">
@@ -106,7 +108,7 @@ export default function Hero() {
           <svg
             viewBox="0 0 411 290"
             className="hero-svg pointer-events-none absolute"
-            style={{ top: "17%", left: "34%", width: "35%", color: "#8E8E8E" }}
+            style={{ top: "17%", left: "44%", width: "35%", color: "#8E8E8E" }}
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
           >
