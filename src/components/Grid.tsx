@@ -118,7 +118,7 @@ export default function Grid() {
   return (
     <section
       id="works-grid"
-      className="flex w-full flex-col items-start gap-[64px] bg-[#EEEEEE] px-[32px] pt-[96px] pb-24"
+      className="relative z-30 flex w-full flex-col items-start gap-[64px] bg-[#EEEEEE] px-[32px] pt-[96px] pb-24"
     >
       <div className="grid w-full grid-cols-3 gap-4">
         {tiles.map((t) => (

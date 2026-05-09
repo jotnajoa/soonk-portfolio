@@ -5,44 +5,27 @@ import { useEffect, useState } from "react";
 
 // Figma node 101:1972 / 101:1656.
 //   Soonk · | · Work [9 indicator squares] | · Publication · | · Resume
-//   Indicator: 16×16 box, border 1px #1F1F1F default, fill #1F1F1F when current.
-// Sticky after scrolling past hero. Active project tracked via IntersectionObserver
-// on the [data-tile-list] elements.
+//
+// The nav is RENDERED into the DOM at full position from the start (so the
+// FlyingSquares scroll animation can measure indicator positions correctly).
+// Initial opacity is 0; FlyingSquares fades it in as the user scrolls past
+// the grid.
+//
+// ProjectNav itself only handles the active-project highlight by observing
+// which list tile is most-visible.
 
 export default function ProjectNav() {
   const [activeId, setActiveId] = useState<string | null>(tiles[0]?.id ?? null);
-  const [visible, setVisible] = useState(false);
 
-  // Show nav only once the user has scrolled into the LIST view — i.e. when
-  // the first list tile starts entering the viewport.  (The flying-squares
-  // animation, when wired up, will be what visually delivers the nav into
-  // place at this threshold.)
-  useEffect(() => {
-    const firstList = document.querySelector<HTMLElement>("[data-tile-list]");
-    if (!firstList) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        // entry intersects when its top crosses into the top 15% of viewport.
-        setVisible(entry.isIntersecting || entry.boundingClientRect.top < 0);
-      },
-      { rootMargin: "0px 0px -85% 0px", threshold: 0 },
-    );
-    obs.observe(firstList);
-    return () => obs.disconnect();
-  }, []);
-
-  // Track which list tile is most-visible
   useEffect(() => {
     const els = document.querySelectorAll<HTMLElement>("[data-tile-list]");
     if (els.length === 0) return;
     const obs = new IntersectionObserver(
       (entries) => {
-        const visibleEntries = entries.filter((e) => e.isIntersecting);
-        if (visibleEntries.length === 0) return;
-        visibleEntries.sort(
-          (a, b) => b.intersectionRatio - a.intersectionRatio,
-        );
-        const id = visibleEntries[0].target.getAttribute("data-tile-id");
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (visible.length === 0) return;
+        visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        const id = visible[0].target.getAttribute("data-tile-id");
         if (id) setActiveId(id);
       },
       { threshold: [0.3, 0.6, 0.9], rootMargin: "-20% 0px -20% 0px" },
@@ -59,12 +42,11 @@ export default function ProjectNav() {
 
   return (
     <div
-      aria-hidden={!visible}
-      className={`fixed top-0 right-0 left-0 z-40 hidden bg-[#EEEEEE]/95 backdrop-blur transition-transform duration-300 md:block ${
-        visible ? "translate-y-0" : "-translate-y-full"
-      }`}
+      data-project-nav
+      style={{ opacity: 0, pointerEvents: "none" }}
+      className="fixed top-0 right-0 left-0 z-40 hidden bg-[#EEEEEE]/95 backdrop-blur md:block"
     >
-      <nav className="flex items-center gap-4 px-[64px] py-4">
+      <nav className="flex items-center gap-4 px-[32px] py-4">
         <span className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#A0A0A0]">
           Soonk
         </span>

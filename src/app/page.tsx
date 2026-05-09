@@ -3,6 +3,7 @@ import Grid from "@/components/Grid";
 import ProjectList from "@/components/ProjectList";
 import ProjectNav from "@/components/ProjectNav";
 import ScrollHint from "@/components/ScrollHint";
+import FlyingSquares from "@/components/FlyingSquares";
 
 export default function Home() {
   return (
@@ -12,6 +13,7 @@ export default function Home() {
       <Grid />
       <ScrollHint />
       <ProjectList />
+      <FlyingSquares />
     </>
   );
 }
