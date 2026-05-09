@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme {
+  /* Tailwind doesn't ship a 800px breakpoint by default — Soonk's design
+     splits desktop ↔ mobile at exactly 800.  Used as `tablet:` prefix. */
+  --breakpoint-tablet: 800px;
+}
+
 html,
 body {
   background: #1f1f1f;

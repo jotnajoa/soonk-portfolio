@@ -55,7 +55,7 @@ export default function ScrollHint() {
   return (
     <div
       aria-hidden={!visible}
-      className={`pointer-events-none fixed bottom-8 left-1/2 z-30 -translate-x-1/2 transition-opacity duration-500 ${
+      className={`pointer-events-none fixed bottom-8 left-1/2 z-30 hidden -translate-x-1/2 transition-opacity duration-500 tablet:block ${
         visible ? "opacity-100" : "opacity-0"
       }`}
     >

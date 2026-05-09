@@ -33,6 +33,9 @@ if (typeof window !== "undefined") {
 export default function FlyingSquares() {
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // Mobile (<800px) skips the flying animation entirely — there is no
+    // grid view on mobile (the design jumps Hero → mobile list directly).
+    if (window.innerWidth < 800) return;
 
     let triggers: ScrollTrigger[] = [];
 

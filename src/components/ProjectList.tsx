@@ -2,23 +2,25 @@
 
 import { tiles, type Tile } from "@/data/tiles";
 
-// ----- List tile (full-width row, Figma node 101:1655) ------------------------
-// 3-column flex: [number 120px] [content max-w-480] [thumbnails grow]
-// Tokens (color · spacing · weight) verbatim from MCP, family swapped to Archivo:
-//   number (Archivo Black 120px)        : font-black
-//   brand (Archivo Black 30px)          : font-black
-//   tagline (Archivo Black 20px)        : font-black
-//   keyword (Archivo Black 24px)        : font-black
-//   description (Archivo Regular 16px)  : font-normal
+// ----- List tile (Figma nodes 101:1655 desktop · 101:2160 mobile) -------------
+//
+// Desktop (≥800px) — full-width row with [number 120px] [content max-w-480]
+// [thumbnails grow], all in a single non-wrapping flex.
+//
+// Mobile  (<800px)  — same border + min-h, but flex-wrap: number stacks at
+// top of content column, thumbnails wrap below.  Sizes shrink throughout
+// (number 120 → 64, brand 30 → 32, description 16 → 12).
+//
+// Tokens (color · weight · leading) follow Figma exactly; family Archivo.
 
 function ThumbsSlot({ thumbs }: { thumbs?: string[] }) {
   if (!thumbs || thumbs.length === 0) return null;
   return (
-    <div className="flex flex-1 items-center justify-end gap-4 self-stretch">
+    <div className="order-3 flex w-full justify-end gap-2 tablet:order-none tablet:ml-auto tablet:w-auto tablet:flex-1 tablet:items-center tablet:gap-4 tablet:self-stretch">
       {thumbs.map((src, i) => (
         <div
           key={i}
-          className="relative h-full min-w-px flex-1 border-2 border-[#030303] bg-[#D9D9D9] shadow-[2px_2px_0_0_#1A1A1A]"
+          className="relative aspect-[100/216] w-[100px] shrink-0 border-2 border-[#030303] bg-[#D9D9D9] shadow-[1px_1px_0_0_#1A1A1A] tablet:aspect-auto tablet:h-full tablet:w-auto tablet:flex-1 tablet:shadow-[2px_2px_0_0_#1A1A1A]"
         >
           {/* Image goes here when assets land in /public/works/ */}
           <div className="flex h-full items-center justify-center text-[9px] font-bold tracking-wide text-[#A0A0A0] uppercase">
@@ -37,30 +39,30 @@ function ListTile({ tile, num }: { tile: Tile; num: number }) {
     <article
       data-tile-id={tile.id}
       data-tile-list
-      className="relative flex min-h-[280px] w-full items-start gap-4 overflow-clip border-2 border-[#1F1F1F] px-[32px] py-[24px]"
+      className="relative flex w-full min-h-[280px] flex-wrap items-center gap-4 overflow-clip border-2 border-[#1F1F1F] p-4 tablet:flex-nowrap tablet:items-start tablet:px-[32px] tablet:py-[24px]"
     >
-      {/* Number — Archivo Black 120px */}
-      <p className="shrink-0 text-[120px] leading-[0.92] font-black whitespace-nowrap text-black">
+      {/* Number — Archivo Black, 64 mobile / 120 desktop */}
+      <p className="order-1 shrink-0 text-[64px] leading-[0.92] font-black whitespace-nowrap text-black tablet:text-[120px]">
         {numStr}
       </p>
 
       {/* Content column */}
-      <div className="relative flex max-w-[480px] flex-1 flex-col items-start gap-4">
+      <div className="order-2 flex min-w-[200px] flex-1 flex-col items-start gap-2 tablet:max-w-[480px] tablet:gap-4">
         {/* Brand */}
-        <h3 className="line-clamp-2 text-[30px] leading-[0.92] font-black text-[#1F1F1F]">
+        <h3 className="line-clamp-2 text-[32px] leading-[0.92] font-black text-[#1F1F1F] tablet:text-[30px]">
           {tile.brand}
         </h3>
 
-        {/* Tagline */}
+        {/* Tagline — semibold on mobile, black on desktop per Figma */}
         {tile.list.tagline && (
-          <p className="w-full text-[20px] leading-[0.92] font-black text-[#5D5D5D]">
+          <p className="w-full text-[20px] leading-[0.92] font-semibold text-[#5D5D5D] tablet:font-black">
             {tile.list.tagline}
           </p>
         )}
 
         {/* Optional accent quote/keyword */}
         {tile.list.keyword && (
-          <p className="w-full text-[24px] leading-[0.95] font-black text-[#1F1F1F]">
+          <p className="w-full text-[20px] leading-[0.95] font-black text-[#1F1F1F] tablet:text-[24px]">
             {tile.list.keyword}
           </p>
         )}
@@ -71,7 +73,7 @@ function ListTile({ tile, num }: { tile: Tile; num: number }) {
             {tile.list.quotes.map((q) => (
               <p
                 key={q}
-                className="text-[20px] leading-[0.92] font-black whitespace-nowrap text-[#5D5D5D]"
+                className="text-[20px] leading-[0.92] font-semibold whitespace-nowrap text-[#5D5D5D] tablet:font-black"
               >
                 {q}
               </p>
@@ -85,7 +87,7 @@ function ListTile({ tile, num }: { tile: Tile; num: number }) {
             {tile.list.hashtags.map((t) => (
               <p
                 key={t}
-                className="text-[20px] leading-[0.92] font-black text-[#5D5D5D]"
+                className="text-[20px] leading-[0.92] font-semibold text-[#5D5D5D] tablet:font-black"
               >
                 {t}
               </p>
@@ -93,15 +95,15 @@ function ListTile({ tile, num }: { tile: Tile; num: number }) {
           </div>
         )}
 
-        {/* Description */}
+        {/* Description — 12 mobile / 16 desktop */}
         {tile.list.description && (
-          <p className="w-full text-[16px] leading-[0.92] font-normal text-[#5D5D5D]">
+          <p className="w-full text-[12px] leading-[0.92] font-normal text-[#5D5D5D] tablet:text-[16px]">
             {tile.list.description}
           </p>
         )}
       </div>
 
-      {/* Thumbnails (right-side, fills remaining space) */}
+      {/* Thumbnails (right on desktop, wrapped below on mobile) */}
       <ThumbsSlot thumbs={tile.list.thumbs} />
     </article>
   );
@@ -113,8 +115,14 @@ export default function ProjectList() {
   return (
     <section
       id="works-list"
-      className="flex w-full flex-col items-start gap-4 bg-[#EEEEEE] px-[32px] pt-12 pb-24"
+      className="flex w-full flex-col items-start gap-4 bg-[#EEEEEE] px-[32px] pt-[96px] pb-24 tablet:pt-12"
     >
+      {/* Mobile-only WORKS section heading. On desktop, the heading is
+          formed by the flying-squares animation landing in the sticky nav. */}
+      <h2 className="mb-[24px] text-[48px] leading-[0.92] font-black text-[#1F1F1F] tablet:hidden">
+        WORKS
+      </h2>
+
       {tiles.map((t, i) => (
         <ListTile key={t.id} tile={t} num={i + 1} />
       ))}

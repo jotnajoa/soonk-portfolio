@@ -44,7 +44,7 @@ export default function ProjectNav() {
     <div
       data-project-nav
       style={{ opacity: 0, pointerEvents: "none" }}
-      className="fixed top-0 right-0 left-0 z-40 hidden bg-[#EEEEEE]/95 backdrop-blur md:block"
+      className="fixed top-0 right-0 left-0 z-40 hidden bg-[#EEEEEE]/95 backdrop-blur tablet:block"
     >
       <nav className="flex items-center gap-4 px-[32px] py-4">
         <span className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#A0A0A0]">
