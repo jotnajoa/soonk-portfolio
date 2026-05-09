@@ -13,14 +13,22 @@ export default function ProjectNav() {
   const [activeId, setActiveId] = useState<string | null>(tiles[0]?.id ?? null);
   const [visible, setVisible] = useState(false);
 
-  // Show nav once user scrolls past the hero section
+  // Show nav only once the user has scrolled into the LIST view — i.e. when
+  // the first list tile starts entering the viewport.  (The flying-squares
+  // animation, when wired up, will be what visually delivers the nav into
+  // place at this threshold.)
   useEffect(() => {
-    const onScroll = () => {
-      setVisible(window.scrollY > window.innerHeight * 0.6);
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const firstList = document.querySelector<HTMLElement>("[data-tile-list]");
+    if (!firstList) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        // entry intersects when its top crosses into the top 15% of viewport.
+        setVisible(entry.isIntersecting || entry.boundingClientRect.top < 0);
+      },
+      { rootMargin: "0px 0px -85% 0px", threshold: 0 },
+    );
+    obs.observe(firstList);
+    return () => obs.disconnect();
   }, []);
 
   // Track which list tile is most-visible

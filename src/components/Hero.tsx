@@ -20,25 +20,28 @@ const SVG_WIDTH = 29; // % of portrait container width
 // Lottie canvas is 630 × 450; the "body" layer lives at (88.2, 293.83) inside
 // it (= 14% horizontal, 65.3% vertical of the Lottie viewport).
 // We want the body to render at the SAME screen point as the SVG outer ellipse
-// center (~37.4%, ~42.7% of the portrait container).  Solving for a wrapper
-// whose aspect matches the Lottie aspect (630/450 ≈ 1.4):
-//   wrapper width  = 72% of container width
-//   wrapper height = 60% of container height (matches Lottie aspect when the
-//                    portrait container itself is 617×529)
-//   wrapper left   = 27.3%   (so 14% of wrapper width lands at 37.4%)
-//   wrapper top    = 3.5%    (so 65.3% of wrapper height lands at 42.7%)
-const LOTTIE_TOP = 3.5;
-const LOTTIE_LEFT = 27.3;
-const LOTTIE_WIDTH = 72;
-const LOTTIE_HEIGHT = 60;
+// center (~37.4%, ~42.7% of the portrait container).  Wrapper aspect-locked to
+// Lottie's 1.4 ratio with extra room around the body so the shadow doesn't get
+// clipped at peak extension:
+//   wrapper width  = 90% of container width
+//   wrapper height = 75% of container height (Lottie aspect, container 617×529)
+//   wrapper left   = 25%   (so 14% of wrapper width lands at ~37.6%)
+//   wrapper top    = -7%   (so 65.3% of wrapper height lands at ~42%)
+const LOTTIE_TOP = -7;
+const LOTTIE_LEFT = 25;
+const LOTTIE_WIDTH = 90;
+const LOTTIE_HEIGHT = 75;
 
+// Note: At lg (1024-1279), Soonk + designer at full Figma size overflow the
+// 50% column.  Sizes scale up at xl/2xl so the Figma 128px lands only at very
+// wide viewports.
 function NameBlock() {
   return (
-    <h1 className="flex items-baseline gap-3 lg:gap-4">
-      <span className="hero-name text-[56px] leading-none font-extrabold text-[#F4F4F4] sm:text-[80px] lg:text-[128px]">
+    <h1 className="flex flex-wrap items-baseline gap-x-3 gap-y-1 lg:gap-x-4">
+      <span className="hero-name text-[56px] leading-none font-black text-[#F4F4F4] sm:text-[80px] lg:text-[96px] xl:text-[112px] 2xl:text-[128px]">
         Soonk
       </span>
-      <span className="hero-designer text-base font-normal text-[#E3E3E3] sm:text-xl lg:text-[32px]">
+      <span className="hero-designer text-base font-light text-[#E3E3E3] sm:text-xl lg:text-[24px] xl:text-[28px] 2xl:text-[32px]">
         designer
       </span>
     </h1>
@@ -48,12 +51,12 @@ function NameBlock() {
 function TaglineBlock() {
   return (
     <div>
-      <h2 className="hero-tag-main text-[34px] leading-[1.1] font-bold text-[#F4F4F4] sm:text-5xl lg:text-[64px]">
+      <h2 className="hero-tag-main text-[34px] leading-[1.05] font-bold text-[#F4F4F4] sm:text-5xl lg:text-[48px] xl:text-[56px] 2xl:text-[64px]">
         I&rsquo;m a
         <br />
-        Product person
+        <span className="whitespace-nowrap">Product person</span>
       </h2>
-      <p className="hero-tag-sub mt-5 text-sm leading-relaxed font-normal text-[#E3E3E3] sm:text-base lg:mt-7 lg:text-[24px]">
+      <p className="hero-tag-sub mt-5 text-sm leading-relaxed font-normal text-[#E3E3E3] sm:text-base lg:mt-7 lg:text-[18px] xl:text-[20px] 2xl:text-[24px]">
         Design is one of my tools, not my goal
         <br />
         I build to find out what&rsquo;s true

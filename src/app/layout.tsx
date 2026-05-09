@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google";
+import { Archivo } from "next/font/google";
 import "./globals.css";
 
-const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono",
+const archivo = Archivo({
+  variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
-  fallback: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+  fallback: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
 });
 
 export const metadata: Metadata = {
@@ -21,8 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${jetbrainsMono.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col font-sans">{children}</body>
+    <html
+      lang="en"
+      className={`${archivo.variable} ${archivo.className} h-full antialiased`}
+    >
+      <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );
 }

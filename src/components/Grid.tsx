@@ -111,15 +111,15 @@ function GridTile({ tile }: { tile: Tile }) {
 
 // ----- Grid section -----------------------------------------------------------
 
+// No "WORKS" headline rendered here — the flying-squares animation creates the
+// page header (the squares fly up and become the indicator dots in the sticky
+// nav).  Title only ever appears via that transition.
 export default function Grid() {
   return (
     <section
       id="works-grid"
       className="flex w-full flex-col items-start gap-[64px] bg-[#EEEEEE] px-[32px] pt-[96px] pb-24"
     >
-      <h2 className="text-[#1F1F1F] text-[96px] leading-[0.92] font-extrabold whitespace-nowrap">
-        WORKS
-      </h2>
       <div className="grid w-full grid-cols-3 gap-4">
         {tiles.map((t) => (
           <GridTile key={t.id} tile={t} />

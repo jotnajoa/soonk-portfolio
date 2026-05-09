@@ -108,7 +108,7 @@ export default function ProjectList() {
   return (
     <section
       id="works-list"
-      className="flex w-full flex-col items-start gap-4 bg-[#EEEEEE] px-[64px] pt-12 pb-24"
+      className="flex w-full flex-col items-start gap-4 bg-[#EEEEEE] px-[32px] pt-12 pb-24"
     >
       {tiles.map((t, i) => (
         <ListTile key={t.id} tile={t} num={i + 1} />
