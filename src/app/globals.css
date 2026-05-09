@@ -2,10 +2,18 @@
 
 @theme inline {
   --font-sans: var(--font-jetbrains-mono);
+  --font-mono: var(--font-jetbrains-mono);
 }
 
 html,
 body {
   background: #1f1f1f;
   color: #f4f4f4;
+  font-family:
+    var(--font-jetbrains-mono),
+    ui-monospace,
+    "SF Mono",
+    Menlo,
+    Consolas,
+    monospace;
 }
