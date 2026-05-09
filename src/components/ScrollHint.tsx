@@ -3,10 +3,15 @@
 import { useEffect, useState } from "react";
 
 // Figma node 123:3600 — fixed bottom-center "Scroll for more" + down arrow.
-// Visible during Hero + Grid; fades out once the user scrolls into the List
-// view (same trigger as ProjectNav appearing — the two are symmetrical).
+// Visible during Hero + Grid; fades out the moment the user scrolls into
+// the List view.  Uses two signals (cleanly separated):
+//   - pastInitial: window.scrollY > 80 (avoids flashing during the hero
+//     opening animation)
+//   - inListView : an IntersectionObserver on the first list tile —
+//     mirrors ProjectNav's visibility trigger so the two are perfectly
+//     anti-symmetrical (nav appears ⇔ hint disappears).
 
-function DownArrowIcon({ className }: { className?: string }) {
+function DownArrowIcon() {
   return (
     <svg
       width="24"
@@ -14,7 +19,6 @@ function DownArrowIcon({ className }: { className?: string }) {
       viewBox="0 0 16 20"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
       aria-hidden
     >
       <path
@@ -26,24 +30,35 @@ function DownArrowIcon({ className }: { className?: string }) {
 }
 
 export default function ScrollHint() {
-  const [visible, setVisible] = useState(false);
+  const [pastInitial, setPastInitial] = useState(false);
+  const [inListView, setInListView] = useState(false);
+  const visible = pastInitial && !inListView;
 
-  // Appear once the hero has been scrolled into; disappear once the user
-  // crosses into the list view.
+  // Window scroll → "past initial" signal
   useEffect(() => {
-    const firstList = document.querySelector<HTMLElement>("[data-tile-list]");
-
-    const onScroll = () => {
-      // Show only AFTER user starts scrolling past the hero a bit, so the
-      // hint doesn't fight with the opening animation in the first second.
-      const past = window.scrollY > 80;
-      const inList = firstList ? firstList.getBoundingClientRect().top <= window.innerHeight * 0.15 : false;
-      setVisible(past && !inList);
-    };
-
+    const onScroll = () => setPastInitial(window.scrollY > 80);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // First list tile → "in list view" signal (same trigger as ProjectNav)
+  useEffect(() => {
+    const list = document.querySelector<HTMLElement>("[data-tile-list]");
+    if (!list) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        // entry.isIntersecting fires once the tile crosses into the bottom
+        // 15% of the viewport.  We also flip the flag when the tile has
+        // scrolled past (top < 0).
+        const inOrPast =
+          entry.isIntersecting || (entry.boundingClientRect?.top ?? 0) < 0;
+        setInListView(inOrPast);
+      },
+      { rootMargin: "0px 0px -85% 0px", threshold: 0 },
+    );
+    obs.observe(list);
+    return () => obs.disconnect();
   }, []);
 
   return (
