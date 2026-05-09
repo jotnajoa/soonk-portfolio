@@ -1,207 +1,200 @@
-// 16 tiles for the 4×4 main-body grid.
-// Source of truth: Raw_Material/portfolio-content-v1.md.
-// HELLO + READ ME are intentionally NOT tiles — they live in the header/footer.
-
-export type TileLayout = "A" | "B" | "C" | "D";
+// 9 projects for the Works page (Figma Opening section, Desktop-4 onward).
+// HELLO + READ ME removed — they live elsewhere (header / footer / contact).
+//
+// Two slightly different presentations exist in Figma:
+//   - Grid view (3×3 tiles, 280h):       compact summary, tagline-driven
+//   - List view (full-width rows, 280h):  number + content + thumbnails
+//
+// This file is the single source of truth for both.  Logos and thumbnails
+// are referenced by file path inside /public/works/ (TBD; placeholders OK
+// for first pass until images are imported).
 
 export type Tile = {
-  id: string; // "01" .. "16" — used for nav indicator + URL slug
-  number: string; // display label
-  category: "Client" | "Founder" | "Personal" | "Publication" | "Teaching";
-  keyword: string; // primary main keyword (renders biggest)
-  keywordQuoted?: boolean; // wrap in quotes (the "FLIPPED THE ASK" style)
-  secondary?: string; // smaller word-cloud companion
-  tertiary?: string; // optional sideways word
-  body?: string; // paragraph variant (Layout C)
-  subtitle?: string; // small caption shown on hover/detail
-  role?: string;
-  link?: string;
-  layout: TileLayout;
+  id: string; // "01" .. "09" — used for nav indicator + URL slug
+  brand: string;
+  category: "Founder" | "Client" | "Personal" | "Side";
+
+  // Grid view (compact 280px tile)
+  grid: {
+    tagline: string; // bold subtitle
+    blurb?: string; // optional secondary text (Archivo Medium 20px in Figma)
+    callout?: { strike?: string; arrow?: boolean; final?: string }; // POMEs-style "Help me → I can help"
+    quotes?: string[]; // Toyota-style trio of quoted phrases
+    keyword?: string; // big keyword (Battery-bnb rotated, “Wrong on Purpose”, etc.)
+    keywordRotated?: boolean;
+    description?: string; // longer paragraph (regular 16px)
+    hashtags?: string[]; // NYC parking style
+  };
+
+  // List view (full-width row)
+  list: {
+    tagline: string; // 20px subtitle
+    description: string; // 16px body
+    keyword?: string; // optional accent quote ("LOW USAGE ≠ LOW VALUE")
+    quotes?: string[];
+    hashtags?: string[];
+    thumbs?: string[]; // image paths in /public/works/
+  };
 };
 
 export const tiles: Tile[] = [
-  // Row 1 — Client / Enterprise
   {
     id: "01",
-    number: "01",
-    category: "Client",
-    keyword: "CUT THE RITUAL",
-    secondary: "velocity > process",
-    tertiary: "enterprise scale",
-    subtitle: "GIA · Deloitte's enterprise platform",
-    role: "UX Lead",
-    layout: "A",
+    brand: "POMEs",
+    category: "Founder",
+    grid: {
+      tagline: "Small-scale Social Infrastructure",
+      blurb: "Falsified the first hypothesis\nSolo founder — field marketing",
+      callout: { strike: "Help me", arrow: true, final: "I can help" },
+    },
+    list: {
+      tagline: "Small-scale Social Infrastructure",
+      description:
+        'Trust-based help app for verified small communities, one building at a time. Two design inversions from user research: the feed defaults to "I can help" instead of "help me" (Participation Paradox)',
+      thumbs: [
+        "/works/pomes-1.jpg",
+        "/works/pomes-2.jpg",
+      ],
+    },
   },
   {
     id: "02",
-    number: "02",
-    category: "Client",
-    keyword: "WRONG ON PURPOSE",
-    keywordQuoted: true,
-    secondary: "fixed scope",
-    tertiary: "earned the expansion",
-    subtitle: "Alnylam SSOT",
-    role: "Operator / strategist",
-    layout: "B",
+    brand: "Volthop",
+    category: "Founder",
+    grid: {
+      tagline: "Peer-to-peer battery rental",
+      description:
+        'Reddit Marketing: Problem post (no solution mentioned) → engagement → "now released" announcement. Demand manufactured, then delivered',
+      keyword: "Battery-bnb",
+      keywordRotated: true,
+    },
+    list: {
+      tagline: "Peer-to-peer battery rental",
+      description:
+        "Marketplace for folding e-bike travelers. fly with the bike, borrow a compatible battery from a local at the destination. Validated before build",
+      thumbs: [
+        "/works/volthop-1.jpg",
+        "/works/volthop-2.jpg",
+      ],
+    },
   },
   {
     id: "03",
-    number: "03",
+    brand: "GIA Platform",
     category: "Client",
-    keyword: "NON-NEGOTIABLE",
-    secondary: "senior team",
-    tertiary: "principled critique",
-    subtitle: "Toyota Guide Hub",
-    role: "Acting design lead",
-    layout: "D",
+    grid: {
+      tagline: "Global enterprise sales intelligence",
+      description:
+        "Leading UX strategy and design operations for a global enterprise sales intelligence platform.",
+    },
+    list: {
+      tagline: "Global enterprise sales intelligence",
+      description:
+        "When the PM team drowned in scope, I refocused the room on three questions and rebuilt the onshore/offshore handoff. 43% design cost reduction, 2× product launches, 400+ monthly adopters.",
+      thumbs: [
+        "/works/gia-1.jpg",
+        "/works/gia-2.jpg",
+      ],
+    },
   },
   {
     id: "04",
-    number: "04",
+    brand: "Toyota Guidehub",
     category: "Client",
-    keyword: "LOW USAGE ≠ LOW VALUE",
-    keywordQuoted: true,
-    secondary: "scoped persona",
-    tertiary: "87% engagement",
-    subtitle: "Advanced Reporting · Teachable",
-    role: "Solo IC designer",
-    link: "https://www.soonkdesign.com/portfolio-1-2/project-one-f5w4d-yblp2",
-    layout: "C",
+    grid: {
+      tagline: "",
+      quotes: ['"Trimmed UX bloat"', '"Team velocity"', '"Non-negotiable"'],
+    },
+    list: {
+      tagline: "",
+      description:
+        "Leadership-shaped engagement, not craft-shaped. A stalled Toyota team needed someone to triage, not redesign.",
+      quotes: ['"UX bloat"', '"Velocity"', '"Negotiable"'],
+      thumbs: [
+        "/works/toyota-1.jpg",
+        "/works/toyota-2.jpg",
+      ],
+    },
   },
-
-  // Row 2 — Solo Founder
   {
     id: "05",
-    number: "05",
-    category: "Founder",
-    keyword: "FLIPPED THE ASK",
-    keywordQuoted: true,
-    secondary: "behavior > brief",
-    subtitle: "POMEs · neighborhood karma app",
-    role: "Solo founder",
-    layout: "A",
+    brand: "Alnylam SSOT",
+    category: "Client",
+    grid: {
+      tagline: '"Wrong on Purpose"',
+      description:
+        "Two-month fixed timeline + fixed budget. No room for traditional UX process.",
+    },
+    list: {
+      tagline: '"Wrong on Purpose"',
+      description:
+        "A client that didn't know what they wanted—and didn't want to slow down to figure it out. I moved the team forward by sketching quickly, getting things wrong on purpose, and using visual feedback loops to refine direction in real time.",
+      thumbs: ["/works/alnylam-1.jpg"],
+    },
   },
   {
     id: "06",
-    number: "06",
-    category: "Founder",
-    keyword: "ELEVATOR ONLY",
-    secondary: "distribution ceiling",
-    tertiary: "NYC ground game",
-    subtitle: "POMEs · go-to-market",
-    role: "Solo founder",
-    layout: "D",
+    brand: "Teachable",
+    category: "Client",
+    grid: {
+      tagline: '"LOW USAGE ≠ LOW VALUE"',
+      description:
+        "Segmented users by data literacy and explicitly cut the power-user persona from V1, chose Traffic & Conversion at the school level. Designed measurable success criteria upfront (engagement score + NPS)",
+    },
+    list: {
+      tagline: "Advanced Reporting",
+      keyword: '"LOW USAGE ≠ LOW VALUE"',
+      description:
+        "Built Teachable's first real analytics product for schools. Two unpopular calls early: cut the power-user persona from V1, ship Traffic & Conversion at the school level.",
+      thumbs: [
+        "/works/teachable-1.jpg",
+        "/works/teachable-2.jpg",
+      ],
+    },
   },
   {
     id: "07",
-    number: "07",
-    category: "Founder",
-    keyword: "AirBnBattery",
-    keywordQuoted: true,
-    secondary: "users named it",
-    tertiary: "iOS App Store live",
-    subtitle: "VoltHop · P2P e-bike battery rentals",
-    role: "Solo founder",
-    layout: "B",
+    brand: "Is street parking really free?",
+    category: "Personal",
+    grid: {
+      tagline: "",
+      hashtags: ["#Daily-life friction", "#small civic pain point"],
+    },
+    list: {
+      tagline: "Is street parking really free?",
+      description:
+        'Pulled NYC Open Data\'s parking-ticket dataset — messy, missing rows and all — and weighted ticket risk by expected value. Verdict: on average, the "free" curb spot costs more than a paid garage.',
+      hashtags: ["#Daily-life friction", "#small civic pain point"],
+      thumbs: ["/works/parking-1.jpg"],
+    },
   },
   {
     id: "08",
-    number: "08",
-    category: "Founder",
-    keyword: "AEO",
-    secondary: "Brompton meetups",
-    tertiary: "subreddit playbook",
-    subtitle: "VoltHop · go-to-market",
-    role: "Solo founder",
-    layout: "C",
+    brand: "Word-up",
+    category: "Personal",
+    grid: {
+      tagline:
+        "How Many Words Does a Hip-Hop Song Need?\nA Quantitative Analysis of Hip-Hop Lyrics",
+    },
+    list: {
+      tagline: '"How many English words do I actually need to follow a hip-hop song?"',
+      description:
+        "A personal project as an ESL listener. Separated vocabulary count from raw word count to track diversity by decade.",
+      thumbs: ["/works/wordup-1.jpg"],
+    },
   },
-
-  // Row 3 — Personal experiments
   {
     id: "09",
-    number: "09",
-    category: "Personal",
-    keyword: "CIVIC",
-    secondary: "NYC",
-    tertiary: "personal",
-    subtitle: "Parking Ticket Tracker",
-    link: "https://www.soonkdesign.com/personal-1/project-two-ky966-lnbgh-smsgj-fxf46",
-    layout: "A",
-  },
-  {
-    id: "10",
-    number: "10",
-    category: "Personal",
-    keyword: "LEARN",
-    secondary: "vocab",
-    tertiary: "daily",
-    subtitle: "Word Up — vocabulary experiment",
-    link: "https://www.soonkdesign.com/personal-1/project-two-ky966-lnbgh-smsgj",
-    layout: "B",
-  },
-  {
-    id: "11",
-    number: "11",
-    category: "Personal",
-    keyword: "SUSTAIN",
-    secondary: "food",
-    tertiary: "waste",
-    subtitle: "Save My Leftover — sustainability behavior design",
-    link: "https://www.soonkdesign.com/personal-1/project-two-ky966-lnbgh-smsgj-fxf46-scgsd",
-    layout: "D",
-  },
-
-  // Row 4 — Publications & teaching
-  {
-    id: "12",
-    number: "12",
-    category: "Publication",
-    keyword: "AI UX",
-    secondary: "3-part series",
-    tertiary: "Bootcamp",
-    subtitle: "A Designer's Guide to UI/UX Patterns for AI Products",
-    layout: "C",
-  },
-  {
-    id: "13",
-    number: "13",
-    category: "Publication",
-    keyword: "TEARDOWN",
-    secondary: "physical",
-    tertiary: "everyday",
-    subtitle: "Product Experience Journal",
-    layout: "A",
-  },
-  {
-    id: "14",
-    number: "14",
-    category: "Teaching",
-    keyword: "PARSONS",
-    secondary: "teach",
-    tertiary: "dataviz",
-    subtitle: "Information Visualization · The New School",
-    link: "https://courses.newschool.edu/courses/PUDM2700/",
-    layout: "B",
-  },
-  {
-    id: "15",
-    number: "15",
-    category: "Teaching",
-    keyword: "MICA",
-    secondary: "teach",
-    tertiary: "storytelling",
-    subtitle: "Interactive Data Storytelling · MICA",
-    link: "https://mica.instructure.com/courses/39637/assignments/syllabus",
-    layout: "D",
-  },
-  {
-    id: "16",
-    number: "16",
-    category: "Publication",
-    keyword: "KEYNOTE",
-    secondary: "AI",
-    tertiary: "creative ops",
-    subtitle: "Harnessing AI in Creative Org. — speaker session",
-    layout: "A",
+    brand: "GTM Marketing discovery",
+    category: "Side",
+    grid: {
+      tagline: "",
+      hashtags: ["#Daily-life friction", "#small civic pain point"],
+    },
+    list: {
+      tagline: "GTM Marketing discovery",
+      description: "",
+      hashtags: ["#Daily-life friction", "#small civic pain point"],
+    },
   },
 ];
