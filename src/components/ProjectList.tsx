@@ -4,7 +4,12 @@ import { tiles, type Tile } from "@/data/tiles";
 
 // ----- List tile (full-width row, Figma node 101:1655) ------------------------
 // 3-column flex: [number 120px] [content max-w-480] [thumbnails grow]
-// JetBrains Mono throughout. All tokens (color, spacing, weight) follow Figma.
+// Tokens (color · spacing · weight) verbatim from MCP, family swapped to Archivo:
+//   number (Archivo Black 120px)        : font-black
+//   brand (Archivo Black 30px)          : font-black
+//   tagline (Archivo Black 20px)        : font-black
+//   keyword (Archivo Black 24px)        : font-black
+//   description (Archivo Regular 16px)  : font-normal
 
 function ThumbsSlot({ thumbs }: { thumbs?: string[] }) {
   if (!thumbs || thumbs.length === 0) return null;
@@ -34,28 +39,28 @@ function ListTile({ tile, num }: { tile: Tile; num: number }) {
       data-tile-list
       className="relative flex min-h-[280px] w-full items-start gap-4 overflow-clip border-2 border-[#1F1F1F] px-[32px] py-[24px]"
     >
-      {/* Number — JetBrains Mono ExtraBold 120px */}
-      <p className="shrink-0 text-[120px] leading-[0.92] font-extrabold whitespace-nowrap text-black">
+      {/* Number — Archivo Black 120px */}
+      <p className="shrink-0 text-[120px] leading-[0.92] font-black whitespace-nowrap text-black">
         {numStr}
       </p>
 
       {/* Content column */}
       <div className="relative flex max-w-[480px] flex-1 flex-col items-start gap-4">
         {/* Brand */}
-        <h3 className="truncate text-[30px] leading-[0.92] font-extrabold text-[#1F1F1F]">
+        <h3 className="line-clamp-2 text-[30px] leading-[0.92] font-black text-[#1F1F1F]">
           {tile.brand}
         </h3>
 
         {/* Tagline */}
         {tile.list.tagline && (
-          <p className="w-full text-[20px] leading-[0.92] font-extrabold text-[#5D5D5D]">
+          <p className="w-full text-[20px] leading-[0.92] font-black text-[#5D5D5D]">
             {tile.list.tagline}
           </p>
         )}
 
         {/* Optional accent quote/keyword */}
         {tile.list.keyword && (
-          <p className="w-full text-[24px] leading-[0.95] font-extrabold text-[#1F1F1F]">
+          <p className="w-full text-[24px] leading-[0.95] font-black text-[#1F1F1F]">
             {tile.list.keyword}
           </p>
         )}
@@ -66,7 +71,7 @@ function ListTile({ tile, num }: { tile: Tile; num: number }) {
             {tile.list.quotes.map((q) => (
               <p
                 key={q}
-                className="text-[20px] leading-[0.92] font-extrabold whitespace-nowrap text-[#5D5D5D]"
+                className="text-[20px] leading-[0.92] font-black whitespace-nowrap text-[#5D5D5D]"
               >
                 {q}
               </p>
@@ -80,7 +85,7 @@ function ListTile({ tile, num }: { tile: Tile; num: number }) {
             {tile.list.hashtags.map((t) => (
               <p
                 key={t}
-                className="text-[20px] leading-[0.92] font-extrabold text-[#5D5D5D]"
+                className="text-[20px] leading-[0.92] font-black text-[#5D5D5D]"
               >
                 {t}
               </p>

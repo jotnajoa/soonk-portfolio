@@ -3,9 +3,13 @@
 import { tiles, type Tile } from "@/data/tiles";
 
 // ----- Tile (3×3 grid view) ---------------------------------------------------
-// Mirrors Figma node 55:458 (Desktop-4): bordered 280h tile, JetBrains Mono
-// throughout (Soonk's stack — Figma's Archivo is intentionally swapped out).
-// All other tokens (color, spacing, weight) are preserved verbatim.
+// Mirrors Figma node 55:458 (Desktop-4) exactly (color · spacing · weight).
+// Per Soonk's instruction, font family is Archivo throughout (not Figma's
+// JetBrains Mono mix), but every other token is verbatim from MCP:
+//   brand / tagline / quotes / hashtags : Archivo Black,  font-black,  text-[30px] / [20px]
+//   blurb (Archivo Medium 20px)         : font-medium,  leading-[0.92]
+//   description (Archivo Regular 16px)  : font-normal,  leading-[0.92]
+//   callout (Archivo Bold 15px)         : font-bold
 
 function LogoSlot({ brand }: { brand: string }) {
   // Lightweight placeholder — actual Figma logos are bespoke SVGs that will
@@ -32,28 +36,28 @@ function GridTile({ tile }: { tile: Tile }) {
           rotated ? "max-w-[calc(100%-44px)]" : ""
         }`}
       >
-        {/* Brand row */}
+        {/* Brand row — Archivo Black 30px */}
         <div className="flex shrink-0 items-center gap-3">
           <LogoSlot brand={tile.brand} />
-          <h3 className="line-clamp-2 text-[30px] leading-[0.95] font-extrabold text-[#1F1F1F]">
+          <h3 className="line-clamp-2 text-[30px] leading-[0.92] font-black text-[#1F1F1F]">
             {tile.brand}
           </h3>
         </div>
 
         {tile.grid.tagline && (
-          <p className="text-[20px] leading-[0.92] font-extrabold whitespace-pre-line text-[#A0A0A0]">
+          <p className="text-[20px] leading-[0.92] font-black whitespace-pre-line text-[#A0A0A0]">
             {tile.grid.tagline}
           </p>
         )}
 
         {tile.grid.blurb && (
-          <p className="text-[18px] leading-[1.05] font-medium whitespace-pre-line text-[#A0A0A0]">
+          <p className="text-[20px] leading-[0.92] font-medium whitespace-pre-line text-[#A0A0A0]">
             {tile.grid.blurb}
           </p>
         )}
 
         {tile.grid.description && (
-          <p className="text-[16px] leading-[1.05] font-medium text-[#A0A0A0]">
+          <p className="text-[16px] leading-[0.92] font-normal text-[#A0A0A0]">
             {tile.grid.description}
           </p>
         )}
@@ -61,7 +65,7 @@ function GridTile({ tile }: { tile: Tile }) {
         {tile.grid.quotes?.map((q, i) => (
           <p
             key={i}
-            className="text-[20px] leading-[0.92] font-extrabold text-[#A0A0A0]"
+            className="text-[20px] leading-[0.92] font-black text-[#A0A0A0]"
           >
             {q}
           </p>
@@ -72,7 +76,7 @@ function GridTile({ tile }: { tile: Tile }) {
             {tile.grid.hashtags.map((t) => (
               <p
                 key={t}
-                className="text-[20px] leading-[0.92] font-extrabold text-[#A0A0A0]"
+                className="text-[20px] leading-[0.92] font-black text-[#A0A0A0]"
               >
                 {t}
               </p>
@@ -97,7 +101,7 @@ function GridTile({ tile }: { tile: Tile }) {
         )}
       </div>
 
-      {/* Optional rotated keyword (Volthop "Battery-bnb" style) */}
+      {/* Optional rotated keyword (Volthop "Battery-bnb" — Archivo Medium 40px) */}
       {rotated && (
         <div className="flex w-[44px] shrink-0 items-center justify-center overflow-clip">
           <p className="-rotate-90 text-center text-[40px] leading-[0.92] font-medium whitespace-nowrap text-[#A0A0A0]">

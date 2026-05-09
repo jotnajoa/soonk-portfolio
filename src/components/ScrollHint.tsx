@@ -3,13 +3,11 @@
 import { useEffect, useState } from "react";
 
 // Figma node 123:3600 — fixed bottom-center "Scroll for more" + down arrow.
-// Visible during Hero + Grid; fades out the moment the user scrolls into
-// the List view.  Uses two signals (cleanly separated):
-//   - pastInitial: window.scrollY > 80 (avoids flashing during the hero
-//     opening animation)
-//   - inListView : an IntersectionObserver on the first list tile —
-//     mirrors ProjectNav's visibility trigger so the two are perfectly
-//     anti-symmetrical (nav appears ⇔ hint disappears).
+// Visible from a small scroll into the hero, fades out the moment the user
+// scrolls into the flying-squares pin (i.e. when the grid lines up with the
+// top of the viewport — same trigger FlyingSquares uses to start the
+// animation).  This keeps the hint OUT of the entire transition + list,
+// not just out of the list itself.
 
 function DownArrowIcon() {
   return (
@@ -30,35 +28,28 @@ function DownArrowIcon() {
 }
 
 export default function ScrollHint() {
-  const [pastInitial, setPastInitial] = useState(false);
-  const [inListView, setInListView] = useState(false);
-  const visible = pastInitial && !inListView;
+  const [visible, setVisible] = useState(false);
 
-  // Window scroll → "past initial" signal
   useEffect(() => {
-    const onScroll = () => setPastInitial(window.scrollY > 80);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    const grid = document.querySelector<HTMLElement>("#works-grid");
 
-  // First list tile → "in list view" signal (same trigger as ProjectNav)
-  useEffect(() => {
-    const list = document.querySelector<HTMLElement>("[data-tile-list]");
-    if (!list) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        // entry.isIntersecting fires once the tile crosses into the bottom
-        // 15% of the viewport.  We also flip the flag when the tile has
-        // scrolled past (top < 0).
-        const inOrPast =
-          entry.isIntersecting || (entry.boundingClientRect?.top ?? 0) < 0;
-        setInListView(inOrPast);
-      },
-      { rootMargin: "0px 0px -85% 0px", threshold: 0 },
-    );
-    obs.observe(list);
-    return () => obs.disconnect();
+    const update = () => {
+      const past = window.scrollY > 80;
+      // Grid top relative to viewport top.  Once it reaches 0 (or above),
+      // FlyingSquares' pin has engaged and the hint should be out of the
+      // way.  Note: while pinned, grid.top stays at 0; after pin releases
+      // and the user scrolls further, it goes negative — hint stays hidden.
+      const top = grid?.getBoundingClientRect().top ?? Infinity;
+      setVisible(past && top > 0);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   return (
