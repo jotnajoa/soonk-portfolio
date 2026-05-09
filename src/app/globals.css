@@ -1,11 +1,11 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-archivo);
+  --font-sans: var(--font-jetbrains-mono);
 }
 
 html,
 body {
-  background: #2a2a2a;
-  color: #ededed;
+  background: #1f1f1f;
+  color: #f4f4f4;
 }
