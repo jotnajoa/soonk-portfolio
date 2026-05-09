@@ -17,6 +17,7 @@ export type Tile = {
   // Grid view (compact 280px tile)
   grid: {
     tagline: string; // bold subtitle
+    taglineWeight?: "black" | "normal"; // default "black"; Word-up uses "normal"
     blurb?: string; // optional secondary text (Archivo Medium 20px in Figma)
     callout?: { strike?: string; arrow?: boolean; final?: string }; // POMEs-style "Help me → I can help"
     quotes?: string[]; // Toyota-style trio of quoted phrases
@@ -175,6 +176,7 @@ export const tiles: Tile[] = [
     grid: {
       tagline:
         "How Many Words Does a Hip-Hop Song Need?\nA Quantitative Analysis of Hip-Hop Lyrics",
+      taglineWeight: "normal",
     },
     list: {
       tagline: '"How many English words do I actually need to follow a hip-hop song?"',

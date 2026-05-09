@@ -1,6 +1,7 @@
 "use client";
 
 import { tiles, type Tile } from "@/data/tiles";
+import { TileLogo } from "@/components/TileLogo";
 
 // ----- List tile (Figma nodes 101:1655 desktop · 101:2160 mobile) -------------
 //
@@ -41,17 +42,27 @@ function ListTile({ tile, num }: { tile: Tile; num: number }) {
       data-tile-list
       className="relative flex w-full min-h-[280px] flex-wrap items-center gap-4 overflow-clip border-2 border-[#1F1F1F] p-4 tablet:flex-nowrap tablet:items-start tablet:px-[32px] tablet:py-[24px]"
     >
-      {/* Number — Archivo Black, 64 mobile / 120 desktop */}
-      <p className="order-1 shrink-0 text-[64px] leading-[0.92] font-black whitespace-nowrap text-black tablet:text-[120px]">
+      {/* Number — JetBrains Mono ExtraBold, 64 mobile / 120 desktop.  Per
+          Soonk's spec: only the giant numbers use Mono, the rest stays Archivo. */}
+      <p
+        className="order-1 shrink-0 text-[64px] leading-[0.92] font-extrabold whitespace-nowrap text-black tablet:text-[120px]"
+        style={{
+          fontFamily:
+            "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace",
+        }}
+      >
         {numStr}
       </p>
 
       {/* Content column */}
       <div className="order-2 flex min-w-[200px] flex-1 flex-col items-start gap-2 tablet:max-w-[480px] tablet:gap-4">
-        {/* Brand */}
-        <h3 className="line-clamp-2 text-[32px] leading-[0.92] font-black text-[#1F1F1F] tablet:text-[30px]">
-          {tile.brand}
-        </h3>
+        {/* Brand row — logo + name */}
+        <div className="flex flex-wrap items-center gap-3">
+          <TileLogo tileId={tile.id} />
+          <h3 className="line-clamp-2 text-[32px] leading-[0.92] font-black text-[#1F1F1F] tablet:text-[30px]">
+            {tile.brand}
+          </h3>
+        </div>
 
         {/* Tagline — semibold on mobile, black on desktop per Figma */}
         {tile.list.tagline && (

@@ -1,12 +1,22 @@
 import type { Metadata } from "next";
-import { Archivo } from "next/font/google";
+import { Archivo, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
+// Archivo — primary type family for everything except a few accents.
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
   display: "swap",
   fallback: ["Helvetica Neue", "Helvetica", "Arial", "sans-serif"],
+});
+
+// JetBrains Mono — accent only.  Currently used for the giant 01–09 numbers
+// in the desktop list view (per Soonk's spec).  Exposed as a CSS var so
+// inline styles can opt in.
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -23,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${archivo.variable} ${archivo.className} h-full antialiased`}
+      className={`${archivo.variable} ${archivo.className} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">{children}</body>
     </html>

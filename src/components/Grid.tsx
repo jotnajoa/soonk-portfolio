@@ -1,6 +1,7 @@
 "use client";
 
 import { tiles, type Tile } from "@/data/tiles";
+import { TileLogo } from "@/components/TileLogo";
 
 // ----- Tile (3×3 grid view) ---------------------------------------------------
 // Mirrors Figma node 55:458 (Desktop-4) exactly (color · spacing · weight).
@@ -10,19 +11,13 @@ import { tiles, type Tile } from "@/data/tiles";
 //   blurb (Archivo Medium 20px)         : font-medium,  leading-[0.92]
 //   description (Archivo Regular 16px)  : font-normal,  leading-[0.92]
 //   callout (Archivo Bold 15px)         : font-bold
-
-function LogoSlot({ brand }: { brand: string }) {
-  // Lightweight placeholder — actual Figma logos are bespoke SVGs that will
-  // get imported later. Placeholder keeps the layout grid faithful for v1.
-  return (
-    <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-[#1F1F1F] text-[9px] font-bold tracking-wide text-[#A0A0A0] uppercase">
-      {brand.slice(0, 3)}
-    </div>
-  );
-}
+// Logos: real assets via <TileLogo />; tile 09 (GTM) renders without a logo.
+// Tile 08 (Word-up) overrides taglineWeight to "normal" — its tagline is
+// descriptive paragraph text, not a bold subhead.
 
 function GridTile({ tile }: { tile: Tile }) {
   const rotated = tile.grid.keyword && tile.grid.keywordRotated;
+  const taglineWeight = tile.grid.taglineWeight ?? "black";
 
   return (
     <article
@@ -36,16 +31,20 @@ function GridTile({ tile }: { tile: Tile }) {
           rotated ? "max-w-[calc(100%-44px)]" : ""
         }`}
       >
-        {/* Brand row — Archivo Black 30px */}
+        {/* Brand row — logo + Archivo Black 30px name */}
         <div className="flex shrink-0 items-center gap-3">
-          <LogoSlot brand={tile.brand} />
+          <TileLogo tileId={tile.id} />
           <h3 className="line-clamp-2 text-[30px] leading-[0.92] font-black text-[#1F1F1F]">
             {tile.brand}
           </h3>
         </div>
 
         {tile.grid.tagline && (
-          <p className="text-[20px] leading-[0.92] font-black whitespace-pre-line text-[#A0A0A0]">
+          <p
+            className={`text-[20px] leading-[0.92] whitespace-pre-line text-[#A0A0A0] ${
+              taglineWeight === "normal" ? "font-normal" : "font-black"
+            }`}
+          >
             {tile.grid.tagline}
           </p>
         )}
@@ -85,7 +84,7 @@ function GridTile({ tile }: { tile: Tile }) {
         )}
 
         {tile.grid.callout && (
-          <div className="mt-auto flex items-center gap-3 text-[15px] leading-[0.92] font-bold">
+          <div className="flex items-center gap-3 text-[15px] leading-[0.92] font-bold">
             {tile.grid.callout.strike && (
               <span className="text-[#A0A0A0] line-through">
                 {tile.grid.callout.strike}
