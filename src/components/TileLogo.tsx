@@ -1,4 +1,4 @@
-// Project logos — real assets from /public/works/logos/.
+// Project logos — real assets from /public/work/logos/.
 // IDs match the canonical list order (see tiles.ts):
 //   01 POMEs · 02 Volthop · 03 GIA + Deloitte (composite) · 04 Toyota
 //   05 Alnylam · 06 Teachable · 07 NYC OpenData · 08 Word-up (Genius) · 09 GTM (none)
@@ -18,14 +18,14 @@ const LOGOS: Record<
   | { src: string; alt: string; className?: string }
   | { composite: true }
 > = {
-  "01": { src: "/works/logos/Pomes_logo.svg", alt: "POMEs logo", className: "h-[48px] w-auto self-start" },
-  "02": { src: "/works/logos/Volthop_Logo.svg", alt: "Volthop logo", className: "h-[48px] w-auto self-start" },
+  "01": { src: "/work/logos/Pomes_logo.svg", alt: "POMEs logo", className: "h-[48px] w-auto self-start" },
+  "02": { src: "/work/logos/Volthop_Logo.svg", alt: "Volthop logo", className: "h-[48px] w-auto self-start" },
   "03": { composite: true },
-  "04": { src: "/works/logos/toyotalogo.png", alt: "Toyota logo", className: "h-[40px] w-auto self-start object-contain" },
-  "05": { src: "/works/logos/alnylamlogo.png", alt: "Alnylam logo", className: "h-[40px] w-auto self-start object-contain" },
-  "06": { src: "/works/logos/teachablelogo.png", alt: "Teachable logo", className: "h-[40px] w-auto self-start object-contain" },
-  "07": { src: "/works/logos/nycopendata.png", alt: "NYC OpenData logo", className: "h-[36px] max-w-[260px] w-auto self-start object-contain" },
-  "08": { src: "/works/logos/genius_logo.png", alt: "Genius (Word-up) logo", className: "h-[40px] w-auto self-start object-contain" },
+  "04": { src: "/work/logos/toyotalogo.png", alt: "Toyota logo", className: "h-[40px] w-auto self-start object-contain" },
+  "05": { src: "/work/logos/alnylamlogo.png", alt: "Alnylam logo", className: "h-[40px] w-auto self-start object-contain" },
+  "06": { src: "/work/logos/teachablelogo.png", alt: "Teachable logo", className: "h-[40px] w-auto self-start object-contain" },
+  "07": { src: "/work/logos/nycopendata.png", alt: "NYC OpenData logo", className: "h-[36px] max-w-[260px] w-auto self-start object-contain" },
+  "08": { src: "/work/logos/genius_logo.png", alt: "Genius (Word-up) logo", className: "h-[40px] w-auto self-start object-contain" },
   // "09" — GTM has no logo
 };
 
@@ -38,7 +38,7 @@ export function TileLogo({ tileId }: { tileId: string }) {
       <div className="flex items-center gap-1 self-start">
         {/* eslint-disable @next/next/no-img-element */}
         <img
-          src="/works/logos/GIA_Logo.svg"
+          src="/work/logos/GIA_Logo.svg"
           alt="GIA logo"
           className="h-[44px] w-auto"
         />
@@ -46,7 +46,7 @@ export function TileLogo({ tileId }: { tileId: string }) {
           +
         </span>
         <img
-          src="/works/logos/Deloittelogo.svg"
+          src="/work/logos/Deloittelogo.svg"
           alt="Deloitte logo"
           className="h-[44px] w-auto"
         />

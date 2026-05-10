@@ -2,10 +2,42 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+}
+
+// SSR-safe layout effect.  Used for the GSAP setup so cleanup runs
+// synchronously during commit instead of post-mutation (useEffect's
+// passive timing).
+const useIsomorphicLayoutEffect =
+  typeof window === "undefined" ? useEffect : useLayoutEffect;
+
+// Pre-navigation kill switch.  Exported so Link click handlers can
+// invoke it BEFORE the React unmount cascade starts.
+//
+// Why this is needed: ScrollTrigger.pin wraps `#work-grid` in a
+// pin-spacer <div> at runtime, mutating the DOM outside React's
+// reconciliation.  On client-side navigation (e.g. clicking the POMEs
+// tile → /work/pomes), React tries to remove `#work-grid` from its
+// expected parent (e.g. <body>), but it's actually inside the
+// GSAP-injected pin-spacer.  React throws
+//   "Failed to execute 'removeChild' on 'Node': The node to be removed
+//    is not a child of this node."
+//
+// useLayoutEffect cleanup *should* fix this in theory (cleanup runs
+// before DOM removal), but in React 19 concurrent rendering + Next.js
+// App Router transitions, the timing isn't reliable enough — the
+// removeChild error still fires intermittently.
+//
+// The bullet-proof fix: hook into the click event itself.  Calling
+// killGridScrollTriggers() in the Link's onClick runs synchronously
+// BEFORE Next.js navigation, GSAP unwinds the pin-spacer, and React's
+// subsequent unmount sees the original DOM tree.
+export function killGridScrollTriggers() {
+  if (typeof window === "undefined") return;
+  ScrollTrigger.getAll().forEach((t) => t.kill());
 }
 
 // FlyingSquares — desktop scroll-driven transition from grid view to nav.
@@ -48,7 +80,7 @@ const TILE_FADE_DUR = 0.1;
 const TILE_FADE_START = FLIGHT_START + FLIGHT_DUR; // 0.45
 
 export default function FlyingSquares() {
-  useEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (typeof window === "undefined") return;
 
     let triggers: ScrollTrigger[] = [];
@@ -93,7 +125,7 @@ export default function FlyingSquares() {
       if (window.innerWidth < 800) return;
 
       setupTimeoutId = window.setTimeout(() => {
-        const grid = document.querySelector<HTMLElement>("#works-grid");
+        const grid = document.querySelector<HTMLElement>("#work-grid");
         const allTiles = Array.from(
           document.querySelectorAll<HTMLElement>("[data-tile-grid]"),
         );
