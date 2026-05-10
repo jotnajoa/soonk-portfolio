@@ -208,54 +208,59 @@ export default function PomesCaseStudy() {
           </span>
         </div>
 
-        <p className="mb-[40px] max-w-[820px] text-[24px] leading-[1.18] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:mb-[48px] min-[960px]:text-[36px]">
-          A neighbor app where you brag about what you can offer, not beg for
-          help.
-        </p>
+        {/* Hero 2-column: phone-shaped autoplay video (left) + tagline +
+            meta (right).  Replaces the earlier 4-phone screenshot row —
+            small thumbnails read as unreadable mocks; one looped video of
+            the live app reads as the product itself.
 
-        {/* 4-phone row.  Real screenshots stand in for the GIF placeholders
-            specified in the HTML — Soonk's brief explicitly prefers real
-            screenshots over mocks where they exist (assets_manifest §
-            "Already provided / from project drive"). */}
-        <div className="mb-[48px] grid grid-cols-2 gap-x-[18px] gap-y-[28px] min-[960px]:mb-[56px] min-[960px]:grid-cols-4">
-          {[
-            { src: "/work/pomes/pomes-home-thriving.png", label: "Home", sub: "Seed tree" },
-            { src: "/work/pomes/pomes-home-feed.png", label: "Feed", sub: "Serendipity" },
-            { src: "/work/pomes/pomes-favor-offers.png", label: "Favor", sub: "Offer-first" },
-            { src: "/work/pomes/pomes-event-calendar.png", label: "Events", sub: "Trust spine" },
-          ].map((p) => (
-            <div key={p.label} className="text-center">
-              <div className="mx-auto mb-[14px] max-w-[180px]">
-                <Phone image={p.src} alt={`POMEs ${p.label}`} />
-              </div>
-              <div className="text-[16px] font-medium tracking-[0.04em] text-[#1F1F1F]">
-                {p.label}
-              </div>
-              <div className="mt-[2px] text-[12px] text-[#A0A0A0]">{p.sub}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Meta dl */}
-        <dl className="mb-[32px] border-t border-[#A0A0A0]">
-          {[
-            ["Role", "Solo · end-to-end"],
-            ["Scope", "Research → design → vibe-coded engineering → GTM"],
-            ["Timeline", "Mar 15 — Apr 30, 2026 (~7 weeks)"],
-            ["Status", "Live on App Store · Google Play"],
-            ["Stack", "iOS · Android · React Native · Firebase"],
-          ].map(([l, v]) => (
-            <div
-              key={l}
-              className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
+            Below 960px the column stacks vertically (video on top). */}
+        <div className="mb-[40px] grid gap-[32px] min-[960px]:mb-[48px] min-[960px]:grid-cols-[auto_1fr] min-[960px]:items-start min-[960px]:gap-[48px]">
+          {/* Left: phone video — 1206×2622 source aspect, 2px bezel matches
+              the landing list view's PhonesPair frames. */}
+          <div className="relative mx-auto aspect-[1206/2622] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F] min-[960px]:mx-0 min-[960px]:max-w-[320px]">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="POMEs app — landing flow"
+              className="absolute inset-0 h-full w-full object-cover"
             >
-              <dt className="text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
-                {l}
-              </dt>
-              <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">{v}</dd>
-            </div>
-          ))}
-        </dl>
+              <source src="/work/pomes/landing.mp4" type="video/mp4" />
+            </video>
+          </div>
+
+          {/* Right: tagline + meta block */}
+          <div className="flex flex-col gap-[28px] min-[960px]:gap-[36px]">
+            <p className="max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
+              A neighbor app where you brag about what you can offer, not
+              beg for help.
+            </p>
+
+            <dl className="border-t border-[#A0A0A0]">
+              {[
+                ["Role", "Solo · end-to-end"],
+                ["Scope", "Research → design → vibe-coded engineering → GTM"],
+                ["Timeline", "Mar 15 – Apr 30, 2026 (~7 weeks)"],
+                ["Status", "Live on App Store · Google Play"],
+                ["Stack", "iOS · Android · React Native · Firebase"],
+              ].map(([l, v]) => (
+                <div
+                  key={l}
+                  className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
+                >
+                  <dt className="text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
+                    {l}
+                  </dt>
+                  <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">
+                    {v}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
 
         {/* Timeline ribbon — vertical bar markers (not dots).  Per brief: 5
             nodes, dates above labels, hairline rule connecting them. */}
