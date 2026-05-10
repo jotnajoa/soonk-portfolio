@@ -1,8 +1,9 @@
 "use client";
 
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -10,31 +11,27 @@ if (typeof window !== "undefined") {
 
 // FlyingSquares — desktop scroll-driven transition from grid view to nav.
 //
-// Animation sequence (over a single scrubbed pin, ~600px of scroll):
-//   Phase A · 0.00 → 0.10  (morph)
-//     - Every tile's content (logos, headings, paragraphs) fades out
-//     - Tile 01's background animates to solid black; tiles 02–09 keep
-//       transparent bg + their existing 2px black border, so they read as
-//       "outline-only squares" — visually identical to the inactive nav
-//       indicators they're about to become.
-//   Phase B · 0.10 → ~0.45 (stagger flight)
-//     - Each tile flies to its target indicator one after another in
-//       canonical id order (01 leftmost first, 09 rightmost last) with a
-//       40ms stagger.  power2.in gives the lift-off feel.
-//   Phase C · 0.27 → ~0.77 (stagger indicator pop)
-//     - Each nav indicator scales+fades in just before its tile arrives,
-//       with the same canonical-order stagger.  back.out gives the
-//       "타다다다" rapid-pop feel the user asked for.  By the time the
-//       tile starts fading, its indicator is already 100% there — no
-//       visual gap.
-//   Tail · 0.45 → ~0.87
-//     - Tiles fade to opacity 0 in canonical order, handing off to the
-//       indicators that are now in their slots.
+// Why useGSAP (and not a plain useEffect): ScrollTrigger with `pin: true`
+// inserts a pin-spacer wrapper around the trigger element to reserve scroll
+// space.  React doesn't know about that wrapper, so when a Next-router
+// navigation tears the page down (e.g. user clicks a list tile and routes
+// to /work/{slug}), React's reconciler tries to remove `#work-grid` from
+// what it thinks is the parent — but the parent now contains a pin-spacer,
+// not the grid directly.  Result:
+//   "Failed to execute 'removeChild' on 'Node': The node to be removed is
+//    not a child of this node"
 //
-// Plus the rest of the nav chrome (Soonk, Work label, Publication, Resume)
-// fades in around 0.2–0.5 — that runs on the parent <nav>'s opacity.
-// Because indicator opacity is set INDEPENDENTLY (and starts at 0), the
-// parent fade doesn't reveal them prematurely.
+// `useGSAP` from `@gsap/react` runs in a useLayoutEffect-style hook and
+// uses `gsap.context()` under the hood, so its cleanup synchronously
+// reverts every animation + ScrollTrigger BEFORE React tears the DOM down.
+// `revert: true` (the default) unwraps the pin-spacer cleanly so the
+// reconciler sees the structure it expects.
+//
+// Resize handling: we lift the wide/narrow check into a `useState` so
+// `useGSAP`'s deps array can re-run the effect on breakpoint cross — the
+// previous context fully reverts (kills triggers, removes pin-spacer) and
+// the new run rebuilds.  This also fixes the old "phantom 600px pin spacer
+// persists after wide → narrow" bug.
 
 const CANONICAL_IDS = ["01", "02", "03", "04", "05", "06", "07", "08", "09"];
 
@@ -43,57 +40,38 @@ const PHASE_A_DUR = 0.1;
 const FLIGHT_DUR = 0.35;
 const FLIGHT_START = PHASE_A_DUR;
 const INDICATOR_DUR = 0.18;
-const INDICATOR_START = FLIGHT_START + FLIGHT_DUR / 2; // 0.275
+const INDICATOR_START = FLIGHT_START + FLIGHT_DUR / 2;
 const TILE_FADE_DUR = 0.1;
-const TILE_FADE_START = FLIGHT_START + FLIGHT_DUR; // 0.45
+const TILE_FADE_START = FLIGHT_START + FLIGHT_DUR;
 
 export default function FlyingSquares() {
+  // Track wide/narrow as state so useGSAP can revert + rebuild on
+  // breakpoint cross.  Lazy init returns the actual viewport width on the
+  // client at mount; on the server it's `false` (FlyingSquares renders
+  // null anyway, so no hydration mismatch).
+  const [isWide, setIsWide] = useState(() =>
+    typeof window !== "undefined" ? window.innerWidth >= 800 : false,
+  );
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    const update = () => setIsWide(window.innerWidth >= 800);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
-    let triggers: ScrollTrigger[] = [];
-    let setupTimeoutId: number | null = null;
-    let lastIsWide = window.innerWidth >= 800;
+  useGSAP(
+    (_ctx, contextSafe) => {
+      if (!isWide) return;
 
-    const cleanup = () => {
-      if (setupTimeoutId !== null) {
-        window.clearTimeout(setupTimeoutId);
-        setupTimeoutId = null;
-      }
-      triggers.forEach((t) => t.kill());
-      triggers = [];
-      // Reset every tile + its children to clean state.
-      document
-        .querySelectorAll<HTMLElement>("[data-tile-grid]")
-        .forEach((tile) => {
-          gsap.set(tile, { clearProps: "all" });
-          Array.from(tile.children).forEach((c) => {
-            if (c instanceof HTMLElement) gsap.set(c, { clearProps: "opacity" });
-          });
-        });
-      // Reset every nav indicator.
-      document
-        .querySelectorAll<HTMLElement>("[data-nav-indicator]")
-        .forEach((ind) => {
-          gsap.set(ind, { clearProps: "all" });
-        });
-      // Reset nav.
-      const nav = document.querySelector<HTMLElement>("[data-project-nav]");
-      if (nav) {
-        gsap.set(nav, {
-          clearProps: "all",
-          opacity: 0,
-          pointerEvents: "none",
-        });
-      }
-    };
-
-    const setup = () => {
-      cleanup();
-      if (window.innerWidth < 800) return;
-
-      setupTimeoutId = window.setTimeout(() => {
-        const grid = document.querySelector<HTMLElement>("#works-grid");
+      // The 250ms wait is for sibling components (Grid, ProjectNav) to
+      // finish their first paint so getBoundingClientRect() returns
+      // settled positions.  contextSafe ensures GSAP calls made inside
+      // the timeout are still tracked by this useGSAP context — so when
+      // the context reverts (route change, breakpoint cross), the
+      // timeline + trigger created here are torn down cleanly.
+      const buildAnimation = contextSafe!(() => {
+        const grid = document.querySelector<HTMLElement>("#work-grid");
         const allTiles = Array.from(
           document.querySelectorAll<HTMLElement>("[data-tile-grid]"),
         );
@@ -104,8 +82,7 @@ export default function FlyingSquares() {
 
         if (!grid || allTiles.length === 0 || !nav) return;
 
-        // Order tiles + indicators by canonical id (01 → 09).  Tile 01
-        // becomes the filled "active" indicator; rest stay outlines.
+        // Order tiles + indicators by canonical id (01 → 09).
         const tilesByCanonical: HTMLElement[] = [];
         const indicatorsByCanonical: HTMLElement[] = [];
         for (const id of CANONICAL_IDS) {
@@ -139,7 +116,7 @@ export default function FlyingSquares() {
           })
           .filter(<T,>(m: T | null): m is T => !!m);
 
-        // Collect tile children (for the content-fade morph).
+        // Tile children for the content fade morph.
         const tileChildren: HTMLElement[] = [];
         tilesByCanonical.forEach((tile) => {
           Array.from(tile.children).forEach((c) => {
@@ -149,13 +126,9 @@ export default function FlyingSquares() {
 
         // Initial state.
         gsap.set(tilesByCanonical, { transformOrigin: "center center" });
-        // Tile 01 starts with transparent bg so the bg-color tween has a
-        // numeric starting value to interpolate from.
         gsap.set(tilesByCanonical[0], {
           backgroundColor: "rgba(31, 31, 31, 0)",
         });
-        // Indicators independently start invisible + slightly small so
-        // they pop in instead of fading flat.
         gsap.set(indicatorsByCanonical, { opacity: 0, scale: 0.6 });
 
         const tl = gsap.timeline({
@@ -170,7 +143,7 @@ export default function FlyingSquares() {
           },
         });
 
-        // ---- Phase A: morph (0 → 0.1) ----------------------------------
+        // Phase A — morph
         tl.to(
           tileChildren,
           { opacity: 0, duration: PHASE_A_DUR, ease: "power2.out" },
@@ -178,14 +151,11 @@ export default function FlyingSquares() {
         );
         tl.to(
           tilesByCanonical[0],
-          {
-            backgroundColor: "rgba(31, 31, 31, 1)",
-            duration: PHASE_A_DUR,
-          },
+          { backgroundColor: "rgba(31, 31, 31, 1)", duration: PHASE_A_DUR },
           0,
         );
 
-        // ---- Phase B: staggered flight ---------------------------------
+        // Phase B — staggered flight
         moves.forEach((move, i) => {
           tl.to(
             move.tile,
@@ -200,7 +170,7 @@ export default function FlyingSquares() {
           );
         });
 
-        // ---- Phase C: indicators tada-da-da pop in ---------------------
+        // Phase C — indicators tada-da-da pop in
         indicatorsByCanonical.forEach((ind, i) => {
           tl.to(
             ind,
@@ -214,7 +184,7 @@ export default function FlyingSquares() {
           );
         });
 
-        // ---- Tail: tiles fade out as indicators take over --------------
+        // Tail — tiles fade out as indicators take over
         moves.forEach((move, i) => {
           tl.to(
             move.tile,
@@ -223,9 +193,7 @@ export default function FlyingSquares() {
           );
         });
 
-        // ---- Nav chrome (Soonk / Work label / Publication / Resume) ----
-        // Indicators have their own opacity so they stay hidden during this
-        // outer fade — only the labels appear here.
+        // Nav chrome (Soonk / Work label / Publication / Resume)
         tl.fromTo(
           nav,
           { opacity: 0, pointerEvents: "none" },
@@ -234,26 +202,16 @@ export default function FlyingSquares() {
         );
 
         ScrollTrigger.refresh();
-        triggers = ScrollTrigger.getAll();
-      }, 250);
-    };
+      });
 
-    setup();
-
-    const onResize = () => {
-      const isWide = window.innerWidth >= 800;
-      if (isWide === lastIsWide) return;
-      lastIsWide = isWide;
-      setup();
-    };
-
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      cleanup();
-      window.removeEventListener("resize", onResize);
-    };
-  }, []);
+      const setupId = window.setTimeout(buildAnimation, 250);
+      return () => {
+        window.clearTimeout(setupId);
+        // Animation/trigger cleanup is handled by useGSAP's context revert.
+      };
+    },
+    { dependencies: [isWide] },
+  );
 
   return null;
 }

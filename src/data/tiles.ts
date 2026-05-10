@@ -23,18 +23,20 @@
 
 export type Tile = {
   id: string;
+  /** URL slug — used for the case-study route /work/{slug}. */
+  slug: string;
   brand: string;
   category: "Founder" | "Client" | "Personal" | "Side";
 };
 
 export const tiles: Tile[] = [
-  { id: "01", brand: "POMEs", category: "Founder" },
-  { id: "02", brand: "Volthop", category: "Founder" },
-  { id: "03", brand: "GIA Platform", category: "Client" },
-  { id: "04", brand: "Toyota Guidehub", category: "Client" },
-  { id: "05", brand: "Alnylam SSOT", category: "Client" },
-  { id: "06", brand: "Teachable", category: "Client" },
-  { id: "07", brand: "Is street parking really free?", category: "Personal" },
-  { id: "08", brand: "Word-up", category: "Personal" },
-  { id: "09", brand: "GTM Marketing discovery", category: "Side" },
+  { id: "01", slug: "pomes",     brand: "POMEs",                          category: "Founder" },
+  { id: "02", slug: "volthop",   brand: "Volthop",                        category: "Founder" },
+  { id: "03", slug: "gia",       brand: "GIA Platform",                   category: "Client"  },
+  { id: "04", slug: "toyota",    brand: "Toyota Guidehub",                category: "Client"  },
+  { id: "05", slug: "alnylam",   brand: "Alnylam SSOT",                   category: "Client"  },
+  { id: "06", slug: "teachable", brand: "Teachable",                      category: "Client"  },
+  { id: "07", slug: "parking",   brand: "Is street parking really free?", category: "Personal"},
+  { id: "08", slug: "wordup",    brand: "Word-up",                        category: "Personal"},
+  { id: "09", slug: "gtm",       brand: "GTM Marketing discovery",        category: "Side"    },
 ];

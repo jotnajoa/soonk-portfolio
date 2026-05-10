@@ -298,7 +298,7 @@ function TileGtm() {
 export default function Grid() {
   return (
     <section
-      id="works-grid"
+      id="work-grid"
       // pb is intentionally minimal: the FlyingSquares pin already provides
       // the visual transition into the list, so any extra bottom padding
       // here just reads as dead scroll between the two sections.

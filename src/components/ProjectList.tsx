@@ -1,6 +1,29 @@
 "use client";
 
+import Link from "next/link";
 import { TileLogo } from "@/components/TileLogo";
+
+// Each list tile is now a clickable card linking to /work/{slug}.  We wrap
+// each <article> in a TileLink (a Next.js <Link>) so the whole tile is a
+// single tap target — that keeps the existing data-tile-* attrs on the
+// article intact (ProjectNav / MobileNav / ViewportSync still query them).
+function TileLink({
+  slug,
+  children,
+}: {
+  slug: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={`/work/${slug}`}
+      className="block w-full text-inherit no-underline outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1F1F1F]"
+      aria-label={`Open ${slug} case study`}
+    >
+      {children}
+    </Link>
+  );
+}
 
 // ----- List view (Figma 101:2160 mobile · 101:1655 desktop) ------------------
 //
@@ -24,7 +47,7 @@ import { TileLogo } from "@/components/TileLogo";
 // The grid view (Grid.tsx) is what has stacked-vs-inline variations.
 
 const ROW =
-  "relative flex w-full flex-wrap items-center gap-4 overflow-clip border-2 border-[#1F1F1F] p-4 tablet:items-start tablet:px-[32px] tablet:py-[24px]";
+  "relative flex w-full flex-wrap items-center gap-4 overflow-clip border-2 border-[#1F1F1F] bg-[#EEEEEE] p-4 transition-[transform,box-shadow] duration-200 ease-out hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[4px_4px_0_0_#1F1F1F] tablet:items-start tablet:px-[32px] tablet:py-[24px]";
 
 const MONO_STYLE: React.CSSProperties = {
   fontFamily:
@@ -147,6 +170,7 @@ function SingleThumb({ thumb }: { thumb: Thumb }) {
 
 function ListPomes() {
   return (
+    <TileLink slug="pomes">
     <article data-tile-id="01" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>01</p>
       <div className={CONTENT_COL}>
@@ -170,11 +194,13 @@ function ListPomes() {
         b={{ src: "/works/screenshots/pomes-2.png", alt: "POMEs app screen 2" }}
       />
     </article>
+    </TileLink>
   );
 }
 
 function ListVolthop() {
   return (
+    <TileLink slug="volthop">
     <article data-tile-id="02" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>02</p>
       <div className={CONTENT_COL}>
@@ -198,11 +224,13 @@ function ListVolthop() {
         b={{ src: "/works/screenshots/volthop-2.png", alt: "Volthop app screen 2" }}
       />
     </article>
+    </TileLink>
   );
 }
 
 function ListGia() {
   return (
+    <TileLink slug="gia">
     <article data-tile-id="03" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>03</p>
       <div className={CONTENT_COL}>
@@ -225,6 +253,7 @@ function ListGia() {
         b={{ src: "/works/screenshots/gia-2.png", alt: "GIA Platform desktop 2" }}
       />
     </article>
+    </TileLink>
   );
 }
 
@@ -233,6 +262,7 @@ function ListGia() {
 // I had earlier).  Description follows the quotes.
 function ListToyota() {
   return (
+    <TileLink slug="toyota">
     <article data-tile-id="04" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>04</p>
       <div className={CONTENT_COL}>
@@ -260,11 +290,13 @@ function ListToyota() {
         b={{ src: "/works/screenshots/toyota-2.png", alt: "Toyota Guidehub screen 2" }}
       />
     </article>
+    </TileLink>
   );
 }
 
 function ListAlnylam() {
   return (
+    <TileLink slug="alnylam">
     <article data-tile-id="05" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>05</p>
       <div className={CONTENT_COL}>
@@ -285,11 +317,13 @@ function ListAlnylam() {
         thumb={{ src: "/works/screenshots/alnylam-1.jpeg", alt: "Alnylam SSOT" }}
       />
     </article>
+    </TileLink>
   );
 }
 
 function ListTeachable() {
   return (
+    <TileLink slug="teachable">
     <article data-tile-id="06" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>06</p>
       <div className={CONTENT_COL}>
@@ -313,11 +347,13 @@ function ListTeachable() {
         thumb={{ src: "/works/screenshots/teachable-1.jpeg", alt: "Teachable" }}
       />
     </article>
+    </TileLink>
   );
 }
 
 function ListNyc() {
   return (
+    <TileLink slug="parking">
     <article data-tile-id="07" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>07</p>
       <div className={CONTENT_COL}>
@@ -340,11 +376,13 @@ function ListNyc() {
         thumb={{ src: "/works/screenshots/parking-1.png", alt: "NYC parking analysis" }}
       />
     </article>
+    </TileLink>
   );
 }
 
 function ListWordup() {
   return (
+    <TileLink slug="wordup">
     <article data-tile-id="08" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>08</p>
       <div className={CONTENT_COL}>
@@ -364,11 +402,13 @@ function ListWordup() {
         thumb={{ src: "/works/screenshots/wordup-1.png", alt: "Word-up analysis" }}
       />
     </article>
+    </TileLink>
   );
 }
 
 function ListGtm() {
   return (
+    <TileLink slug="gtm">
     <article data-tile-id="09" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>09</p>
       <div className={CONTENT_COL}>
@@ -385,6 +425,7 @@ function ListGtm() {
         </div>
       </div>
     </article>
+    </TileLink>
   );
 }
 
@@ -397,7 +438,7 @@ function ListGtm() {
 export default function ProjectList() {
   return (
     <section
-      id="works-list"
+      id="work-list"
       // Section bg stretches full viewport; inner column caps at 1200px
       // and centers (matches Hero / Grid / ProjectNav cap).  Padding lives
       // on the section so the bg has consistent edge gutters even on wide
