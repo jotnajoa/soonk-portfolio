@@ -403,7 +403,7 @@ export default function PomesCaseStudy() {
                 cards={[
                   {
                     name: "Favorhood",
-                    logo: { char: "F", bg: "#FF6B35" },
+                    logo: "/work/pomes/refs/favorhood.png",
                     bullets: [
                       "Berkeley, est. 2020 — closest direct competitor",
                       "0.5-mile-radius matching · address verification only",
@@ -412,7 +412,7 @@ export default function PomesCaseStudy() {
                   },
                   {
                     name: "Nextdoor",
-                    logo: { char: "N", bg: "#00BB66" },
+                    logo: "/work/pomes/refs/nextdoor.svg",
                     bullets: [
                       "1.7★ on Trustpilot across 3,045 reviews — vulnerable giant",
                       "Top complaints: arbitrary suspensions, political bias, ad-heavy after B2B pivot",
@@ -421,7 +421,7 @@ export default function PomesCaseStudy() {
                   },
                   {
                     name: "TimeBanks",
-                    logo: { char: "T", bg: "#3A5B7A" },
+                    logo: "/work/pomes/refs/timebanks.png",
                     bullets: [
                       "3M+ hours exchanged globally — the concept itself works",
                       "Pitfalls: grant dependency, manager burnout, core/periphery activity decay",
@@ -463,7 +463,7 @@ export default function PomesCaseStudy() {
                 cards={[
                   {
                     name: "Buy Nothing",
-                    logo: { char: "B", bg: "#6F4A28" },
+                    logo: "/work/pomes/refs/buynothing.png",
                     bullets: [
                       "Used by multiple interviewees",
                       "Solves the gift loop (coffee, baby clothes, old chair)",
@@ -472,7 +472,7 @@ export default function PomesCaseStudy() {
                   },
                   {
                     name: "BuildingLink",
-                    logo: { char: "B", bg: "#3F66A8" },
+                    logo: "/work/pomes/refs/buildinglink.png",
                     bullets: [
                       "Half of interviewees had a login",
                       "Used only for maintenance tickets",
@@ -481,7 +481,7 @@ export default function PomesCaseStudy() {
                   },
                   {
                     name: "WhatsApp groups",
-                    logo: { char: "W", bg: "#25D366" },
+                    logo: "/work/pomes/refs/whatsapp.svg",
                     bullets: [
                       "Every building has one; hundreds of give-posts",
                       "Messages disappear — no inventory, no memory",
@@ -1296,33 +1296,18 @@ function Section({
   );
 }
 
-// LogoBadge — small circular badge with a brand-colored initial.  Stands
-// in for an actual competitor logo file (Favorhood/Nextdoor/TimeBanks
-// don't ship a public SVG kit) so the cards land visually now; can be
-// swapped for a real <img> per company later.
-function LogoBadge({ char, bg }: { char: string; bg: string }) {
-  return (
-    <span
-      aria-hidden
-      className="inline-flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full text-[16px] font-bold text-[#F4F4F4]"
-      style={{ backgroundColor: bg }}
-    >
-      {char}
-    </span>
-  );
-}
-
 type RefCard = {
   name: string;
-  logo?: { char: string; bg: string };
+  /** Path under /public to the brand's logo image (square preferred). */
+  logo?: string;
   bullets: string[];
 };
 
-// CompetitorGrid / ReferenceGrid — replaces the older ScanGrid.  Same
-// 3-column shape, but drops the redundant "AI research"/"Interview-
-// surfaced" pill (the section heading already says which is which) and
-// converts the prose body to a bullet list so the read is actually
-// scannable.
+// ReferenceGrid — 3-up card grid used in §03 (competitor scan) and §04
+// (tools interviewees already used).  Logo is a real <img> in a 32-px
+// square (white inset bg so transparent logos still read on the card's
+// #F4F4F4 fill).  Drops the older AI-research/Interview-surfaced pill —
+// the section heading already says which is which.
 function ReferenceGrid({ cards }: { cards: RefCard[] }) {
   return (
     <div className="my-[18px] mb-[22px] grid grid-cols-1 gap-[14px] min-[560px]:grid-cols-3">
@@ -1332,7 +1317,17 @@ function ReferenceGrid({ cards }: { cards: RefCard[] }) {
           className="flex flex-col gap-[14px] rounded-[12px] bg-[#F4F4F4] px-[22px] py-[24px]"
         >
           <div className="flex items-center gap-[12px]">
-            {c.logo && <LogoBadge char={c.logo.char} bg={c.logo.bg} />}
+            {c.logo && (
+              <span className="inline-flex h-[32px] w-[32px] shrink-0 items-center justify-center overflow-hidden rounded-[6px] bg-white">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={c.logo}
+                  alt=""
+                  aria-hidden
+                  className="h-full w-full object-contain"
+                />
+              </span>
+            )}
             <div className="min-w-0 text-[18px] font-medium leading-[1.2] text-[#1F1F1F]">
               {c.name}
             </div>
