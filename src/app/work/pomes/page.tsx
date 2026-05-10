@@ -129,12 +129,11 @@ function Strong({ children }: { children: React.ReactNode }) {
   return <strong className="font-medium text-[#1F1F1F]">{children}</strong>;
 }
 
-// PullQuote — Medium-style call-out: thick black left bar, oversized
-// italic, dark ink.  Used for the case study's biggest narrative beats
-// (e.g. "So I set out to prove it") so the reader's eye actually stops.
+// PullQuote — Medium-style call-out: black left bar, medium italic.
+// Sized to register without dominating the column.
 function PullQuote({ children }: { children: React.ReactNode }) {
   return (
-    <blockquote className="my-[32px] max-w-[680px] border-l-[6px] border-[#1F1F1F] pl-[24px] text-[28px] leading-[1.25] font-black italic tracking-[-0.01em] text-[#1F1F1F] min-[560px]:text-[36px]">
+    <blockquote className="my-[24px] max-w-[620px] border-l-[4px] border-[#1F1F1F] pl-[18px] text-[18px] leading-[1.4] font-medium italic text-[#1F1F1F] min-[560px]:text-[22px]">
       {children}
     </blockquote>
   );
@@ -369,7 +368,7 @@ export default function PomesCaseStudy() {
           <main className="min-w-0 flex-1">
             {/* ===== 02 The hunch ===== */}
             <Section id="hunch" first>
-              <Eyebrow>+ The premise</Eyebrow>
+              <Eyebrow>+ The hunch</Eyebrow>
               <SectionHead
                 n="02"
                 title="What if a single building had its own social infrastructure?"
@@ -389,7 +388,7 @@ export default function PomesCaseStudy() {
 
             {/* ===== 03 Market scan ===== */}
             <Section id="scan">
-              <Eyebrow>+ Method 1 — what already exists</Eyebrow>
+              <Eyebrow>+ Market scan</Eyebrow>
               <SectionHead
                 n="03"
                 title="I split the work — AI took scale, interviews surfaced experience."
@@ -439,7 +438,7 @@ export default function PomesCaseStudy() {
 
             {/* ===== 04 Research → Inversion ===== */}
             <Section id="research">
-              <Eyebrow>+ Method 2 — what neighbors actually wanted</Eyebrow>
+              <Eyebrow>+ Research → inversion</Eyebrow>
               <SectionHead
                 n="04"
                 title="I watched, asked, and built a game to find where the friction was."
@@ -638,7 +637,7 @@ export default function PomesCaseStudy() {
 
             {/* ===== 05 Design v1 ===== */}
             <Section id="design">
-              <Eyebrow>+ From insight to product</Eyebrow>
+              <Eyebrow>+ Design v1</Eyebrow>
               <SectionHead
                 n="05"
                 title="Each screen is the answer to a specific finding."
@@ -832,7 +831,7 @@ export default function PomesCaseStudy() {
 
             {/* ===== 06 Built & shipped ===== */}
             <Section id="build">
-              <Eyebrow>+ From design to working app</Eyebrow>
+              <Eyebrow>+ Built &amp; shipped</Eyebrow>
               <SectionHead
                 n="06"
                 title="I couldn't read the vibe-coded backend well enough to trust it."
@@ -1002,7 +1001,7 @@ export default function PomesCaseStudy() {
 
             {/* ===== 07 Engaging ===== */}
             <Section id="engage">
-              <Eyebrow>+ Engagement</Eyebrow>
+              <Eyebrow>+ Engaging</Eyebrow>
               <SectionHead
                 n="07"
                 title="How I kept neighbors part of the build, not the audience for it."
@@ -1093,7 +1092,7 @@ export default function PomesCaseStudy() {
 
             {/* ===== 08 The pivot ===== */}
             <Section id="pivot">
-              <Eyebrow>+ Pivot</Eyebrow>
+              <Eyebrow>+ The pivot</Eyebrow>
               <SectionHead
                 n="08"
                 title="It's not the building owners who need this. It's the renters."
