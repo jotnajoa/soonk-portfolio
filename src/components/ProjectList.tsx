@@ -4,10 +4,15 @@ import Link from "next/link";
 import { TileLogo } from "@/components/TileLogo";
 import { killGridScrollTriggers } from "@/components/FlyingSquares";
 
-// Each list tile is now a clickable card linking to /work/{slug}.  We wrap
+// Each list tile is a clickable card linking to /work/{slug}.  We wrap
 // each <article> in a TileLink (a Next.js <Link>) so the whole tile is a
 // single tap target — that keeps the existing data-tile-* attrs on the
 // article intact (ProjectNav / MobileNav / ViewportSync still query them).
+//
+// onClick fires killGridScrollTriggers BEFORE Next.js navigation so the
+// GSAP pin-spacer on the desktop grid unwinds cleanly — without this,
+// React's reconciler hits "Failed to execute 'removeChild'" on tear-down
+// (the spacer wraps the grid outside React's tree).
 function TileLink({
   slug,
   children,
@@ -18,6 +23,7 @@ function TileLink({
   return (
     <Link
       href={`/work/${slug}`}
+      onClick={killGridScrollTriggers}
       className="block w-full text-inherit no-underline outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1F1F1F]"
       aria-label={`Open ${slug} case study`}
     >
@@ -173,12 +179,6 @@ function ListPomes() {
   return (
     <TileLink slug="pomes">
     <article data-tile-id="01" data-tile-list className={ROW}>
-      <Link
-        href="/work/pomes"
-        aria-label="POMEs case study"
-        className="absolute inset-0 z-10"
-        onClick={killGridScrollTriggers}
-      />
       <p className={NUM_DESKTOP} style={MONO_STYLE}>01</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>01</p>
