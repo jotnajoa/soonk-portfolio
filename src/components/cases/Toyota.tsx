@@ -270,7 +270,7 @@ function SectionHero() {
           <div className="flex flex-wrap items-end gap-[22px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/works/logos/toyotalogo.png"
+              src="/work/logos/toyotalogo.png"
               alt=""
               aria-hidden
               className="h-[64px] w-auto object-contain tablet:h-[92px]"

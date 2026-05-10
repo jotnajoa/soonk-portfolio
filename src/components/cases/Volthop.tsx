@@ -173,7 +173,7 @@ function Hero() {
         <div className="flex flex-wrap items-end gap-[16px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/works/volthop/volthop-logo.png"
+            src="/work/volthop/volthop-logo.png"
             alt=""
             aria-hidden
             className="h-[64px] w-auto tablet:h-[92px]"
@@ -189,7 +189,7 @@ function Hero() {
           <div className="relative aspect-[1179/2556] w-[180px] overflow-clip border-2 border-[#1F1F1F] tablet:w-[200px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/works/volthop/volthop-map-nyc.png"
+              src="/work/volthop/volthop-map-nyc.png"
               alt="Volthop NYC discovery map"
               className="absolute inset-0 h-full w-full object-cover"
             />
@@ -672,7 +672,7 @@ function SectionMvp() {
             title="Set your home location at signup. Both roles activate from one map pin."
             body="The signup flow opens a map and asks for a single thing: drop the marker on your home. From that one input the app derives both 'where I host from' and 'where I'm searching when I land somewhere else.'"
             why="Two-role onboarding would duplicate state and double the abandonment surface. The pin reads as setup, not commitment to becoming a host."
-            imageSrc="/works/volthop/volthop-signup-marker.png"
+            imageSrc="/work/volthop/volthop-signup-marker.png"
             imageAlt="Volthop signup with home-location marker"
           />
           <DecisionBlock
@@ -681,7 +681,7 @@ function SectionMvp() {
             title="One map, scoped to model. Filter by destination dates."
             body="Every listing is a pin on the same map. Filters live in a single chip strip — model (Brompton, Tern, Lectric), date range, distance from drop point. The map is shared between borrowers searching and providers checking demand around them."
             why="Two separate UIs (one for browsing, one for hosting) would make the dual-role architecture harder to feel. The map is the surface where both roles live at once."
-            imageSrc="/works/volthop/volthop-map-europe.png"
+            imageSrc="/work/volthop/volthop-map-europe.png"
             imageAlt="Volthop discovery map across Europe"
           />
           <DecisionBlock
@@ -690,7 +690,7 @@ function SectionMvp() {
             title="Show the spot, not the seller."
             body="Listing detail leads with the handoff location and battery model — what a borrower needs to make the trip work — and demotes the host's profile to a footer block. Profile photos are optional; reviews are not."
             why="Receiver convenience > host vanity. The thread receipts in §02 made it clear travelers were optimizing for logistics confidence, not host shopping."
-            imageSrc="/works/volthop/volthop-detail-brooklyn.png"
+            imageSrc="/work/volthop/volthop-detail-brooklyn.png"
             imageAlt="Volthop Brooklyn listing detail"
           />
           <DecisionBlock
@@ -706,7 +706,7 @@ function SectionMvp() {
             title="Eight steps, one branch — and that branch is the only deliberate UX risk in v1."
             body="The booking flow is mostly linear. The only place I gave the user a choice is Step 03: request directly OR ask the host a clarifying question first. That branch exists because the threads showed two distinct intents — confident borrowers and cautious ones — and forcing both through the same form would lose the cautious cohort."
             why="The branch costs me one extra UI state and saves me an entire abandonment cohort. Worth it. Step 03 is the only place I let the user steer; everything else is rails."
-            imageSrc="/works/volthop/volthop-saved.png"
+            imageSrc="/work/volthop/volthop-saved.png"
             imageAlt="Volthop saved listings + upcoming"
           >
             <BookingFlow />
@@ -1109,8 +1109,8 @@ function SectionGtm() {
             title="Brompton meetups, Brooklyn"
             body="Showed up to two folding-bike meetups in Brooklyn with a printed flyer and a working app. Got 7 hosts onboarded on the spot, 4 of whom became Rung 2/3 sources."
             imagePair={{
-              a: "/works/volthop/meetup-bikes.jpg",
-              b: "/works/volthop/meetup-group.jpeg",
+              a: "/work/volthop/meetup-bikes.jpg",
+              b: "/work/volthop/meetup-group.jpeg",
             }}
           />
           <MomentCard

@@ -174,10 +174,10 @@ const VIEW_RIBBON: {
   bold: string;
   sub: string;
 }[] = [
-  { src: "/works/parking/boroughs.gif", bold: "Boroughs", sub: "Scale at a glance" },
-  { src: "/works/parking/precincts.gif", bold: "Precincts", sub: "Drill down" },
-  { src: "/works/parking/years.gif", bold: "Years", sub: "The rhythm" },
-  { src: "/works/parking/types.gif", bold: "Types", sub: "97 ways to lose" },
+  { src: "/work/parking/boroughs.gif", bold: "Boroughs", sub: "Scale at a glance" },
+  { src: "/work/parking/precincts.gif", bold: "Precincts", sub: "Drill down" },
+  { src: "/work/parking/years.gif", bold: "Years", sub: "The rhythm" },
+  { src: "/work/parking/types.gif", bold: "Types", sub: "97 ways to lose" },
 ];
 
 function Hero() {
@@ -545,7 +545,7 @@ function SectionBuild() {
             title="Pick a borough. Each sphere is its annual fine total."
             body="Three.js renders the four boroughs as physical objects you can size up at a glance. Click a sphere and it collapses into the individual tickets that built it — every dot is a real summons in the data."
             insight="In 2024, NYC ticketed Manhattan precincts for roughly 3× what it ticketed Bronx precincts. Population's nearly the same."
-            imageSrc="/works/parking/boroughs.gif"
+            imageSrc="/work/parking/boroughs.gif"
             imageAlt="Boroughs view — four spheres sized by annual fines"
           />
           <ViewBlock
@@ -554,7 +554,7 @@ function SectionBuild() {
             title="NYPD precinct boundaries, click to drill in."
             body="Mapbox layer with real precinct geometry. Clicking surfaces a side panel: the precinct's average ticket cost, monthly trend, and a comparison line to its borough mean."
             insight="NYPD's 18th Precinct — Midtown North, including Times Square — had the highest average ticket value in the dataset."
-            imageSrc="/works/parking/precincts.gif"
+            imageSrc="/work/parking/precincts.gif"
             imageAlt="Precincts view — Mapbox precinct drilldown"
           />
           <ViewBlock
@@ -563,7 +563,7 @@ function SectionBuild() {
             title="Five years, side by side, five different metrics."
             body="Force-layout bubbles for the borough split. Monthly line graph. Stacked bars for share-over-time. The metric switcher cycles total cost, cost-per-plate, ticket count, tickets-per-plate, and cost-per-ticket — same data, five framings."
             insight="The post-pandemic recovery in ticketing is visible to the naked eye. 2020 dipped. By 2023 the city was issuing more per month than 2019."
-            imageSrc="/works/parking/years.gif"
+            imageSrc="/work/parking/years.gif"
             imageAlt="Years view — bubbles + line + stacked bars"
           />
           <ViewBlock
@@ -572,7 +572,7 @@ function SectionBuild() {
             title="97 distinct violation codes, grouped by borough."
             body="The treemap groups every code under the borough that wrote it most. Bar chart shows price-vs-frequency. Below, top-10 lists per borough — useful, weirdly, for spotting which code each neighborhood seems to specialize in."
             insight="Brooklyn, Queens, and the Bronx are most often ticketed for FIRE HYDRANT. Manhattan's #1 is NO STANDING — DAY/TIME LIMITS. That's a borough personality test."
-            imageSrc="/works/parking/types.gif"
+            imageSrc="/work/parking/types.gif"
             imageAlt="Types view — treemap + bar + top 10"
           />
         </div>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { TileLogo } from "@/components/TileLogo";
+import { killGridScrollTriggers } from "@/components/FlyingSquares";
 
 // Each list tile is now a clickable card linking to /work/{slug}.  We wrap
 // each <article> in a TileLink (a Next.js <Link>) so the whole tile is a
@@ -172,6 +173,12 @@ function ListPomes() {
   return (
     <TileLink slug="pomes">
     <article data-tile-id="01" data-tile-list className={ROW}>
+      <Link
+        href="/work/pomes"
+        aria-label="POMEs case study"
+        className="absolute inset-0 z-10"
+        onClick={killGridScrollTriggers}
+      />
       <p className={NUM_DESKTOP} style={MONO_STYLE}>01</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>01</p>
@@ -190,8 +197,8 @@ function ListPomes() {
         </div>
       </div>
       <PhonesPair
-        a={{ src: "/works/screenshots/pomes-1.png", alt: "POMEs app screen 1" }}
-        b={{ src: "/works/screenshots/pomes-2.png", alt: "POMEs app screen 2" }}
+        a={{ src: "/work/screenshots/pomes-1.png", alt: "POMEs app screen 1" }}
+        b={{ src: "/work/screenshots/pomes-2.png", alt: "POMEs app screen 2" }}
       />
     </article>
     </TileLink>
@@ -220,8 +227,8 @@ function ListVolthop() {
         </div>
       </div>
       <PhonesPair
-        a={{ src: "/works/screenshots/volthop-1.png", alt: "Volthop app screen 1" }}
-        b={{ src: "/works/screenshots/volthop-2.png", alt: "Volthop app screen 2" }}
+        a={{ src: "/work/screenshots/volthop-1.png", alt: "Volthop app screen 1" }}
+        b={{ src: "/work/screenshots/volthop-2.png", alt: "Volthop app screen 2" }}
       />
     </article>
     </TileLink>
@@ -249,8 +256,8 @@ function ListGia() {
         </div>
       </div>
       <DesktopsOverlap
-        a={{ src: "/works/screenshots/gia-1.png", alt: "GIA Platform desktop 1" }}
-        b={{ src: "/works/screenshots/gia-2.png", alt: "GIA Platform desktop 2" }}
+        a={{ src: "/work/screenshots/gia-1.png", alt: "GIA Platform desktop 1" }}
+        b={{ src: "/work/screenshots/gia-2.png", alt: "GIA Platform desktop 2" }}
       />
     </article>
     </TileLink>
@@ -286,8 +293,8 @@ function ListToyota() {
         </div>
       </div>
       <DesktopsOverlap
-        a={{ src: "/works/screenshots/toyota-1.png", alt: "Toyota Guidehub screen 1" }}
-        b={{ src: "/works/screenshots/toyota-2.png", alt: "Toyota Guidehub screen 2" }}
+        a={{ src: "/work/screenshots/toyota-1.png", alt: "Toyota Guidehub screen 1" }}
+        b={{ src: "/work/screenshots/toyota-2.png", alt: "Toyota Guidehub screen 2" }}
       />
     </article>
     </TileLink>
@@ -314,7 +321,7 @@ function ListAlnylam() {
         </div>
       </div>
       <SingleThumb
-        thumb={{ src: "/works/screenshots/alnylam-1.jpeg", alt: "Alnylam SSOT" }}
+        thumb={{ src: "/work/screenshots/alnylam-1.jpeg", alt: "Alnylam SSOT" }}
       />
     </article>
     </TileLink>
@@ -344,7 +351,7 @@ function ListTeachable() {
         </div>
       </div>
       <SingleThumb
-        thumb={{ src: "/works/screenshots/teachable-1.jpeg", alt: "Teachable" }}
+        thumb={{ src: "/work/screenshots/teachable-1.jpeg", alt: "Teachable" }}
       />
     </article>
     </TileLink>
@@ -373,7 +380,7 @@ function ListNyc() {
         </div>
       </div>
       <SingleThumb
-        thumb={{ src: "/works/screenshots/parking-1.png", alt: "NYC parking analysis" }}
+        thumb={{ src: "/work/screenshots/parking-1.png", alt: "NYC parking analysis" }}
       />
     </article>
     </TileLink>
@@ -399,7 +406,7 @@ function ListWordup() {
         </div>
       </div>
       <SingleThumb
-        thumb={{ src: "/works/screenshots/wordup-1.png", alt: "Word-up analysis" }}
+        thumb={{ src: "/work/screenshots/wordup-1.png", alt: "Word-up analysis" }}
       />
     </article>
     </TileLink>

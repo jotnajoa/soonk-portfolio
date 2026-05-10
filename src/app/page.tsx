@@ -1,19 +1,17 @@
 import Hero from "@/components/Hero";
 import Grid from "@/components/Grid";
 import ProjectList from "@/components/ProjectList";
-import ProjectNav from "@/components/ProjectNav";
 import MobileNav from "@/components/MobileNav";
 import ScrollHint from "@/components/ScrollHint";
 import FlyingSquares from "@/components/FlyingSquares";
 import ViewportSync from "@/components/ViewportSync";
 
+// ProjectNav lives in app/layout.tsx now (renders on every route).
+// FlyingSquares still finds it on the landing via [data-project-nav].
+
 export default function Home() {
   return (
     <>
-      {/* Desktop sticky nav (≥800px) — fixed full-width bar that fades in
-          via FlyingSquares as the grid scrolls into view. */}
-      <ProjectNav />
-
       <Hero />
 
       {/* Mobile sticky bar (<800px) — WORKS title + hamburger.  Lives

@@ -9,6 +9,32 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+// Pre-navigation kill switch.  Exported so Link click handlers can
+// invoke it BEFORE the React unmount cascade starts.
+//
+// Why this is needed: ScrollTrigger.pin wraps `#work-grid` in a
+// pin-spacer <div> at runtime, mutating the DOM outside React's
+// reconciliation.  On client-side navigation (e.g. clicking the POMEs
+// tile → /work/pomes), React tries to remove `#work-grid` from its
+// expected parent (e.g. <body>), but it's actually inside the
+// GSAP-injected pin-spacer.  React throws
+//   "Failed to execute 'removeChild' on 'Node': The node to be removed
+//    is not a child of this node."
+//
+// useLayoutEffect cleanup *should* fix this in theory (cleanup runs
+// before DOM removal), but in React 19 concurrent rendering + Next.js
+// App Router transitions, the timing isn't reliable enough — the
+// removeChild error still fires intermittently.
+//
+// The bullet-proof fix: hook into the click event itself.  Calling
+// killGridScrollTriggers() in the Link's onClick runs synchronously
+// BEFORE Next.js navigation, GSAP unwinds the pin-spacer, and React's
+// subsequent unmount sees the original DOM tree.
+export function killGridScrollTriggers() {
+  if (typeof window === "undefined") return;
+  ScrollTrigger.getAll().forEach((t) => t.kill());
+}
+
 // FlyingSquares — desktop scroll-driven transition from grid view to nav.
 //
 // Why useGSAP (and not a plain useEffect): ScrollTrigger with `pin: true`
