@@ -129,12 +129,19 @@ export default function CaseStudyLeftNav({
                 <a
                   href={`#${s.id}`}
                   onClick={(e) => handleJump(e, s.id)}
-                  className={`flex items-baseline gap-[6px] py-[2px] text-[11px] leading-[2.0] no-underline transition-colors ${
+                  aria-current={active ? "true" : undefined}
+                  className={`relative flex items-baseline gap-[6px] py-[4px] pl-[10px] text-[12px] leading-[1.9] no-underline transition-colors ${
                     active
-                      ? "font-medium text-[#1F1F1F]"
+                      ? "font-bold text-[#1F1F1F]"
                       : "font-normal text-[#5D5D5D] hover:text-[#1F1F1F]"
                   }`}
                 >
+                  {active && (
+                    <span
+                      aria-hidden
+                      className="absolute top-[8px] bottom-[8px] left-0 w-[3px] bg-[#1F1F1F]"
+                    />
+                  )}
                   <span
                     className="w-[22px] shrink-0"
                     style={MONO_STYLE}

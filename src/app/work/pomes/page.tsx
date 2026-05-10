@@ -139,6 +139,28 @@ function PullQuote({ children }: { children: React.ReactNode }) {
   );
 }
 
+// KeyTakeaway — inverted dark callout used for the "synthesis" lines that
+// must catch the eye even on a fast scroll.  Black bg + white text + 💡
+// glyph; the rest of the page is light/grey so this stands out hard.
+function KeyTakeaway({
+  icon = "💡",
+  children,
+}: {
+  icon?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="my-[24px] flex max-w-[680px] items-start gap-[14px] rounded-[12px] bg-[#1F1F1F] px-[22px] py-[18px]">
+      <span aria-hidden className="shrink-0 text-[20px] leading-[1.4]">
+        {icon}
+      </span>
+      <p className="text-[16px] leading-[1.55] font-medium text-[#F4F4F4] min-[560px]:text-[17px]">
+        {children}
+      </p>
+    </div>
+  );
+}
+
 // AnonymousQuote — interview citation with anonymized neighbor label,
 // visually distinct from body text.  Left-bar block with the quote
 // (italic, primary ink) and an arrow → implication line below.
@@ -450,12 +472,11 @@ export default function PomesCaseStudy() {
                 do neighbors freeze up?
               </Lede>
 
-              <SubH>What I saw on WhatsApp</SubH>
+              <SubH>Helping was happening; asking wasn&rsquo;t.</SubH>
               <Body>
-                People posted give-aways constantly and got many responses.
-                People posted asks <em className="italic">almost never</em>.
-                When asks did appear, they were for kids — never for adult
-                needs. <Strong>Helping was happening; asking wasn&rsquo;t.</Strong>
+                Two weeks of WhatsApp lurking: give-posts every day, asks
+                almost never. When asks did appear they were for kids — never
+                for adult needs.
               </Body>
 
               <SubH>Tools neighbors already used</SubH>
@@ -464,37 +485,29 @@ export default function PomesCaseStudy() {
                   {
                     name: "Buy Nothing",
                     logo: "/work/pomes/refs/buynothing.png",
-                    bullets: [
-                      "Used by multiple interviewees",
-                      "Solves the gift loop (coffee, baby clothes, old chair)",
-                      "No relationship layer — scales gifts, not trust",
-                    ],
+                    works: "Solves the gift loop — coffee, baby clothes, chair.",
+                    limit: "No trust layer; strangers, just stuff.",
                   },
                   {
                     name: "BuildingLink",
                     logo: "/work/pomes/refs/buildinglink.png",
-                    bullets: [
-                      "Half of interviewees had a login",
-                      "Used only for maintenance tickets",
-                      "A portal for complaints, not a way to meet a neighbor",
-                    ],
+                    works: "Lives in every managed building's portal.",
+                    limit: "Maintenance-only. A complaint form, not a way to meet a neighbor.",
                   },
                   {
                     name: "WhatsApp groups",
                     logo: "/work/pomes/refs/whatsapp.svg",
-                    bullets: [
-                      "Every building has one; hundreds of give-posts",
-                      "Messages disappear — no inventory, no memory",
-                      "Loudest personalities dominate; quiet neighbors stay invisible",
-                    ],
+                    works: "Every building has one. Hundreds of give-posts.",
+                    limit: "Messages disappear. Loud personalities dominate; quiet neighbors stay invisible.",
                   },
                 ]}
               />
-              <p className="mt-[8px] mb-[18px] max-w-[620px] text-[16px] leading-[1.7] italic text-[#5D5D5D]">
-                Each tool solved a slice. None was built for a single 60-unit
-                building where the same 60 people live next to each other for
-                years.
-              </p>
+
+              <KeyTakeaway>
+                Each tool solved a slice. <Strong>None was built for a single
+                60-unit building where the same 60 people live next to each
+                other for years.</Strong>
+              </KeyTakeaway>
 
               <SubH>What I asked in interviews</SubH>
               <Body>
@@ -559,22 +572,32 @@ export default function PomesCaseStudy() {
                 />
               </div>
 
-              <Body>
-                The cost wasn&rsquo;t the favor itself — it was the social cost
-                of asking. Offering had no such cost.
-              </Body>
+              <KeyTakeaway>
+                The cost wasn&rsquo;t the favor itself — it was the{" "}
+                <Strong>social cost of asking.</Strong> Offering had no such
+                cost.
+              </KeyTakeaway>
 
-              {/* Card-sorting — inline mention, not its own headline.
-                  Embedded as an iframe so the reader can actually try the
-                  tool; jotnajoa.github.io is a static GitHub Pages site so
-                  session-local interaction has no global side-effects. */}
+              <SubH>Vibe-coded UX research tool</SubH>
               <Body>
-                Mid-way through interviews I built a small card-sorting web
-                app — Claude Code wrote 90% of the React; I designed the cards
-                from interview prep. Neighbors dragged 12 hypothetical asks
-                into &ldquo;would ask&rdquo; / &ldquo;wouldn&rsquo;t&rdquo;
-                while I watched. (Try it below — it&rsquo;s live.)
+                To test where the friction was in specific tasks (not in the
+                abstract), I built a small card-sorting web app — Claude wrote
+                most of the React; I designed the cards from interview prep.
               </Body>
+              <ul className="my-[10px] mb-[18px] flex max-w-[620px] flex-col">
+                {[
+                  "12 hypothetical asks · drag into “would ask” / “wouldn’t.”",
+                  "Run live during interviews; neighbors think aloud while sorting.",
+                  "Friction surfaces in specific tasks, not in feelings.",
+                ].map((b) => (
+                  <li
+                    key={b}
+                    className="relative py-[6px] pl-[22px] text-[16px] leading-[1.65] text-[#5D5D5D] before:absolute before:left-0 before:text-[#A0A0A0] before:content-['—']"
+                  >
+                    {b}
+                  </li>
+                ))}
+              </ul>
 
               <figure className="my-[22px]">
                 <div className="overflow-clip rounded-[8px] border-2 border-[#1F1F1F] bg-[#F4F4F4]">
@@ -586,7 +609,7 @@ export default function PomesCaseStudy() {
                   />
                 </div>
                 <figcaption className="mt-[10px] flex flex-wrap items-baseline justify-between gap-[12px] text-[12px] tracking-[0.08em] text-[#5D5D5D]">
-                  <span>FIG. 1 OF 3 · CARD-SORTING TOOL (LIVE)</span>
+                  <span>CARD-SORTING TOOL · LIVE</span>
                   <a
                     href="https://jotnajoa.github.io/pbn-card-sorting/"
                     target="_blank"
@@ -598,23 +621,13 @@ export default function PomesCaseStudy() {
                 </figcaption>
               </figure>
 
-              <Body>The findings sharpened the picture:</Body>
-              <ul className="my-[12px] mb-[22px] flex max-w-[620px] flex-col">
-                {[
-                  ["Universal “would ask”:", " pet sitting, watering plants, dog walking"],
-                  ["Universal “wouldn’t ask”:", " picking up groceries (3 of 4 wouldn’t)"],
-                  ["Polarizing tasks:", " kid watching, helping with a move, furniture assembly"],
-                  ["A clean principle:", " one-off = OK to ask a neighbor; regular = hire someone"],
-                ].map(([h, t]) => (
-                  <li
-                    key={h}
-                    className="relative py-[6px] pl-[22px] text-[16px] leading-[1.65] text-[#5D5D5D] before:absolute before:left-0 before:text-[#A0A0A0] before:content-['—']"
-                  >
-                    <Strong>{h}</Strong>
-                    {t}
-                  </li>
-                ))}
-              </ul>
+              <KeyTakeaway>
+                <Strong>One-off asks?</Strong> People will. Pet sitting,
+                watering plants, dog walking — clear yes.{" "}
+                <Strong>Anything that looks like a recurring need?</Strong>{" "}
+                They won&rsquo;t. Groceries, regular kid-watching — clear no.
+                One-off = OK to ask a neighbor; regular = hire someone.
+              </KeyTakeaway>
 
               <SubH>The synthesis: an inversion</SubH>
               <Body>
@@ -663,26 +676,9 @@ export default function PomesCaseStudy() {
                   </div>
                 ))}
               </div>
-              <p className="mb-[18px] text-[12px] tracking-[0.04em] text-[#5D5D5D]">
-                The five bottom-nav tabs. Home and Feed are one screen; the rest
-                follow below. Chat is covered in §06.
-              </p>
-
               {/* Block 1 — HOME (which IS the feed).  Four-screenshot flow
-                  showing the four roles the single home screen plays:
-                    (i)  Feed — small neighbor interactions, serendipity
-                    (ii) Seed Tree — 3D ambient growth visualization
-                    (iii) Seed detail modal — encouragement explainer
-                    (iv) Tap-through — items navigate to their section
-                  Screenshots TBD per Soonk; placeholders sized to match
-                  Phone bezel below. */}
+                  showing the four roles the single home screen plays. */}
               <SubH>Home · One screen, four roles</SubH>
-              <Body>
-                Home and Feed are not separate tabs — they&rsquo;re the same
-                screen. Small interactions surface as a feed at the top; a
-                living seed-tree visualization sits below; tapping any item
-                deep-links into its section. Four roles, one place.
-              </Body>
 
               <div className="my-[24px] grid grid-cols-1 gap-[20px] min-[560px]:grid-cols-2 min-[960px]:grid-cols-4 min-[960px]:gap-[18px]">
                 {[
@@ -745,21 +741,14 @@ export default function PomesCaseStudy() {
                 paras={[
                   <>
                     One of the loudest WhatsApp findings: messages disappear.
-                    Someone offered a portable AC last summer; nobody remembered
-                    when they needed one this June. So Borrow is structured the
-                    way the chat couldn&rsquo;t be — every offered item stays
-                    browsable, with availability status and lending history.
-                    Neighbors can see what&rsquo;s actually around them, when
-                    it&rsquo;s free, and who else has used it.
+                    Someone offered a portable AC last summer; nobody
+                    remembered when they needed one this June. So Borrow is
+                    structured the way chat couldn&rsquo;t be — every offered
+                    item stays browsable, with availability + lending history.
                   </>,
-                  <span key="bonus" className="text-[16px] text-[#A0A0A0]">
-                    (Bonus: categories grow from a flexible &ldquo;Other&rdquo;
-                    bucket. When 5+ items pile in, that&rsquo;s the system
-                    telling me a new category is overdue.)
-                  </span>,
                 ]}
-                finding="WhatsApp loses memory. Neighbors don't know what's been offered before, so they don't know what's possible."
-                decision="Persistent, browsable inventory with availability status and history."
+                finding="WhatsApp loses memory."
+                decision="Persistent, browsable inventory."
               />
 
               {/* Block 4 — Favor (★ 2 phones, both tab states, reverse) */}
@@ -793,8 +782,8 @@ export default function PomesCaseStudy() {
                     deliberate choice.
                   </>,
                 ]}
-                finding="Asking costs face. Offering earns it. (3 of 8 said it explicitly; WhatsApp behavior confirmed it.)"
-                decision={'Default tab = "I can help." "I need" exists as a deliberate one-tap-away choice.'}
+                finding="Asking costs face. Offering earns it."
+                decision={'Default tab = "I can help." "I need" is one tap away.'}
               />
 
               {/* Block 5 — Event (singular, per nav rename) */}
@@ -816,15 +805,89 @@ export default function PomesCaseStudy() {
                     why in Section 08.
                   </>,
                 ]}
-                finding="Trust comes from face time. Digital interactions don't substitute. (8 of 8 said this.)"
-                decision="Event as the only screen that pulls people offline. The spine of the system."
+                finding="Trust comes from face time."
+                decision="The only screen that pulls people offline. The spine."
               />
 
-              {/* Trust-loop figure — Event → trust → engagement → more events */}
-              <figure className="my-[28px] rounded-[12px] bg-[#F4F4F4] p-[18px]">
+              {/* Block 6 — Chat (item-tied, the 5th tab in the nav strip).
+                  Lives at the design layer, not in §06 (build) — Chat is a
+                  product surface, not infrastructure. */}
+              <SubH>Chat · Item-tied, not direct messaging.</SubH>
+              <Body>
+                Every chat thread is{" "}
+                <Strong>scoped to a specific item, favor, or event</Strong> —
+                Airbnb pattern, not WhatsApp pattern. The thread opens when a
+                request happens and closes when the action completes.
+              </Body>
+
+              <ChatFlow
+                title="BORROW · CHAT ACTIONS"
+                steps={[
+                  {
+                    label: "Request to borrow",
+                    note: "Borrower taps Request on the item.",
+                  },
+                  {
+                    label: "Chat opens",
+                    note: "Both parties enter the item-scoped thread.",
+                  },
+                  {
+                    label: "Owner marks loan",
+                    note: "Item shifts to On loan — visible but unbookable.",
+                  },
+                  {
+                    label: "Borrower returns",
+                    note: "Marks the item returned; owner asked to confirm.",
+                  },
+                  {
+                    label: "Owner confirms · thanks",
+                    note: "Loop closes; thank-you note optional.",
+                  },
+                ]}
+              />
+
+              <ChatFlow
+                title="FAVOR · CHAT ACTIONS"
+                steps={[
+                  {
+                    label: "Offer or request favor",
+                    note: "Offer side is the default.",
+                  },
+                  {
+                    label: "Favor exchanged",
+                    note: "Time / place agreed in the thread.",
+                  },
+                  {
+                    label: "Marked complete · thanks",
+                    note: "Thank-you note optional.",
+                  },
+                ]}
+              />
+
+              <ChatFlow
+                title="EVENT · CHAT ACTIONS"
+                steps={[
+                  {
+                    label: "Event created",
+                    note: "Host sets time, place, capacity.",
+                  },
+                  {
+                    label: "Neighbors RSVP",
+                    note: "Joining opens an event-scoped thread.",
+                  },
+                  {
+                    label: "Event happens",
+                    note: "Thread closes the morning after.",
+                  },
+                ]}
+              />
+
+              {/* Trust-loop — small inline diagram, no card bg.  Event drives
+                  IRL interaction → trust → engagement → more events. */}
+              <figure className="my-[24px] max-w-[480px]">
                 <TrustLoopDiagramSvg />
-                <figcaption className="mt-2 text-right text-[12px] tracking-[0.08em] text-[#5D5D5D]">
-                  FIG. 3 · THE TRUST LOOP
+                <figcaption className="mt-[6px] text-right text-[12px] tracking-[0.08em] text-[#5D5D5D]">
+                  FIG. · THE TRUST LOOP
                 </figcaption>
               </figure>
             </Section>
@@ -916,87 +979,6 @@ export default function PomesCaseStudy() {
                 </div>
               </div>
 
-              {/* ----- Chat — the item-tied messaging surface ----- */}
-              <SubH>Chat · Item-tied, not direct messaging.</SubH>
-              <Body>
-                Chat in POMEs follows the Airbnb pattern, not the WhatsApp
-                pattern: every conversation is{" "}
-                <Strong>scoped to a specific item, favor, or event</Strong> —
-                never an open DM stream. The chat opens when a request happens
-                and closes when the action completes. Three flavors below.
-              </Body>
-
-              <ChatFlow
-                title="BORROW · CHAT ACTIONS"
-                steps={[
-                  {
-                    label: "Request to borrow",
-                    note: "Borrower taps Request on the item; chat hasn't opened yet.",
-                  },
-                  {
-                    label: "Chat opens",
-                    note: "Both parties enter the item-scoped thread.",
-                  },
-                  {
-                    label: "Owner marks loan",
-                    note: "Item shifts to On loan — visible but unbookable.",
-                  },
-                  {
-                    label: "Borrower returns",
-                    note: "Marks the item returned; owner asked to confirm.",
-                  },
-                  {
-                    label: "Owner confirms · thank-you",
-                    note: "Loop closes. Borrower can leave a thank-you note → tier bump.",
-                  },
-                ]}
-              />
-
-              <ChatFlow
-                title="FAVOR · CHAT ACTIONS"
-                steps={[
-                  {
-                    label: "Offer or request favor",
-                    note: "Either side can initiate; the offer side is the default.",
-                  },
-                  {
-                    label: "Favor exchanged",
-                    note: "Time / place agreed inside the thread.",
-                  },
-                  {
-                    label: "Marked complete · thank-you",
-                    note: "Helper bumps tier when the helped party leaves a note.",
-                  },
-                ]}
-              />
-
-              <ChatFlow
-                title="EVENT · CHAT ACTIONS"
-                steps={[
-                  {
-                    label: "Event created",
-                    note: "Host opens the event with time, place, capacity.",
-                  },
-                  {
-                    label: "Neighbors RSVP · join",
-                    note: "Joining surfaces a small event-scoped thread.",
-                  },
-                  {
-                    label: "Event happens",
-                    note: "Thread closes the morning after.",
-                  },
-                ]}
-              />
-
-              <SubH>Tiers — the only public signal of past help.</SubH>
-              <Body>
-                After a Borrow or a Favor wraps, the helped party can leave a
-                thank-you note. Notes accumulate and bump the helper&rsquo;s
-                tier badge — Bronze · Silver · Gold. No leaderboard. The badge
-                is the only place a number ever surfaces.
-              </Body>
-
-              <TierBadgeRow />
             </Section>
 
             {/* ===== 07 Engaging ===== */}
@@ -1300,14 +1282,21 @@ type RefCard = {
   name: string;
   /** Path under /public to the brand's logo image (square preferred). */
   logo?: string;
-  bullets: string[];
+  /** Generic bullets — used by §03 competitor scan. */
+  bullets?: string[];
+  /** Works / limit pair — used by §04 "tools neighbors used" so the
+   *  comparison is legible at a glance instead of buried in prose. */
+  works?: string;
+  limit?: string;
 };
 
 // ReferenceGrid — 3-up card grid used in §03 (competitor scan) and §04
-// (tools interviewees already used).  Logo is a real <img> in a 32-px
-// square (white inset bg so transparent logos still read on the card's
-// #F4F4F4 fill).  Drops the older AI-research/Interview-surfaced pill —
-// the section heading already says which is which.
+// (tools neighbors used).  Logo is a real <img> in a 32-px square (white
+// inset bg so transparent logos still read on the card's #F4F4F4 fill).
+//
+// Two body modes per card:
+//   - bullets[]            — neutral list (§03)
+//   - works + limit pair   — labeled "✓ Works" / "✗ Limit" rows (§04)
 function ReferenceGrid({ cards }: { cards: RefCard[] }) {
   return (
     <div className="my-[18px] mb-[22px] grid grid-cols-1 gap-[14px] min-[560px]:grid-cols-3">
@@ -1332,16 +1321,50 @@ function ReferenceGrid({ cards }: { cards: RefCard[] }) {
               {c.name}
             </div>
           </div>
-          <ul className="flex flex-col gap-[8px]">
-            {c.bullets.map((b, i) => (
-              <li
-                key={i}
-                className="relative pl-[14px] text-[14px] leading-[1.55] text-[#5D5D5D] before:absolute before:left-0 before:text-[#A0A0A0] before:content-['—']"
-              >
-                {b}
-              </li>
-            ))}
-          </ul>
+
+          {c.bullets && (
+            <ul className="flex flex-col gap-[8px]">
+              {c.bullets.map((b, i) => (
+                <li
+                  key={i}
+                  className="relative pl-[14px] text-[14px] leading-[1.55] text-[#5D5D5D] before:absolute before:left-0 before:text-[#A0A0A0] before:content-['—']"
+                >
+                  {b}
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {(c.works || c.limit) && (
+            <dl className="flex flex-col gap-[10px]">
+              {c.works && (
+                <div>
+                  <dt
+                    className="text-[12px] tracking-[0.08em] font-medium text-[#1F1F1F]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    ✓ WORKS
+                  </dt>
+                  <dd className="mt-[4px] text-[14px] leading-[1.55] text-[#1F1F1F]">
+                    {c.works}
+                  </dd>
+                </div>
+              )}
+              {c.limit && (
+                <div>
+                  <dt
+                    className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    ✗ LIMIT
+                  </dt>
+                  <dd className="mt-[4px] text-[14px] leading-[1.55] text-[#5D5D5D]">
+                    {c.limit}
+                  </dd>
+                </div>
+              )}
+            </dl>
+          )}
         </div>
       ))}
     </div>
@@ -1449,44 +1472,6 @@ function ChatFlow({
           </div>
         ))}
       </div>
-    </div>
-  );
-}
-
-// TierBadgeRow — three escalating tiers (Bronze / Silver / Gold), threshold
-// labels beneath.  The thank-you note from a Borrow or Favor closes the
-// loop and bumps the helper's tier.
-function TierBadgeRow() {
-  const tiers: { name: string; threshold: string; fill: string }[] = [
-    { name: "Bronze", threshold: "1 help", fill: "#9D7754" },
-    { name: "Silver", threshold: "5 helps", fill: "#7E7E7E" },
-    { name: "Gold", threshold: "15 helps", fill: "#1F1F1F" },
-  ];
-  return (
-    <div className="my-[18px] rounded-[12px] bg-[#F4F4F4] p-[24px]">
-      <div className="grid grid-cols-3 items-end gap-[14px]">
-        {tiers.map((t, i) => (
-          <div key={t.name} className="flex flex-col items-center gap-[10px]">
-            <span
-              aria-hidden
-              className="inline-flex h-[48px] w-[48px] items-center justify-center rounded-full text-[16px] font-bold text-[#F4F4F4]"
-              style={{ backgroundColor: t.fill }}
-            >
-              {String(i + 1).padStart(2, "0")}
-            </span>
-            <p className="text-[16px] font-medium text-[#1F1F1F]">{t.name}</p>
-            <p className="text-[12px] tracking-[0.04em] text-[#5D5D5D]">
-              {t.threshold}
-            </p>
-          </div>
-        ))}
-      </div>
-      <p className="mt-[16px] border-t border-[#A0A0A0] pt-[14px] text-[14px] leading-[1.5] text-[#5D5D5D]">
-        After a Borrow or a Favor, the helped party can leave a thank-you note
-        — that note bumps the helper&rsquo;s tier. Tiers are the only public
-        signal of past contribution; everything else (Seed Tree, feed) stays
-        community-scoped.
-      </p>
     </div>
   );
 }
