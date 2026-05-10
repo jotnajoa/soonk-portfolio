@@ -4,122 +4,254 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect } from "react";
 
-// Register plugin once per browser session.  Server-safe — the import path
-// for ScrollTrigger is fine at module level, but registerPlugin must only
-// run in the browser (no `document`/`window` on the server).
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-// FlyingSquares — the showcase scroll animation.
+// FlyingSquares — desktop scroll-driven transition from grid view to nav.
 //
-// As the user scrolls from the grid into the list, the 9 grid tiles fly up
-// and shrink, each landing exactly on its corresponding indicator dot in
-// the sticky ProjectNav.  At the same moment the nav itself fades in.  By
-// the end of the transition the tiles have collapsed to the indicator
-// size, faded out, and the nav (with its 9 dots) is fully visible.
+// Animation sequence (over a single scrubbed pin, ~600px of scroll):
+//   Phase A · 0.00 → 0.10  (morph)
+//     - Every tile's content (logos, headings, paragraphs) fades out
+//     - Tile 01's background animates to solid black; tiles 02–09 keep
+//       transparent bg + their existing 2px black border, so they read as
+//       "outline-only squares" — visually identical to the inactive nav
+//       indicators they're about to become.
+//   Phase B · 0.10 → ~0.45 (stagger flight)
+//     - Each tile flies to its target indicator one after another in
+//       canonical id order (01 leftmost first, 09 rightmost last) with a
+//       40ms stagger.  power2.in gives the lift-off feel.
+//   Phase C · 0.27 → ~0.77 (stagger indicator pop)
+//     - Each nav indicator scales+fades in just before its tile arrives,
+//       with the same canonical-order stagger.  back.out gives the
+//       "타다다다" rapid-pop feel the user asked for.  By the time the
+//       tile starts fading, its indicator is already 100% there — no
+//       visual gap.
+//   Tail · 0.45 → ~0.87
+//     - Tiles fade to opacity 0 in canonical order, handing off to the
+//       indicators that are now in their slots.
 //
-// Mechanics:
-//   - GSAP ScrollTrigger pins the grid section for ~600px of scroll.
-//   - During the pin, a scrubbed timeline maps scroll progress 0 → 1 to:
-//       • each tile transformed (x, y, scale) toward its target indicator
-//       • the nav fading in
-//       • the tiles fading out at the very end
-//   - Indicator positions are measured from a fully-rendered (opacity-0)
-//     ProjectNav, so geometry is captured BEFORE the visual reveal.
-//
-// Only mounts the effect in the browser; no DOM is rendered (returns null).
+// Plus the rest of the nav chrome (Soonk, Work label, Publication, Resume)
+// fades in around 0.2–0.5 — that runs on the parent <nav>'s opacity.
+// Because indicator opacity is set INDEPENDENTLY (and starts at 0), the
+// parent fade doesn't reveal them prematurely.
+
+const CANONICAL_IDS = ["01", "02", "03", "04", "05", "06", "07", "08", "09"];
+
+const STAGGER = 0.04;
+const PHASE_A_DUR = 0.1;
+const FLIGHT_DUR = 0.35;
+const FLIGHT_START = PHASE_A_DUR;
+const INDICATOR_DUR = 0.18;
+const INDICATOR_START = FLIGHT_START + FLIGHT_DUR / 2; // 0.275
+const TILE_FADE_DUR = 0.1;
+const TILE_FADE_START = FLIGHT_START + FLIGHT_DUR; // 0.45
 
 export default function FlyingSquares() {
   useEffect(() => {
     if (typeof window === "undefined") return;
-    // Mobile (<800px) skips the flying animation entirely — there is no
-    // grid view on mobile (the design jumps Hero → mobile list directly).
-    if (window.innerWidth < 800) return;
 
     let triggers: ScrollTrigger[] = [];
+    let setupTimeoutId: number | null = null;
+    let lastIsWide = window.innerWidth >= 800;
 
-    // Wait one tick so all sibling components have committed to the DOM
-    // and layout is stable before we measure positions.
-    const setupId = window.setTimeout(() => {
-      const grid = document.querySelector<HTMLElement>("#works-grid");
-      const tiles = Array.from(
-        document.querySelectorAll<HTMLElement>("[data-tile-grid]"),
-      );
-      const indicators = Array.from(
-        document.querySelectorAll<HTMLElement>("[data-nav-indicator]"),
-      );
-      const nav = document.querySelector<HTMLElement>("[data-project-nav]");
-
-      if (!grid || tiles.length === 0 || indicators.length === 0 || !nav) {
-        // Quietly bail if anything is missing — the page still works without
-        // the flying animation, just no fancy transition.
-        return;
+    const cleanup = () => {
+      if (setupTimeoutId !== null) {
+        window.clearTimeout(setupTimeoutId);
+        setupTimeoutId = null;
       }
+      triggers.forEach((t) => t.kill());
+      triggers = [];
+      // Reset every tile + its children to clean state.
+      document
+        .querySelectorAll<HTMLElement>("[data-tile-grid]")
+        .forEach((tile) => {
+          gsap.set(tile, { clearProps: "all" });
+          Array.from(tile.children).forEach((c) => {
+            if (c instanceof HTMLElement) gsap.set(c, { clearProps: "opacity" });
+          });
+        });
+      // Reset every nav indicator.
+      document
+        .querySelectorAll<HTMLElement>("[data-nav-indicator]")
+        .forEach((ind) => {
+          gsap.set(ind, { clearProps: "all" });
+        });
+      // Reset nav.
+      const nav = document.querySelector<HTMLElement>("[data-project-nav]");
+      if (nav) {
+        gsap.set(nav, {
+          clearProps: "all",
+          opacity: 0,
+          pointerEvents: "none",
+        });
+      }
+    };
 
-      // Each tile shrinks toward its own center as it flies up.
-      gsap.set(tiles, { transformOrigin: "center center" });
+    const setup = () => {
+      cleanup();
+      if (window.innerWidth < 800) return;
 
-      // Pre-compute the (dx, dy, scale) each tile needs to land on its
-      // indicator.  Captured ONCE here; the pin keeps tile origins fixed
-      // during the animation, so these deltas remain valid.
-      const moves = tiles
-        .map((tile, i) => {
-          const indicator = indicators[i];
-          if (!indicator) return null;
-          const tr = tile.getBoundingClientRect();
-          const ir = indicator.getBoundingClientRect();
-          return {
-            tile,
-            dx: ir.left + ir.width / 2 - (tr.left + tr.width / 2),
-            dy: ir.top + ir.height / 2 - (tr.top + tr.height / 2),
-            scale: ir.width / tr.width,
-          };
-        })
-        .filter(<T,>(m: T | null): m is T => m !== null);
+      setupTimeoutId = window.setTimeout(() => {
+        const grid = document.querySelector<HTMLElement>("#works-grid");
+        const allTiles = Array.from(
+          document.querySelectorAll<HTMLElement>("[data-tile-grid]"),
+        );
+        const allIndicators = Array.from(
+          document.querySelectorAll<HTMLElement>("[data-nav-indicator]"),
+        );
+        const nav = document.querySelector<HTMLElement>("[data-project-nav]");
 
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: grid,
-          // Pin engages the moment the grid lines up with the top of the
-          // viewport (= user has finished scrolling past the hero, full
-          // grid is at the top). Then 800px of scroll plays the entire
-          // flight + nav fade + tile dissolve.
-          start: "top top",
-          end: "+=800",
-          pin: true,
-          pinSpacing: true,
-          scrub: 0.6,
-          invalidateOnRefresh: true,
-        },
-      });
+        if (!grid || allTiles.length === 0 || !nav) return;
 
-      // Tile flight — translate + scale.  power2.in feels like the tile
-      // "lifts off" at first and accelerates into its slot.
-      moves.forEach(({ tile, dx, dy, scale }) => {
-        tl.to(tile, { x: dx, y: dy, scale, ease: "power2.in" }, 0);
-      });
+        // Order tiles + indicators by canonical id (01 → 09).  Tile 01
+        // becomes the filled "active" indicator; rest stay outlines.
+        const tilesByCanonical: HTMLElement[] = [];
+        const indicatorsByCanonical: HTMLElement[] = [];
+        for (const id of CANONICAL_IDS) {
+          const tile = allTiles.find((t) => t.dataset.tileId === id);
+          const ind = allIndicators.find(
+            (i) => i.dataset.navIndicator === id,
+          );
+          if (tile) tilesByCanonical.push(tile);
+          if (ind) indicatorsByCanonical.push(ind);
+        }
+        if (
+          tilesByCanonical.length === 0 ||
+          indicatorsByCanonical.length === 0
+        )
+          return;
 
-      // Nav opacity fades in over the middle of the animation; pointer-
-      // events flip to auto so it becomes interactive at the same time.
-      tl.fromTo(
-        nav,
-        { opacity: 0, pointerEvents: "none" },
-        { opacity: 1, pointerEvents: "auto", ease: "none" },
-        0.4,
-      );
+        // Pre-compute flight deltas (tile center → indicator center).
+        const moves = tilesByCanonical
+          .map((tile, i) => {
+            const indicator = indicatorsByCanonical[i];
+            if (!indicator) return null;
+            const tr = tile.getBoundingClientRect();
+            const ir = indicator.getBoundingClientRect();
+            return {
+              tile,
+              indicator,
+              dx: ir.left + ir.width / 2 - (tr.left + tr.width / 2),
+              dy: ir.top + ir.height / 2 - (tr.top + tr.height / 2),
+              scale: ir.width / tr.width,
+            };
+          })
+          .filter(<T,>(m: T | null): m is T => !!m);
 
-      // Last 15% of the timeline: tiles dissolve into the dots they've
-      // landed on, leaving just the indicators visible.
-      tl.to(tiles, { opacity: 0, ease: "none" }, 0.85);
+        // Collect tile children (for the content-fade morph).
+        const tileChildren: HTMLElement[] = [];
+        tilesByCanonical.forEach((tile) => {
+          Array.from(tile.children).forEach((c) => {
+            if (c instanceof HTMLElement) tileChildren.push(c);
+          });
+        });
 
-      ScrollTrigger.refresh();
-      triggers = ScrollTrigger.getAll();
-    }, 250);
+        // Initial state.
+        gsap.set(tilesByCanonical, { transformOrigin: "center center" });
+        // Tile 01 starts with transparent bg so the bg-color tween has a
+        // numeric starting value to interpolate from.
+        gsap.set(tilesByCanonical[0], {
+          backgroundColor: "rgba(31, 31, 31, 0)",
+        });
+        // Indicators independently start invisible + slightly small so
+        // they pop in instead of fading flat.
+        gsap.set(indicatorsByCanonical, { opacity: 0, scale: 0.6 });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: grid,
+            start: "bottom bottom",
+            end: "+=600",
+            pin: true,
+            pinSpacing: true,
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        // ---- Phase A: morph (0 → 0.1) ----------------------------------
+        tl.to(
+          tileChildren,
+          { opacity: 0, duration: PHASE_A_DUR, ease: "power2.out" },
+          0,
+        );
+        tl.to(
+          tilesByCanonical[0],
+          {
+            backgroundColor: "rgba(31, 31, 31, 1)",
+            duration: PHASE_A_DUR,
+          },
+          0,
+        );
+
+        // ---- Phase B: staggered flight ---------------------------------
+        moves.forEach((move, i) => {
+          tl.to(
+            move.tile,
+            {
+              x: move.dx,
+              y: move.dy,
+              scale: move.scale,
+              duration: FLIGHT_DUR,
+              ease: "power2.in",
+            },
+            FLIGHT_START + i * STAGGER,
+          );
+        });
+
+        // ---- Phase C: indicators tada-da-da pop in ---------------------
+        indicatorsByCanonical.forEach((ind, i) => {
+          tl.to(
+            ind,
+            {
+              opacity: 1,
+              scale: 1,
+              duration: INDICATOR_DUR,
+              ease: "back.out(2.5)",
+            },
+            INDICATOR_START + i * STAGGER,
+          );
+        });
+
+        // ---- Tail: tiles fade out as indicators take over --------------
+        moves.forEach((move, i) => {
+          tl.to(
+            move.tile,
+            { opacity: 0, duration: TILE_FADE_DUR },
+            TILE_FADE_START + i * STAGGER,
+          );
+        });
+
+        // ---- Nav chrome (Soonk / Work label / Publication / Resume) ----
+        // Indicators have their own opacity so they stay hidden during this
+        // outer fade — only the labels appear here.
+        tl.fromTo(
+          nav,
+          { opacity: 0, pointerEvents: "none" },
+          { opacity: 1, pointerEvents: "auto", duration: 0.3 },
+          0.2,
+        );
+
+        ScrollTrigger.refresh();
+        triggers = ScrollTrigger.getAll();
+      }, 250);
+    };
+
+    setup();
+
+    const onResize = () => {
+      const isWide = window.innerWidth >= 800;
+      if (isWide === lastIsWide) return;
+      lastIsWide = isWide;
+      setup();
+    };
+
+    window.addEventListener("resize", onResize);
 
     return () => {
-      window.clearTimeout(setupId);
-      triggers.forEach((t) => t.kill());
+      cleanup();
+      window.removeEventListener("resize", onResize);
     };
   }, []);
 

@@ -5,58 +5,87 @@ import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import gsap from "gsap";
 import { useEffect, useRef, useState } from "react";
 
+// Hero animation — six-phase scroll-triggered timeline.
+//
+//   1 [rest]   : dark bg, lime rect, line-art portrait visible, NO TEXT
+//   2 [t=0.5]  : lime rect slides off-left, portrait dims to 40%
+//   3 [t=1.55] : SVG outer face circle traces in, then inner mouth circle
+//   4 [t=3.1]  : bg flips dark → soft-white, portrait dissolves
+//   5 [t=3.55] : SVG circles cross-fade into Lottie shadow morph
+//   6 [t=4.2]  : Soonk/designer/tagline/scroll-for-more fade in
+//
+// All hero text uses JetBrains Mono per Figma 123:2840 / 162:4106.
+// "Scroll for more" stays Archivo Bold per Figma.
+//
+// Layout breakpoint = `xl:` (1280px), NOT `lg:`.  At lg (1024-1279) the
+// horizontal Figma layout (logo+text inline) doesn't fit — text wraps and
+// reads broken — so we keep the vertical mobile stack until we have enough
+// width for the full Figma sizes (Soonk 128 + designer 32 inline = ~554px,
+// plus a 280px logo + 64px gap, demands ~898px content + padding).
+
 // Outer face contour (assets/1_logo_outter_circle.svg, viewBox 177×238).
 const OUTER_CIRCLE_D =
   "M88.2041 7.5C109.637 7.50018 129.641 19.1869 144.551 39.2734C159.46 59.3597 168.907 87.4618 168.907 118.827C168.907 150.193 159.46 178.295 144.551 198.381C129.641 218.467 109.637 230.154 88.2041 230.154C66.771 230.154 46.7666 218.468 31.8564 198.381C16.9467 178.295 7.5 150.193 7.5 118.827C7.50001 87.4618 16.9468 59.3597 31.8564 39.2734C46.7666 19.1868 66.771 7.5 88.2041 7.5Z";
 const INNER_CIRCLE = { cx: 88.2039, cy: 192.931, r: 38.2229 };
 
-// SVG circles wrapper (over the face).  These constants are also reused below
-// to compute where the Lottie's "body" layer needs to land so the cross-fade
-// is positionally seamless.
+// SVG circles wrapper (over the face).
 const SVG_TOP = 20;
 const SVG_LEFT = 23;
-const SVG_WIDTH = 29; // % of portrait container width
+const SVG_WIDTH = 29;
 
-// Lottie canvas is 630 × 450; the "body" layer lives at (88.2, 293.83) inside
-// it (= 14% horizontal, 65.3% vertical of the Lottie viewport).
-// We want the body to render at the SAME screen point as the SVG outer ellipse
-// center (~37.4%, ~42.7% of the portrait container).  Wrapper aspect-locked to
-// Lottie's 1.4 ratio with extra room around the body so the shadow doesn't get
-// clipped at peak extension:
-//   wrapper width  = 90% of container width
-//   wrapper height = 75% of container height (Lottie aspect, container 617×529)
-//   wrapper left   = 25%   (so 14% of wrapper width lands at ~37.6%)
-//   wrapper top    = -7%   (so 65.3% of wrapper height lands at ~42%)
-const LOTTIE_TOP = -7;
-const LOTTIE_LEFT = 25;
-const LOTTIE_WIDTH = 90;
-const LOTTIE_HEIGHT = 75;
+// Lottie wrapper geometry — body layer's on-screen position MUST match the
+// SVG outer-circle center exactly, otherwise the SVG-→-Lottie cross-fade
+// looks like the lens visibly jumps.
+//
+// Two invariants per breakpoint:
+//   1. Wrapper aspect == 1.4 (Lottie canvas 630×450).  If it doesn't match,
+//      the canvas letterboxes inside the wrapper and the body's pixel
+//      position drifts from where the SVG circle traced.
+//      Wrapper aspect = (W/H) × container_aspect, so as the container's
+//      aspect changes, W/H has to change to keep the product at 1.4.
+//   2. Wrapper LEFT/TOP positioned so body's intrinsic (14%, 65.3%) of
+//      canvas lands on SVG outer-circle center (37.5%, 42.7% on desktop /
+//      37.5%, 53.5% on mobile — the Y% differs because SVG height is
+//      derived from container WIDTH but expressed in container HEIGHT).
+//
+// Container aspects:  desktop xl: 617/529 ≈ 1.166  ·  mobile: 617/360 ≈ 1.71
+// Resulting Lottie wrapper sizes (as %s of the container):
+//   desktop xl: left 25, top -7,  width 90, height 75
+//   mobile:     left 29, top 4.5, width 61, height 75
+// Both are applied via responsive Tailwind classes on the wrapper div.
 
-// Note: At lg (1024-1279), Soonk + designer at full Figma size overflow the
-// 50% column.  Sizes scale up at xl/2xl so the Figma 128px lands only at very
-// wide viewports.
+// JetBrains Mono — applied to the hero typeset (matches Figma).
+const MONO_STYLE: React.CSSProperties = {
+  fontFamily:
+    "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace",
+};
+
+// "Soonk" + "designer" — inline header.  64 / 128 px (mobile / xl).
 function NameBlock() {
   return (
-    <h1 className="flex flex-wrap items-baseline gap-x-3 gap-y-1 lg:gap-x-4">
-      <span className="hero-name text-[56px] leading-none font-black text-[#F4F4F4] sm:text-[80px] lg:text-[96px] xl:text-[112px] 2xl:text-[128px]">
+    <h1
+      className="flex flex-wrap items-baseline gap-x-3 gap-y-1 xl:gap-x-4"
+      style={MONO_STYLE}
+    >
+      <span className="text-[64px] leading-[1.0] font-extrabold text-[#1F1F1F] xl:text-[128px]">
         Soonk
       </span>
-      <span className="hero-designer text-base font-light text-[#E3E3E3] sm:text-xl lg:text-[24px] xl:text-[28px] 2xl:text-[32px]">
+      <span className="text-[24px] font-normal text-[#1F1F1F] xl:text-[32px]">
         designer
       </span>
     </h1>
   );
 }
 
+// "I'm a Product person" + 2-line tagline.  32/16 mobile · 48/24 xl.
+// Mobile applies tighter tracking per Figma 162:4106.
 function TaglineBlock() {
   return (
-    <div>
-      <h2 className="hero-tag-main text-[34px] leading-[1.05] font-bold text-[#F4F4F4] sm:text-5xl lg:text-[48px] xl:text-[56px] 2xl:text-[64px]">
-        I&rsquo;m a
-        <br />
-        <span className="whitespace-nowrap">Product person</span>
+    <div style={MONO_STYLE}>
+      <h2 className="text-[32px] leading-tight font-bold tracking-[-0.05em] text-[#1F1F1F] xl:text-[48px] xl:tracking-normal">
+        I&rsquo;m a Product person
       </h2>
-      <p className="hero-tag-sub mt-5 text-sm leading-relaxed font-normal text-[#E3E3E3] sm:text-base lg:mt-7 lg:text-[18px] xl:text-[20px] 2xl:text-[24px]">
+      <p className="mt-2 text-[16px] leading-snug font-normal tracking-[-0.05em] text-[#1F1F1F] xl:mt-4 xl:text-[24px] xl:tracking-normal">
         Design is one of my tools, not my goal
         <br />
         I build to find out what&rsquo;s true
@@ -65,77 +94,141 @@ function TaglineBlock() {
   );
 }
 
+// "Scroll for more" + arrow icon.  Archivo Bold 24px (NOT JetBrains Mono).
+// Arrow uses /public/Downarrow.svg (filled solid arrow per Figma — NOT
+// the line-style placeholder I had earlier).
+function ScrollForMore() {
+  return (
+    <div className="flex flex-col items-center gap-2 text-[#5D5D5D]">
+      <p className="text-[24px] leading-[0.92] font-bold">Scroll for more</p>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/Downarrow.svg"
+        alt=""
+        aria-hidden
+        className="h-[20px] w-auto"
+      />
+    </div>
+  );
+}
+
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
-  // Lottie is mounted only when the timeline reaches the BG-flip beat — that
-  // way the user sees frame 0 (just-logo, no-shadow) at reveal, not somewhere
-  // mid-animation while it was running invisibly.
+  // Lottie is mounted only when the timeline reaches the cross-fade beat —
+  // that way the user sees frame 0 (just-logo, no-shadow) at reveal, not
+  // somewhere mid-animation while it ran invisibly.
   const [showLottie, setShowLottie] = useState(false);
 
   useEffect(() => {
-    if (!ref.current) return;
-
+    // Initial visibility: graphics ON, text OFF.  Note that
+    // `.hero-text-reveal` and `.hero-lottie-wrap` ALSO carry an inline
+    // `opacity: 0` so they're hidden BEFORE gsap.set even runs — that
+    // protects against a hydration flash where the final-state text
+    // pops in for a frame (or several, on slow mobile devices) until
+    // JS finishes loading.  The gsap.set below is then a redundant
+    // belt-and-braces reset for SPA navigations.
     gsap.set(".hero-rect", { xPercent: 0, opacity: 1 });
     gsap.set(".hero-portrait", { opacity: 1 });
     gsap.set(".hero-svg-circles", { opacity: 1 });
     gsap.set(".hero-lottie-wrap", { opacity: 0 });
+    gsap.set(".hero-text-reveal", { opacity: 0 });
 
     const tl = gsap.timeline({ delay: 0.4 });
 
-    // Phase 1 [rest]   — everything visible, hold a beat.
-    // Phase 2 [t=0.5]  — rect slides off-left, portrait dims to 40%.
+    // Phase 2 — lime rect slides off, portrait dims.
     tl.to(".hero-rect", { xPercent: -130, opacity: 0, duration: 1.1, ease: "power3.in" }, 0.5);
     tl.to(".hero-portrait", { opacity: 0.4, duration: 0.9, ease: "power2.inOut" }, 0.7);
 
-    // Phase 3 [t=1.55] — outer face circle traces in, then inner mouth circle.
+    // Phase 3 — face + mouth circles trace in.
     tl.to(".hero-outer-circle", { strokeDashoffset: 0, duration: 1.0, ease: "power2.inOut" }, 1.55);
     tl.to(".hero-inner-circle", { strokeDashoffset: 0, duration: 0.55, ease: "power2.inOut" }, 2.2);
 
-    // Phase 4 [t=3.1]  — bg flips dark → soft-white, portrait dissolves, text inverts.
+    // Phase 4 — bg dark → soft-white, portrait dissolves.
     tl.to(".hero-bg", { backgroundColor: "#EEEEEE", duration: 1.0, ease: "power2.inOut" }, 3.1);
     tl.to(".hero-portrait", { opacity: 0, duration: 0.8 }, 3.1);
-    tl.to(".hero-name, .hero-tag-main", { color: "#1F1F1F", duration: 0.8 }, 3.1);
-    tl.to(".hero-designer, .hero-tag-sub", { color: "#5D5D5D", duration: 0.8 }, 3.1);
 
-    // Phase 5 [t=3.55] — cross-fade SVG circles → Lottie shadow morph.
+    // Phase 5 — SVG circles → Lottie shadow morph cross-fade.
     tl.to(".hero-svg-circles", { opacity: 0, duration: 0.5 }, 3.55);
     tl.add(() => setShowLottie(true), 3.55);
     tl.to(".hero-lottie-wrap", { opacity: 1, duration: 0.5 }, 3.6);
 
+    // Phase 6 — TEXT REVEAL.  Once the lens-logo morph is in place, the
+    // entire typeset layout fades in together.
+    tl.to(".hero-text-reveal", { opacity: 1, duration: 0.7, ease: "power2.out" }, 4.2);
+
     tl.play(0);
+
+    // Lock scroll for the first ~3s of the landing animation so the user
+    // can't blast past the dark phase before they realize what's happening.
+    // We don't lock for the full 5s timeline — once the bg flips to soft
+    // white (Phase 4 ≈ t=3.1s + 0.4s delay = 3.5s) the user has all the
+    // context they need, so it's fine for them to scroll if they want.
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const unlockId = window.setTimeout(() => {
+      document.body.style.overflow = prevOverflow;
+    }, 3000);
+
     return () => {
       tl.kill();
+      window.clearTimeout(unlockId);
+      document.body.style.overflow = prevOverflow;
     };
   }, []);
 
   return (
-    <section ref={ref} className="hero relative min-h-screen w-full overflow-hidden">
+    <section
+      ref={ref}
+      className="hero relative min-h-screen w-full overflow-hidden"
+    >
       <div className="hero-bg absolute inset-0 bg-[#1F1F1F]" aria-hidden />
 
-      <div className="relative mx-auto grid min-h-screen w-full max-w-[1440px] grid-cols-1 items-center gap-y-8 px-6 py-12 lg:grid-cols-2 lg:gap-x-12 lg:px-16">
-        {/* PORTRAIT — order 2 on mobile, left col on desktop */}
-        <div className="order-2 lg:order-1 lg:col-start-1 lg:row-start-1 lg:self-center">
-          <div className="relative mx-auto aspect-[617/529] w-full max-w-md lg:max-w-none">
-            {/* Lime green rect — slides left out (Phase 2) */}
+      {/* Layout container.
+          Mobile (<xl): vertical stack — name → portrait → tagline → scroll.
+          Desktop (≥xl): horizontal split — portrait LEFT | name+tagline RIGHT,
+          with scroll-for-more absolute-positioned at the bottom-center. */}
+      <div className="relative mx-auto flex min-h-screen w-full max-w-[1200px] flex-col items-center justify-center gap-y-3 px-8 py-12 xl:flex-row xl:items-center xl:justify-center xl:gap-y-8 xl:gap-x-16 xl:px-8 xl:py-12">
+        {/* Mobile: name above portrait */}
+        <div style={{ opacity: 0 }}
+          className="hero-text-reveal order-1 xl:hidden">
+          <NameBlock />
+        </div>
+
+        {/* Portrait / lens-logo container.
+            aspect-[617/529] is the original portrait.png aspect AND the
+            aspect that makes the inner Lottie wrapper (90% × 75%) match
+            the Lottie canvas's 1.4 ratio — so the body renders at full
+            natural scale rather than shrinking to fit a mismatched wrapper.
+            Desktop xl gets a fixed width of 380px so the logo body is
+            visibly comparable to Figma's 176×238 lens.
+
+            IMPORTANT: this is ONE div, not two.  Earlier I had a separate
+            outer `<div className="order-2 xl:order-1 xl:shrink-0">` wrapper
+            that contained this aspect-ratio div with `w-full` — that
+            created a circular sizing reference (outer's auto width depends
+            on inner's w-full, which depends on outer's width).  In
+            flex-col items-center, browsers resolved this as 0-width on
+            mobile, collapsing the entire portrait/rect/lottie area.  Hence
+            the all-black mobile dark phase the user reported. */}
+        <div className="relative order-2 mx-auto aspect-[617/360] w-full max-w-md xl:order-1 xl:aspect-[617/529] xl:w-[380px] xl:max-w-none xl:shrink-0">
+            {/* Lime green rect — slides off in Phase 2 */}
             <div
               className="hero-rect absolute bg-[#00FB00]"
               style={{ left: "-21%", top: "-17%", width: "100%", height: "91%" }}
               aria-hidden
             />
-
-            {/* Portrait line-art, cropped to face/shoulders */}
+            {/* Portrait line-art (cropped to face/shoulders) */}
             <div className="hero-portrait pointer-events-none absolute inset-0 overflow-hidden">
               <Image
                 src="/hero/portrait.png"
                 alt="Soonk Paik"
                 fill
                 priority
-                sizes="(min-width: 1024px) 50vw, 90vw"
+                sizes="(min-width: 1280px) 380px, 90vw"
                 className="object-cover"
                 style={{ objectPosition: "60% 50%" }}
               />
             </div>
-
             {/* SVG face circles — drawn during dark phase, fade out as Lottie takes over */}
             <svg
               viewBox="0 0 177 238"
@@ -170,18 +263,13 @@ export default function Hero() {
                 strokeDashoffset={1}
               />
             </svg>
-
-            {/* Lottie shadow morph — wrapper geometry computed so the Lottie's
-                "body" layer (which lives at 14%, 65.3% of the 630×450 canvas)
-                renders at the same screen point as the SVG outer ellipse center. */}
+            {/* Lottie shadow morph — see LOTTIE constants comment above for
+                why mobile (29 / 4.5 / 61 / 75) and desktop (25 / -7 / 90 /
+                75) have different positions.  opacity:0 stays inline so the
+                pre-hydration render keeps the lens hidden. */}
             <div
-              className="hero-lottie-wrap pointer-events-none absolute"
-              style={{
-                top: `${LOTTIE_TOP}%`,
-                left: `${LOTTIE_LEFT}%`,
-                width: `${LOTTIE_WIDTH}%`,
-                height: `${LOTTIE_HEIGHT}%`,
-              }}
+              className="hero-lottie-wrap pointer-events-none absolute left-[29%] top-[4.5%] h-[75%] w-[61%] xl:left-[25%] xl:top-[-7%] xl:w-[90%]"
+              style={{ opacity: 0 }}
               aria-hidden
             >
               {showLottie && (
@@ -193,24 +281,36 @@ export default function Hero() {
                 />
               )}
             </div>
-          </div>
         </div>
 
-        {/* NAME — order 1 on mobile (above portrait), top of right col on desktop */}
-        <div className="order-1 lg:order-2 lg:col-start-2 lg:row-start-1 lg:hidden">
-          <NameBlock />
-        </div>
-
-        {/* TAGLINE — order 3 on mobile (below portrait), hidden on desktop */}
-        <div className="order-3 lg:hidden">
+        {/* Mobile: tagline below portrait */}
+        <div style={{ opacity: 0 }}
+          className="hero-text-reveal order-3 xl:hidden">
           <TaglineBlock />
         </div>
 
-        {/* DESKTOP RIGHT COLUMN — name + tagline grouped, vertically centered */}
-        <div className="hidden lg:order-2 lg:col-start-2 lg:row-start-1 lg:flex lg:flex-col lg:gap-12 lg:self-center">
+        {/* Desktop right column: NAME + TAGLINE grouped (gap-4).
+            xl:flex-1 + xl:max-w-[662px] makes the column claim the
+            available remaining row space (capped at Figma's 662px),
+            instead of shrink-to-content which forced the inline name
+            to wrap when natural content width edged past the column. */}
+        <div style={{ opacity: 0 }}
+          className="hero-text-reveal hidden xl:order-2 xl:flex xl:flex-1 xl:max-w-[662px] xl:flex-col xl:gap-4">
           <NameBlock />
           <TaglineBlock />
         </div>
+
+        {/* Mobile: scroll-for-more at end of stack */}
+        <div style={{ opacity: 0 }}
+          className="hero-text-reveal order-4 mt-4 xl:hidden">
+          <ScrollForMore />
+        </div>
+      </div>
+
+      {/* Desktop: scroll-for-more pinned to bottom-center of the section */}
+      <div style={{ opacity: 0 }}
+          className="hero-text-reveal pointer-events-none absolute bottom-12 left-1/2 hidden -translate-x-1/2 xl:block">
+        <ScrollForMore />
       </div>
     </section>
   );

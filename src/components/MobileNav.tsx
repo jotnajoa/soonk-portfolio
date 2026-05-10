@@ -1,40 +1,69 @@
 "use client";
 
 import { tiles } from "@/data/tiles";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-// MobileNav — header bar + full-screen menu, only mounted on <800px viewports.
-// Figma nodes 101:2160 (header) and 101:2488 (menu open).
-//   - Sticky header at top: "WORKS" 48px Archivo Black + 56×56 round dark
-//     hamburger (3 horizontal white bars).
-//   - Tap hamburger → black circle expands from the button position via
-//     clip-path animation, filling the screen with a dark menu panel.
-//   - Menu: Soonk header, divider, Work (expanded list of all 9 projects;
-//     active project has a small filled dot), Publications (collapsed),
-//     Resume.
-
-const HAMBURGER_POS = "calc(100% - 56px) 52px"; // ~ where the button sits
+// MobileNav — mobile-only (<800px) sticky WORK+hamburger bar PLUS the
+// fullscreen menu overlay.  Lives between <Hero/> and <ProjectList/> in DOM
+// order so its natural position is just-below the hero; as the user scrolls
+// past the hero the bar slides into view, then `position: sticky; top:0;`
+// pins it to the viewport top.
+//
+// Two visual states:
+//   162:3935 — bar visible, no shadow (initial / about-to-stick).
+//   162:4000 — sticky-active: bottom border + drop-shadow.
+// State is detected by checking `getBoundingClientRect().top <= 0` on scroll.
 
 export default function MobileNav() {
+  const barRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(tiles[0]?.id ?? null);
+  const [stuck, setStuck] = useState(false);
+  // The clip-path circle for the menu open/close animation emanates from
+  // the hamburger button.  Because the bar lives in normal flow until it
+  // sticks, the button's viewport position depends on scroll — capture it
+  // at click time instead of hard-coding a "calc(100% - 56px) X" value.
+  const [clipOrigin, setClipOrigin] = useState("calc(100% - 60px) 32px");
 
-  // Track current list tile for active project highlight
+  // Active list-tile tracking — same scroll-position logic as ProjectNav.
+  // (See that file for the explanation of why we don't use IntersectionObserver.)
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>("[data-tile-list]");
-    if (els.length === 0) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (visible.length === 0) return;
-        visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        const id = visible[0].target.getAttribute("data-tile-id");
-        if (id) setActiveId(id);
-      },
-      { threshold: [0.3, 0.6], rootMargin: "-20% 0px -20% 0px" },
-    );
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
+    const compute = () => {
+      const els = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-tile-list]"),
+      );
+      if (els.length === 0) return;
+      const trigger = window.innerHeight * 0.3;
+      let nextId: string | null = els[0].getAttribute("data-tile-id");
+      for (const el of els) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= trigger) {
+          nextId = el.getAttribute("data-tile-id");
+        } else {
+          break;
+        }
+      }
+      if (nextId) setActiveId(nextId);
+    };
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute);
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
+  }, []);
+
+  // Sticky-active detection (for the drop-shadow visual cue).
+  useEffect(() => {
+    const onScroll = () => {
+      if (!barRef.current) return;
+      setStuck(barRef.current.getBoundingClientRect().top <= 0);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Lock body scroll while menu is open
@@ -45,10 +74,16 @@ export default function MobileNav() {
     };
   }, [open]);
 
+  const openMenu = () => {
+    if (buttonRef.current) {
+      const r = buttonRef.current.getBoundingClientRect();
+      setClipOrigin(`${r.left + r.width / 2}px ${r.top + r.height / 2}px`);
+    }
+    setOpen(true);
+  };
   const close = () => setOpen(false);
   const goTo = (id: string) => {
     close();
-    // Wait for the close clip-path to start, then scroll
     setTimeout(() => {
       document
         .querySelector(`[data-tile-list][data-tile-id="${id}"]`)
@@ -58,17 +93,45 @@ export default function MobileNav() {
 
   return (
     <>
-      {/* Hamburger button — fixed top-right, visible only on mobile.
-          WORKS section heading is rendered inline in ProjectList instead,
-          so the Hero composition stays clean above. */}
-      <button
-        onClick={() => setOpen(true)}
-        aria-label="Open menu"
-        className="fixed top-[24px] right-[32px] z-40 flex size-[56px] flex-col items-center justify-center gap-[5px] rounded-full bg-[#1F1F1F] shadow-[0_2px_8px_rgba(0,0,0,0.15)] tablet:hidden"
+      {/* Sticky WORK + hamburger bar (mobile only).
+          z-30 so it sits above ProjectList content but BELOW the menu
+          overlay (z-50). Shadow + border appear only when sticky-active. */}
+      <div
+        ref={barRef}
+        className={`sticky top-0 z-30 bg-[#EEEEEE] tablet:hidden transition-shadow duration-200 ${
+          stuck
+            ? "border-b border-black shadow-[0_2px_1px_rgba(0,0,0,0.25)]"
+            : ""
+        }`}
       >
-        <span className="block h-[3px] w-[30px] bg-[#F4F4F4]" />
-        <span className="block h-[3px] w-[30px] bg-[#F4F4F4]" />
-        <span className="block h-[3px] w-[30px] bg-[#F4F4F4]" /></button>
+        <div className="flex h-[80px] items-center justify-between px-[32px]">
+          <p className="text-[48px] leading-[0.92] font-black text-[#1F1F1F]">
+            WORK
+          </p>
+          {/* Hamburger button — HIDDEN while the bar is in-flow.  Only
+              slides in once the bar has reached `top:0` (sticky-active).
+              This matches Figma 162:4106 (no hamburger) → 162:3935 (sticky
+              bar with hamburger).  The combined opacity + translate-x
+              transition makes the button feel like it slips in from the
+              right edge as the bar lands. */}
+          <button
+            ref={buttonRef}
+            onClick={openMenu}
+            aria-label="Open menu"
+            aria-hidden={!stuck}
+            tabIndex={stuck ? 0 : -1}
+            className={`flex size-[56px] cursor-pointer flex-col items-center justify-center gap-[5px] rounded-full bg-[#1F1F1F] shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-[opacity,transform,box-shadow] duration-300 ease-out hover:-translate-y-[2px] hover:shadow-[0_8px_16px_rgba(0,0,0,0.25)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.15)] ${
+              stuck
+                ? "pointer-events-auto translate-x-0 opacity-100"
+                : "pointer-events-none translate-x-4 opacity-0"
+            }`}
+          >
+            <span className="block h-[3px] w-[30px] bg-[#F4F4F4]" />
+            <span className="block h-[3px] w-[30px] bg-[#F4F4F4]" />
+            <span className="block h-[3px] w-[30px] bg-[#F4F4F4]" />
+          </button>
+        </div>
+      </div>
 
       {/* Menu panel — circle-expand clip-path from hamburger position */}
       <div
@@ -78,8 +141,8 @@ export default function MobileNav() {
         }`}
         style={{
           clipPath: open
-            ? `circle(150vmax at ${HAMBURGER_POS})`
-            : `circle(0px at ${HAMBURGER_POS})`,
+            ? `circle(150vmax at ${clipOrigin})`
+            : `circle(0px at ${clipOrigin})`,
           transition: "clip-path 700ms cubic-bezier(0.65, 0, 0.35, 1)",
         }}
       >
@@ -88,38 +151,34 @@ export default function MobileNav() {
             open ? "opacity-100 delay-300" : "opacity-0"
           }`}
         >
-          {/* Top row: small logo placeholder + close button */}
+          {/* Top row: Soonk hamburger-menu logo (Figma asset) + close */}
           <div className="flex items-start justify-between">
-            <div
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/hamburger_logo.svg"
+              alt=""
               aria-hidden
-              className="relative h-[48px] w-[48px] shrink-0"
-            >
-              {/* Compact logo glyph — outer outline + inner dot.  Real
-                  shadowed logo from Figma will replace this. */}
-              <span className="absolute inset-0 rounded-full border-[3px] border-[#F4F4F4]" />
-              <span className="absolute bottom-1 left-1/2 size-3 -translate-x-1/2 rounded-full border-[2px] border-[#F4F4F4]" />
-            </div>
+              className="h-[48px] w-auto shrink-0"
+            />
             <button
               onClick={close}
               aria-label="Close menu"
-              className="text-3xl leading-none text-[#F4F4F4]"
+              className="cursor-pointer text-3xl leading-none text-[#F4F4F4]"
             >
               ✕
             </button>
           </div>
 
-          {/* Soonk wordmark */}
           <p className="text-[32px] leading-[0.92] font-normal text-[#8E8E8E]">
             Soonk
           </p>
 
           <div className="h-[2px] w-full bg-[#F4F4F4]" />
 
-          {/* Work section (expanded) */}
           <div className="flex flex-col gap-[16px]">
             <button
               onClick={close}
-              className="flex items-center gap-[8px] text-[32px] leading-[0.92] font-medium text-[#F4F4F4]"
+              className="flex cursor-pointer items-center gap-[8px] text-[32px] leading-[0.92] font-medium text-[#F4F4F4]"
             >
               <span>Work</span>
               <span aria-hidden className="text-[18px]">∧</span>
@@ -129,13 +188,10 @@ export default function MobileNav() {
               {tiles.map((t) => {
                 const active = t.id === activeId;
                 return (
-                  <li
-                    key={t.id}
-                    className="flex items-center gap-[16px]"
-                  >
+                  <li key={t.id} className="flex items-center gap-[16px]">
                     <button
                       onClick={() => goTo(t.id)}
-                      className={`text-left text-[24px] leading-[0.92] ${
+                      className={`cursor-pointer text-left text-[24px] leading-[0.92] ${
                         active
                           ? "font-bold text-[#F4F4F4]"
                           : "font-normal text-[#8E8E8E]"
@@ -157,19 +213,17 @@ export default function MobileNav() {
 
           <div className="h-[2px] w-full bg-[#F4F4F4]" />
 
-          {/* Publications (collapsed) */}
           <button
             onClick={close}
-            className="flex items-center gap-[8px] text-left text-[32px] leading-[0.92] font-normal text-[#8E8E8E]"
+            className="flex cursor-pointer items-center gap-[8px] text-left text-[32px] leading-[0.92] font-normal text-[#8E8E8E]"
           >
             <span>Publications</span>
             <span aria-hidden className="text-[18px]">∨</span>
           </button>
 
-          {/* Resume */}
           <button
             onClick={close}
-            className="text-left text-[32px] leading-[0.92] font-normal text-[#8E8E8E]"
+            className="cursor-pointer text-left text-[32px] leading-[0.92] font-normal text-[#8E8E8E]"
           >
             Resume
           </button>

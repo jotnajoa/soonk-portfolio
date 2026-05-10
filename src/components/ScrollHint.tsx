@@ -3,44 +3,37 @@
 import { useEffect, useState } from "react";
 
 // Figma node 123:3600 — fixed bottom-center "Scroll for more" + down arrow.
-// Visible from a small scroll into the hero, fades out the moment the user
-// scrolls into the flying-squares pin (i.e. when the grid lines up with the
-// top of the viewport — same trigger FlyingSquares uses to start the
-// animation).  This keeps the hint OUT of the entire transition + list,
-// not just out of the list itself.
-
-function DownArrowIcon() {
-  return (
-    <svg
-      width="24"
-      height="30"
-      viewBox="0 0 16 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-    >
-      <path
-        d="M7.99936 19.312L0.878359 12.191C0.315946 11.6284 0 10.8655 0 10.07C0 9.27451 0.315946 8.51158 0.878359 7.949C1.97236 6.855 3.85636 6.811 4.99936 7.834V3C4.99936 1.346 6.34536 0 7.99936 0C9.65336 0 10.9994 1.346 10.9994 3V7.834C12.1424 6.811 14.0264 6.855 15.1204 7.949C15.6828 8.51158 15.9987 9.27451 15.9987 10.07C15.9987 10.8655 15.6828 11.6284 15.1204 12.191L7.99936 19.312ZM2.99936 9.07C2.80139 9.06956 2.60776 9.12795 2.44304 9.23776C2.27832 9.34756 2.14994 9.50383 2.07418 9.68673C1.99843 9.86962 1.97873 10.0709 2.01757 10.265C2.05642 10.4591 2.15206 10.6373 2.29236 10.777L7.99936 16.484L13.7064 10.777C13.8938 10.5895 13.9991 10.3352 13.9991 10.07C13.9991 9.80484 13.8938 9.55053 13.7064 9.363C13.5163 9.18028 13.263 9.07822 12.9994 9.07822C12.7357 9.07822 12.4824 9.18028 12.2924 9.363L8.99936 12.656V3C8.98784 2.74252 8.87745 2.49941 8.69118 2.32128C8.5049 2.14315 8.2571 2.04373 7.99936 2.04373C7.74162 2.04373 7.49382 2.14315 7.30754 2.32128C7.12127 2.49941 7.01088 2.74252 6.99936 3V12.656L3.70636 9.363C3.51887 9.17545 3.26455 9.07006 2.99936 9.07Z"
-        fill="currentColor"
-      />
-    </svg>
-  );
-}
+//
+// Visibility lifecycle:
+//   1. Hidden at the very top of the page (scrollY < ~80) — Hero owns its
+//      own "Scroll for more" cue at the bottom of the viewport during the
+//      initial hero animation.
+//   2. Visible from when the user has scrolled into the grid all the way
+//      THROUGH the FlyingSquares animation.  We intentionally keep the cue
+//      on screen for the ENTIRE flight so the user knows there's more to
+//      see while the tiles are still mid-animation.
+//   3. Hidden once the sticky ProjectNav has fully faded in (opacity ≥ 0.95)
+//      — the nav indicators ARE the "more" the cue was pointing at, so the
+//      cue's job is done the moment they're on screen.
+//
+// We tie visibility to ProjectNav's live opacity (which FlyingSquares scrubs
+// from 0 → 1 as the timeline progresses) rather than a hard scroll-position
+// threshold, so the cue tracks the actual animation state.
 
 export default function ScrollHint() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const grid = document.querySelector<HTMLElement>("#works-grid");
-
     const update = () => {
       const past = window.scrollY > 80;
-      // Grid top relative to viewport top.  Once it reaches 0 (or above),
-      // FlyingSquares' pin has engaged and the hint should be out of the
-      // way.  Note: while pinned, grid.top stays at 0; after pin releases
-      // and the user scrolls further, it goes negative — hint stays hidden.
-      const top = grid?.getBoundingClientRect().top ?? Infinity;
-      setVisible(past && top > 0);
+      const nav = document.querySelector<HTMLElement>("[data-project-nav]");
+      const navOpacity = nav
+        ? parseFloat(getComputedStyle(nav).opacity || "0")
+        : 0;
+      // Visible while we're past the initial hero AND the nav header isn't
+      // yet fully revealed.  Threshold 0.95 (not 1.0) so the cue fades out
+      // a beat BEFORE the nav reaches full opacity — feels less abrupt.
+      setVisible(past && navOpacity < 0.95);
     };
 
     update();
@@ -63,7 +56,13 @@ export default function ScrollHint() {
         <p className="text-[20px] leading-[0.92] font-bold whitespace-nowrap">
           Scroll for more
         </p>
-        <DownArrowIcon />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/Downarrow.svg"
+          alt=""
+          aria-hidden
+          className="h-[20px] w-auto"
+        />
       </div>
     </div>
   );

@@ -17,21 +17,52 @@ import { useEffect, useState } from "react";
 export default function ProjectNav() {
   const [activeId, setActiveId] = useState<string | null>(tiles[0]?.id ?? null);
 
+  // Active-tile tracking via scroll position (NOT IntersectionObserver).
+  //
+  // We previously used IntersectionObserver + ratio-sort, but that has a
+  // subtle bug: each callback only contains entries for tiles that crossed
+  // a threshold THIS frame.  If tile 02 is fully visible and tile 03 starts
+  // entering, the callback fires with only [03] — we'd pick 03 even though
+  // 02 is still more visible overall.  A moment later 02's threshold flips,
+  // callback fires with [02], and we switch back.  Result: indicators bounce
+  // between adjacent tiles as the boundary crosses, which is what the user
+  // saw ("3rd lights up, then back to 2nd, then 4th, then back to 3rd…").
+  //
+  // Scroll-position approach is monotonic: active tile = the LAST tile whose
+  // top has crossed a fixed trigger line ~30% down the viewport.  Scrolling
+  // forward only ever advances; scrolling backward only ever retreats.
   useEffect(() => {
-    const els = document.querySelectorAll<HTMLElement>("[data-tile-list]");
-    if (els.length === 0) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (visible.length === 0) return;
-        visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        const id = visible[0].target.getAttribute("data-tile-id");
-        if (id) setActiveId(id);
-      },
-      { threshold: [0.3, 0.6, 0.9], rootMargin: "-20% 0px -20% 0px" },
-    );
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
+    const compute = () => {
+      const els = Array.from(
+        document.querySelectorAll<HTMLElement>("[data-tile-list]"),
+      );
+      if (els.length === 0) return;
+
+      const trigger = window.innerHeight * 0.3;
+      let nextId: string | null = els[0].getAttribute("data-tile-id");
+
+      for (const el of els) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= trigger) {
+          nextId = el.getAttribute("data-tile-id");
+        } else {
+          // Tiles after this haven't reached the trigger yet — stop.
+          break;
+        }
+      }
+
+      if (nextId) setActiveId(nextId);
+    };
+
+    // Run once at mount (in case page loaded scrolled), then on every scroll
+    // and resize.  Passive listener — we never preventDefault.
+    compute();
+    window.addEventListener("scroll", compute, { passive: true });
+    window.addEventListener("resize", compute);
+    return () => {
+      window.removeEventListener("scroll", compute);
+      window.removeEventListener("resize", compute);
+    };
   }, []);
 
   const goTo = (id: string) => {
@@ -46,7 +77,10 @@ export default function ProjectNav() {
       style={{ opacity: 0, pointerEvents: "none" }}
       className="fixed top-0 right-0 left-0 z-40 hidden bg-[#EEEEEE]/95 backdrop-blur tablet:block"
     >
-      <nav className="flex items-center gap-4 px-[32px] py-4">
+      {/* Bar bg + backdrop-blur stretch full viewport, but the nav content
+          itself caps at 1200px (centered) so it doesn't sprawl on
+          ultra-wide screens. */}
+      <nav className="mx-auto flex max-w-[1200px] items-center gap-4 px-[32px] py-4">
         <span className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#A0A0A0]">
           Soonk
         </span>

@@ -4,6 +4,15 @@ import { TileLogo } from "@/components/TileLogo";
 
 // Grid 3×3 — Figma node 55:458 (Desktop-4).
 //
+// IMPORTANT — IDs vs visual position:
+//   data-tile-id always matches the CANONICAL list order (see tiles.ts):
+//     01 POMEs · 02 Volthop · 03 GIA · 04 Toyota · 05 Alnylam · 06 Teachable
+//     07 NYC parking · 08 Word-up · 09 GTM
+//   The grid renders tiles in a DIFFERENT visual order to match Figma's 3×3
+//   layout (Word-up at row 2 col 2, Alnylam at row 2 col 3, etc.).  Each tile
+//   keeps its data-tile-id matching the list, so flying-squares and nav
+//   indicators map by ID — not by render index.
+//
 // Each tile is its OWN component with bespoke layout.  Trying to unify them
 // behind one generic GridTile was hiding intentional per-tile differences:
 //   - POMEs : logo+brand inline, tagline, 2-line blurb, callout w/ arrow
@@ -22,8 +31,8 @@ import { TileLogo } from "@/components/TileLogo";
 
 const SHELL = "relative flex h-[280px] overflow-clip border-2 border-[#1F1F1F]";
 
-// ---- Tile 01 — POMEs ---------------------------------------------------------
-function Tile01Pomes() {
+// ---- 01 POMEs ---------------------------------------------------------------
+function TilePomes() {
   return (
     <article
       data-tile-id="01"
@@ -56,8 +65,8 @@ function Tile01Pomes() {
   );
 }
 
-// ---- Tile 02 — Volthop -------------------------------------------------------
-function Tile02Volthop() {
+// ---- 02 Volthop -------------------------------------------------------------
+function TileVolthop() {
   return (
     <article
       data-tile-id="02"
@@ -87,8 +96,8 @@ function Tile02Volthop() {
   );
 }
 
-// ---- Tile 03 — GIA Platform --------------------------------------------------
-function Tile03Gia() {
+// ---- 03 GIA Platform --------------------------------------------------------
+function TileGia() {
   return (
     <article
       data-tile-id="03"
@@ -114,8 +123,8 @@ function Tile03Gia() {
   );
 }
 
-// ---- Tile 04 — Toyota Guidehub -----------------------------------------------
-function Tile04Toyota() {
+// ---- 04 Toyota Guidehub -----------------------------------------------------
+function TileToyota() {
   return (
     <article
       data-tile-id="04"
@@ -135,18 +144,114 @@ function Tile04Toyota() {
   );
 }
 
-// ---- Tile 05 — Word-up -------------------------------------------------------
-// Note: tagline here is REGULAR weight (it's descriptive paragraph, not a
-// bold subhead like the others).
-function Tile05Wordup() {
+// ---- 05 Alnylam SSOT --------------------------------------------------------
+function TileAlnylam() {
   return (
     <article
       data-tile-id="05"
       data-tile-grid
+      className={`${SHELL} flex-col gap-[16px] px-[16px] py-[24px]`}
+    >
+      <div className="flex w-full flex-col items-start justify-center gap-[16px]">
+        <TileLogo tileId="05" />
+        <h3 className="w-full text-[30px] leading-[0.92] font-black text-[#1F1F1F]">
+          Alnylam SSOT
+        </h3>
+      </div>
+      <p className="w-full text-[24px] leading-[0.92] font-black text-[#A0A0A0]">
+        &ldquo;Wrong on Purpose&rdquo;
+      </p>
+      <p className="w-full text-[16px] leading-[0.92] font-normal text-[#A0A0A0]">
+        Two-month fixed timeline + fixed budget. No room for traditional UX
+        process.
+      </p>
+    </article>
+  );
+}
+
+// ---- 06 Teachable -----------------------------------------------------------
+// Two-column split: vertical rotated "Teachable" wordmark on left,
+// centered key quote + paired description on right.
+function TileTeachable() {
+  return (
+    <article
+      data-tile-id="06"
+      data-tile-grid
+      className={`${SHELL} items-start gap-[30px] px-[16px] py-[24px]`}
+    >
+      {/* Left: logo + vertical rotated "Teachable" */}
+      <div className="flex h-full shrink-0 flex-col items-center justify-center gap-[8px]">
+        <TileLogo tileId="06" />
+        <div className="flex h-[160px] w-[29px] items-center justify-center">
+          <div className="flex-none -rotate-90">
+            <p className="w-[160px] text-center text-[32px] leading-[0.92] font-medium text-[#1F1F1F]">
+              Teachable
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Right column: quote at top, descriptions GROUPED at bottom.
+          Earlier I had the quote + 2 paragraphs as 3 separate children with
+          `justify-between` — that pushed desc1 into the vertical middle of
+          the column (between quote and desc2), which doesn't match Figma
+          55:458.  Wrapping desc1+desc2 in a single flex-col makes them ONE
+          flex item, so justify-between pairs them at the bottom while the
+          quote stays at the top. */}
+      <div className="flex h-full flex-1 flex-col justify-between gap-2 min-w-0">
+        <p
+          className="w-full text-[24px] leading-[0.95] font-black text-[#1F1F1F]"
+          style={{ textAlign: "center" }}
+        >
+          &ldquo;LOW USAGE ≠ LOW VALUE&rdquo;
+        </p>
+        <div className="flex w-full flex-col gap-2 text-[16px] leading-[0.92] font-normal text-[#A0A0A0]">
+          <p>
+            Segmented users by data literacy and explicitly cut the power-user
+            persona from V1, chose Traffic &amp; Conversion at the school level.
+          </p>
+          <p>
+            Designed measurable success criteria upfront (engagement score + NPS)
+          </p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+// ---- 07 NYC parking ---------------------------------------------------------
+function TileNyc() {
+  return (
+    <article
+      data-tile-id="07"
+      data-tile-grid
+      className={`${SHELL} flex-col gap-[24px] px-[25px] py-[24px]`}
+    >
+      <TileLogo tileId="07" />
+      <div className="w-full text-[30px] leading-[0.95] font-black text-[#1F1F1F]">
+        <p className="leading-[0.95]">Is street parking</p>
+        <p className="leading-[0.95]">really free?</p>
+      </div>
+      <div className="flex w-full flex-col items-start gap-[8px] text-[20px] leading-[0.92] font-black text-[#A0A0A0]">
+        <p className="w-full">#Daily-life friction</p>
+        <p className="w-full">#small civic pain point</p>
+      </div>
+    </article>
+  );
+}
+
+// ---- 08 Word-up -------------------------------------------------------------
+// Note: tagline here is REGULAR weight (it's descriptive paragraph, not a
+// bold subhead like the others).
+function TileWordup() {
+  return (
+    <article
+      data-tile-id="08"
+      data-tile-grid
       className={`${SHELL} flex-col gap-[16px] px-[18px] py-[24px]`}
     >
       <div className="flex flex-col items-start gap-[16px]">
-        <TileLogo tileId="05" />
+        <TileLogo tileId="08" />
         <h3 className="text-[30px] leading-[0.92] font-black whitespace-nowrap text-black">
           Word-up
         </h3>
@@ -162,96 +267,9 @@ function Tile05Wordup() {
   );
 }
 
-// ---- Tile 06 — Alnylam SSOT --------------------------------------------------
-function Tile06Alnylam() {
-  return (
-    <article
-      data-tile-id="06"
-      data-tile-grid
-      className={`${SHELL} flex-col gap-[16px] px-[16px] py-[24px]`}
-    >
-      <div className="flex w-full flex-col items-start justify-center gap-[16px]">
-        <TileLogo tileId="06" />
-        <h3 className="w-full text-[30px] leading-[0.92] font-black text-[#1F1F1F]">
-          Alnylam SSOT
-        </h3>
-      </div>
-      <p className="w-full text-[24px] leading-[0.92] font-black text-[#A0A0A0]">
-        &ldquo;Wrong on Purpose&rdquo;
-      </p>
-      <p className="w-full text-[20px] leading-[0.92] font-normal text-[#A0A0A0]">
-        Two-month fixed timeline + fixed budget. No room for traditional UX
-        process.
-      </p>
-    </article>
-  );
-}
-
-// ---- Tile 07 — Teachable -----------------------------------------------------
-// Two-column split: vertical rotated "Teachable" wordmark on left,
-// centered key quote + paired description on right.
-function Tile07Teachable() {
-  return (
-    <article
-      data-tile-id="07"
-      data-tile-grid
-      className={`${SHELL} items-start gap-[30px] px-[16px] py-[24px]`}
-    >
-      {/* Left: logo + vertical rotated "Teachable" */}
-      <div className="flex h-full shrink-0 flex-col items-center justify-center gap-[8px]">
-        <TileLogo tileId="07" />
-        <div className="flex h-[160px] w-[29px] items-center justify-center">
-          <div className="flex-none -rotate-90">
-            <p className="w-[160px] text-center text-[32px] leading-[0.92] font-medium text-[#1F1F1F]">
-              Teachable
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Right: key quote + description */}
-      <div className="flex h-full flex-1 flex-col items-start justify-between min-w-0">
-        <div className="flex w-full flex-col items-center justify-center">
-          <p className="w-full text-center text-[24px] leading-[0.95] font-black text-[#1F1F1F]">
-            &ldquo;LOW USAGE ≠ LOW VALUE&rdquo;
-          </p>
-        </div>
-        <p className="w-full text-[16px] leading-[0.92] font-normal text-[#A0A0A0]">
-          Segmented users by data literacy and explicitly cut the power-user
-          persona from V1, chose Traffic &amp; Conversion at the school level.
-        </p>
-        <p className="w-full text-[16px] leading-[0.92] font-normal text-[#A0A0A0]">
-          Designed measurable success criteria upfront (engagement score + NPS)
-        </p>
-      </div>
-    </article>
-  );
-}
-
-// ---- Tile 08 — NYC parking ---------------------------------------------------
-function Tile08Nyc() {
-  return (
-    <article
-      data-tile-id="08"
-      data-tile-grid
-      className={`${SHELL} flex-col gap-[24px] px-[25px] py-[24px]`}
-    >
-      <TileLogo tileId="08" />
-      <div className="w-full text-[30px] leading-[0.95] font-black text-[#1F1F1F]">
-        <p className="leading-[0.95]">Is street parking</p>
-        <p className="leading-[0.95]">really free?</p>
-      </div>
-      <div className="flex w-full flex-col items-start gap-[8px] text-[20px] leading-[0.92] font-black text-[#A0A0A0]">
-        <p className="w-full">#Daily-life friction</p>
-        <p className="w-full">#small civic pain point</p>
-      </div>
-    </article>
-  );
-}
-
-// ---- Tile 09 — GTM Marketing -------------------------------------------------
+// ---- 09 GTM Marketing -------------------------------------------------------
 // Title-only (no logo per Figma).
-function Tile09Gtm() {
+function TileGtm() {
   return (
     <article
       data-tile-id="09"
@@ -269,28 +287,40 @@ function Tile09Gtm() {
   );
 }
 
-// ---- Section -----------------------------------------------------------------
-// No "WORKS" headline — the flying-squares animation creates the page header
+// ---- Section ----------------------------------------------------------------
+// No "WORK" headline — the flying-squares animation creates the page header
 // as the squares fly into the sticky nav indicators.
+//
+// Render order matches Figma's 3×3 visual layout (NOT canonical id order):
+//   row 1 : POMEs · Volthop · GIA
+//   row 2 : Toyota · Word-up · Alnylam
+//   row 3 : Teachable · NYC · GTM
 export default function Grid() {
   return (
     <section
       id="works-grid"
-      className="relative z-30 hidden w-full flex-col items-start gap-[64px] bg-[#EEEEEE] px-[32px] pt-[96px] pb-24 tablet:flex"
+      // pb is intentionally minimal: the FlyingSquares pin already provides
+      // the visual transition into the list, so any extra bottom padding
+      // here just reads as dead scroll between the two sections.
+      className="relative z-30 hidden w-full flex-col items-start gap-[64px] bg-[#EEEEEE] px-[32px] pt-[96px] pb-4 tablet:flex"
     >
-      <div className="grid w-full grid-cols-3 gap-[16px]">
+      {/* Section bg + padding stretch full viewport (so the page reads as
+          one continuous color band), but the 3×3 grid itself caps at
+          1200px and centers — keeps the layout from sprawling on wide
+          monitors and matches the cap on Hero / ProjectList / nav. */}
+      <div className="mx-auto grid w-full max-w-[1200px] grid-cols-3 gap-[16px]">
         {/* row 1 */}
-        <Tile01Pomes />
-        <Tile02Volthop />
-        <Tile03Gia />
+        <TilePomes />
+        <TileVolthop />
+        <TileGia />
         {/* row 2 */}
-        <Tile04Toyota />
-        <Tile05Wordup />
-        <Tile06Alnylam />
+        <TileToyota />
+        <TileWordup />
+        <TileAlnylam />
         {/* row 3 */}
-        <Tile07Teachable />
-        <Tile08Nyc />
-        <Tile09Gtm />
+        <TileTeachable />
+        <TileNyc />
+        <TileGtm />
       </div>
     </section>
   );
