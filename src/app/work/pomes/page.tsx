@@ -40,7 +40,7 @@ import CaseStudyLeftNav, {
 export const metadata: Metadata = {
   title: "POMEs — Soonk Paik",
   description:
-    "A neighbor app where you brag about what you can offer — not beg for help.",
+    "A neighbor app where you brag about what you can offer, not beg for help.",
 };
 
 // JetBrains Mono — reserved for the canonical project number (01–09)
@@ -188,7 +188,7 @@ export default function PomesCaseStudy() {
       {/* ---------- HERO (Variant B — 4-phone row) ---------- */}
       <section
         id="intro"
-        className="mx-auto max-w-[1080px] px-[20px] pt-[40px] pb-[40px] min-[560px]:px-[32px] min-[560px]:pt-[64px] min-[560px]:pb-[48px]"
+        className="mx-auto max-w-[1200px] px-[32px] pt-[40px] pb-[40px] min-[560px]:pt-[64px] min-[560px]:pb-[48px]"
       >
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
@@ -209,7 +209,7 @@ export default function PomesCaseStudy() {
         </div>
 
         <p className="mb-[40px] max-w-[820px] text-[24px] leading-[1.18] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:mb-[48px] min-[960px]:text-[36px]">
-          A neighbor app where you brag about what you can offer — not beg for
+          A neighbor app where you brag about what you can offer, not beg for
           help.
         </p>
 
@@ -299,7 +299,7 @@ export default function PomesCaseStudy() {
 
       {/* ---------- Body grid: sticky nav + content ---------- */}
       <div className="bg-[#EEEEEE]">
-        <div className="mx-auto flex max-w-[1080px] gap-[32px] px-[20px] pt-[40px] pb-[80px] min-[560px]:px-[32px] tablet:gap-[48px] tablet:pt-[56px] tablet:pb-[96px]">
+        <div className="mx-auto flex max-w-[1200px] gap-[32px] px-[32px] pt-[40px] pb-[80px] tablet:gap-[48px] tablet:pt-[56px] tablet:pb-[96px]">
           <CaseStudyLeftNav
             currentSlug="pomes"
             readTime="~10 min read"
@@ -1070,7 +1070,7 @@ export default function PomesCaseStudy() {
 
       {/* ---------- Footer ---------- */}
       <footer className="border-t border-[#A0A0A0] py-[36px]">
-        <div className="mx-auto flex max-w-[1080px] items-center justify-between px-[20px] text-[12px] text-[#A0A0A0] min-[560px]:px-[32px]">
+        <div className="mx-auto flex max-w-[1200px] items-center justify-between px-[32px] text-[12px] text-[#A0A0A0]">
           <span>© 2026 Soonk Paik</span>
           <span>POMEs Case Study · v3</span>
         </div>

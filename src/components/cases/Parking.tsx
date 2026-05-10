@@ -182,8 +182,8 @@ const VIEW_RIBBON: {
 
 function Hero() {
   return (
-    <section className="border-b-2 border-[#1F1F1F] px-[32px] pt-[48px] pb-[64px] tablet:px-[64px] tablet:pt-[64px] tablet:pb-[96px]">
-      <div className="flex flex-col gap-[36px]">
+    <section className="border-b-2 border-[#1F1F1F] pt-[48px] pb-[64px] tablet:pt-[64px] tablet:pb-[96px]">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px] px-[32px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
         {/* Display — project number + wordmark.  "07" is JBM Mono (the
@@ -765,8 +765,8 @@ export default function ParkingCaseStudy() {
     <>
       <Hero />
 
-      <div className="border-t-2 border-[#1F1F1F] px-[32px] tablet:px-[64px]">
-        <div className="mx-auto flex max-w-[1200px] gap-[32px] py-[48px] tablet:py-[64px]">
+      <div className="border-t-2 border-[#1F1F1F]">
+        <div className="mx-auto flex max-w-[1200px] gap-[32px] px-[32px] py-[48px] tablet:py-[64px]">
           <CaseStudyLeftNav
             currentSlug="parking"
             readTime="~6 min read"

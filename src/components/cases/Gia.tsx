@@ -290,8 +290,8 @@ function SectionHeader({
 
 function Hero() {
   return (
-    <section className="border-b-[0.5px] border-[#A0A0A0] px-[24px] py-[64px] tablet:px-[60px] tablet:py-[80px]">
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-[40px]">
+    <section className="border-b-[0.5px] border-[#A0A0A0] py-[64px] tablet:py-[80px]">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-[40px] px-[32px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
         {/* Display row — project number + GIA logo + wordmark, baseline
@@ -1723,7 +1723,7 @@ export default function GiaCaseStudy() {
       <Hero />
 
       {/* §02–07 — sticky left nav + main column */}
-      <div className="mx-auto flex max-w-[1200px] flex-col px-[24px] tablet:flex-row tablet:gap-[40px] tablet:px-[60px]">
+      <div className="mx-auto flex max-w-[1200px] flex-col px-[32px] tablet:flex-row tablet:gap-[40px]">
         <CaseStudyLeftNav
           currentSlug="gia"
           readTime="~9 min read"

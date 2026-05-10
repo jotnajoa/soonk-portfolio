@@ -260,9 +260,9 @@ function SectionHero() {
   return (
     <section
       id="intro"
-      className="border-b-2 border-[#1F1F1F] px-[32px] pt-[48px] pb-[64px] tablet:px-[64px] tablet:pt-[64px] tablet:pb-[96px]"
+      className="border-b-2 border-[#1F1F1F] pt-[48px] pb-[64px] tablet:pt-[64px] tablet:pb-[96px]"
     >
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px]">
+      <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px] px-[32px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
         {/* Display: project number + logo + wordmark + subtitle.
@@ -1155,7 +1155,7 @@ export default function ToyotaCaseStudy() {
       <SectionHero />
 
       {/* §02–04 — left sticky nav + content column */}
-      <div className="mx-auto max-w-[1200px] px-[32px] tablet:px-[64px]">
+      <div className="mx-auto max-w-[1200px] px-[32px]">
         <div className="flex tablet:gap-[40px]">
           <CaseStudyLeftNav
             currentSlug="toyota"
