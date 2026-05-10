@@ -73,7 +73,7 @@ const SECTIONS: CaseStudySection[] = [
 // reads as ineligible for the page).
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <div className="mb-[18px] text-[12px] tracking-[0.16em] text-[#A0A0A0]">
+    <div className="mb-[18px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]">
       {children}
     </div>
   );
@@ -127,6 +127,47 @@ function SubH({ children }: { children: React.ReactNode }) {
 
 function Strong({ children }: { children: React.ReactNode }) {
   return <strong className="font-medium text-[#1F1F1F]">{children}</strong>;
+}
+
+// PullQuote — Medium-style call-out: thick black left bar, oversized
+// italic, dark ink.  Used for the case study's biggest narrative beats
+// (e.g. "So I set out to prove it") so the reader's eye actually stops.
+function PullQuote({ children }: { children: React.ReactNode }) {
+  return (
+    <blockquote className="my-[32px] max-w-[680px] border-l-[6px] border-[#1F1F1F] pl-[24px] text-[28px] leading-[1.25] font-black italic tracking-[-0.01em] text-[#1F1F1F] min-[560px]:text-[36px]">
+      {children}
+    </blockquote>
+  );
+}
+
+// AnonymousQuote — interview citation with anonymized neighbor label,
+// visually distinct from body text.  Left-bar block with the quote
+// (italic, primary ink) and an arrow → implication line below.
+function AnonymousQuote({
+  speaker,
+  quote,
+  implies,
+}: {
+  speaker: string;
+  quote: string;
+  implies: string;
+}) {
+  return (
+    <blockquote className="border-l-2 border-[#1F1F1F] py-[10px] pl-[20px]">
+      <p
+        className="text-[18px] leading-[1.5] font-medium text-[#1F1F1F]"
+        style={{ fontStyle: "italic" }}
+      >
+        &ldquo;{quote}&rdquo;
+        <cite className="ml-[8px] text-[12px] font-normal not-italic text-[#5D5D5D]">
+          — {speaker}
+        </cite>
+      </p>
+      <p className="mt-[6px] text-[14px] leading-[1.5] text-[#5D5D5D]">
+        → {implies}
+      </p>
+    </blockquote>
+  );
 }
 
 // Pale-teal "Research → Design" callout used in every Section 05 block.
@@ -194,7 +235,9 @@ export default function PomesCaseStudy() {
 
         {/* Project number (canonical 01-09 marker, JBM Mono) + Logo +
             giant POMEs wordmark — mirrors the landing list view's giant
-            mono number anchoring each tile. */}
+            mono number anchoring each tile.  Live store links sit on the
+            same row, anchored to the right, so the case opens with the
+            answer to "is it real?" before the read begins. */}
         <div className="mb-[28px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[36px] min-[560px]:gap-[28px]">
           <span
             className="text-[64px] font-extrabold leading-[0.9] tracking-[-0.04em] text-[#1F1F1F] min-[560px]:text-[88px] min-[960px]:text-[120px]"
@@ -206,6 +249,23 @@ export default function PomesCaseStudy() {
           <span className="text-[80px] font-black leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[110px] min-[960px]:text-[152px]">
             POMEs
           </span>
+
+          {/* Live-link chips — TBD store URLs; placeholders link to "#" so
+              the visual lands now, swap href later. */}
+          <div className="flex flex-wrap items-center gap-[8px] self-end min-[960px]:ml-auto">
+            <Link
+              href="#"
+              className="inline-flex items-center gap-[6px] border-2 border-[#1F1F1F] bg-[#1F1F1F] px-[12px] py-[6px] text-[12px] font-medium tracking-[0.04em] text-[#F4F4F4] no-underline hover:bg-[#5D5D5D]"
+            >
+              ↗ App Store
+            </Link>
+            <Link
+              href="#"
+              className="inline-flex items-center gap-[6px] border-2 border-[#1F1F1F] px-[12px] py-[6px] text-[12px] font-medium tracking-[0.04em] text-[#1F1F1F] no-underline hover:bg-[#1F1F1F] hover:text-[#F4F4F4]"
+            >
+              ↗ Google Play
+            </Link>
+          </div>
         </div>
 
         {/* Hero 2-column: phone-shaped autoplay video (left) + tagline +
@@ -243,14 +303,13 @@ export default function PomesCaseStudy() {
                 ["Role", "Solo · end-to-end"],
                 ["Scope", "Research → design → vibe-coded engineering → GTM"],
                 ["Timeline", "Mar 15 – Apr 30, 2026 (~7 weeks)"],
-                ["Status", "Live on App Store · Google Play"],
                 ["Stack", "iOS · Android · React Native · Firebase"],
               ].map(([l, v]) => (
                 <div
                   key={l}
                   className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
                 >
-                  <dt className="text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
+                  <dt className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]">
                     {l}
                   </dt>
                   <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">
@@ -262,44 +321,40 @@ export default function PomesCaseStudy() {
           </div>
         </div>
 
-        {/* Timeline ribbon — vertical bar markers (not dots).  Per brief: 5
-            nodes, dates above labels, hairline rule connecting them. */}
+        {/* Timeline ribbon — vertical tick markers, dates above labels.
+            Mobile: each step is a stacked row (date over label, hairline
+            divider below).  Desktop ≥560: 5-column horizontal ribbon with
+            a single hairline rule running across the ticks. */}
         <div className="mb-[24px] pt-[8px]">
-          <div className="relative grid grid-cols-1 gap-[12px] min-[560px]:grid-cols-5 min-[560px]:gap-0">
-            {/* hairline rule — only on tablet+ where the ribbon is horizontal */}
+          <div className="relative grid grid-cols-1 min-[560px]:grid-cols-5 min-[560px]:gap-0">
+            {/* hairline rule — tablet+ only, runs through the tick marks */}
             <span
               aria-hidden
               className="absolute top-[7px] right-[10%] left-[10%] hidden h-px bg-[#A0A0A0] min-[560px]:block"
             />
             {[
-              ["Mar 15", "Concept", "First idea, brain dumps"],
-              ["Mar 16–26", "Research", "8 interviews, AI synthesis"],
-              ["Mar 25 – Apr 20", "Design + build", "Vibe-coded MVP"],
-              ["Apr 25", "GTM", "97 signups · 10.2% peak"],
-              ["Apr 30", "Live", "App Store + Google Play"],
-            ].map(([d, l, x], i) => (
+              ["Mar 15", "Concept"],
+              ["Mar 16–26", "Research"],
+              ["Mar 25 – Apr 20", "Design + build"],
+              ["Apr 25", "GTM"],
+              ["Apr 30", "Live"],
+            ].map(([d, l], i) => (
               <div
                 key={i}
-                className="relative z-[1] border-b border-[#A0A0A0] py-3 text-left min-[560px]:border-0 min-[560px]:px-2 min-[560px]:py-0 min-[560px]:text-center"
+                className="relative z-[1] border-b border-[#A0A0A0] py-[14px] text-left min-[560px]:border-0 min-[560px]:px-2 min-[560px]:py-0 min-[560px]:text-center"
               >
                 <span className="block h-[14px] w-[2px] bg-[#1F1F1F] min-[560px]:mx-auto" />
-                <div className="mt-[8px] text-[12px] tracking-[0.04em] text-[#A0A0A0] min-[560px]:mt-[14px]">
+                <div className="mt-[8px] text-[12px] tracking-[0.04em] text-[#5D5D5D] min-[560px]:mt-[14px]">
                   {d}
                 </div>
                 <div className="mt-[4px] text-[16px] leading-[1.3] font-medium text-[#1F1F1F] min-[560px]:mt-[6px]">
                   {l}
-                </div>
-                <div className="mt-[4px] text-[12px] leading-[1.4] text-[#A0A0A0]">
-                  {x}
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="mt-8 border-y border-[#A0A0A0] py-[22px] text-center text-[12px] tracking-[0.18em] text-[#A0A0A0]">
-          ↓ Scroll for case study
-        </div>
       </section>
 
       {/* ---------- Body grid: sticky nav + content ---------- */}
@@ -329,7 +384,7 @@ export default function PomesCaseStudy() {
                 Not Nextdoor&rsquo;s 10,000 strangers. Just the people who share
                 a wall.
               </Body>
-              <Body italic>So I set out to prove it.</Body>
+              <PullQuote>So I set out to prove it.</PullQuote>
             </Section>
 
             {/* ===== 03 Market scan ===== */}
@@ -339,66 +394,47 @@ export default function PomesCaseStudy() {
                 n="03"
                 title="I split the work — AI took scale, interviews surfaced experience."
               />
-              <Lede>
-                Information hunting at scale is what AI is built for. So I
-                delegated the broad competitive scan — seven platforms across
-                three tiers: direct competitors (Favorhood, Favrs, Gesture),
-                adjacent community networks (Nextdoor, MyNabes), and timebanking
-                systems (TimeBanks, hOurworld). Three I deep-dived for what I
-                could learn. The rest of what I needed surfaced naturally during
-                interviews.
-              </Lede>
 
+              {/* AI / Me split — the headline visible at a glance */}
+              <ResearchSplit />
+
+              {/* What AI researched — 3 competitors, logo + bullets */}
               <SubH>What AI researched</SubH>
-              <ScanGrid
-                cells={[
+              <ReferenceGrid
+                cards={[
                   {
                     name: "Favorhood",
-                    badge: "ai",
-                    body: "Closest competitor. Berkeley, founded 2020 (COVID era). 0.5-mile radius neighbor matching, simple post-help-get-matched UX. No currency system; basic address verification only. The opening: building-level trust beats zip-code radius, and a currency mechanic adds reciprocity that pure matching can't.",
+                    logo: { char: "F", bg: "#FF6B35" },
+                    bullets: [
+                      "Berkeley, est. 2020 — closest direct competitor",
+                      "0.5-mile-radius matching · address verification only",
+                      "Opening: building-level trust beats zip-code radius; currency mechanic adds reciprocity",
+                    ],
                   },
                   {
                     name: "Nextdoor",
-                    badge: "ai",
-                    body: "The vulnerable giant. 1.7★ on Trustpilot across 3,045 reviews. Top complaints: arbitrary account suspensions, political moderation bias, can't block users who make you feel unsafe, excessive ads after the B2B pivot. The decline of the giant = clear opening for small, trusted, ad-free communities.",
+                    logo: { char: "N", bg: "#00BB66" },
+                    bullets: [
+                      "1.7★ on Trustpilot across 3,045 reviews — vulnerable giant",
+                      "Top complaints: arbitrary suspensions, political bias, ad-heavy after B2B pivot",
+                      "Opening: small, trusted, ad-free communities",
+                    ],
                   },
                   {
                     name: "TimeBanks",
-                    badge: "ai",
-                    body: "3M+ hours exchanged globally — concept works. But operational pitfalls: funding dependency collapses when grants end, manager burnout from no financial reward, member activity decays into core/periphery split, complex categories overwhelm users, desktop-first. The mechanics inspired Seeds; the failures shaped what NOT to repeat.",
+                    logo: { char: "T", bg: "#3A5B7A" },
+                    bullets: [
+                      "3M+ hours exchanged globally — the concept itself works",
+                      "Pitfalls: grant dependency, manager burnout, core/periphery activity decay",
+                      "Mechanics inspired Seeds; failures shaped what NOT to repeat",
+                    ],
                   },
                 ]}
               />
 
-              <SubH>What interviews surfaced</SubH>
-              <ScanGrid
-                cells={[
-                  {
-                    name: "Buy Nothing",
-                    badge: "iv",
-                    body: "Multiple interviewees used it. Solves the gift loop — extra coffee, baby clothes, an old chair. But there's no relationship layer; you don't know the person you're picking up from. It scales gifts, not trust.",
-                  },
-                  {
-                    name: "BuildingLink",
-                    badge: "iv",
-                    body: "Exists in my own building. Half my interviewees had logins. Almost nobody used it for anything but maintenance tickets. It's a portal you open to file a complaint, not to meet a neighbor.",
-                  },
-                  {
-                    name: "WhatsApp building groups",
-                    badge: "iv",
-                    body: "Every building has one. Hundreds of give-posts. Two structural problems: messages disappear (no inventory, no memory), and the loudest personalities dominate. Quiet neighbors with offers stay invisible.",
-                  },
-                ]}
-              />
-
-              <p
-                className="mt-[18px] max-w-[620px] text-[17px] leading-[1.45] text-[#1F1F1F]"
-                style={{ fontStyle: "italic" }}
-              >
-                Each tool solved a slice. None was built for a single 60-unit
-                building where the same 60 people live next to each other for
-                years.
-              </p>
+              {/* Other AI-driven reports — title + link only */}
+              <SubH>Other AI-driven reports</SubH>
+              <OtherReports />
             </Section>
 
             {/* ===== 04 Research → Inversion ===== */}
@@ -409,37 +445,62 @@ export default function PomesCaseStudy() {
                 title="I watched, asked, and built a game to find where the friction was."
               />
               <Lede>
-                Two weeks of WhatsApp lurking before I reached out. Then 8
-                in-depth interviews. Then a custom card-sorting game I built
-                with Claude Code in an afternoon and ran live with neighbors.
-                Three angles on the same question: where do neighbors freeze up?
+                Two weeks of WhatsApp lurking, 8 scheduled interviews + 12+
+                hallway 1-min interviews, and a custom card-sorting game I ran
+                live with neighbors. Three angles on the same question: where
+                do neighbors freeze up?
               </Lede>
 
               <SubH>What I saw on WhatsApp</SubH>
               <Body>
-                The asymmetry was loud. People posted give-aways constantly —
-                extra coffee, old IKEA chairs, baked cookies — and got many
-                responses. People posted asks for help{" "}
-                <em className="italic">almost never</em>. When asks did appear,
-                they were for kids (&ldquo;can someone watch my daughter for an
-                hour?&rdquo;), never for adult needs.
+                People posted give-aways constantly and got many responses.
+                People posted asks <em className="italic">almost never</em>.
+                When asks did appear, they were for kids — never for adult
+                needs. <Strong>Helping was happening; asking wasn&rsquo;t.</Strong>
               </Body>
-              <Body>
-                I also heard stories — &ldquo;Jenna&rsquo;s husband helped me
-                carry up groceries last week&rdquo; — but those stories were
-                about <em className="italic">unsolicited</em> help. Nobody had
-                asked. The favor happened, then a story circulated.{" "}
-                <Strong>Helping was happening; asking wasn&rsquo;t.</Strong>
-              </Body>
-              <Body>
-                People were eager to look like good people. That part was
-                obvious from the scroll.
-              </Body>
+
+              <SubH>Tools neighbors already used</SubH>
+              <ReferenceGrid
+                cards={[
+                  {
+                    name: "Buy Nothing",
+                    logo: { char: "B", bg: "#6F4A28" },
+                    bullets: [
+                      "Used by multiple interviewees",
+                      "Solves the gift loop (coffee, baby clothes, old chair)",
+                      "No relationship layer — scales gifts, not trust",
+                    ],
+                  },
+                  {
+                    name: "BuildingLink",
+                    logo: { char: "B", bg: "#3F66A8" },
+                    bullets: [
+                      "Half of interviewees had a login",
+                      "Used only for maintenance tickets",
+                      "A portal for complaints, not a way to meet a neighbor",
+                    ],
+                  },
+                  {
+                    name: "WhatsApp groups",
+                    logo: { char: "W", bg: "#25D366" },
+                    bullets: [
+                      "Every building has one; hundreds of give-posts",
+                      "Messages disappear — no inventory, no memory",
+                      "Loudest personalities dominate; quiet neighbors stay invisible",
+                    ],
+                  },
+                ]}
+              />
+              <p className="mt-[8px] mb-[18px] max-w-[620px] text-[16px] leading-[1.7] italic text-[#5D5D5D]">
+                Each tool solved a slice. None was built for a single 60-unit
+                building where the same 60 people live next to each other for
+                years.
+              </p>
 
               <SubH>What I asked in interviews</SubH>
               <Body>
-                8 interviews — owners, renters, parents, professionals — across
-                the building. Two questions did most of the heavy lifting:
+                Two questions did most of the heavy lifting across 8 scheduled
+                30-min sessions:
               </Body>
 
               <div className="my-[24px] flex max-w-[660px] flex-col gap-[10px]">
@@ -470,89 +531,73 @@ export default function PomesCaseStudy() {
                 ))}
               </div>
 
-              <Body>The themes came back fast.</Body>
+              <Body>
+                The themes came back fast. Three of eight said the same thing
+                about asking; the fourth voice flipped that on its head about
+                offering. The pattern is the case study.
+              </Body>
 
-              <div className="my-[18px] flex max-w-[620px] flex-col gap-[6px]">
-                {[
-                  ["I could do it on the app. Face-to-face damages my image.", "— Charlton, 6F"],
-                  ["I won't ask while I can still do it myself.", "— Peter, 6A"],
-                  ["I can do it directly, so I won't have someone do it for me.", "— Anya, 3E"],
-                  [
-                    "I love helping people in that situation. I don't have family in the area, and I've been there myself.",
-                    "— Kate, 3B",
-                  ],
-                ].map(([q, c]) => (
-                  <blockquote
-                    key={c}
-                    className="border-l-2 border-[#5D5D5D] py-[8px] pl-[20px]"
-                  >
-                    <p
-                      className="text-[16px] leading-[1.5] text-[#1F1F1F]"
-                      style={{ fontStyle: "italic" }}
-                    >
-                      &ldquo;{q}&rdquo;
-                    </p>
-                    <cite className="mt-[4px] block text-[12px] font-medium not-italic text-[#A0A0A0]">
-                      {c}
-                    </cite>
-                  </blockquote>
-                ))}
+              <div className="my-[18px] flex max-w-[680px] flex-col gap-[14px]">
+                <AnonymousQuote
+                  speaker="Neighbor A"
+                  quote="I could do it on the app. Face-to-face damages my image."
+                  implies="Asking in person feels exposing; a digital layer makes it bearable."
+                />
+                <AnonymousQuote
+                  speaker="Neighbor B"
+                  quote="I won't ask while I can still do it myself."
+                  implies="Self-reliance is performed — the bar for 'I need help' is set too high."
+                />
+                <AnonymousQuote
+                  speaker="Neighbor C"
+                  quote="I can do it directly, so I won't have someone do it for me."
+                  implies="Independence is the default; receiving help reads as dependency."
+                />
+                <AnonymousQuote
+                  speaker="Neighbor D"
+                  quote="I love helping people in that situation. I've been there myself."
+                  implies="The offer side has no embarrassment cost. People want to give."
+                />
               </div>
 
               <Body>
-                Three of eight said the same thing in different words:{" "}
-                <Strong>they wouldn&rsquo;t ask while they could still do it.</Strong>{" "}
                 The cost wasn&rsquo;t the favor itself — it was the social cost
-                of asking.
+                of asking. Offering had no such cost.
               </Body>
 
-              <SubH>
-                <span
-                  className="mr-2 text-[#1F1F1F]"
-                  style={{ fontStyle: "italic" }}
-                >
-                  ★
-                </span>
-                I built a card-sorting game to test where the friction lines
-                were.
-              </SubH>
+              {/* Card-sorting — inline mention, not its own headline.
+                  Embedded as an iframe so the reader can actually try the
+                  tool; jotnajoa.github.io is a static GitHub Pages site so
+                  session-local interaction has no global side-effects. */}
               <Body>
-                I needed to test where the friction was — not in the abstract,
-                in specific tasks. Building this in Figjam would have taken
-                three days, plus session scheduling. So I built a real
-                card-sorting web app in an afternoon. Claude Code wrote 90% of
-                the React; I designed the cards from interview prep. Neighbors
-                sorted 12 hypothetical asks into &ldquo;would ask&rdquo; /
-                &ldquo;wouldn&rsquo;t ask&rdquo; while I watched.
+                Mid-way through interviews I built a small card-sorting web
+                app — Claude Code wrote 90% of the React; I designed the cards
+                from interview prep. Neighbors dragged 12 hypothetical asks
+                into &ldquo;would ask&rdquo; / &ldquo;wouldn&rsquo;t&rdquo;
+                while I watched. (Try it below — it&rsquo;s live.)
               </Body>
 
-              {/* Card-sorting feature card.  Real screenshot would replace
-                  the SVG placeholder — assets_manifest still flags this as
-                  a TBD capture, so we keep the stylised SVG mock. */}
-              <div className="my-[18px] grid grid-cols-1 items-center gap-[24px] rounded-[12px] border-[1.5px] border-[#1F1F1F] bg-[#F4F4F4] p-[20px] min-[560px]:grid-cols-[280px_1fr]">
-                <div className="flex aspect-[16/10] items-center justify-center rounded-[6px] bg-[#D9D9D9] p-[14px]">
-                  <CardSortingMockSvg />
+              <figure className="my-[22px]">
+                <div className="overflow-clip rounded-[8px] border-2 border-[#1F1F1F] bg-[#F4F4F4]">
+                  <iframe
+                    src="https://jotnajoa.github.io/pbn-card-sorting/"
+                    title="POMEs interview card-sorting game"
+                    loading="lazy"
+                    className="block h-[520px] w-full"
+                  />
                 </div>
-                <div>
-                  <span className="mb-[8px] inline-block rounded-[3px] bg-[#D9D9D9] px-[7px] py-[2px] text-[12px] font-medium tracking-[0.08em] text-[#1F1F1F]">
-                    ★ VIBE-CODED IN AN AFTERNOON
-                  </span>
-                  <div className="mb-[6px] text-[16px] font-medium text-[#1F1F1F]">
-                    Card-sorting web app
-                  </div>
-                  <div className="text-[16px] leading-[1.65] text-[#5D5D5D]">
-                    Real card-sorting tool, not a Figjam board. Each card was a
-                    hypothetical ask; neighbors dragged them into &ldquo;would
-                    ask&rdquo; or &ldquo;wouldn&rsquo;t&rdquo; while I watched.
-                  </div>
-                  <div
-                    className="mt-[6px] text-[16px] text-[#1F1F1F]"
-                    style={{ fontStyle: "italic" }}
+                <figcaption className="mt-[10px] flex flex-wrap items-baseline justify-between gap-[12px] text-[12px] tracking-[0.08em] text-[#5D5D5D]">
+                  <span>FIG. 1 OF 3 · CARD-SORTING TOOL (LIVE)</span>
+                  <a
+                    href="https://jotnajoa.github.io/pbn-card-sorting/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="hover:text-[#1F1F1F]"
                   >
-                    AI as research multiplier.
-                  </div>
-                </div>
-              </div>
+                    ↗ Open in new tab
+                  </a>
+                </figcaption>
+              </figure>
 
               <Body>The findings sharpened the picture:</Body>
               <ul className="my-[12px] mb-[22px] flex max-w-[620px] flex-col">
@@ -560,7 +605,7 @@ export default function PomesCaseStudy() {
                   ["Universal “would ask”:", " pet sitting, watering plants, dog walking"],
                   ["Universal “wouldn’t ask”:", " picking up groceries (3 of 4 wouldn’t)"],
                   ["Polarizing tasks:", " kid watching, helping with a move, furniture assembly"],
-                  ["Kate’s principle:", " one-off = OK to ask a neighbor; regular = hire someone"],
+                  ["A clean principle:", " one-off = OK to ask a neighbor; regular = hire someone"],
                 ].map(([h, t]) => (
                   <li
                     key={h}
@@ -574,26 +619,21 @@ export default function PomesCaseStudy() {
 
               <SubH>The synthesis: an inversion</SubH>
               <Body>
-                Putting all three together — observation, interviews, sorting —
-                the answer was the same. Posting an ask costs face. Posting an
-                offer earns it. Both kinds of help could happen; only one was
-                being initiated.
+                People <Strong>love publicly showing their generosity</Strong>{" "}
+                — but feel uncomfortable asking for things. So I let the app
+                lead with what neighbors <em>can offer</em> (lend, help with,
+                host) rather than what they <em>need</em>. Others see those
+                offers and request — the request becomes the easy half of the
+                exchange, not the heavy half.
               </Body>
 
-              {/* Fig. 1 — The inversion */}
+              {/* Fig. 2 — The inversion */}
               <figure className="my-[28px] rounded-[12px] bg-[#F4F4F4] px-[28px] pt-[40px] pb-[22px]">
                 <InversionDiagramSvg />
-                <figcaption className="mt-[14px] text-right text-[12px] tracking-[0.08em] text-[#A0A0A0]">
-                  FIG. 1 OF 3 · THE INVERSION
+                <figcaption className="mt-[14px] text-right text-[12px] tracking-[0.08em] text-[#5D5D5D]">
+                  FIG. 2 OF 3 · THE INVERSION
                 </figcaption>
               </figure>
-
-              <Body>
-                So I flipped the default. The app doesn&rsquo;t start with
-                &ldquo;request help.&rdquo; It starts with &ldquo;I can help
-                with X.&rdquo; Posting an offer feels generous. Receiving a
-                request feels invited.
-              </Body>
             </Section>
 
             {/* ===== 05 Design v1 ===== */}
@@ -609,73 +649,92 @@ export default function PomesCaseStudy() {
                 every one. Let me show you.
               </Lede>
 
-              {/* Strip — 5 mini phones overview */}
-              <div className="mt-[28px] grid grid-cols-2 gap-[18px] border-y border-[#A0A0A0] py-[26px] min-[560px]:grid-cols-5 min-[560px]:gap-[16px]">
+              {/* Nav-strip reference — the app has 5 tabs.  Home and Feed
+                  are one screen, not two; the strip clarifies that up front
+                  so the read below doesn't double back on terminology. */}
+              <div className="mt-[28px] grid grid-cols-5 border-y border-[#A0A0A0]">
+                {["Home", "Borrow", "Favor", "Event", "Chat"].map((tab, i) => (
+                  <div
+                    key={tab}
+                    className={`flex items-center justify-center py-[18px] text-[14px] font-medium tracking-[0.04em] text-[#1F1F1F] min-[560px]:text-[16px] ${
+                      i > 0 ? "border-l border-[#A0A0A0]" : ""
+                    }`}
+                  >
+                    {tab}
+                  </div>
+                ))}
+              </div>
+              <p className="mb-[18px] text-[12px] tracking-[0.04em] text-[#5D5D5D]">
+                The five bottom-nav tabs. Home and Feed are one screen; the rest
+                follow below. Chat is covered in §06.
+              </p>
+
+              {/* Block 1 — HOME (which IS the feed).  Four-screenshot flow
+                  showing the four roles the single home screen plays:
+                    (i)  Feed — small neighbor interactions, serendipity
+                    (ii) Seed Tree — 3D ambient growth visualization
+                    (iii) Seed detail modal — encouragement explainer
+                    (iv) Tap-through — items navigate to their section
+                  Screenshots TBD per Soonk; placeholders sized to match
+                  Phone bezel below. */}
+              <SubH>Home · One screen, four roles</SubH>
+              <Body>
+                Home and Feed are not separate tabs — they&rsquo;re the same
+                screen. Small interactions surface as a feed at the top; a
+                living seed-tree visualization sits below; tapping any item
+                deep-links into its section. Four roles, one place.
+              </Body>
+
+              <div className="my-[24px] grid grid-cols-1 gap-[20px] min-[560px]:grid-cols-2 min-[960px]:grid-cols-4 min-[960px]:gap-[18px]">
                 {[
-                  ["Home", "Seed tree", "/work/pomes/pomes-home-thriving.png"],
-                  ["Feed", "Serendipity", "/work/pomes/pomes-home-feed.png"],
-                  ["Borrow", "Persistent", "/work/pomes/pomes-borrow.png"],
-                  ["Favor", "Offer-first", "/work/pomes/pomes-favor-offers.png"],
-                  ["Events", "Trust spine", "/work/pomes/pomes-event-calendar.png"],
-                ].map(([n, t, src]) => (
-                  <div key={n} className="text-center">
-                    <div className="mx-auto mb-[12px] max-w-[92px]">
-                      <Phone image={src} alt={n} />
+                  {
+                    src: "/work/pomes/pomes-home-feed.png",
+                    label: "01 · Feed",
+                    sub: "Serendipity",
+                    body: "Small neighbor interactions — borrows, favors, events — surface in a single feed. Offers lead. No chit-chat, no noise.",
+                  },
+                  {
+                    src: "/work/pomes/pomes-home-thriving.png",
+                    label: "02 · Seed Tree",
+                    sub: "Ambient growth",
+                    body: "3D visualization of monthly community activity. The tree grows as helps stack up — building life made legible without a leaderboard.",
+                  },
+                  {
+                    src: "/work/pomes/pomes-intro-02-top.png",
+                    label: "03 · Seed Detail",
+                    sub: "Modal",
+                    body: "Tap the tree to open a detail modal explaining what it responds to. No score; encouragement instead of ranking.",
+                  },
+                  {
+                    src: "/work/pomes/pomes-intro-03-three.png",
+                    label: "04 · Tap-through",
+                    sub: "Section jump",
+                    body: "Any feed item deep-links into its section — a borrow item opens in Borrow, a favor in Favor. Home becomes a router.",
+                  },
+                ].map((s) => (
+                  <div key={s.label} className="flex flex-col gap-[10px]">
+                    <div className="mx-auto w-full max-w-[180px]">
+                      <Phone image={s.src} alt={s.label} />
                     </div>
-                    <div className="text-[16px] font-medium text-[#1F1F1F]">{n}</div>
-                    <div className="text-[12px] leading-[1.4] text-[#A0A0A0]">{t}</div>
+                    <p
+                      className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
+                      style={{ fontFamily: MONO }}
+                    >
+                      {s.label}
+                    </p>
+                    <p className="text-[16px] leading-[1.3] font-medium text-[#1F1F1F]">
+                      {s.sub}
+                    </p>
+                    <p className="text-[14px] leading-[1.55] text-[#5D5D5D]">
+                      {s.body}
+                    </p>
                   </div>
                 ))}
               </div>
 
-              {/* Block 1 — Home (2 phones) */}
-              <ScrBlock
-                eyebrow="HOME / SEED TREE"
-                heading="A living visualization, no score in sight."
-                phones={[
-                  "/work/pomes/pomes-home-thriving.png",
-                  "/work/pomes/pomes-intro-02-top.png",
-                ]}
-                phoneAlts={["POMEs home seed tree", "POMEs onboarding — explainer"]}
-                paras={[
-                  <>
-                    Multiple interviewees pushed back on points. Charlton:
-                    &ldquo;if my points run low I&rsquo;d feel embarrassed.&rdquo;
-                    Peter: &ldquo;earning points to help isn&rsquo;t really
-                    helping.&rdquo; So I removed scoring entirely. The home
-                    screen is a tree that grows from monthly building activity
-                    — ambient signal over explicit metric. People log in to see
-                    how the community is doing, not how they&rsquo;re ranked.
-                  </>,
-                  <>
-                    A second screen — shown the first time a neighbor opens the
-                    app — explains what the tree responds to without ever
-                    showing a number.
-                  </>,
-                ]}
-                finding="Points feel transactional and threatening; they shame the people who need most."
-                decision="Replace scores with an ambient building life signal. Explain via guide, not numbers."
-              />
-
-              {/* Block 2 — Feed (1 phone, reverse) */}
-              <ScrBlock
-                reverse
-                eyebrow="FEED / SERENDIPITY"
-                heading="What WhatsApp groups should have been."
-                phones={["/work/pomes/pomes-home-feed.png"]}
-                phoneAlts={["POMEs feed"]}
-                paras={[
-                  <>
-                    Mixed activity — borrows, favors, events — with offers
-                    leading. No chitchat. No &ldquo;did anyone hear that loud
-                    noise last night?&rdquo; The decision: serendipity drives
-                    engagement. Show me a neighbor&rsquo;s free coffee before I
-                    knew I wanted one, and I&rsquo;ll come back tomorrow to see
-                    what else surfaced.
-                  </>,
-                ]}
-                finding="WhatsApp updates were the main reason to feel connected — but messages buried each other and the loudest dominated."
-                decision="Strip the noise; surface only the offers, equal weight to every neighbor."
+              <ResearchLink
+                finding="Points feel transactional and threatening; they shame the people who need most. (Multiple interviewees pushed back.)"
+                decision="No leaderboard. Tree grows from collective activity — ambient signal, never a ranking."
               />
 
               {/* Block 3 — Borrow (1 real phone — second still TBD) */}
@@ -739,64 +798,36 @@ export default function PomesCaseStudy() {
                 decision={'Default tab = "I can help." "I need" exists as a deliberate one-tap-away choice.'}
               />
 
-              {/* Block 5 — Events (1 phone) */}
+              {/* Block 5 — Event (singular, per nav rename) */}
               <ScrBlock
-                eyebrow="EVENTS / THE TRUST SPINE"
+                eyebrow="EVENT / THE TRUST SPINE"
                 heading="The screen that pulls people out of the app."
                 phones={["/work/pomes/pomes-event-calendar.png"]}
-                phoneAlts={["POMEs events"]}
+                phoneAlts={["POMEs event calendar"]}
                 paras={[
                   <>
                     Every interviewee — without exception — said the same
                     thing: trust comes from face time, not from messaging. So
-                    Events is the only screen designed to pull people out of
-                    the app and into the building. It&rsquo;s the spine.
+                    Event is the only screen designed to pull people out of the
+                    app and into the building. It&rsquo;s the spine.
                   </>,
                   <>
-                    Originally family-oriented (kid pickup, parents&rsquo;
-                    night out); later rebuilt for young professionals when the
-                    audience shifted. You&rsquo;ll see why in Section 08.
+                    Originally family-oriented; later rebuilt for young
+                    professionals when the audience shifted. You&rsquo;ll see
+                    why in Section 08.
                   </>,
                 ]}
                 finding="Trust comes from face time. Digital interactions don't substitute. (8 of 8 said this.)"
-                decision="Events as the only screen that pulls people offline. The spine of the system."
+                decision="Event as the only screen that pulls people offline. The spine of the system."
               />
 
-              {/* Signature decision — callout + Trust loop diagram */}
-              <div className="my-[26px] mt-[56px] text-center text-[12px] tracking-[0.18em] text-[#A0A0A0]">
-                — THE SIGNATURE DECISION —
-              </div>
-              <div className="mb-[24px] grid grid-cols-1 items-stretch gap-[20px] min-[960px]:grid-cols-[1fr_320px]">
-                <div className="flex flex-col justify-center rounded-[12px] bg-[#F4F4F4] px-[28px] py-[32px]">
-                  <h3 className="mb-[16px] text-[24px] leading-[1.2] font-medium tracking-[-0.01em] text-[#1F1F1F]">
-                    What&rsquo;s not in the app: messaging.
-                  </h3>
-                  <p className="mb-[14px] text-[16px] leading-[1.65] text-[#5D5D5D]">
-                    Group chat would let users rebuild their inner circle inside
-                    the app. The five friends I already trust would form a
-                    private thread, do their borrows and favors there, and the
-                    rest of the building would never see it. The system would
-                    die from inside.
-                  </p>
-                  <p className="mb-[14px] text-[16px] leading-[1.65] text-[#5D5D5D]">
-                    Instead, Events is the spine. Real face time builds trust.
-                    Trust drives engagement. Engagement drives more events. Chat
-                    would short-circuit that loop entirely.
-                  </p>
-                  <p
-                    className="mt-1 border-t border-[#A0A0A0] pt-[14px] text-[16px] text-[#1F1F1F]"
-                    style={{ fontStyle: "italic" }}
-                  >
-                    Restraint as a design decision.
-                  </p>
-                </div>
-                <figure className="flex flex-col rounded-[12px] bg-[#F4F4F4] p-[18px]">
-                  <TrustLoopDiagramSvg />
-                  <div className="mt-2 text-right text-[12px] tracking-[0.08em] text-[#A0A0A0]">
-                    FIG. 2 OF 3 · THE TRUST LOOP
-                  </div>
-                </figure>
-              </div>
+              {/* Trust-loop figure — Event → trust → engagement → more events */}
+              <figure className="my-[28px] rounded-[12px] bg-[#F4F4F4] p-[18px]">
+                <TrustLoopDiagramSvg />
+                <figcaption className="mt-2 text-right text-[12px] tracking-[0.08em] text-[#5D5D5D]">
+                  FIG. 3 · THE TRUST LOOP
+                </figcaption>
+              </figure>
             </Section>
 
             {/* ===== 06 Built & shipped ===== */}
@@ -807,105 +838,240 @@ export default function PomesCaseStudy() {
                 title="I couldn't read the vibe-coded backend well enough to trust it."
               />
               <Lede>
-                Frontend I knew — I&rsquo;d built React components before, the
-                patterns were familiar. Backend was unfamiliar territory, so I
-                let Claude vibe-code most of it. The problem: vibe coding
-                writes a lot of code; reading it well enough to know
-                what&rsquo;s broken is its own skill.
+                Frontend I knew. Backend was unfamiliar, so I let Claude
+                vibe-code most of it. The problem: vibe coding writes a lot of
+                code; reading it well enough to know what&rsquo;s broken is
+                its own skill. So I built a different kind of validation —
+                user-story-mapped every interaction, turned each story into a
+                Notion-table test row, then broke the backend on purpose with
+                four phones racing to write to the same Firestore document.
+                Test and fix in one pass.
               </Lede>
-              <Body>
-                So I built a different kind of validation. I user-story-mapped
-                every interaction, turned each story into a row in a Notion
-                table, and used that table as a test plan. Then I broke the
-                backend on purpose — four phones, four accounts, racing to
-                write to the same Firestore document — and fixed whatever
-                desynced or crashed. Test and fix, in the same pass.
-              </Body>
 
-              <div className="my-[24px] grid grid-cols-1 items-start gap-[24px] min-[560px]:grid-cols-[1fr_240px]">
-                <div>
-                  <div className="relative aspect-[16/10] overflow-hidden rounded-[12px] bg-[#F4F4F4]">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src="/work/pomes/4phone-building.jpg"
-                      alt="Backend stress test — four phones racing to write to the same Firestore document"
-                      className="absolute inset-0 h-full w-full object-cover"
-                    />
-                  </div>
-                  <div
-                    className="mt-[10px] text-center text-[12px] text-[#A0A0A0]"
-                    style={{ fontStyle: "italic" }}
-                  >
-                    Backend stress test · 4 phones, 4 accounts, same building.
-                  </div>
+              <div className="my-[24px]">
+                <div className="relative aspect-[16/10] overflow-hidden rounded-[12px] bg-[#F4F4F4]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/work/pomes/4phone-building.jpg"
+                    alt="Backend stress test — four phones, four accounts, same Firestore document"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
                 </div>
-                <div className="flex flex-col gap-[12px]">
-                  <div className="rounded-[10px] bg-[#F4F4F4] px-[18px] py-[16px]">
-                    <div className="mb-[8px] text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
-                      Stack
-                    </div>
-                    <div className="text-[16px] leading-[1.6] text-[#5D5D5D]">
-                      React Native · Firebase · Firestore · Twilio · Apple
-                      Sign-In · Expo
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-[10px] rounded-[10px] border border-[#A0A0A0] bg-[#F4F4F4] px-[16px] py-[14px] text-[16px] font-medium text-[#1F1F1F]">
-                    <span className="h-[8px] w-[8px] rounded-full bg-[#4A8E5C]" />
-                    Live · App Store + Google Play
-                  </div>
-                  <div className="rounded-[10px] bg-[#F4F4F4] px-[18px] py-[16px]">
-                    <div className="mb-[8px] text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
-                      Bridge
-                    </div>
-                    <div className="text-[16px] leading-[1.6] text-[#5D5D5D]">
-                      User-story map → Notion backend table → Firestore calls.
-                    </div>
-                  </div>
+                <p
+                  className="mt-[10px] text-center text-[12px] text-[#5D5D5D]"
+                  style={{ fontStyle: "italic" }}
+                >
+                  Backend stress test · 4 phones, 4 accounts, same building.
+                </p>
+              </div>
+
+              {/* Stack + Bridge — plain list view (no highlighted card; the
+                  Live status moved to the hero so the layout reads clean). */}
+              <div className="my-[24px] grid grid-cols-1 gap-[24px] min-[560px]:grid-cols-2">
+                <div>
+                  <p
+                    className="mb-[10px] border-b border-[#A0A0A0] pb-[8px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    TECH STACK
+                  </p>
+                  <ul className="flex flex-col gap-[6px] text-[16px] leading-[1.55] text-[#1F1F1F]">
+                    {[
+                      "React Native",
+                      "Firebase",
+                      "Firestore",
+                      "Twilio",
+                      "Apple Sign-In",
+                      "Expo",
+                    ].map((s) => (
+                      <li key={s}>· {s}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <p
+                    className="mb-[10px] border-b border-[#A0A0A0] pb-[8px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    DATA-SCHEMA BUILDING STRATEGY
+                  </p>
+                  <ol className="flex flex-col gap-[10px] text-[16px] leading-[1.55] text-[#1F1F1F]">
+                    <li>
+                      <span className="font-medium">01</span> User-story map of
+                      every interaction
+                    </li>
+                    <li>
+                      <span className="font-medium">02</span> Convert each
+                      story to a row in a Notion backend table
+                    </li>
+                    <li>
+                      <span className="font-medium">03</span> Translate each
+                      row to Firestore calls (Claude vibe-coded)
+                    </li>
+                    <li>
+                      <span className="font-medium">04</span> Stress-test with
+                      4 phones racing the same document; fix what desyncs
+                    </li>
+                  </ol>
                 </div>
               </div>
+
+              {/* ----- Chat — the item-tied messaging surface ----- */}
+              <SubH>Chat · Item-tied, not direct messaging.</SubH>
+              <Body>
+                Chat in POMEs follows the Airbnb pattern, not the WhatsApp
+                pattern: every conversation is{" "}
+                <Strong>scoped to a specific item, favor, or event</Strong> —
+                never an open DM stream. The chat opens when a request happens
+                and closes when the action completes. Three flavors below.
+              </Body>
+
+              <ChatFlow
+                title="BORROW · CHAT ACTIONS"
+                steps={[
+                  {
+                    label: "Request to borrow",
+                    note: "Borrower taps Request on the item; chat hasn't opened yet.",
+                  },
+                  {
+                    label: "Chat opens",
+                    note: "Both parties enter the item-scoped thread.",
+                  },
+                  {
+                    label: "Owner marks loan",
+                    note: "Item shifts to On loan — visible but unbookable.",
+                  },
+                  {
+                    label: "Borrower returns",
+                    note: "Marks the item returned; owner asked to confirm.",
+                  },
+                  {
+                    label: "Owner confirms · thank-you",
+                    note: "Loop closes. Borrower can leave a thank-you note → tier bump.",
+                  },
+                ]}
+              />
+
+              <ChatFlow
+                title="FAVOR · CHAT ACTIONS"
+                steps={[
+                  {
+                    label: "Offer or request favor",
+                    note: "Either side can initiate; the offer side is the default.",
+                  },
+                  {
+                    label: "Favor exchanged",
+                    note: "Time / place agreed inside the thread.",
+                  },
+                  {
+                    label: "Marked complete · thank-you",
+                    note: "Helper bumps tier when the helped party leaves a note.",
+                  },
+                ]}
+              />
+
+              <ChatFlow
+                title="EVENT · CHAT ACTIONS"
+                steps={[
+                  {
+                    label: "Event created",
+                    note: "Host opens the event with time, place, capacity.",
+                  },
+                  {
+                    label: "Neighbors RSVP · join",
+                    note: "Joining surfaces a small event-scoped thread.",
+                  },
+                  {
+                    label: "Event happens",
+                    note: "Thread closes the morning after.",
+                  },
+                ]}
+              />
+
+              <SubH>Tiers — the only public signal of past help.</SubH>
+              <Body>
+                After a Borrow or a Favor wraps, the helped party can leave a
+                thank-you note. Notes accumulate and bump the helper&rsquo;s
+                tier badge — Bronze · Silver · Gold. No leaderboard. The badge
+                is the only place a number ever surfaces.
+              </Body>
+
+              <TierBadgeRow />
             </Section>
 
             {/* ===== 07 Engaging ===== */}
             <Section id="engage">
-              <Eyebrow>+ Engaging the building</Eyebrow>
+              <Eyebrow>+ Engagement</Eyebrow>
               <SectionHead
                 n="07"
-                title="I started weekly updates before TestFlight existed."
+                title="How I kept neighbors part of the build, not the audience for it."
               />
               <Lede>
                 I didn&rsquo;t want to disappear into a build and drop a
-                finished app on my neighbors&rsquo; heads. So from week 2 —
-                long before there was anything to install — I sent weekly
-                WhatsApp updates: sketches, decisions, what I was wrestling
-                with. Later I recorded a personal demo video. The point was to
-                make neighbors feel like they were{" "}
-                <em className="italic">part of</em> the build, not the audience
-                for it.
+                finished app on my neighbors&rsquo; heads. From week 2 — long
+                before TestFlight existed — engagement ran on two tracks:
               </Lede>
 
-              <div className="my-[24px] grid grid-cols-1 gap-[14px] min-[560px]:grid-cols-2">
-                <div>
-                  <div className="flex aspect-[4/3] items-center justify-center rounded-[12px] bg-[#F4F4F4] p-[28px]">
-                    <WeeklyUpdatePlaceholderSvg />
+              {/* Two engagement tracks — bullets up front, evidence below */}
+              <ul className="my-[16px] flex max-w-[680px] flex-col gap-[8px] text-[16px] leading-[1.6] text-[#1F1F1F]">
+                <li>
+                  <Strong>Weekly progress report → the apt group chat.</Strong>{" "}
+                  Sketches, decisions, what I was wrestling with — straight
+                  into the WhatsApp thread the building already used.
+                </li>
+                <li>
+                  <Strong>Demo video of the app → the neighbors.</Strong> A
+                  personal walkthrough so the app didn&rsquo;t feel like a
+                  cold install — they&rsquo;d already watched me use it.
+                </li>
+              </ul>
+
+              {/* Weekly progress report — 3 placeholder thumbnails until Soonk
+                  drops the actual report screenshots into /work/pomes/. */}
+              <SubH>Weekly progress report</SubH>
+              <div className="my-[18px] grid grid-cols-1 gap-[14px] min-[560px]:grid-cols-3">
+                {["Week 02", "Week 04", "Week 06"].map((wk) => (
+                  <div key={wk}>
+                    <div className="relative flex aspect-[3/4] items-center justify-center overflow-clip rounded-[12px] border-2 border-[#1F1F1F] bg-[#F4F4F4]">
+                      <div
+                        className="text-center text-[12px] tracking-[0.08em] text-[#5D5D5D]"
+                        style={{ fontFamily: MONO }}
+                      >
+                        TBD · {wk}
+                        <br />
+                        REPORT SCREENSHOT
+                      </div>
+                    </div>
+                    <p
+                      className="mt-[8px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                      style={{ fontStyle: "italic" }}
+                    >
+                      {wk} update to the apt group chat.
+                    </p>
                   </div>
+                ))}
+              </div>
+
+              {/* Demo video — placeholder until the external file lands at
+                  /work/pomes/demo.mp4 (or an embed URL). */}
+              <SubH>Personal demo video</SubH>
+              <div className="my-[18px]">
+                <div className="relative aspect-[16/9] overflow-clip rounded-[12px] border-2 border-[#1F1F1F] bg-[#F4F4F4]">
                   <div
-                    className="mt-[10px] text-center text-[12px] text-[#A0A0A0]"
-                    style={{ fontStyle: "italic" }}
+                    className="flex h-full w-full flex-col items-center justify-center gap-[10px] text-center text-[12px] tracking-[0.08em] text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
                   >
-                    Weekly community update.
+                    <span className="text-[40px] leading-none">▶</span>
+                    TBD · DEMO VIDEO
                   </div>
                 </div>
-                <div>
-                  <div className="flex aspect-[4/3] items-center justify-center rounded-[12px] bg-[#F4F4F4] p-[28px]">
-                    <DemoVideoPlaceholderSvg />
-                  </div>
-                  <div
-                    className="mt-[10px] text-center text-[12px] text-[#A0A0A0]"
-                    style={{ fontStyle: "italic" }}
-                  >
-                    Personal demo video.
-                  </div>
-                </div>
+                <p
+                  className="mt-[10px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                  style={{ fontStyle: "italic" }}
+                >
+                  Personal walkthrough — sent to the building before launch.
+                </p>
               </div>
 
               <Body>
@@ -918,7 +1084,7 @@ export default function PomesCaseStudy() {
               </Body>
 
               <p
-                className="my-[24px] max-w-[580px] text-[19px] text-[#1F1F1F]"
+                className="my-[24px] max-w-[580px] text-[20px] text-[#1F1F1F]"
                 style={{ fontStyle: "italic" }}
               >
                 I&rsquo;d built the right product for the wrong audience.
@@ -927,26 +1093,45 @@ export default function PomesCaseStudy() {
 
             {/* ===== 08 The pivot ===== */}
             <Section id="pivot">
-              <Eyebrow>+ Right product, right audience</Eyebrow>
+              <Eyebrow>+ Pivot</Eyebrow>
               <SectionHead
                 n="08"
                 title="It's not the building owners who need this. It's the renters."
               />
-              <Lede>
-                Stable owner-heavy buildings don&rsquo;t need scaffolding for
-                trust — they&rsquo;ve had years to build it. The buildings
-                that need it are the ones the app was built for in the first
-                place: renter-heavy, 80+ units, young professionals churning
-                every 1–2 years. They never get the time owners had. The app
-                gives it to them.
-              </Lede>
-              <Body>
-                So I switched targets — and ran fresh research to find them.
-                Audited 60+ buildings across 4 New York neighborhoods (LIC,
-                Williamsburg, Greenpoint, Downtown Brooklyn). Filtered by four
-                criteria: 80+ units, doorman or hybrid concierge, renter-heavy,
-                multi-elevator. Leafletted 9 in three weeks.
-              </Body>
+
+              {/* What was wrong / How I switched — two short blocks, no
+                  card outlines (chunky cards read as clickable; this is
+                  prose, not a CTA). */}
+              <div className="my-[18px] grid grid-cols-1 gap-[24px] tablet:grid-cols-2 tablet:gap-[32px]">
+                <div>
+                  <p
+                    className="mb-[10px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    WHAT WAS WRONG
+                  </p>
+                  <p className="text-[16px] leading-[1.65] text-[#1F1F1F]">
+                    Stable owner-heavy buildings already had years of trust;
+                    they didn&rsquo;t need scaffolding for it. The app
+                    couldn&rsquo;t compound a network effect inside a
+                    pre-existing community.
+                  </p>
+                </div>
+                <div>
+                  <p
+                    className="mb-[10px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    HOW I SWITCHED
+                  </p>
+                  <p className="text-[16px] leading-[1.65] text-[#1F1F1F]">
+                    Pivoted to <Strong>renter-heavy, 80+ unit, multi-elevator</Strong>{" "}
+                    buildings — young professionals churning every 1–2 years.
+                    They never get the time owners had. The app gives it to
+                    them.
+                  </p>
+                </div>
+              </div>
 
               <div className="my-[28px] grid grid-cols-2 gap-[18px] border-y border-[#A0A0A0] py-[26px] min-[560px]:grid-cols-4">
                 {[
@@ -987,40 +1172,43 @@ export default function PomesCaseStudy() {
 
               <SubH>When the audience changed, the design changed.</SubH>
               <Body>
-                Events was originally family-oriented. Young professionals
-                don&rsquo;t have kids and won&rsquo;t be there long enough to
-                need a regular sitter. So Events shifted: same mechanics,
-                rebuilt categories.
+                Event categories shifted from{" "}
+                <Strong>kid / family-oriented</Strong> (Kid drop-off, School
+                pickup, Parents&rsquo; night out, Babysitting swap) to{" "}
+                <Strong>wellness / hobby</Strong> (Wellness sessions, Hobby
+                groups, Weeknight dinners). Same mechanics, rebuilt
+                categories.
               </Body>
 
-              <div className="my-[18px] grid grid-cols-1 gap-[14px] min-[560px]:grid-cols-2">
-                <div className="rounded-[12px] bg-[#F4F4F4] px-[20px] py-[22px]">
-                  <div className="mb-[14px] text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
-                    v1 — Family-oriented
-                  </div>
-                  <div className="text-[16px] leading-[2] text-[#5D5D5D]">
-                    Kid drop-off
-                    <br />
-                    School pickup
-                    <br />
-                    Parents&rsquo; night out
-                    <br />
-                    Babysitting swap
-                  </div>
+              {/* Plain before/after rows — no card outline (chunky borders
+                  read as clickable, which these aren't). */}
+              <div className="my-[18px] grid grid-cols-1 gap-[24px] tablet:grid-cols-2 tablet:gap-[32px]">
+                <div className="border-t border-[#A0A0A0] pt-[14px]">
+                  <p
+                    className="mb-[10px] text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    BEFORE · v1 family-oriented
+                  </p>
+                  <ul className="flex flex-col gap-[6px] text-[16px] leading-[1.55] text-[#5D5D5D]">
+                    <li>Kid drop-off</li>
+                    <li>School pickup</li>
+                    <li>Parents&rsquo; night out</li>
+                    <li>Babysitting swap</li>
+                  </ul>
                 </div>
-                <div className="rounded-[12px] border-[1.5px] border-[#1F1F1F] bg-[#F4F4F4] px-[20px] py-[22px]">
-                  <div className="mb-[14px] text-[12px] font-medium tracking-[0.06em] text-[#1F1F1F]">
-                    v2 — Young professional
-                  </div>
-                  <div className="text-[16px] leading-[2] text-[#5D5D5D]">
-                    Wellness sessions
-                    <br />
-                    Hobby groups
-                    <br />
-                    Building runs
-                    <br />
-                    Weeknight dinners
-                  </div>
+                <div className="border-t border-[#A0A0A0] pt-[14px]">
+                  <p
+                    className="mb-[10px] text-[12px] tracking-[0.08em] font-medium text-[#1F1F1F]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    AFTER · v2 young-professional
+                  </p>
+                  <ul className="flex flex-col gap-[6px] text-[16px] leading-[1.55] text-[#1F1F1F]">
+                    <li>Wellness sessions</li>
+                    <li>Hobby groups</li>
+                    <li>Weeknight dinners</li>
+                  </ul>
                 </div>
               </div>
 
@@ -1109,35 +1297,234 @@ function Section({
   );
 }
 
-type ScanCell = { name: string; badge: "ai" | "iv"; body: string };
-function ScanGrid({ cells }: { cells: ScanCell[] }) {
+// LogoBadge — small circular badge with a brand-colored initial.  Stands
+// in for an actual competitor logo file (Favorhood/Nextdoor/TimeBanks
+// don't ship a public SVG kit) so the cards land visually now; can be
+// swapped for a real <img> per company later.
+function LogoBadge({ char, bg }: { char: string; bg: string }) {
+  return (
+    <span
+      aria-hidden
+      className="inline-flex h-[32px] w-[32px] shrink-0 items-center justify-center rounded-full text-[16px] font-bold text-[#F4F4F4]"
+      style={{ backgroundColor: bg }}
+    >
+      {char}
+    </span>
+  );
+}
+
+type RefCard = {
+  name: string;
+  logo?: { char: string; bg: string };
+  bullets: string[];
+};
+
+// CompetitorGrid / ReferenceGrid — replaces the older ScanGrid.  Same
+// 3-column shape, but drops the redundant "AI research"/"Interview-
+// surfaced" pill (the section heading already says which is which) and
+// converts the prose body to a bullet list so the read is actually
+// scannable.
+function ReferenceGrid({ cards }: { cards: RefCard[] }) {
   return (
     <div className="my-[18px] mb-[22px] grid grid-cols-1 gap-[14px] min-[560px]:grid-cols-3">
-      {cells.map((c) => (
-        <div key={c.name} className="rounded-[12px] bg-[#F4F4F4] px-[22px] py-[24px]">
-          <div className="mb-[14px] flex items-start gap-[14px]">
-            <div className="flex h-[40px] w-[60px] shrink-0 items-center justify-center rounded-[6px] bg-[#D9D9D9] text-[12px] font-medium text-[#A0A0A0]">
-              {c.name.split(" ")[0].slice(0, 9)}
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="mb-[4px] text-[16px] font-medium text-[#1F1F1F]">
-                {c.name}
-              </div>
-              <span
-                className={`inline-block rounded-[3px] px-[7px] py-[2px] text-[12px] font-medium tracking-[0.06em] ${
-                  c.badge === "ai"
-                    ? "bg-[#D9D9D9] text-[#1F1F1F]"
-                    : "bg-[#D9D9D9] text-[#5D5D5D]"
-                }`}
-              >
-                {c.badge === "ai" ? "AI research" : "Interview-surfaced"}
-              </span>
+      {cards.map((c) => (
+        <div
+          key={c.name}
+          className="flex flex-col gap-[14px] rounded-[12px] bg-[#F4F4F4] px-[22px] py-[24px]"
+        >
+          <div className="flex items-center gap-[12px]">
+            {c.logo && <LogoBadge char={c.logo.char} bg={c.logo.bg} />}
+            <div className="min-w-0 text-[18px] font-medium leading-[1.2] text-[#1F1F1F]">
+              {c.name}
             </div>
           </div>
-          <div className="text-[16px] leading-[1.7] text-[#5D5D5D]">{c.body}</div>
+          <ul className="flex flex-col gap-[8px]">
+            {c.bullets.map((b, i) => (
+              <li
+                key={i}
+                className="relative pl-[14px] text-[14px] leading-[1.55] text-[#5D5D5D] before:absolute before:left-0 before:text-[#A0A0A0] before:content-['—']"
+              >
+                {b}
+              </li>
+            ))}
+          </ul>
         </div>
       ))}
     </div>
+  );
+}
+
+// ResearchSplit — the AI/Me split diagram that opens §03.  Two columns
+// side by side, separated by a vertical "⇄" rule on tablet+.  Makes the
+// "I split the work" headline visible at a glance instead of buried in
+// prose.
+function ResearchSplit() {
+  return (
+    <div className="my-[24px] rounded-[12px] bg-[#F4F4F4] px-[24px] py-[28px] tablet:px-[32px] tablet:py-[36px]">
+      <div className="grid gap-[28px] tablet:grid-cols-[1fr_auto_1fr] tablet:items-start tablet:gap-[28px]">
+        {/* AI column */}
+        <div className="flex flex-col gap-[12px]">
+          <p
+            className="text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+            style={{ fontFamily: MONO }}
+          >
+            AI · SCALE
+          </p>
+          <p className="text-[20px] leading-[1.25] font-medium text-[#1F1F1F]">
+            Wide competitive scan + synthesis
+          </p>
+          <ul className="mt-[4px] flex flex-col gap-[8px] text-[14px] leading-[1.6] text-[#5D5D5D]">
+            <li>↳ Mapped 7+ direct, adjacent, and timebanking platforms</li>
+            <li>↳ Synthesized public reviews, complaints, decline patterns</li>
+            <li>↳ Compiled DUMBO demographics + community-trust research</li>
+          </ul>
+        </div>
+
+        {/* divider */}
+        <div className="hidden h-full items-center justify-center text-[14px] text-[#A0A0A0] tablet:flex">
+          <span aria-hidden className="block h-full w-px bg-[#A0A0A0]" />
+        </div>
+
+        {/* Human column */}
+        <div className="flex flex-col gap-[12px]">
+          <p
+            className="text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+            style={{ fontFamily: MONO }}
+          >
+            ME · EXPERIENCE
+          </p>
+          <p className="text-[20px] leading-[1.25] font-medium text-[#1F1F1F]">
+            First-person interviews
+          </p>
+          <ul className="mt-[4px] flex flex-col gap-[8px] text-[14px] leading-[1.6] text-[#5D5D5D]">
+            <li>↳ 8 scheduled 30-min interviews, structured script</li>
+            <li>↳ 12+ hallway / elevator 1-min interviews (3 focus questions)</li>
+            <li>↳ Script sections: Context · Help patterns · Friction · Wishes</li>
+            <li>↳ Card-sorting game to surface mental models (see below)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ChatFlow — one row of chat-action steps (5 phone-shaped placeholders,
+// each with a label).  Used to show what happens INSIDE a Borrow / Favor
+// / Event chat after it opens — the point being that chat in POMEs is
+// item-tied (Airbnb pattern), not a generic DM stream.
+function ChatFlow({
+  title,
+  steps,
+}: {
+  title: string;
+  steps: { label: string; note?: string }[];
+}) {
+  return (
+    <div className="my-[18px] rounded-[12px] bg-[#F4F4F4] p-[20px] tablet:p-[24px]">
+      <p
+        className="mb-[16px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+        style={{ fontFamily: MONO }}
+      >
+        {title}
+      </p>
+      <div
+        className="grid gap-[14px]"
+        style={{
+          gridTemplateColumns: `repeat(${steps.length}, minmax(0, 1fr))`,
+        }}
+      >
+        {steps.map((s, i) => (
+          <div key={i} className="flex flex-col gap-[8px]">
+            <div className="relative aspect-[1206/2622] w-full overflow-clip rounded-[8px] border-2 border-[#1F1F1F] bg-[#D9D9D9]">
+              <div className="flex h-full w-full items-center justify-center px-[6px] text-center text-[10px] tracking-[0.06em] text-[#5D5D5D]">
+                TBD
+              </div>
+            </div>
+            <p
+              className="text-[12px] tracking-[0.06em] text-[#5D5D5D]"
+              style={{ fontFamily: MONO }}
+            >
+              {String(i + 1).padStart(2, "0")}
+            </p>
+            <p className="text-[14px] leading-[1.3] font-medium text-[#1F1F1F]">
+              {s.label}
+            </p>
+            {s.note && (
+              <p className="text-[12px] leading-[1.4] text-[#5D5D5D]">{s.note}</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// TierBadgeRow — three escalating tiers (Bronze / Silver / Gold), threshold
+// labels beneath.  The thank-you note from a Borrow or Favor closes the
+// loop and bumps the helper's tier.
+function TierBadgeRow() {
+  const tiers: { name: string; threshold: string; fill: string }[] = [
+    { name: "Bronze", threshold: "1 help", fill: "#9D7754" },
+    { name: "Silver", threshold: "5 helps", fill: "#7E7E7E" },
+    { name: "Gold", threshold: "15 helps", fill: "#1F1F1F" },
+  ];
+  return (
+    <div className="my-[18px] rounded-[12px] bg-[#F4F4F4] p-[24px]">
+      <div className="grid grid-cols-3 items-end gap-[14px]">
+        {tiers.map((t, i) => (
+          <div key={t.name} className="flex flex-col items-center gap-[10px]">
+            <span
+              aria-hidden
+              className="inline-flex h-[48px] w-[48px] items-center justify-center rounded-full text-[16px] font-bold text-[#F4F4F4]"
+              style={{ backgroundColor: t.fill }}
+            >
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <p className="text-[16px] font-medium text-[#1F1F1F]">{t.name}</p>
+            <p className="text-[12px] tracking-[0.04em] text-[#5D5D5D]">
+              {t.threshold}
+            </p>
+          </div>
+        ))}
+      </div>
+      <p className="mt-[16px] border-t border-[#A0A0A0] pt-[14px] text-[14px] leading-[1.5] text-[#5D5D5D]">
+        After a Borrow or a Favor, the helped party can leave a thank-you note
+        — that note bumps the helper&rsquo;s tier. Tiers are the only public
+        signal of past contribution; everything else (Seed Tree, feed) stays
+        community-scoped.
+      </p>
+    </div>
+  );
+}
+
+// OtherReports — small list of report titles + ↗ link.  Treated as
+// footnotes rather than feature cards so they don't compete with the
+// main competitor grid.
+function OtherReports() {
+  const reports: { title: string; href: string }[] = [
+    { title: "DUMBO demographics + renter churn 2024", href: "#" },
+    { title: "Trust formation in residential buildings — academic synthesis", href: "#" },
+    { title: "Building-scale community dynamics — case-study reviews", href: "#" },
+  ];
+  return (
+    <ul className="my-[14px] flex flex-col border-t border-[#A0A0A0]">
+      {reports.map((r) => (
+        <li
+          key={r.title}
+          className="flex items-baseline justify-between gap-[12px] border-b border-[#A0A0A0] py-[12px]"
+        >
+          <span className="text-[16px] leading-[1.4] text-[#1F1F1F]">
+            {r.title}
+          </span>
+          <a
+            href={r.href}
+            className="shrink-0 text-[12px] tracking-[0.08em] text-[#5D5D5D] hover:text-[#1F1F1F]"
+          >
+            ↗ Open
+          </a>
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -1363,35 +1750,6 @@ function TrustLoopDiagramSvg() {
   );
 }
 
-function CardSortingMockSvg() {
-  // Stylized representation of the card-sorting tool — kept as illustrative
-  // SVG until Soonk captures the real screenshot (assets_manifest TBD).
-  return (
-    <svg viewBox="0 0 280 160" xmlns="http://www.w3.org/2000/svg" className="h-auto max-h-full w-full">
-      <rect x="2" y="2" width="276" height="156" fill="#F4F4F4" rx="4" />
-      <rect x="2" y="2" width="276" height="22" fill="#D9D9D9" rx="4" />
-      <circle cx="14" cy="13" r="2.5" fill="#A0A0A0" opacity="0.5" />
-      <circle cx="22" cy="13" r="2.5" fill="#A0A0A0" opacity="0.5" />
-      <circle cx="30" cy="13" r="2.5" fill="#A0A0A0" opacity="0.5" />
-      <text x="140" y="46" textAnchor="middle" fontSize="10" fill="#A0A0A0" letterSpacing="0.06em" fontFamily="Archivo">
-        SORT 12 HYPOTHETICAL ASKS
-      </text>
-      <text x="60" y="68" textAnchor="middle" fontSize="9" fill="#1F1F1F" fontFamily="Archivo" fontWeight="600">
-        WOULD ASK
-      </text>
-      {[74, 92, 110, 128].map((y) => (
-        <rect key={y} x="20" y={y} width="80" height="14" fill="#1F1F1F" rx="2" />
-      ))}
-      <text x="220" y="68" textAnchor="middle" fontSize="9" fill="#A0A0A0" fontFamily="Archivo" fontWeight="600">
-        WOULDN&rsquo;T
-      </text>
-      {[74, 92, 110, 128].map((y) => (
-        <rect key={y} x="180" y={y} width="80" height="14" fill="#A0A0A0" opacity="0.4" rx="2" />
-      ))}
-    </svg>
-  );
-}
-
 function NycMapSvg() {
   return (
     <svg viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg" className="block h-auto w-full">
@@ -1490,29 +1848,6 @@ function ConversionBarSvg() {
       <text x="0" y="270" fontSize="9" fill="#A0A0A0" letterSpacing="0.04em" fontFamily="Archivo">
         95 of 97 conversions came from elevators.
       </text>
-    </svg>
-  );
-}
-
-function WeeklyUpdatePlaceholderSvg() {
-  return (
-    <svg viewBox="0 0 100 75" xmlns="http://www.w3.org/2000/svg" className="h-auto w-full">
-      <rect x="10" y="6" width="80" height="63" fill="#D9D9D9" rx="3" />
-      <rect x="14" y="14" width="50" height="6" fill="#A0A0A0" opacity="0.4" rx="1" />
-      <rect x="14" y="24" width="60" height="4" fill="#A0A0A0" opacity="0.3" rx="1" />
-      <rect x="14" y="32" width="55" height="4" fill="#A0A0A0" opacity="0.3" rx="1" />
-      <rect x="14" y="40" width="40" height="4" fill="#A0A0A0" opacity="0.3" rx="1" />
-      <rect x="14" y="50" width="50" height="6" fill="#A0A0A0" opacity="0.4" rx="1" />
-      <rect x="14" y="60" width="35" height="4" fill="#A0A0A0" opacity="0.3" rx="1" />
-    </svg>
-  );
-}
-
-function DemoVideoPlaceholderSvg() {
-  return (
-    <svg viewBox="0 0 100 75" xmlns="http://www.w3.org/2000/svg" className="h-auto w-full">
-      <rect x="10" y="10" width="80" height="55" fill="#1F1F1F" rx="3" />
-      <polygon points="44,28 44,48 60,38" fill="#D9D9D9" />
     </svg>
   );
 }

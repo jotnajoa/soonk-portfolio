@@ -315,13 +315,12 @@ export default function Grid() {
       // pb is intentionally minimal: the FlyingSquares pin already provides
       // the visual transition into the list, so any extra bottom padding
       // here just reads as dead scroll between the two sections.
-      className="relative z-30 hidden w-full flex-col items-start gap-[64px] bg-[#EEEEEE] px-[32px] pt-[96px] pb-4 tablet:flex"
+      className="relative z-30 hidden w-full flex-col items-start gap-[64px] bg-[#EEEEEE] pt-[96px] pb-4 tablet:flex"
     >
-      {/* Section bg + padding stretch full viewport (so the page reads as
-          one continuous color band), but the 3×3 grid itself caps at
-          1200px and centers — keeps the layout from sprawling on wide
-          monitors and matches the cap on Hero / ProjectList / nav. */}
-      <div className="mx-auto grid w-full max-w-[1200px] grid-cols-3 gap-[16px]">
+      {/* Bg full-bleed (continuous color band); horizontal padding lives on
+          the inner 1200px container so the grid's left edge lines up with
+          the nav's "Soonk" text — same alignment rule as Hero / ProjectList. */}
+      <div className="mx-auto grid w-full max-w-[1200px] grid-cols-3 gap-[16px] px-[32px]">
         {/* row 1 */}
         <TilePomes />
         <TileVolthop />

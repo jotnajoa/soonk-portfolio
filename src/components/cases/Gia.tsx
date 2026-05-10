@@ -374,11 +374,6 @@ function Hero() {
           ))}
         </div>
 
-        <p
-          className="text-[12px] tracking-[0.04em] text-[#5D5D5D]"
-        >
-          ↓ Scroll for case study
-        </p>
       </div>
     </section>
   );

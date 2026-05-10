@@ -447,12 +447,12 @@ export default function ProjectList() {
     <section
       id="work-list"
       // Section bg stretches full viewport; inner column caps at 1200px
-      // and centers (matches Hero / Grid / ProjectNav cap).  Padding lives
-      // on the section so the bg has consistent edge gutters even on wide
-      // monitors where content stops growing.
-      className="flex w-full flex-col items-stretch bg-[#EEEEEE] px-[32px] pt-4 pb-24 tablet:pt-2"
+      // and centers (matches Hero / Grid / ProjectNav cap).  Bg stays
+      // full-bleed; horizontal padding moves to the inner 1200px container
+      // so the list's left edge lines up with the nav's "Soonk" text.
+      className="flex w-full flex-col items-stretch bg-[#EEEEEE] pt-4 pb-24 tablet:pt-2"
     >
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-4">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 px-[32px]">
         {/* Section heading — desktop (≥800px) only.  Per Figma 101:1486
             the desktop list view opens with a big WORK title above the 9
             tiles.  On mobile the sticky <MobileNav/> bar carries the WORK
