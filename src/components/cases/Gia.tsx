@@ -6,12 +6,12 @@
 // Design system per the brief — INTENTIONALLY distinct from the homepage's
 // monochrome editorial system.  Cream + c-graphite signals enterprise
 // gravitas + restraint (sister case studies use teal / amber accents):
-//   bg          #efece4   (cream)
-//   bg-card     #f5f2ea   (slightly warmer for cards)
-//   text        #3A342E   (dark warm gray)
-//   muted       #8A8580
-//   border      #C7C2BA   (also: dim gray for [TBD] italic placeholders)
-//   accent      #4A4640   (c-graphite — used VERY sparingly per spec)
+//   bg          #EEEEEE   (cream)
+//   bg-card     #F8F8F8   (slightly warmer for cards)
+//   text        #1F1F1F   (dark warm gray)
+//   muted       #5D5D5D
+//   border      #A0A0A0   (also: dim gray for [TBD] italic placeholders)
+//   accent      #1F1F1F   (c-graphite — used VERY sparingly per spec)
 //   pink        #E04D7A   (Fig. 05 loop arrow only)
 //
 // Typography per the brief:
@@ -42,6 +42,10 @@
 // Tokens & primitives
 // ============================================================================
 
+import CaseStudyLeftNav, {
+  type CaseStudySection,
+} from "./CaseStudyLeftNav";
+
 const SERIF: React.CSSProperties = {
   fontFamily: 'Georgia, "Iowan Old Style", Palatino, serif',
 };
@@ -55,7 +59,7 @@ const MONO: React.CSSProperties = {
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p
-      className="text-[11px] tracking-[0.16em] font-medium text-[#8A8580]"
+      className="text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
     >
       {children}
     </p>
@@ -66,7 +70,7 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 // (NOT extra-bold like the homepage's giant 01–09 numerals).
 function SectionNumber({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[56px] leading-[0.85] font-medium tracking-[-0.02em] text-[#3A342E] tablet:text-[76px]">
+    <p className="text-[56px] leading-[0.85] font-medium tracking-[-0.02em] text-[#1F1F1F] tablet:text-[76px]">
       {children}
     </p>
   );
@@ -75,7 +79,7 @@ function SectionNumber({ children }: { children: React.ReactNode }) {
 // Section headline — 22px / weight 500 / line-height 1.4, max-w 720.
 function Headline({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="max-w-[720px] text-[20px] leading-[1.35] font-medium text-[#3A342E] tablet:text-[22px] tablet:leading-[1.4]">
+    <h2 className="max-w-[720px] text-[20px] leading-[1.35] font-medium text-[#1F1F1F] tablet:text-[22px] tablet:leading-[1.4]">
       {children}
     </h2>
   );
@@ -86,7 +90,7 @@ function Headline({ children }: { children: React.ReactNode }) {
 // allowed when the brief uses it; uppercase rendered as-typed in content.
 function SubHeader({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-[28px] text-[13px] tracking-[0.06em] font-semibold text-[#4A4640] tablet:text-[14px]">
+    <p className="mt-[28px] text-[16px] tracking-[0.06em] font-semibold text-[#1F1F1F] tablet:text-[16px]">
       {children}
     </p>
   );
@@ -103,7 +107,7 @@ function Body({
 }) {
   return (
     <p
-      className={`max-w-[720px] text-[15px] leading-[1.7] font-normal text-[#3A342E] tablet:text-[16px] ${className}`}
+      className={`max-w-[720px] text-[16px] leading-[1.7] font-normal text-[#1F1F1F] tablet:text-[16px] ${className}`}
     >
       {children}
     </p>
@@ -114,7 +118,7 @@ function Body({
 // headline.
 function Lede({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[720px] text-[16px] leading-[1.7] font-normal text-[#3A342E] tablet:text-[17px]">
+    <p className="max-w-[720px] text-[16px] leading-[1.7] font-normal text-[#1F1F1F] tablet:text-[17px]">
       {children}
     </p>
   );
@@ -124,7 +128,7 @@ function Lede({ children }: { children: React.ReactNode }) {
 // italic until Soonk swaps them" (brief).
 function Tbd({ children }: { children: React.ReactNode }) {
   return (
-    <span className="italic text-[#C7C2BA]">[{children}]</span>
+    <span className="italic text-[#A0A0A0]">[{children}]</span>
   );
 }
 
@@ -132,7 +136,7 @@ function Tbd({ children }: { children: React.ReactNode }) {
 function ChallengeChip({ children }: { children: React.ReactNode }) {
   return (
     <span
-      className="inline-block rounded-[4px] border-[0.5px] border-[#4A4640] px-[12px] py-[6px] text-[11px] tracking-[0.16em] font-medium text-[#4A4640]"
+      className="inline-block rounded-[4px] border-[0.5px] border-[#1F1F1F] px-[12px] py-[6px] text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
     >
       {children}
     </span>
@@ -144,9 +148,9 @@ function ChallengeChip({ children }: { children: React.ReactNode }) {
 function SubSectionDivider({ label }: { label: string }) {
   return (
     <div className="relative my-[40px] tablet:my-[56px]">
-      <div className="border-t-[0.5px] border-[#C7C2BA]" />
+      <div className="border-t-[0.5px] border-[#A0A0A0]" />
       <span
-        className="absolute -top-[10px] left-0 bg-[#efece4] pr-[16px] text-[11px] tracking-[0.16em] font-semibold text-[#4A4640]"
+        className="absolute -top-[10px] left-0 bg-[#EEEEEE] pr-[16px] text-[12px] tracking-[0.16em] font-semibold text-[#1F1F1F]"
       >
         {label}
       </span>
@@ -166,10 +170,10 @@ function Card({
 }) {
   const variantClasses =
     variant === "graphite"
-      ? "bg-[#4A4640] text-white"
+      ? "bg-[#1F1F1F] text-white"
       : variant === "white"
-        ? "bg-white border-[#4A4640] border-[1px]"
-        : "bg-[#f5f2ea] border-[#C7C2BA] border-[0.5px]";
+        ? "bg-white border-[#1F1F1F] border-[1px]"
+        : "bg-[#F8F8F8] border-[#A0A0A0] border-[0.5px]";
   return (
     <div className={`rounded-[12px] p-[24px] tablet:p-[28px] ${variantClasses} ${className}`}>
       {children}
@@ -204,20 +208,20 @@ function LaptopMockup({
       >
         {/* Placeholder layer (z-back) — visible when the bg-image 404s */}
         <div className="absolute inset-0 z-0 flex flex-col items-center justify-center gap-[8px] bg-gradient-to-br from-[#fafafa] to-[#f0f0f0] p-[24px] text-center">
-          <span className="text-[10px] tracking-[0.18em] font-medium text-[#8A8580]">
+          <span className="text-[12px] tracking-[0.18em] font-medium text-[#5D5D5D]">
             PRODUCTION SCREENSHOT
           </span>
-          <span className="max-w-[420px] text-[12px] leading-[1.5] font-medium text-[#3A342E]">
+          <span className="max-w-[420px] text-[12px] leading-[1.5] font-medium text-[#1F1F1F]">
             {fallbackLabel}
           </span>
           {fallbackHint && (
-            <span className="max-w-[420px] text-[10px] leading-[1.4] text-[#8A8580]">
+            <span className="max-w-[420px] text-[12px] leading-[1.4] text-[#5D5D5D]">
               {fallbackHint}
             </span>
           )}
           <span
-            className="mt-[6px] text-[9px] tracking-[0.06em] text-[#C7C2BA]"
-            style={MONO}
+            className="mt-[6px] text-[12px] tracking-[0.06em] text-[#A0A0A0]"
+
           >
             {src}
           </span>
@@ -248,7 +252,7 @@ function SectionWrap({
   return (
     <section
       id={id}
-      className={`border-b-[0.5px] border-[#C7C2BA] py-[80px] tablet:py-[120px]`}
+      className={`border-b-[0.5px] border-[#A0A0A0] py-[80px] tablet:py-[120px]`}
     >
       <div className={`mx-auto ${inner} px-[24px] tablet:px-0`}>{children}</div>
     </section>
@@ -286,13 +290,20 @@ function SectionHeader({
 
 function Hero() {
   return (
-    <section className="border-b-[0.5px] border-[#C7C2BA] px-[24px] py-[64px] tablet:px-[60px] tablet:py-[80px]">
+    <section className="border-b-[0.5px] border-[#A0A0A0] px-[24px] py-[64px] tablet:px-[60px] tablet:py-[80px]">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-[40px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Display row — GIA logo + wordmark, baseline aligned, gap 22px */}
+        {/* Display row — project number + GIA logo + wordmark, baseline
+            aligned.  "03" is JBM Mono (only place JBM appears). */}
         <div className="flex flex-col gap-[12px]">
           <div className="flex flex-wrap items-end gap-[22px]">
+            <span
+              className="text-[64px] font-extrabold leading-[0.85] tracking-[-0.04em] text-[#1F1F1F] tablet:text-[120px]"
+              style={MONO}
+            >
+              03
+            </span>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/work/logos/GIA_Logo.svg"
@@ -300,11 +311,11 @@ function Hero() {
               aria-hidden
               className="h-[64px] w-auto tablet:h-[92px]"
             />
-            <h1 className="text-[64px] leading-[0.95] font-medium tracking-[-0.04em] text-[#3A342E] tablet:text-[120px] tablet:tracking-[-0.05em] tablet:leading-[1]">
+            <h1 className="text-[64px] leading-[0.95] font-medium tracking-[-0.04em] text-[#1F1F1F] tablet:text-[120px] tablet:tracking-[-0.05em] tablet:leading-[1]">
               GIA Platform
             </h1>
           </div>
-          <p className="text-[13px] tracking-[0.04em] text-[#8A8580] tablet:text-[14px]">
+          <p className="text-[16px] tracking-[0.04em] text-[#5D5D5D] tablet:text-[16px]">
             Growth Insights &amp; Activation · Deloitte enterprise platform
           </p>
         </div>
@@ -320,7 +331,7 @@ function Hero() {
           />
 
           {/* Right — meta block, 3 rows (Role / Mission / Status) */}
-          <dl className="border-t-[0.5px] border-[#C7C2BA]">
+          <dl className="border-t-[0.5px] border-[#A0A0A0]">
             {[
               ["Role", "UX Lead — offshore + onshore design teams"],
               [
@@ -331,12 +342,12 @@ function Hero() {
             ].map(([label, value]) => (
               <div
                 key={label as string}
-                className="grid grid-cols-[80px_1fr] items-baseline gap-[16px] border-b-[0.5px] border-[#C7C2BA] py-[16px]"
+                className="grid grid-cols-[80px_1fr] items-baseline gap-[16px] border-b-[0.5px] border-[#A0A0A0] py-[16px]"
               >
-                <dt className="text-[11px] tracking-[0.16em] text-[#8A8580]">
+                <dt className="text-[12px] tracking-[0.16em] text-[#5D5D5D]">
                   {label}
                 </dt>
-                <dd className="text-[14px] leading-[1.5] font-medium text-[#3A342E] tablet:text-[15px]">
+                <dd className="text-[16px] leading-[1.5] font-medium text-[#1F1F1F] tablet:text-[16px]">
                   {value}
                 </dd>
               </div>
@@ -347,16 +358,16 @@ function Hero() {
         {/* Key Achievements row — 4 columns, all TBD until Soonk fills from
             Framer references.  Renders as a stat row with top + bottom 0.5px
             borders, 32px vertical padding. */}
-        <div className="grid grid-cols-2 gap-[24px] border-y-[0.5px] border-[#C7C2BA] py-[32px] tablet:grid-cols-4">
+        <div className="grid grid-cols-2 gap-[24px] border-y-[0.5px] border-[#A0A0A0] py-[32px] tablet:grid-cols-4">
           {[1, 2, 3, 4].map((n) => (
             <div key={n} className="flex flex-col gap-[10px]">
-              <span className="text-[11px] tracking-[0.16em] text-[#8A8580]">
+              <span className="text-[12px] tracking-[0.16em] text-[#5D5D5D]">
                 KEY ACHIEVEMENT
               </span>
-              <span className="text-[32px] leading-[0.95] font-medium italic text-[#C7C2BA]">
+              <span className="text-[32px] leading-[0.95] font-medium italic text-[#A0A0A0]">
                 [TBD]
               </span>
-              <span className="text-[12px] leading-[1.4] text-[#3A342E] tablet:text-[13px]">
+              <span className="text-[12px] leading-[1.4] text-[#1F1F1F] tablet:text-[16px]">
                 <Tbd>label — pull from Framer ref {n}</Tbd>
               </span>
             </div>
@@ -364,7 +375,7 @@ function Hero() {
         </div>
 
         <p
-          className="text-[12px] tracking-[0.04em] text-[#8A8580]"
+          className="text-[12px] tracking-[0.04em] text-[#5D5D5D]"
         >
           ↓ Scroll for case study
         </p>
@@ -377,35 +388,14 @@ function Hero() {
 // Body shell — sticky left nav + main column for §02–07
 // ============================================================================
 
-const NAV_ITEMS = [
-  { id: "s02", label: "02 Project + mission" },
-  { id: "s03", label: "03 Challenge · Rituals" },
-  { id: "s04", label: "04 Challenge · Visualizations" },
-  { id: "s05", label: "05 Challenge · Offshore" },
-  { id: "s06", label: "06 Challenge · BRD" },
-  { id: "s07", label: "07 What's next" },
+const SECTIONS: CaseStudySection[] = [
+  { id: "s02", num: "02", label: "Project + mission" },
+  { id: "s03", num: "03", label: "Rituals" },
+  { id: "s04", num: "04", label: "Visualizations" },
+  { id: "s05", num: "05", label: "Offshore" },
+  { id: "s06", num: "06", label: "BRD" },
+  { id: "s07", num: "07", label: "What's next" },
 ];
-
-function LeftNav() {
-  return (
-    <aside className="sticky top-[64px] hidden h-[calc(100vh-64px)] w-[150px] shrink-0 self-start border-r-[0.5px] border-[#C7C2BA] py-[60px] pr-[24px] tablet:block">
-      <p
-        className="mb-[24px] text-[11px] tracking-[0.16em] text-[#8A8580]"
-      >
-        ~9 MIN READ
-      </p>
-      {NAV_ITEMS.map((item) => (
-        <a
-          key={item.id}
-          href={`#${item.id}`}
-          className="block border-l-2 border-transparent py-[8px] pl-[12px] text-[13px] text-[#8A8580] no-underline transition-colors hover:text-[#3A342E]"
-        >
-          {item.label}
-        </a>
-      ))}
-    </aside>
-  );
-}
 
 // ============================================================================
 // §02 The project + mission
@@ -472,14 +462,14 @@ function SectionProject() {
         ].map((m) => (
           <Card key={m.n}>
             <p
-              className="mb-[10px] text-[11px] tracking-[0.16em] font-medium text-[#8A8580]"
+              className="mb-[10px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
             >
               MISSION {m.n}
             </p>
-            <h3 className="mb-[12px] text-[18px] leading-[1.3] font-medium text-[#3A342E]">
+            <h3 className="mb-[12px] text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
               {m.title}
             </h3>
-            <p className="text-[14px] leading-[1.6] text-[#3A342E]">{m.body}</p>
+            <p className="text-[16px] leading-[1.6] text-[#1F1F1F]">{m.body}</p>
           </Card>
         ))}
       </div>
@@ -500,7 +490,7 @@ function SectionProject() {
 
 function GenieTestBox() {
   return (
-    <div className="my-[40px] rounded-[12px] bg-[#4A4640] p-[28px] tablet:p-[32px]">
+    <div className="my-[40px] rounded-[12px] bg-[#1F1F1F] p-[28px] tablet:p-[32px]">
       <div className="flex flex-col gap-[20px] tablet:flex-row tablet:items-start tablet:gap-[24px]">
         <div className="flex size-[64px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-white/50">
           <span className="text-[32px]" role="img" aria-label="genie">
@@ -508,7 +498,7 @@ function GenieTestBox() {
           </span>
         </div>
         <div className="flex flex-col gap-[12px]">
-          <p className="text-[11px] tracking-[0.16em] font-medium text-white/60">
+          <p className="text-[12px] tracking-[0.16em] font-medium text-white/60">
             THE GENIE TEST
           </p>
           <p
@@ -518,7 +508,7 @@ function GenieTestBox() {
             &ldquo;If a genie could grant you any outcome — without limits —
             what would it be?&rdquo;
           </p>
-          <p className="text-[13px] leading-[1.6] text-white/85">
+          <p className="text-[16px] leading-[1.6] text-white/85">
             이 한 질문이 stakeholder를 <em>solution</em>(드롭다운, 모달)에서{" "}
             <em>outcome</em>(사용자가 무엇을 결정할 수 있어야 하는가)으로
             끌어낸다. <strong>art of possibility</strong>를 통해 진짜 도달하고자
@@ -554,25 +544,25 @@ function UxCyclePipeline() {
               <div
                 className={`flex w-[120px] flex-col gap-[10px] rounded-[8px] p-[14px] ${
                   s.graphite
-                    ? "bg-[#4A4640] text-white"
-                    : "border-[0.5px] border-[#C7C2BA] bg-[#f5f2ea] text-[#3A342E]"
+                    ? "bg-[#1F1F1F] text-white"
+                    : "border-[0.5px] border-[#A0A0A0] bg-[#F8F8F8] text-[#1F1F1F]"
                 }`}
               >
                 <span
-                  className={`text-[10px] tracking-[0.16em] font-medium ${
-                    s.graphite ? "text-white/60" : "text-[#8A8580]"
+                  className={`text-[12px] tracking-[0.16em] font-medium ${
+                    s.graphite ? "text-white/60" : "text-[#5D5D5D]"
                   }`}
                 >
                   {s.tag}
                 </span>
-                <span className="text-[13px] leading-[1.3] font-medium">
+                <span className="text-[16px] leading-[1.3] font-medium">
                   {s.label}
                 </span>
               </div>
               {i < steps.length - 1 && (
                 <span
                   aria-hidden
-                  className="self-center text-[18px] text-[#8A8580]"
+                  className="self-center text-[18px] text-[#5D5D5D]"
                 >
                   →
                 </span>
@@ -581,7 +571,7 @@ function UxCyclePipeline() {
           ))}
         </ol>
       </div>
-      <figcaption className="text-[11px] tracking-[0.16em] text-[#8A8580]">
+      <figcaption className="text-[12px] tracking-[0.16em] text-[#5D5D5D]">
         Fig. 01 · How UX activities feed each other — the cycle that built team
         trust
       </figcaption>
@@ -659,16 +649,16 @@ function ForecastedDemandFigure() {
       <div className="grid gap-[24px] tablet:grid-cols-[1fr_180px_1fr]">
         {/* LEFT — BEFORE */}
         <div className="flex flex-col gap-[12px]">
-          <div className="relative aspect-square border-[0.5px] border-[#C7C2BA] p-[16px]">
+          <div className="relative aspect-square border-[0.5px] border-[#A0A0A0] p-[16px]">
             {/* Y-axis label */}
             <span
-              className="absolute left-[6px] top-1/2 origin-left -translate-y-1/2 -rotate-90 text-[9px] tracking-[0.16em] text-[#8A8580]"
+              className="absolute left-[6px] top-1/2 origin-left -translate-y-1/2 -rotate-90 text-[12px] tracking-[0.16em] text-[#5D5D5D]"
             >
               FUTURE VALUE ↑
             </span>
             {/* X-axis label */}
             <span
-              className="absolute bottom-[4px] left-0 right-0 text-center text-[9px] tracking-[0.16em] text-[#8A8580]"
+              className="absolute bottom-[4px] left-0 right-0 text-center text-[12px] tracking-[0.16em] text-[#5D5D5D]"
             >
               GROWTH RATE →
             </span>
@@ -688,19 +678,19 @@ function ForecastedDemandFigure() {
                   top: `${b.t}%`,
                   left: `${b.x}%`,
                 }}
-                className="absolute flex items-center justify-center rounded-full border-[0.5px] border-[#8A8580] bg-[#8A8580]/40 text-[10px] font-medium text-white"
+                className="absolute flex items-center justify-center rounded-full border-[0.5px] border-[#5D5D5D] bg-[#5D5D5D]/40 text-[12px] font-medium text-white"
               >
                 {b.l}
               </span>
             ))}
           </div>
-          <ul className="flex flex-col gap-[4px] text-[10px] leading-[1.4] text-[#8A8580]">
+          <ul className="flex flex-col gap-[4px] text-[12px] leading-[1.4] text-[#5D5D5D]">
             <li>⊘ bubble size = current value, no scale</li>
             <li>⊘ overlapping bubbles repositioned by hand</li>
             <li>⊘ visual position no longer matches data</li>
           </ul>
           <p
-            className="text-center text-[11px] italic text-[#8A8580]"
+            className="text-center text-[12px] italic text-[#5D5D5D]"
             style={SERIF}
           >
             Familiar. Insisted upon. Untrue.
@@ -715,11 +705,11 @@ function ForecastedDemandFigure() {
             "03. If no — what does?",
           ].map((t, i, arr) => (
             <div key={t} className="flex flex-col items-center gap-[8px]">
-              <div className="w-full rounded-[6px] border-[0.5px] border-[#4A4640] bg-white px-[12px] py-[10px] text-[11px] leading-[1.3] font-medium text-[#4A4640]">
+              <div className="w-full rounded-[6px] border-[0.5px] border-[#1F1F1F] bg-white px-[12px] py-[10px] text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
                 {t}
               </div>
               {i < arr.length - 1 && (
-                <span aria-hidden className="text-[16px] text-[#4A4640]">
+                <span aria-hidden className="text-[16px] text-[#1F1F1F]">
                   ↓
                 </span>
               )}
@@ -735,21 +725,21 @@ function ForecastedDemandFigure() {
             fallbackLabel="Forecasted Demand chart (live) — horizontal slope/dual-bar"
             fallbackHint="Current → Forecasted, sorted by spend, color-coded Advise/Implement/Operate"
           />
-          <ul className="flex flex-col gap-[4px] text-[10px] leading-[1.4] text-[#4A4640]">
+          <ul className="flex flex-col gap-[4px] text-[12px] leading-[1.4] text-[#1F1F1F]">
             <li>✓ current value: visible, scaled</li>
             <li>✓ projected value: visible, scaled</li>
             <li>✓ growth: visible as bar slope</li>
             <li>✓ no manual editing — data IS visual</li>
           </ul>
           <p
-            className="text-center text-[11px] italic text-[#4A4640]"
+            className="text-center text-[12px] italic text-[#1F1F1F]"
             style={SERIF}
           >
             Honest. Comparable. Decision-ready.
           </p>
         </div>
       </div>
-      <figcaption className="text-[11px] tracking-[0.16em] text-[#8A8580]">
+      <figcaption className="text-[12px] tracking-[0.16em] text-[#5D5D5D]">
         Fig. 02 · Forecasted Demand — before / validation / after
       </figcaption>
     </figure>
@@ -761,25 +751,25 @@ function TwoTrackCards() {
   return (
     <div className="mt-[32px] grid gap-[16px] tablet:grid-cols-2 tablet:gap-[20px]">
       <Card>
-        <p className="mb-[8px] text-[11px] tracking-[0.16em] font-medium text-[#8A8580]">
+        <p className="mb-[8px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]">
           TRACK A · SAFETY CHECK
         </p>
-        <h4 className="mb-[12px] text-[16px] leading-[1.4] font-medium text-[#3A342E]">
+        <h4 className="mb-[12px] text-[16px] leading-[1.4] font-medium text-[#1F1F1F]">
           Current users (familiarity)
         </h4>
-        <p className="text-[14px] leading-[1.6] text-[#3A342E]">
+        <p className="text-[16px] leading-[1.6] text-[#1F1F1F]">
           새 visualization이 muscle-memory 사용자에게도 작동하는가? Regression
           잡기. <em>최소 기준선.</em>
         </p>
       </Card>
       <Card variant="graphite">
-        <p className="mb-[8px] text-[11px] tracking-[0.16em] font-medium text-white/60">
+        <p className="mb-[8px] text-[12px] tracking-[0.16em] font-medium text-white/60">
           TRACK B · READABILITY CHECK
         </p>
         <h4 className="mb-[12px] text-[16px] leading-[1.4] font-medium text-white">
           Non-users + future users
         </h4>
-        <p className="text-[14px] leading-[1.6] text-white/85">
+        <p className="text-[16px] leading-[1.6] text-white/85">
           사전 노출 없는 사람이 차트를 보고 이해하는가? Familiarity-bias로 가려진
           false positive 잡기. <em>진짜 검증.</em>
         </p>
@@ -817,7 +807,7 @@ function SectionVisualizations() {
           <strong>X축</strong> = growth rate. <strong>Y축</strong> = future
           value. <strong>Bubble size</strong> = current value (no scale legend).
         </Body>
-        <ol className="flex max-w-[720px] list-decimal flex-col gap-[10px] pl-[20px] text-[15px] leading-[1.7] text-[#3A342E] tablet:text-[16px]">
+        <ol className="flex max-w-[720px] list-decimal flex-col gap-[10px] pl-[20px] text-[16px] leading-[1.7] text-[#1F1F1F] tablet:text-[16px]">
           <li>
             Bubble size가 reference 없으니 opportunity 간 current value 비교
             자체가 불가능했다.
@@ -851,7 +841,7 @@ function SectionVisualizations() {
           partnership opportunity 우선순위.</em> 후속 — <em>&ldquo;Does this
           chart let you decide that?&rdquo;</em> 그리고 walk-through:
         </Body>
-        <ul className="flex max-w-[720px] flex-col gap-[6px] text-[15px] leading-[1.7] text-[#3A342E] tablet:text-[16px]">
+        <ul className="flex max-w-[720px] flex-col gap-[6px] text-[16px] leading-[1.7] text-[#1F1F1F] tablet:text-[16px]">
           <li>⊘ Can&rsquo;t compare current value (no scale).</li>
           <li>⊘ Can&rsquo;t see the absolute jump from current → projected.</li>
           <li>⊘ Can&rsquo;t trust positions (manual repositioning).</li>
@@ -926,7 +916,7 @@ function SectionVisualizations() {
           fallbackLabel="Financial/Operational Performance — quartile box-plot cards"
           fallbackHint="Account Deep Dive → 3M Company → Financial/Operational Performance · Your Account (magenta) vs Peer Accounts (gray) · 12 metric cards"
         />
-        <figcaption className="text-[11px] tracking-[0.16em] text-[#8A8580]">
+        <figcaption className="text-[12px] tracking-[0.16em] text-[#5D5D5D]">
           Fig. 03 · Financial/Operational Performance — quartile box-plot cards
           (production)
         </figcaption>
@@ -959,27 +949,27 @@ function RelayClock() {
           cy="160"
           r="120"
           fill="none"
-          stroke="#C7C2BA"
+          stroke="#A0A0A0"
           strokeWidth="0.5"
         />
 
         {/* Tick marks at 12 / 18 / 0 / 6 */}
-        <g stroke="#C7C2BA" strokeWidth="0.5">
+        <g stroke="#A0A0A0" strokeWidth="0.5">
           <line x1="160" y1="40" x2="160" y2="48" />
           <line x1="280" y1="160" x2="272" y2="160" />
           <line x1="160" y1="280" x2="160" y2="272" />
           <line x1="40" y1="160" x2="48" y2="160" />
         </g>
-        <text x="160" y="34" fontSize="9" fill="#8A8580" textAnchor="middle">
+        <text x="160" y="34" fontSize="9" fill="#5D5D5D" textAnchor="middle">
           12
         </text>
-        <text x="289" y="164" fontSize="9" fill="#8A8580" textAnchor="middle">
+        <text x="289" y="164" fontSize="9" fill="#5D5D5D" textAnchor="middle">
           18
         </text>
-        <text x="160" y="296" fontSize="9" fill="#8A8580" textAnchor="middle">
+        <text x="160" y="296" fontSize="9" fill="#5D5D5D" textAnchor="middle">
           0
         </text>
-        <text x="29" y="164" fontSize="9" fill="#8A8580" textAnchor="middle">
+        <text x="29" y="164" fontSize="9" fill="#5D5D5D" textAnchor="middle">
           6
         </text>
 
@@ -987,7 +977,7 @@ function RelayClock() {
         <path
           d="M 160 40 A 120 120 0 0 1 160 280"
           fill="none"
-          stroke="#8A8580"
+          stroke="#5D5D5D"
           strokeWidth="14"
           opacity="0.18"
         />
@@ -996,7 +986,7 @@ function RelayClock() {
           y="160"
           fontSize="9"
           letterSpacing="0.12em"
-          fill="#8A8580"
+          fill="#5D5D5D"
           textAnchor="middle"
         >
           OFFSHORE
@@ -1006,7 +996,7 @@ function RelayClock() {
         <path
           d="M 160 280 A 120 120 0 0 1 160 40"
           fill="none"
-          stroke="#8A8580"
+          stroke="#5D5D5D"
           strokeWidth="14"
           opacity="0.18"
         />
@@ -1015,7 +1005,7 @@ function RelayClock() {
           y="160"
           fontSize="9"
           letterSpacing="0.12em"
-          fill="#8A8580"
+          fill="#5D5D5D"
           textAnchor="middle"
         >
           ONSHORE
@@ -1025,7 +1015,7 @@ function RelayClock() {
         <path
           d="M 280 160 A 120 120 0 0 1 245 245"
           fill="none"
-          stroke="#4A4640"
+          stroke="#1F1F1F"
           strokeWidth="14"
           opacity="0.85"
         />
@@ -1033,15 +1023,15 @@ function RelayClock() {
         <path
           d="M 75 245 A 120 120 0 0 1 40 160"
           fill="none"
-          stroke="#4A4640"
+          stroke="#1F1F1F"
           strokeWidth="14"
           opacity="0.85"
         />
 
         {/* Marker dots */}
-        <circle cx="280" cy="160" r="5" fill="#4A4640" />
-        <circle cx="240" cy="248" r="5" fill="#4A4640" />
-        <circle cx="80" cy="248" r="5" fill="#4A4640" />
+        <circle cx="280" cy="160" r="5" fill="#1F1F1F" />
+        <circle cx="240" cy="248" r="5" fill="#1F1F1F" />
+        <circle cx="80" cy="248" r="5" fill="#1F1F1F" />
 
         {/* Center label */}
         <text
@@ -1049,7 +1039,7 @@ function RelayClock() {
           y="158"
           fontSize="10"
           letterSpacing="0.16em"
-          fill="#4A4640"
+          fill="#1F1F1F"
           textAnchor="middle"
           fontWeight="500"
         >
@@ -1060,30 +1050,30 @@ function RelayClock() {
           y="174"
           fontSize="9"
           letterSpacing="0.12em"
-          fill="#4A4640"
+          fill="#1F1F1F"
           textAnchor="middle"
         >
           GIFT HOURS
         </text>
 
         {/* Marker labels */}
-        <text x="298" y="148" fontSize="8" fill="#4A4640">
+        <text x="298" y="148" fontSize="8" fill="#1F1F1F">
           handoff start
         </text>
-        <text x="248" y="266" fontSize="8" fill="#4A4640">
+        <text x="248" y="266" fontSize="8" fill="#1F1F1F">
           handoff close
         </text>
-        <text x="36" y="266" fontSize="8" fill="#4A4640">
+        <text x="36" y="266" fontSize="8" fill="#1F1F1F">
           decision-log
         </text>
       </svg>
       <p
-        className="text-[14px] italic text-[#3A342E]"
+        className="text-[16px] italic text-[#1F1F1F]"
         style={SERIF}
       >
         Time zones as inventory, not friction.
       </p>
-      <figcaption className="text-[11px] tracking-[0.16em] text-[#8A8580]">
+      <figcaption className="text-[12px] tracking-[0.16em] text-[#5D5D5D]">
         Fig. 04 · The 24-hour relay clock
       </figcaption>
     </figure>
@@ -1117,16 +1107,16 @@ function CharacterTable() {
     },
   ];
   return (
-    <div className="mt-[32px] overflow-hidden rounded-[12px] border-[0.5px] border-[#C7C2BA]">
+    <div className="mt-[32px] overflow-hidden rounded-[12px] border-[0.5px] border-[#A0A0A0]">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[680px] border-collapse text-left">
           <thead>
-            <tr className="bg-[#f5f2ea]">
+            <tr className="bg-[#F8F8F8]">
               {["PROFILE", "STRENGTHS", "TRAINING APPROACH", "BEST ASSIGNMENT"].map(
                 (h) => (
                   <th
                     key={h}
-                    className="px-[20px] py-[14px] text-[11px] tracking-[0.16em] font-medium text-[#8A8580]"
+                    className="px-[20px] py-[14px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
                   >
                     {h}
                   </th>
@@ -1136,17 +1126,17 @@ function CharacterTable() {
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={r.profile} className="border-t-[0.5px] border-[#C7C2BA]">
-                <td className="px-[20px] py-[16px] align-top text-[13px] leading-[1.5] font-semibold text-[#4A4640]">
+              <tr key={r.profile} className="border-t-[0.5px] border-[#A0A0A0]">
+                <td className="px-[20px] py-[16px] align-top text-[16px] leading-[1.5] font-semibold text-[#1F1F1F]">
                   {r.profile}
                 </td>
-                <td className="px-[20px] py-[16px] align-top text-[13px] leading-[1.5] text-[#3A342E]">
+                <td className="px-[20px] py-[16px] align-top text-[16px] leading-[1.5] text-[#1F1F1F]">
                   {r.strengths}
                 </td>
-                <td className="px-[20px] py-[16px] align-top text-[13px] leading-[1.5] text-[#3A342E]">
+                <td className="px-[20px] py-[16px] align-top text-[16px] leading-[1.5] text-[#1F1F1F]">
                   {r.training}
                 </td>
-                <td className="px-[20px] py-[16px] align-top text-[13px] leading-[1.5] text-[#3A342E]">
+                <td className="px-[20px] py-[16px] align-top text-[16px] leading-[1.5] text-[#1F1F1F]">
                   {r.assignment}
                 </td>
               </tr>
@@ -1209,7 +1199,7 @@ function SectionOffshore() {
 
       <CharacterTable />
 
-      <p className="mt-[24px] max-w-[720px] text-[13px] italic leading-[1.6] text-[#8A8580] tablet:text-[14px]">
+      <p className="mt-[24px] max-w-[720px] text-[16px] italic leading-[1.6] text-[#5D5D5D] tablet:text-[16px]">
         ※ profile labels are placeholders — Soonk to confirm exact archetypes
         used at GIA.
       </p>
@@ -1253,7 +1243,7 @@ function BrdChaosLoop() {
             refY="4"
             orient="auto"
           >
-            <path d="M0,0 L8,4 L0,8 z" fill="#8A8580" />
+            <path d="M0,0 L8,4 L0,8 z" fill="#5D5D5D" />
           </marker>
           <marker
             id="arrowhead-pink"
@@ -1276,13 +1266,13 @@ function BrdChaosLoop() {
             height="60"
             rx="6"
             fill="white"
-            stroke="#8A8580"
+            stroke="#5D5D5D"
             strokeWidth="0.5"
           />
-          <text x="260" y="44" fontSize="11" fill="#3A342E" textAnchor="middle" fontWeight="500">
+          <text x="260" y="44" fontSize="11" fill="#1F1F1F" textAnchor="middle" fontWeight="500">
             BRD delivered
           </text>
-          <text x="260" y="60" fontSize="9" fill="#8A8580" textAnchor="middle">
+          <text x="260" y="60" fontSize="9" fill="#5D5D5D" textAnchor="middle">
             solution-first, no &ldquo;why&rdquo;
           </text>
         </g>
@@ -1296,13 +1286,13 @@ function BrdChaosLoop() {
             height="60"
             rx="6"
             fill="white"
-            stroke="#8A8580"
+            stroke="#5D5D5D"
             strokeWidth="0.5"
           />
-          <text x="440" y="174" fontSize="11" fill="#3A342E" textAnchor="middle" fontWeight="500">
+          <text x="440" y="174" fontSize="11" fill="#1F1F1F" textAnchor="middle" fontWeight="500">
             Designer reads
           </text>
-          <text x="440" y="190" fontSize="9" fill="#8A8580" textAnchor="middle">
+          <text x="440" y="190" fontSize="9" fill="#5D5D5D" textAnchor="middle">
             &ldquo;why is this here?&rdquo;
           </text>
         </g>
@@ -1316,13 +1306,13 @@ function BrdChaosLoop() {
             height="60"
             rx="6"
             fill="white"
-            stroke="#8A8580"
+            stroke="#5D5D5D"
             strokeWidth="0.5"
           />
-          <text x="260" y="304" fontSize="11" fill="#3A342E" textAnchor="middle" fontWeight="500">
+          <text x="260" y="304" fontSize="11" fill="#1F1F1F" textAnchor="middle" fontWeight="500">
             Designer asks PM
           </text>
-          <text x="260" y="320" fontSize="9" fill="#8A8580" textAnchor="middle">
+          <text x="260" y="320" fontSize="9" fill="#5D5D5D" textAnchor="middle">
             clarification request
           </text>
         </g>
@@ -1336,13 +1326,13 @@ function BrdChaosLoop() {
             height="60"
             rx="6"
             fill="white"
-            stroke="#8A8580"
+            stroke="#5D5D5D"
             strokeWidth="0.5"
           />
-          <text x="80" y="174" fontSize="11" fill="#3A342E" textAnchor="middle" fontWeight="500">
+          <text x="80" y="174" fontSize="11" fill="#1F1F1F" textAnchor="middle" fontWeight="500">
             Partial answer
           </text>
-          <text x="80" y="190" fontSize="9" fill="#8A8580" textAnchor="middle">
+          <text x="80" y="190" fontSize="9" fill="#5D5D5D" textAnchor="middle">
             &ldquo;just put a button there&rdquo;
           </text>
         </g>
@@ -1351,28 +1341,28 @@ function BrdChaosLoop() {
         <path
           d="M 320 60 Q 400 90 380 150"
           fill="none"
-          stroke="#8A8580"
+          stroke="#5D5D5D"
           strokeWidth="1"
           markerEnd="url(#arrowhead-muted)"
         />
         <path
           d="M 380 210 Q 400 270 320 290"
           fill="none"
-          stroke="#8A8580"
+          stroke="#5D5D5D"
           strokeWidth="1"
           markerEnd="url(#arrowhead-muted)"
         />
         <path
           d="M 200 290 Q 120 270 140 210"
           fill="none"
-          stroke="#8A8580"
+          stroke="#5D5D5D"
           strokeWidth="1"
           markerEnd="url(#arrowhead-muted)"
         />
         <path
           d="M 140 150 Q 120 90 200 60"
           fill="none"
-          stroke="#8A8580"
+          stroke="#5D5D5D"
           strokeWidth="1"
           markerEnd="url(#arrowhead-muted)"
         />
@@ -1398,7 +1388,7 @@ function BrdChaosLoop() {
           ↻ LOOP
         </text>
       </svg>
-      <figcaption className="text-[11px] tracking-[0.16em] text-[#8A8580]">
+      <figcaption className="text-[12px] tracking-[0.16em] text-[#5D5D5D]">
         Fig. 05 · The BRD chaos loop — designers asking the same question every
         sprint
       </figcaption>
@@ -1410,20 +1400,20 @@ function PrincipleCards() {
   return (
     <div className="mt-[24px] grid gap-[16px] tablet:grid-cols-2 tablet:gap-[20px]">
       <Card variant="white">
-        <p className="mb-[10px] text-[11px] tracking-[0.16em] font-medium text-[#4A4640]">
+        <p className="mb-[10px] text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]">
           PRINCIPLE 01
         </p>
-        <h4 className="text-[17px] leading-[1.4] font-medium text-[#3A342E] tablet:text-[18px]">
+        <h4 className="text-[17px] leading-[1.4] font-medium text-[#1F1F1F] tablet:text-[18px]">
           BRD is not a UI spec document.
           <br />
           Don&rsquo;t define visual elements.
         </h4>
       </Card>
       <Card variant="white">
-        <p className="mb-[10px] text-[11px] tracking-[0.16em] font-medium text-[#4A4640]">
+        <p className="mb-[10px] text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]">
           PRINCIPLE 02
         </p>
-        <h4 className="text-[17px] leading-[1.4] font-medium text-[#3A342E] tablet:text-[18px]">
+        <h4 className="text-[17px] leading-[1.4] font-medium text-[#1F1F1F] tablet:text-[18px]">
           What question is this trying to answer?
           <br />
           That&rsquo;s where every BRD starts.
@@ -1469,15 +1459,15 @@ function UiuxStoryTable() {
     },
   ];
   return (
-    <div className="mt-[24px] overflow-hidden rounded-[12px] border-[0.5px] border-[#C7C2BA]">
+    <div className="mt-[24px] overflow-hidden rounded-[12px] border-[0.5px] border-[#A0A0A0]">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[680px] border-collapse text-left">
           <thead>
-            <tr className="bg-[#f5f2ea]">
+            <tr className="bg-[#F8F8F8]">
               {["#", "SECTION", "CONTENT", "VALIDATION RULE"].map((h) => (
                 <th
                   key={h}
-                  className="px-[20px] py-[14px] text-[11px] tracking-[0.16em] font-medium text-[#8A8580]"
+                  className="px-[20px] py-[14px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
                 >
                   {h}
                 </th>
@@ -1486,20 +1476,20 @@ function UiuxStoryTable() {
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr key={r.n} className="border-t-[0.5px] border-[#C7C2BA]">
-                <td className="px-[20px] py-[16px] align-top text-[13px] text-[#8A8580]">
+              <tr key={r.n} className="border-t-[0.5px] border-[#A0A0A0]">
+                <td className="px-[20px] py-[16px] align-top text-[16px] text-[#5D5D5D]">
                   {r.n}
                 </td>
-                <td className="px-[20px] py-[16px] align-top text-[13px] font-medium text-[#3A342E]">
+                <td className="px-[20px] py-[16px] align-top text-[16px] font-medium text-[#1F1F1F]">
                   {r.section}{" "}
                   {r.opt && (
-                    <span className="font-normal text-[#8A8580]">(opt)</span>
+                    <span className="font-normal text-[#5D5D5D]">(opt)</span>
                   )}
                 </td>
-                <td className="px-[20px] py-[16px] align-top text-[13px] text-[#3A342E]">
+                <td className="px-[20px] py-[16px] align-top text-[16px] text-[#1F1F1F]">
                   {r.content}
                 </td>
-                <td className="px-[20px] py-[16px] align-top text-[13px] italic text-[#8A8580]">
+                <td className="px-[20px] py-[16px] align-top text-[16px] italic text-[#5D5D5D]">
                   {r.validation}
                 </td>
               </tr>
@@ -1513,7 +1503,7 @@ function UiuxStoryTable() {
 
 function SelfPolicingBanner() {
   return (
-    <div className="my-[40px] rounded-[8px] bg-[#4A4640] px-[32px] py-[28px] text-center tablet:px-[40px] tablet:py-[32px]">
+    <div className="my-[40px] rounded-[8px] bg-[#1F1F1F] px-[32px] py-[28px] text-center tablet:px-[40px] tablet:py-[32px]">
       <p
         className="text-[20px] italic leading-[1.5] text-white tablet:text-[22px]"
         style={SERIF}
@@ -1521,7 +1511,7 @@ function SelfPolicingBanner() {
         &ldquo;If the user story describes a solution instead of a problem, it
         should be rejected.&rdquo;
       </p>
-      <p className="mt-[16px] text-[11px] tracking-[0.16em] text-white/60">
+      <p className="mt-[16px] text-[12px] tracking-[0.16em] text-white/60">
         — UIUX STORY STRUCTURE · VALIDATION RULE
       </p>
     </div>
@@ -1530,38 +1520,38 @@ function SelfPolicingBanner() {
 
 function BrdExampleTablet() {
   return (
-    <div className="mx-auto my-[32px] max-w-[640px] rounded-[12px] border-[1px] border-[#C7C2BA] bg-white p-[24px] shadow-[0_2px_12px_rgba(0,0,0,0.04)] tablet:p-[32px]">
-      <h3 className="text-[14px] font-semibold text-[#3A342E]">
+    <div className="mx-auto my-[32px] max-w-[640px] rounded-[12px] border-[1px] border-[#A0A0A0] bg-white p-[24px] shadow-[0_2px_12px_rgba(0,0,0,0.04)] tablet:p-[32px]">
+      <h3 className="text-[16px] font-semibold text-[#1F1F1F]">
         1. USER PROBLEM STATEMENT
       </h3>
-      <p className="mt-[6px] text-[12px] leading-[1.55] text-[#3A342E]">
+      <p className="mt-[6px] text-[12px] leading-[1.55] text-[#1F1F1F]">
         <span className="font-semibold">Who:</span> Alliance Leaders working
         with Deloitte&rsquo;s Growth Platforms
       </p>
-      <p className="mt-[8px] text-[12px] leading-[1.55] text-[#3A342E]">
+      <p className="mt-[8px] text-[12px] leading-[1.55] text-[#1F1F1F]">
         &ldquo;Alliance Leaders struggle to connect current market themes with
         actionable sales opportunities for their Growth Platform partnerships,
         making it difficult to identify where Deloitte can best position its
         offerings in collaboration with vendors.&rdquo;
       </p>
 
-      <h3 className="mt-[20px] text-[14px] font-semibold text-[#3A342E]">
+      <h3 className="mt-[20px] text-[16px] font-semibold text-[#1F1F1F]">
         2. DESIRED USER OUTCOME
       </h3>
-      <p className="mt-[6px] text-[12px] leading-[1.55] text-[#3A342E]">
+      <p className="mt-[6px] text-[12px] leading-[1.55] text-[#1F1F1F]">
         &ldquo;Alliance Leaders can understand which current market themes
         present the best areas for &lsquo;Sell With&rsquo; collaboration,
         enabling data-driven, timely decisions about where to focus growth
         efforts.&rdquo;
       </p>
 
-      <h3 className="mt-[20px] text-[14px] font-semibold text-[#3A342E]">
+      <h3 className="mt-[20px] text-[16px] font-semibold text-[#1F1F1F]">
         3. QUESTIONS + DATA NEEDED
       </h3>
-      <p className="mt-[6px] text-[12px] font-semibold text-[#3A342E]">
+      <p className="mt-[6px] text-[12px] font-semibold text-[#1F1F1F]">
         User questions
       </p>
-      <ul className="mt-[4px] flex list-disc flex-col gap-[4px] pl-[18px] text-[12px] italic leading-[1.55] text-[#8A8580]">
+      <ul className="mt-[4px] flex list-disc flex-col gap-[4px] pl-[18px] text-[12px] italic leading-[1.55] text-[#5D5D5D]">
         <li>
           &ldquo;What market themes are trending in my Growth Platform&rsquo;s
           space?&rdquo;
@@ -1572,18 +1562,18 @@ function BrdExampleTablet() {
         </li>
         <li>&ldquo;Which themes have the most momentum?&rdquo;</li>
       </ul>
-      <p className="mt-[10px] text-[12px] font-semibold text-[#3A342E]">
+      <p className="mt-[10px] text-[12px] font-semibold text-[#1F1F1F]">
         Data needed
       </p>
-      <p className="mt-[4px] text-[12px] italic leading-[1.55] text-[#8A8580]">
+      <p className="mt-[4px] text-[12px] italic leading-[1.55] text-[#5D5D5D]">
         trending market themes; mapping to Deloitte offerings; &ldquo;Sell
         With&rdquo; opportunity list; volume/value scoring
       </p>
 
-      <h3 className="mt-[20px] text-[14px] font-semibold text-[#3A342E]">
+      <h3 className="mt-[20px] text-[16px] font-semibold text-[#1F1F1F]">
         4. EXPLICIT NON-GOALS
       </h3>
-      <ul className="mt-[6px] flex list-disc flex-col gap-[4px] pl-[18px] text-[12px] leading-[1.55] text-[#3A342E]">
+      <ul className="mt-[6px] flex list-disc flex-col gap-[4px] pl-[18px] text-[12px] leading-[1.55] text-[#1F1F1F]">
         <li>Not redesigning full Growth Platform Deep Dive module</li>
         <li>Not replicating Account Deep Dive</li>
         <li>Not changing approval logic</li>
@@ -1614,7 +1604,7 @@ function SectionBrd() {
       <BrdChaosLoop />
 
       <SubHeader>WHY THE LOOP HAPPENED</SubHeader>
-      <ol className="mt-[12px] flex max-w-[720px] list-decimal flex-col gap-[12px] pl-[20px] text-[15px] leading-[1.7] text-[#3A342E] tablet:text-[16px]">
+      <ol className="mt-[12px] flex max-w-[720px] list-decimal flex-col gap-[12px] pl-[20px] text-[16px] leading-[1.7] text-[#1F1F1F] tablet:text-[16px]">
         <li>
           <strong>BRD가 UX spec을 결정해버렸다.</strong> &ldquo;여기다가 버튼을
           놓아라&rdquo; — 이게 acceptance criteria로 박혀 있었다. 디자이너가
@@ -1688,13 +1678,13 @@ function SectionNext() {
       </Body>
 
       <blockquote
-        className="mt-[40px] max-w-[640px] text-[22px] italic leading-[1.5] text-[#3A342E] tablet:text-[24px]"
+        className="mt-[40px] max-w-[640px] text-[22px] italic leading-[1.5] text-[#1F1F1F] tablet:text-[24px]"
         style={SERIF}
       >
         &ldquo;Walk in with the validation framework. Refuse to argue
         preferences. Build a structure that lives after the role ends.&rdquo;
       </blockquote>
-      <p className="mt-[12px] text-[12px] tracking-[0.04em] text-[#8A8580]">
+      <p className="mt-[12px] text-[12px] tracking-[0.04em] text-[#5D5D5D]">
         — <Tbd>Soonk&rsquo;s voice</Tbd>
       </p>
 
@@ -1706,13 +1696,13 @@ function SectionNext() {
         ].map((t, i) => (
           <li
             key={i}
-            className="flex items-start gap-[12px] border-t-[0.5px] border-[#C7C2BA] py-[20px]"
+            className="flex items-start gap-[12px] border-t-[0.5px] border-[#A0A0A0] py-[20px]"
           >
             <span
               aria-hidden
-              className="mt-[6px] block size-[8px] shrink-0 bg-[#8A8580]"
+              className="mt-[6px] block size-[8px] shrink-0 bg-[#5D5D5D]"
             />
-            <span className="text-[13px] leading-[1.6] text-[#8A8580] tablet:text-[14px]">
+            <span className="text-[16px] leading-[1.6] text-[#5D5D5D] tablet:text-[16px]">
               <Tbd>bullet {i + 1}: {t}</Tbd>
             </span>
           </li>
@@ -1728,14 +1718,18 @@ function SectionNext() {
 
 export default function GiaCaseStudy() {
   return (
-    <div className="bg-[#efece4] text-[#3A342E]">
+    <div className="bg-[#EEEEEE] text-[#1F1F1F]">
       {/* §01 Hero — full-bleed, no left nav */}
       <Hero />
 
       {/* §02–07 — sticky left nav + main column */}
-      <div className="mx-auto flex max-w-[1200px] flex-col px-[24px] tablet:flex-row tablet:px-[60px]">
-        <LeftNav />
-        <div className="flex-1 tablet:pl-[60px]">
+      <div className="mx-auto flex max-w-[1200px] flex-col px-[24px] tablet:flex-row tablet:gap-[40px] tablet:px-[60px]">
+        <CaseStudyLeftNav
+          currentSlug="gia"
+          readTime="~9 min read"
+          sections={SECTIONS}
+        />
+        <div className="min-w-0 flex-1">
           <SectionProject />
           <SectionRituals />
           <SectionVisualizations />

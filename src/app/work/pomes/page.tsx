@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import PomesNav from "./PomesNav";
+import CaseStudyNav from "@/components/cases/CaseStudyNav";
+import CaseStudyLeftNav, {
+  type CaseStudySection,
+} from "@/components/cases/CaseStudyLeftNav";
 
 // POMEs case study — single long-scroll page, light-mode editorial.
 // Aligned with the landing's design system: Archivo (display + body) +
@@ -40,13 +43,34 @@ export const metadata: Metadata = {
     "A neighbor app where you brag about what you can offer — not beg for help.",
 };
 
-// JetBrains Mono — used on section numbers (02–09), stat numbers
-// (60+ / 9 / 97 / 10.2%), eyebrow tags ("+ 01 / Intro"), and timeline
-// dates.  Mirrors the landing list view's giant mono 01–09 markers, so
-// the case-study reads as the same designer's portfolio.
-const MONO = "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace";
+// JetBrains Mono — reserved for the canonical project number (01–09)
+// only.  Per the design rule, every other text-element on the case study
+// uses Archivo (the default).  Section numbers, stat numbers, eyebrow
+// tags, and timeline dates all stay Archivo.
+const MONO =
+  "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace";
+
+const SECTIONS: CaseStudySection[] = [
+  { id: "intro", num: "01", label: "Intro" },
+  { id: "hunch", num: "02", label: "The hunch" },
+  { id: "scan", num: "03", label: "Market scan" },
+  { id: "research", num: "04", label: "Research → inversion" },
+  { id: "design", num: "05", label: "Design v1" },
+  { id: "build", num: "06", label: "Built & shipped" },
+  { id: "engage", num: "07", label: "Engaging" },
+  { id: "pivot", num: "08", label: "The pivot" },
+  { id: "reflection", num: "09", label: "Reflection" },
+];
 
 // ---- Shared atoms ----------------------------------------------------------
+//
+// Type scale follows Soonk's locked hierarchy:
+//   caption        12px / 0.75rem   — eyebrows, meta labels, fine print
+//   body           16px / 1rem      — Lede + Body, never below 16
+//   sub-heading    24px / 1.5rem    — SubH inside a section
+//   heading        32px / 2rem      — SectionHead title (display)
+// Color floor: #A0A0A0 is the lightest text allowed (anything fainter
+// reads as ineligible for the page).
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-[18px] text-[12px] tracking-[0.16em] text-[#A0A0A0]">
@@ -58,13 +82,10 @@ function Eyebrow({ children }: { children: React.ReactNode }) {
 function SectionHead({ n, title }: { n: string; title: string }) {
   return (
     <div className="mb-[22px] grid grid-cols-[80px_1fr] items-start gap-[18px] min-[960px]:grid-cols-[110px_1fr] min-[960px]:gap-[24px]">
-      <div
-        className="text-[64px] leading-[0.85] font-extrabold tracking-[-0.05em] text-[#1F1F1F] min-[960px]:text-[88px]"
-        style={{ fontFamily: MONO }}
-      >
+      <div className="text-[64px] leading-[0.85] font-extrabold tracking-[-0.05em] text-[#1F1F1F] min-[960px]:text-[88px]">
         {n}
       </div>
-      <h2 className="max-w-[600px] pt-1 text-[22px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[960px]:pt-[10px] min-[960px]:text-[28px]">
+      <h2 className="max-w-[600px] pt-1 text-[24px] leading-[1.25] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[960px]:pt-[10px] min-[960px]:text-[32px]">
         {title}
       </h2>
     </div>
@@ -73,7 +94,7 @@ function SectionHead({ n, title }: { n: string; title: string }) {
 
 function Lede({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mb-[18px] max-w-[620px] text-[15px] leading-[1.75] text-[#5D5D5D]">
+    <p className="mb-[18px] max-w-[620px] text-[16px] leading-[1.7] text-[#5D5D5D]">
       {children}
     </p>
   );
@@ -88,8 +109,8 @@ function Body({
 }) {
   return (
     <p
-      className="my-[18px] max-w-[620px] text-[15px] leading-[1.75] text-[#5D5D5D]"
-      style={italic ? { fontStyle: "italic", fontSize: 17, color: "#1F1F1F" } : undefined}
+      className="my-[18px] max-w-[620px] text-[16px] leading-[1.7] text-[#5D5D5D]"
+      style={italic ? { fontStyle: "italic", fontSize: 18, color: "#1F1F1F" } : undefined}
     >
       {children}
     </p>
@@ -98,7 +119,7 @@ function Body({
 
 function SubH({ children }: { children: React.ReactNode }) {
   return (
-    <h3 className="mt-9 mb-[14px] max-w-[620px] text-[19px] leading-[1.3] font-medium text-[#1F1F1F]">
+    <h3 className="mt-9 mb-[14px] max-w-[620px] text-[20px] leading-[1.3] font-medium text-[#1F1F1F]">
       {children}
     </h3>
   );
@@ -111,15 +132,15 @@ function Strong({ children }: { children: React.ReactNode }) {
 // Pale-teal "Research → Design" callout used in every Section 05 block.
 function ResearchLink({ finding, decision }: { finding: string; decision: string }) {
   return (
-    <div className="mt-[18px] flex flex-col gap-2 rounded-lg bg-[#D9D9D9] px-[18px] py-[14px] text-[13px] leading-[1.5] text-[#1F1F1F]">
+    <div className="mt-[18px] flex flex-col gap-2 rounded-lg bg-[#D9D9D9] px-[18px] py-[14px] text-[16px] leading-[1.5] text-[#1F1F1F]">
       <div className="flex items-start gap-[10px]">
-        <span className="mt-px shrink-0 rounded-[3px] bg-white/60 px-[7px] py-[3px] text-[9px] font-bold tracking-[0.1em] text-[#1F1F1F]">
+        <span className="mt-px shrink-0 rounded-[3px] bg-white/60 px-[7px] py-[3px] text-[12px] font-bold tracking-[0.1em] text-[#1F1F1F]">
           FINDING
         </span>
         <span className="flex-1">{finding}</span>
       </div>
       <div className="flex items-start gap-[10px]">
-        <span className="mt-px shrink-0 rounded-[3px] bg-white/60 px-[7px] py-[3px] text-[9px] font-bold tracking-[0.1em] text-[#1F1F1F]">
+        <span className="mt-px shrink-0 rounded-[3px] bg-white/60 px-[7px] py-[3px] text-[12px] font-bold tracking-[0.1em] text-[#1F1F1F]">
           DECISION
         </span>
         <span className="flex-1">{decision}</span>
@@ -162,20 +183,25 @@ function Phone({
 export default function PomesCaseStudy() {
   return (
     <div className="min-h-screen bg-[#EEEEEE] text-[#1F1F1F]">
-      {/* Global ProjectNav (rendered in app/layout.tsx) sits at top:0
-          fixed.  Push the hero down by the nav's height so the giant
-          POMEs text doesn't tuck under it. */}
+      <CaseStudyNav currentSlug="pomes" />
 
       {/* ---------- HERO (Variant B — 4-phone row) ---------- */}
       <section
-        id="pomes-intro"
-        data-pomes-section
-        className="mx-auto max-w-[1080px] px-[20px] pt-[88px] pb-[40px] min-[560px]:px-[32px] min-[560px]:pt-[112px] min-[560px]:pb-[48px]"
+        id="intro"
+        className="mx-auto max-w-[1080px] px-[20px] pt-[40px] pb-[40px] min-[560px]:px-[32px] min-[560px]:pt-[64px] min-[560px]:pb-[48px]"
       >
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Logo + giant POMEs */}
+        {/* Project number (canonical 01-09 marker, JBM Mono) + Logo +
+            giant POMEs wordmark — mirrors the landing list view's giant
+            mono number anchoring each tile. */}
         <div className="mb-[28px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[36px] min-[560px]:gap-[28px]">
+          <span
+            className="text-[64px] font-extrabold leading-[0.9] tracking-[-0.04em] text-[#1F1F1F] min-[560px]:text-[88px] min-[960px]:text-[120px]"
+            style={{ fontFamily: MONO }}
+          >
+            01
+          </span>
           <PomesLogoSvg className="h-[80px] w-auto shrink-0 text-[#1F1F1F] min-[560px]:h-[100px] min-[960px]:h-[124px]" />
           <span className="text-[80px] font-black leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[110px] min-[960px]:text-[152px]">
             POMEs
@@ -202,10 +228,10 @@ export default function PomesCaseStudy() {
               <div className="mx-auto mb-[14px] max-w-[180px]">
                 <Phone image={p.src} alt={`POMEs ${p.label}`} />
               </div>
-              <div className="text-[13px] font-medium tracking-[0.04em] text-[#1F1F1F]">
+              <div className="text-[16px] font-medium tracking-[0.04em] text-[#1F1F1F]">
                 {p.label}
               </div>
-              <div className="mt-[2px] text-[11px] text-[#A0A0A0]">{p.sub}</div>
+              <div className="mt-[2px] text-[12px] text-[#A0A0A0]">{p.sub}</div>
             </div>
           ))}
         </div>
@@ -226,7 +252,7 @@ export default function PomesCaseStudy() {
               <dt className="text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
                 {l}
               </dt>
-              <dd className="text-[15px] leading-[1.5] text-[#1F1F1F]">{v}</dd>
+              <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">{v}</dd>
             </div>
           ))}
         </dl>
@@ -255,7 +281,7 @@ export default function PomesCaseStudy() {
                 <div className="mt-[8px] text-[12px] tracking-[0.04em] text-[#A0A0A0] min-[560px]:mt-[14px]">
                   {d}
                 </div>
-                <div className="mt-[4px] text-[14px] leading-[1.3] font-medium text-[#1F1F1F] min-[560px]:mt-[6px]">
+                <div className="mt-[4px] text-[16px] leading-[1.3] font-medium text-[#1F1F1F] min-[560px]:mt-[6px]">
                   {l}
                 </div>
                 <div className="mt-[4px] text-[12px] leading-[1.4] text-[#A0A0A0]">
@@ -273,10 +299,14 @@ export default function PomesCaseStudy() {
 
       {/* ---------- Body grid: sticky nav + content ---------- */}
       <div className="bg-[#EEEEEE]">
-        <div className="mx-auto grid max-w-[1080px] gap-[32px] px-[20px] pt-[40px] pb-[80px] min-[560px]:px-[32px] min-[960px]:grid-cols-[130px_1fr] min-[960px]:gap-[48px] min-[960px]:pt-[56px] min-[960px]:pb-[96px]">
-          <PomesNav />
+        <div className="mx-auto flex max-w-[1080px] gap-[32px] px-[20px] pt-[40px] pb-[80px] min-[560px]:px-[32px] tablet:gap-[48px] tablet:pt-[56px] tablet:pb-[96px]">
+          <CaseStudyLeftNav
+            currentSlug="pomes"
+            readTime="~10 min read"
+            sections={SECTIONS}
+          />
 
-          <main className="min-w-0">
+          <main className="min-w-0 flex-1">
             {/* ===== 02 The hunch ===== */}
             <Section id="hunch" first>
               <Eyebrow>+ The premise</Eyebrow>
@@ -423,12 +453,12 @@ export default function PomesCaseStudy() {
                     className="grid grid-cols-[36px_1fr] items-start gap-[14px] rounded-[10px] bg-[#F4F4F4] px-[20px] py-[16px]"
                   >
                     <span
-                      className="pt-px text-[14px] font-medium text-[#1F1F1F]"
+                      className="pt-px text-[16px] font-medium text-[#1F1F1F]"
                       style={{ fontStyle: "italic" }}
                     >
                       {q}
                     </span>
-                    <span className="text-[14px] leading-[1.55] text-[#1F1F1F]">
+                    <span className="text-[16px] leading-[1.55] text-[#1F1F1F]">
                       {t}
                     </span>
                   </div>
@@ -499,19 +529,19 @@ export default function PomesCaseStudy() {
                   <CardSortingMockSvg />
                 </div>
                 <div>
-                  <span className="mb-[8px] inline-block rounded-[3px] bg-[#D9D9D9] px-[7px] py-[2px] text-[10px] font-medium tracking-[0.08em] text-[#1F1F1F]">
+                  <span className="mb-[8px] inline-block rounded-[3px] bg-[#D9D9D9] px-[7px] py-[2px] text-[12px] font-medium tracking-[0.08em] text-[#1F1F1F]">
                     ★ VIBE-CODED IN AN AFTERNOON
                   </span>
-                  <div className="mb-[6px] text-[15px] font-medium text-[#1F1F1F]">
+                  <div className="mb-[6px] text-[16px] font-medium text-[#1F1F1F]">
                     Card-sorting web app
                   </div>
-                  <div className="text-[13px] leading-[1.65] text-[#5D5D5D]">
+                  <div className="text-[16px] leading-[1.65] text-[#5D5D5D]">
                     Real card-sorting tool, not a Figjam board. Each card was a
                     hypothetical ask; neighbors dragged them into &ldquo;would
                     ask&rdquo; or &ldquo;wouldn&rsquo;t&rdquo; while I watched.
                   </div>
                   <div
-                    className="mt-[6px] text-[13px] text-[#1F1F1F]"
+                    className="mt-[6px] text-[16px] text-[#1F1F1F]"
                     style={{ fontStyle: "italic" }}
                   >
                     AI as research multiplier.
@@ -529,7 +559,7 @@ export default function PomesCaseStudy() {
                 ].map(([h, t]) => (
                   <li
                     key={h}
-                    className="relative py-[6px] pl-[22px] text-[14px] leading-[1.65] text-[#5D5D5D] before:absolute before:left-0 before:text-[#A0A0A0] before:content-['—']"
+                    className="relative py-[6px] pl-[22px] text-[16px] leading-[1.65] text-[#5D5D5D] before:absolute before:left-0 before:text-[#A0A0A0] before:content-['—']"
                   >
                     <Strong>{h}</Strong>
                     {t}
@@ -548,7 +578,7 @@ export default function PomesCaseStudy() {
               {/* Fig. 1 — The inversion */}
               <figure className="my-[28px] rounded-[12px] bg-[#F4F4F4] px-[28px] pt-[40px] pb-[22px]">
                 <InversionDiagramSvg />
-                <figcaption className="mt-[14px] text-right text-[11px] tracking-[0.08em] text-[#A0A0A0]">
+                <figcaption className="mt-[14px] text-right text-[12px] tracking-[0.08em] text-[#A0A0A0]">
                   FIG. 1 OF 3 · THE INVERSION
                 </figcaption>
               </figure>
@@ -587,8 +617,8 @@ export default function PomesCaseStudy() {
                     <div className="mx-auto mb-[12px] max-w-[92px]">
                       <Phone image={src} alt={n} />
                     </div>
-                    <div className="text-[13px] font-medium text-[#1F1F1F]">{n}</div>
-                    <div className="text-[11px] leading-[1.4] text-[#A0A0A0]">{t}</div>
+                    <div className="text-[16px] font-medium text-[#1F1F1F]">{n}</div>
+                    <div className="text-[12px] leading-[1.4] text-[#A0A0A0]">{t}</div>
                   </div>
                 ))}
               </div>
@@ -659,7 +689,7 @@ export default function PomesCaseStudy() {
                     Neighbors can see what&rsquo;s actually around them, when
                     it&rsquo;s free, and who else has used it.
                   </>,
-                  <span key="bonus" className="text-[13px] text-[#A0A0A0]">
+                  <span key="bonus" className="text-[16px] text-[#A0A0A0]">
                     (Bonus: categories grow from a flexible &ldquo;Other&rdquo;
                     bucket. When 5+ items pile in, that&rsquo;s the system
                     telling me a new category is overdue.)
@@ -736,14 +766,14 @@ export default function PomesCaseStudy() {
                   <h3 className="mb-[16px] text-[24px] leading-[1.2] font-medium tracking-[-0.01em] text-[#1F1F1F]">
                     What&rsquo;s not in the app: messaging.
                   </h3>
-                  <p className="mb-[14px] text-[14px] leading-[1.65] text-[#5D5D5D]">
+                  <p className="mb-[14px] text-[16px] leading-[1.65] text-[#5D5D5D]">
                     Group chat would let users rebuild their inner circle inside
                     the app. The five friends I already trust would form a
                     private thread, do their borrows and favors there, and the
                     rest of the building would never see it. The system would
                     die from inside.
                   </p>
-                  <p className="mb-[14px] text-[14px] leading-[1.65] text-[#5D5D5D]">
+                  <p className="mb-[14px] text-[16px] leading-[1.65] text-[#5D5D5D]">
                     Instead, Events is the spine. Real face time builds trust.
                     Trust drives engagement. Engagement drives more events. Chat
                     would short-circuit that loop entirely.
@@ -757,7 +787,7 @@ export default function PomesCaseStudy() {
                 </div>
                 <figure className="flex flex-col rounded-[12px] bg-[#F4F4F4] p-[18px]">
                   <TrustLoopDiagramSvg />
-                  <div className="mt-2 text-right text-[11px] tracking-[0.08em] text-[#A0A0A0]">
+                  <div className="mt-2 text-right text-[12px] tracking-[0.08em] text-[#A0A0A0]">
                     FIG. 2 OF 3 · THE TRUST LOOP
                   </div>
                 </figure>
@@ -806,23 +836,23 @@ export default function PomesCaseStudy() {
                 </div>
                 <div className="flex flex-col gap-[12px]">
                   <div className="rounded-[10px] bg-[#F4F4F4] px-[18px] py-[16px]">
-                    <div className="mb-[8px] text-[11px] font-medium tracking-[0.06em] text-[#A0A0A0]">
+                    <div className="mb-[8px] text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
                       Stack
                     </div>
-                    <div className="text-[13px] leading-[1.6] text-[#5D5D5D]">
+                    <div className="text-[16px] leading-[1.6] text-[#5D5D5D]">
                       React Native · Firebase · Firestore · Twilio · Apple
                       Sign-In · Expo
                     </div>
                   </div>
-                  <div className="flex items-center gap-[10px] rounded-[10px] border border-[#A0A0A0] bg-[#F4F4F4] px-[16px] py-[14px] text-[13px] font-medium text-[#1F1F1F]">
+                  <div className="flex items-center gap-[10px] rounded-[10px] border border-[#A0A0A0] bg-[#F4F4F4] px-[16px] py-[14px] text-[16px] font-medium text-[#1F1F1F]">
                     <span className="h-[8px] w-[8px] rounded-full bg-[#4A8E5C]" />
                     Live · App Store + Google Play
                   </div>
                   <div className="rounded-[10px] bg-[#F4F4F4] px-[18px] py-[16px]">
-                    <div className="mb-[8px] text-[11px] font-medium tracking-[0.06em] text-[#A0A0A0]">
+                    <div className="mb-[8px] text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
                       Bridge
                     </div>
-                    <div className="text-[13px] leading-[1.6] text-[#5D5D5D]">
+                    <div className="text-[16px] leading-[1.6] text-[#5D5D5D]">
                       User-story map → Notion backend table → Firestore calls.
                     </div>
                   </div>
@@ -921,13 +951,10 @@ export default function PomesCaseStudy() {
                   ["10.2%", "peak (Tower 77)"],
                 ].map(([n, l]) => (
                   <div key={l}>
-                    <div
-                      className="mb-[8px] text-[40px] leading-none font-extrabold tracking-[-0.02em] text-[#1F1F1F]"
-                      style={{ fontFamily: MONO }}
-                    >
+                    <div className="mb-[8px] text-[40px] leading-none font-extrabold tracking-[-0.02em] text-[#1F1F1F]">
                       {n}
                     </div>
-                    <div className="text-[11px] leading-[1.4] tracking-[0.04em] text-[#A0A0A0]">
+                    <div className="text-[12px] leading-[1.4] tracking-[0.04em] text-[#A0A0A0]">
                       {l}
                     </div>
                   </div>
@@ -940,7 +967,7 @@ export default function PomesCaseStudy() {
                   <NycMapSvg />
                   <ConversionBarSvg />
                 </div>
-                <figcaption className="mt-[14px] text-right text-[11px] tracking-[0.08em] text-[#A0A0A0]">
+                <figcaption className="mt-[14px] text-right text-[12px] tracking-[0.08em] text-[#A0A0A0]">
                   FIG. 3 OF 3 · GTM EVIDENCE — 4 NEIGHBORHOODS, 1 WINNER
                 </figcaption>
               </figure>
@@ -966,7 +993,7 @@ export default function PomesCaseStudy() {
                   <div className="mb-[14px] text-[12px] font-medium tracking-[0.06em] text-[#A0A0A0]">
                     v1 — Family-oriented
                   </div>
-                  <div className="text-[14px] leading-[2] text-[#5D5D5D]">
+                  <div className="text-[16px] leading-[2] text-[#5D5D5D]">
                     Kid drop-off
                     <br />
                     School pickup
@@ -980,7 +1007,7 @@ export default function PomesCaseStudy() {
                   <div className="mb-[14px] text-[12px] font-medium tracking-[0.06em] text-[#1F1F1F]">
                     v2 — Young professional
                   </div>
-                  <div className="text-[14px] leading-[2] text-[#5D5D5D]">
+                  <div className="text-[16px] leading-[2] text-[#5D5D5D]">
                     Wellness sessions
                     <br />
                     Hobby groups
@@ -993,7 +1020,7 @@ export default function PomesCaseStudy() {
               </div>
 
               <p
-                className="mt-[22px] border-t border-[#A0A0A0] pt-[18px] text-[13px] text-[#5D5D5D]"
+                className="mt-[22px] border-t border-[#A0A0A0] pt-[18px] text-[16px] text-[#5D5D5D]"
                 style={{ fontStyle: "italic" }}
               >
                 Full GTM breakdown — neighborhood selection, building audit,
@@ -1030,7 +1057,7 @@ export default function PomesCaseStudy() {
                 ].map((b) => (
                   <li
                     key={b}
-                    className="relative pl-[22px] text-[15px] leading-[1.6] text-[#5D5D5D] before:absolute before:top-[12px] before:left-0 before:h-px before:w-[12px] before:bg-[#A0A0A0]"
+                    className="relative pl-[22px] text-[16px] leading-[1.6] text-[#5D5D5D] before:absolute before:top-[12px] before:left-0 before:h-px before:w-[12px] before:bg-[#A0A0A0]"
                   >
                     {b}
                   </li>
@@ -1065,12 +1092,11 @@ function Section({
 }) {
   return (
     <section
-      id={`pomes-${id}`}
-      data-pomes-section
+      id={id}
       className={
         first
-          ? "scroll-mt-12"
-          : "mt-[56px] scroll-mt-12 border-t border-[#A0A0A0] pt-[56px]"
+          ? "scroll-mt-[80px]"
+          : "mt-[56px] scroll-mt-[80px] border-t border-[#A0A0A0] pt-[56px]"
       }
     >
       {children}
@@ -1085,15 +1111,15 @@ function ScanGrid({ cells }: { cells: ScanCell[] }) {
       {cells.map((c) => (
         <div key={c.name} className="rounded-[12px] bg-[#F4F4F4] px-[22px] py-[24px]">
           <div className="mb-[14px] flex items-start gap-[14px]">
-            <div className="flex h-[40px] w-[60px] shrink-0 items-center justify-center rounded-[6px] bg-[#D9D9D9] text-[10px] font-medium text-[#A0A0A0]">
+            <div className="flex h-[40px] w-[60px] shrink-0 items-center justify-center rounded-[6px] bg-[#D9D9D9] text-[12px] font-medium text-[#A0A0A0]">
               {c.name.split(" ")[0].slice(0, 9)}
             </div>
             <div className="min-w-0 flex-1">
-              <div className="mb-[4px] text-[15px] font-medium text-[#1F1F1F]">
+              <div className="mb-[4px] text-[16px] font-medium text-[#1F1F1F]">
                 {c.name}
               </div>
               <span
-                className={`inline-block rounded-[3px] px-[7px] py-[2px] text-[10px] font-medium tracking-[0.06em] ${
+                className={`inline-block rounded-[3px] px-[7px] py-[2px] text-[12px] font-medium tracking-[0.06em] ${
                   c.badge === "ai"
                     ? "bg-[#D9D9D9] text-[#1F1F1F]"
                     : "bg-[#D9D9D9] text-[#5D5D5D]"
@@ -1103,7 +1129,7 @@ function ScanGrid({ cells }: { cells: ScanCell[] }) {
               </span>
             </div>
           </div>
-          <div className="text-[13px] leading-[1.7] text-[#5D5D5D]">{c.body}</div>
+          <div className="text-[16px] leading-[1.7] text-[#5D5D5D]">{c.body}</div>
         </div>
       ))}
     </div>
@@ -1147,7 +1173,7 @@ function ScrBlock({
 
   const textEl = (
     <div className="min-w-0">
-      <div className="mb-[8px] text-[11px] tracking-[0.16em] text-[#A0A0A0]">
+      <div className="mb-[8px] text-[12px] tracking-[0.16em] text-[#A0A0A0]">
         {eyebrow}
       </div>
       <h3 className="mb-[14px] text-[22px] leading-[1.25] font-medium tracking-[-0.01em] text-[#1F1F1F]">
@@ -1156,7 +1182,7 @@ function ScrBlock({
       {paras.map((p, i) => (
         <p
           key={i}
-          className="mb-[12px] text-[14px] leading-[1.7] text-[#5D5D5D]"
+          className="mb-[12px] text-[16px] leading-[1.7] text-[#5D5D5D]"
         >
           {p}
         </p>

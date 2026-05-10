@@ -47,8 +47,8 @@ const SECTIONS: CaseStudySection[] = [
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p
-      className="text-[11px] tracking-[0.16em] font-medium text-[#5D5D5D]"
-      style={MONO}
+      className="text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+
     >
       {children}
     </p>
@@ -59,7 +59,7 @@ function SectionNumber({ children }: { children: React.ReactNode }) {
   return (
     <p
       className="text-[64px] leading-[0.85] font-medium text-[#1F1F1F] tablet:text-[76px]"
-      style={MONO}
+
     >
       {children}
     </p>
@@ -117,8 +117,8 @@ function BeatDivider({ label }: { label: string }) {
     <div className="relative flex items-center py-[8px]">
       <div className="absolute inset-x-0 top-1/2 h-px bg-[#1F1F1F]/30" />
       <span
-        className="relative mx-auto bg-[#EEEEEE] px-[24px] py-[8px] text-[11px] tracking-[0.16em] font-medium text-[#1F1F1F]"
-        style={MONO}
+        className="relative mx-auto bg-[#EEEEEE] px-[24px] py-[8px] text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
+
       >
         {label}
       </span>
@@ -186,8 +186,8 @@ function HeroCompositionFallback() {
       <div className="absolute inset-x-0 top-1/2 z-10 flex -translate-y-1/2 items-center">
         <div className="h-px flex-1 bg-[#1F1F1F]/30" />
         <span
-          className="bg-[#F8F8F8] px-[16px] py-[6px] text-[11px] tracking-[0.16em] font-medium text-[#1F1F1F]"
-          style={MONO}
+          className="bg-[#F8F8F8] px-[16px] py-[6px] text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
+
         >
           PRINCIPLE APPLIED
         </span>
@@ -240,14 +240,14 @@ function HeroCompositionFallback() {
       {/* Annotation overlay (top-right corner) */}
       <div className="absolute top-[12px] right-[12px] flex flex-col gap-[2px] bg-[#F8F8F8]/85 px-[10px] py-[6px]">
         <p
-          className="text-[10px] tracking-[0.08em] text-[#5D5D5D]"
-          style={MONO}
+          className="text-[12px] tracking-[0.08em] text-[#5D5D5D]"
+
         >
           ⊘ before — opinion-led
         </p>
         <p
-          className="text-[10px] tracking-[0.08em] text-[#1F1F1F]"
-          style={MONO}
+          className="text-[12px] tracking-[0.08em] text-[#1F1F1F]"
+
         >
           ✓ after — principle-led
         </p>
@@ -265,9 +265,16 @@ function SectionHero() {
       <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Display: logo + wordmark + subtitle */}
+        {/* Display: project number + logo + wordmark + subtitle.
+            "04" is JBM Mono — the only place JBM appears on the page. */}
         <div className="flex flex-col gap-[12px]">
           <div className="flex flex-wrap items-end gap-[22px]">
+            <span
+              className="text-[64px] font-extrabold leading-[0.85] tracking-[-0.04em] text-[#1F1F1F] tablet:text-[120px]"
+              style={MONO}
+            >
+              04
+            </span>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/work/logos/toyotalogo.png"
@@ -280,8 +287,8 @@ function SectionHero() {
             </h1>
           </div>
           <p
-            className="text-[14px] tracking-[0.04em] font-normal text-[#5D5D5D]"
-            style={MONO}
+            className="text-[16px] tracking-[0.04em] font-normal text-[#5D5D5D]"
+
           >
             Combo PCA Approval Workflow · supply-chain operations · emergency
             rescue
@@ -316,12 +323,12 @@ function SectionHero() {
                 className="flex flex-wrap items-baseline gap-[16px] border-b border-[#1F1F1F]/30 py-[12px]"
               >
                 <dt
-                  className="w-[90px] shrink-0 text-[11px] tracking-[0.16em] font-medium text-[#5D5D5D]"
-                  style={MONO}
+                  className="w-[90px] shrink-0 text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+
                 >
                   {label}
                 </dt>
-                <dd className="flex-1 text-[15px] leading-[1.5] font-medium text-[#1F1F1F] tablet:text-[16px]">
+                <dd className="flex-1 text-[16px] leading-[1.5] font-medium text-[#1F1F1F] tablet:text-[16px]">
                   {value}
                 </dd>
               </div>
@@ -332,7 +339,7 @@ function SectionHero() {
         {/* Footer cue — promises the reviewer the case length up front */}
         <p
           className="text-[12px] tracking-[0.04em] font-normal text-[#5D5D5D]"
-          style={MONO}
+
         >
           ↓ Two symptoms, one cause, one fix — in 3 minutes
         </p>
@@ -360,7 +367,7 @@ function PcaTrigger({ onOpen }: { onOpen: () => void }) {
         Combo PCA approval
       </span>
       <span
-        className="text-[10px] text-[#1F1F1F] transition-transform duration-200 group-hover:rotate-45"
+        className="text-[12px] text-[#1F1F1F] transition-transform duration-200 group-hover:rotate-45"
         aria-hidden
       >
         ✦
@@ -403,7 +410,7 @@ function PcaModal({
           <h3 className="text-[24px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[28px]">
             What is PCA approval?
           </h3>
-          <p className="text-[15px] leading-[1.7] text-[#1F1F1F] tablet:text-[16px]">
+          <p className="text-[16px] leading-[1.7] text-[#1F1F1F] tablet:text-[16px]">
             <strong className="font-semibold">
               PCA (Product Configuration Approval)
             </strong>{" "}
@@ -411,7 +418,7 @@ function PcaModal({
             &ldquo;Guides&rdquo; — the master configuration specs that
             downstream operations consume.
           </p>
-          <p className="text-[15px] leading-[1.7] text-[#1F1F1F] tablet:text-[16px]">
+          <p className="text-[16px] leading-[1.7] text-[#1F1F1F] tablet:text-[16px]">
             The <strong className="font-semibold">Combo PCA workflow</strong>{" "}
             specifically covers the multi-persona path from auto-generated PCA
             codes through DSM review, UUU code assignment, and function-kind
@@ -449,19 +456,19 @@ function PcaApprovalFlow() {
           <div key={s.num} className="flex items-center gap-[6px]">
             <div className="flex flex-1 flex-col items-start gap-[6px] border border-[#1F1F1F]/30 px-[12px] py-[10px]">
               <span
-                className="text-[10px] tracking-[0.08em] text-[#A0A0A0]"
-                style={MONO}
+                className="text-[12px] tracking-[0.08em] text-[#A0A0A0]"
+
               >
                 {s.num}
               </span>
-              <span className="text-[11px] leading-[1.3] font-medium text-[#1F1F1F]">
+              <span className="text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
                 {s.label}
               </span>
             </div>
             {i < steps.length - 1 && (
               <span
-                className="hidden text-[10px] text-[#A0A0A0] tablet:inline"
-                style={MONO}
+                className="hidden text-[12px] text-[#A0A0A0] tablet:inline"
+
                 aria-hidden
               >
                 ›
@@ -471,8 +478,8 @@ function PcaApprovalFlow() {
         ))}
       </div>
       <p
-        className="text-[11px] tracking-[0.16em] font-normal text-[#5D5D5D]"
-        style={MONO}
+        className="text-[12px] tracking-[0.16em] font-normal text-[#5D5D5D]"
+
       >
         PCA approval flow — where the engagement lived
       </p>
@@ -495,15 +502,15 @@ function NonNegotiableCard({
   return (
     <article className="flex flex-col gap-[12px] border border-[#1F1F1F]/30 bg-[#F8F8F8] p-[24px] tablet:p-[28px]">
       <span
-        className="text-[11px] tracking-[0.16em] font-medium text-[#A0A0A0]"
-        style={MONO}
+        className="text-[12px] tracking-[0.16em] font-medium text-[#A0A0A0]"
+
       >
         {num}
       </span>
       <h3 className="text-[20px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[22px]">
         {title}
       </h3>
-      <p className="text-[14px] leading-[1.55] font-normal text-[#1F1F1F]">
+      <p className="text-[16px] leading-[1.55] font-normal text-[#1F1F1F]">
         {body}
       </p>
       <p className="mt-auto text-[12px] leading-[1.6] italic font-normal text-[#5D5D5D]">
@@ -750,8 +757,8 @@ function CommunicationBreakdown() {
         </text>
       </svg>
       <figcaption
-        className="text-center text-[11px] tracking-[0.16em] font-normal text-[#5D5D5D]"
-        style={MONO}
+        className="text-center text-[12px] tracking-[0.16em] font-normal text-[#5D5D5D]"
+
       >
         Fig. 1 of 2 · The relay that produced the symptoms
       </figcaption>
@@ -769,15 +776,15 @@ function BrdPair() {
         <div className="flex flex-col gap-[12px]">
           <div className="relative aspect-[4/3] w-full overflow-clip border border-[#1F1F1F]/30 bg-[#F8F8F8]">
             <div
-              className="flex h-full w-full items-center justify-center text-[10px] tracking-[0.16em] text-[#A0A0A0]"
-              style={MONO}
+              className="flex h-full w-full items-center justify-center text-[12px] tracking-[0.16em] text-[#A0A0A0]"
+
             >
               TBD · BEFORE BRD SCREENSHOT
             </div>
             <div className="absolute top-[10px] right-[10px] max-w-[60%] bg-[#F8F8F8]/85 px-[10px] py-[6px]">
               <p
-                className="text-[10px] tracking-[0.08em] italic font-normal text-[#5D5D5D]"
-                style={MONO}
+                className="text-[12px] tracking-[0.08em] italic font-normal text-[#5D5D5D]"
+
               >
                 ⊘ solution-first language · mixed problem + current-state · no
                 validation criteria
@@ -785,8 +792,8 @@ function BrdPair() {
             </div>
           </div>
           <p
-            className="text-center text-[11px] tracking-[0.16em] font-normal text-[#5D5D5D]"
-            style={MONO}
+            className="text-center text-[12px] tracking-[0.16em] font-normal text-[#5D5D5D]"
+
           >
             BEFORE — solution-first BRD
           </p>
@@ -796,15 +803,15 @@ function BrdPair() {
         <div className="flex flex-col gap-[12px]">
           <div className="relative aspect-[4/3] w-full overflow-clip border border-[#1F1F1F]/30 bg-[#F8F8F8]">
             <div
-              className="flex h-full w-full items-center justify-center text-[10px] tracking-[0.16em] text-[#A0A0A0]"
-              style={MONO}
+              className="flex h-full w-full items-center justify-center text-[12px] tracking-[0.16em] text-[#A0A0A0]"
+
             >
               TBD · AFTER BRD SCREENSHOT
             </div>
             <div className="absolute top-[10px] right-[10px] max-w-[60%] bg-[#F8F8F8]/85 px-[10px] py-[6px]">
               <p
-                className="text-[10px] tracking-[0.08em] font-medium text-[#1F1F1F]"
-                style={MONO}
+                className="text-[12px] tracking-[0.08em] font-medium text-[#1F1F1F]"
+
               >
                 ✓ 5-section problem-first structure · validation rules per
                 section
@@ -812,16 +819,16 @@ function BrdPair() {
             </div>
           </div>
           <p
-            className="text-center text-[11px] tracking-[0.16em] font-medium text-[#1F1F1F]"
-            style={MONO}
+            className="text-center text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
+
           >
             AFTER — problem-first structure
           </p>
         </div>
       </div>
       <figcaption
-        className="text-center text-[11px] tracking-[0.16em] font-normal text-[#5D5D5D]"
-        style={MONO}
+        className="text-center text-[12px] tracking-[0.16em] font-normal text-[#5D5D5D]"
+
       >
         Fig. 2 of 2 · The artifact, restructured
       </figcaption>
@@ -843,8 +850,8 @@ function SelfPolicingBanner() {
         it should be rejected.&rdquo;
       </p>
       <p
-        className="text-[11px] tracking-[0.16em] font-normal text-[#F4F4F4]/80"
-        style={MONO}
+        className="text-[12px] tracking-[0.16em] font-normal text-[#F4F4F4]/80"
+
       >
         — Self-policing rule. Forged here. Carried into GIA later.
       </p>
@@ -859,19 +866,19 @@ function BigCallout() {
       style={{ backgroundColor: DARK }}
     >
       <p
-        className="text-[11px] tracking-[0.16em] font-medium text-[#F4F4F4]/80"
-        style={MONO}
+        className="text-[12px] tracking-[0.16em] font-medium text-[#F4F4F4]/80"
+
       >
         THE TOYOTA SIGNAL
       </p>
       <p className="text-[24px] leading-[1.3] font-medium text-[#F4F4F4] tablet:text-[28px]">
         When the surface keeps breaking, fix the system that produces it.
       </p>
-      <p className="text-[15px] leading-[1.6] font-normal text-[#F4F4F4]/80 tablet:text-[16px]">
+      <p className="text-[16px] leading-[1.6] font-normal text-[#F4F4F4]/80 tablet:text-[16px]">
         I diagnosed two problems — design fundamentals and a broken relay. I
         solved one — the upstream one — and watched the surface fix itself.
       </p>
-      <p className="text-[13px] leading-[1.5] italic font-normal text-[#F4F4F4]/70 tablet:text-[14px]">
+      <p className="text-[16px] leading-[1.5] italic font-normal text-[#F4F4F4]/70 tablet:text-[16px]">
         Two symptoms. One artifact. The leverage was always upstream.
       </p>
     </div>
@@ -1039,13 +1046,13 @@ function StatOutcome({
     <div className="flex flex-col gap-[8px]">
       <span
         className="text-[48px] leading-[0.9] font-medium text-[#1F1F1F] tablet:text-[56px]"
-        style={MONO}
+
       >
         {number}
       </span>
       <span
-        className="text-[11px] tracking-[0.16em] font-medium leading-[1.4] text-[#5D5D5D]"
-        style={MONO}
+        className="text-[12px] tracking-[0.16em] font-medium leading-[1.4] text-[#5D5D5D]"
+
       >
         {label}
       </span>

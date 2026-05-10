@@ -36,8 +36,8 @@ const SECTIONS: CaseStudySection[] = [
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p
-      className="text-[11px] tracking-[0.18em] font-medium text-[#5D5D5D]"
-      style={MONO}
+      className="text-[12px] tracking-[0.18em] font-medium text-[#5D5D5D]"
+
     >
       {children}
     </p>
@@ -48,7 +48,7 @@ function SectionNumber({ children }: { children: React.ReactNode }) {
   return (
     <p
       className="text-[64px] leading-[0.85] font-extrabold tracking-[-0.04em] text-[#1F1F1F] tablet:text-[88px]"
-      style={MONO}
+
     >
       {children}
     </p>
@@ -65,7 +65,7 @@ function Headline({ children }: { children: React.ReactNode }) {
 
 function Lede({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[600px] text-[15px] leading-[1.7] font-normal text-[#1F1F1F] tablet:text-[16px]">
+    <p className="max-w-[600px] text-[16px] leading-[1.7] font-normal text-[#1F1F1F] tablet:text-[16px]">
       {children}
     </p>
   );
@@ -73,7 +73,7 @@ function Lede({ children }: { children: React.ReactNode }) {
 
 function Body({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[620px] text-[14px] leading-[1.75] font-normal text-[#5D5D5D]">
+    <p className="max-w-[620px] text-[16px] leading-[1.75] font-normal text-[#5D5D5D]">
       {children}
     </p>
   );
@@ -110,8 +110,8 @@ function StatsCallout({
   return (
     <div className="border-2 border-[#1F1F1F] bg-[#F8F8F8] p-[20px] tablet:p-[24px]">
       <p
-        className="mb-[14px] text-[11px] tracking-[0.12em] text-[#5D5D5D]"
-        style={MONO}
+        className="mb-[14px] text-[12px] tracking-[0.12em] text-[#5D5D5D]"
+
       >
         {header}
       </p>
@@ -124,7 +124,7 @@ function StatsCallout({
             <span className="text-[24px] leading-[1] font-medium tracking-[-0.02em] text-[#1F1F1F]">
               {s.number}
             </span>
-            <span className="text-[10px] leading-[1.4] text-[#5D5D5D]">
+            <span className="text-[12px] leading-[1.4] text-[#5D5D5D]">
               {s.label}
             </span>
           </div>
@@ -136,7 +136,7 @@ function StatsCallout({
 
 function LinkOut({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[11px] text-[#A0A0A0]" style={MONO}>
+    <p className="text-[12px] text-[#A0A0A0]">
       ↗ link out: {children}
     </p>
   );
@@ -186,13 +186,22 @@ function Hero() {
       <div className="flex flex-col gap-[36px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Display — wordmark, intentionally typographic (no glyph mark to
-            keep the read about the question, not a logo). */}
-        <h1 className="max-w-[1100px] text-[40px] leading-[0.95] font-black tracking-[-0.03em] text-[#1F1F1F] tablet:text-[88px]">
-          Is street parking
-          <br aria-hidden />
-          really free?
-        </h1>
+        {/* Display — project number + wordmark.  "07" is JBM Mono (the
+            only place JBM appears).  No glyph logo here — the question is
+            the brand. */}
+        <div className="flex flex-wrap items-baseline gap-[16px]">
+          <span
+            className="text-[64px] font-extrabold leading-[0.85] tracking-[-0.04em] text-[#1F1F1F] tablet:text-[120px]"
+            style={MONO}
+          >
+            07
+          </span>
+          <h1 className="max-w-[1100px] text-[40px] leading-[0.95] font-black tracking-[-0.03em] text-[#1F1F1F] tablet:text-[88px]">
+            Is street parking
+            <br aria-hidden />
+            really free?
+          </h1>
+        </div>
 
         {/* Hero grid — tagline + meta */}
         <div className="grid gap-[36px] tablet:grid-cols-[1fr_320px] tablet:items-start">
@@ -216,7 +225,7 @@ function Hero() {
               >
                 <dt
                   className="w-[90px] shrink-0 text-[12px] font-normal text-[#5D5D5D]"
-                  style={MONO}
+
                 >
                   {label}
                 </dt>
@@ -243,12 +252,12 @@ function Hero() {
                   />
                 </div>
                 <div className="flex flex-col gap-[2px]">
-                  <span className="text-[14px] leading-[1.2] font-medium text-[#1F1F1F]">
+                  <span className="text-[16px] leading-[1.2] font-medium text-[#1F1F1F]">
                     {v.bold}
                   </span>
                   <span
-                    className="text-[10px] tracking-[0.05em] text-[#A0A0A0]"
-                    style={MONO}
+                    className="text-[12px] tracking-[0.05em] text-[#A0A0A0]"
+
                   >
                     {v.sub}
                   </span>
@@ -308,8 +317,8 @@ function SectionPremise() {
               photos when available. */}
           <aside className="flex flex-col gap-[12px]">
             <p
-              className="text-[10px] tracking-[0.16em] text-[#A0A0A0]"
-              style={MONO}
+              className="text-[12px] tracking-[0.16em] text-[#A0A0A0]"
+
             >
               EVIDENCE — EXHIBIT A
             </p>
@@ -339,8 +348,8 @@ function SectionPremise() {
                     {p.label}
                   </p>
                   <p
-                    className="text-[10px] tracking-[0.04em] text-[#A0A0A0]"
-                    style={MONO}
+                    className="text-[12px] tracking-[0.04em] text-[#A0A0A0]"
+
                   >
                     {p.meta}
                   </p>
@@ -379,8 +388,8 @@ function FlowDiagram() {
               </p>
               {n.sub && (
                 <p
-                  className="text-[10px] tracking-[0.04em] text-[#5D5D5D]"
-                  style={MONO}
+                  className="text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+
                 >
                   {n.sub}
                 </p>
@@ -388,8 +397,8 @@ function FlowDiagram() {
             </div>
             {i < NODES.length - 1 && (
               <span
-                className="text-[14px] text-[#5D5D5D] tablet:hidden"
-                style={MONO}
+                className="text-[16px] text-[#5D5D5D] tablet:hidden"
+
                 aria-hidden
               >
                 ↓
@@ -397,8 +406,8 @@ function FlowDiagram() {
             )}
             {i < NODES.length - 1 && (
               <span
-                className="hidden text-[14px] text-[#5D5D5D] tablet:inline"
-                style={MONO}
+                className="hidden text-[16px] text-[#5D5D5D] tablet:inline"
+
                 aria-hidden
               >
                 →
@@ -408,8 +417,8 @@ function FlowDiagram() {
         ))}
       </div>
       <p
-        className="mt-[20px] text-center text-[10px] tracking-[0.06em] text-[#A0A0A0]"
-        style={MONO}
+        className="mt-[20px] text-center text-[12px] tracking-[0.06em] text-[#A0A0A0]"
+
       >
         FIG. 1 — pipeline. NYC FYs run Jul → Jun, so each calendar year stitches two datasets.
       </p>
@@ -489,18 +498,18 @@ function ViewBlock({
     <article className="grid gap-[24px] border-t border-[#1F1F1F]/30 py-[28px] tablet:grid-cols-[1fr_360px] tablet:gap-[32px]">
       <div className="flex flex-col gap-[10px]">
         <p
-          className="text-[11px] tracking-[0.08em] text-[#A0A0A0]"
-          style={MONO}
+          className="text-[12px] tracking-[0.08em] text-[#A0A0A0]"
+
         >
           VIEW {index} / {group}
         </p>
         <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
           {title}
         </h3>
-        <p className="max-w-[600px] text-[13px] leading-[1.7] font-normal text-[#5D5D5D]">
+        <p className="max-w-[600px] text-[16px] leading-[1.7] font-normal text-[#5D5D5D]">
           {body}
         </p>
-        <p className="mt-[6px] max-w-[560px] border-l-2 border-[#1F1F1F] pl-[14px] text-[14px] leading-[1.5] italic text-[#1F1F1F]">
+        <p className="mt-[6px] max-w-[560px] border-l-2 border-[#1F1F1F] pl-[14px] text-[16px] leading-[1.5] italic text-[#1F1F1F]">
           {insight}
         </p>
       </div>
@@ -625,12 +634,12 @@ function SectionFindings() {
                     : ""
                 }`}
               >
-                <span className="text-[13px] leading-[1.5] text-[#5D5D5D] tablet:text-[14px]">
+                <span className="text-[16px] leading-[1.5] text-[#5D5D5D] tablet:text-[16px]">
                   {f.label}
                 </span>
                 <span
                   className="text-[20px] leading-[1] font-medium tracking-[-0.02em] text-[#1F1F1F] tablet:text-[24px]"
-                  style={MONO}
+
                 >
                   {f.value}
                 </span>
@@ -644,7 +653,7 @@ function SectionFindings() {
           looking at billions in fines a year. Just from people parking.
         </Body>
 
-        <p className="text-[12px] leading-[1.6] text-[#A0A0A0]" style={MONO}>
+        <p className="text-[12px] leading-[1.6] text-[#A0A0A0]">
           ↗ note: some of these are charged, some get paid, some get contested.
           NYC publishes both — I built this off the issued side, because the
           paid side runs ~12 months behind reality.
@@ -707,21 +716,21 @@ function SectionReflection() {
         {/* Footer credit — single mono line, restrained per the system */}
         <div className="mt-[16px] flex flex-col gap-[6px] border-t border-[#1F1F1F]/30 pt-[16px]">
           <p
-            className="text-[11px] leading-[1.7] tracking-[0.04em] text-[#5D5D5D]"
-            style={MONO}
+            className="text-[12px] leading-[1.7] tracking-[0.04em] text-[#5D5D5D]"
+
           >
             Built with Vue 3 · Vite · Pinia · Mapbox GL · Three.js · D3.
           </p>
           <p
-            className="text-[11px] leading-[1.7] tracking-[0.04em] text-[#A0A0A0]"
-            style={MONO}
+            className="text-[12px] leading-[1.7] tracking-[0.04em] text-[#A0A0A0]"
+
           >
             Data: NYC Open Data — Parking Violations Issued FY2021 → FY2026 ·
             DOF Parking Violation Codes.
           </p>
           <p
-            className="text-[11px] leading-[1.7] tracking-[0.04em] text-[#A0A0A0]"
-            style={MONO}
+            className="text-[12px] leading-[1.7] tracking-[0.04em] text-[#A0A0A0]"
+
           >
             <a
               href="https://github.com/jotnajoa/nycproject"

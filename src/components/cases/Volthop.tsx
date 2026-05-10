@@ -33,8 +33,8 @@ const MONO: React.CSSProperties = {
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
     <p
-      className="text-[11px] tracking-[0.18em] font-medium text-[#5D5D5D]"
-      style={MONO}
+      className="text-[12px] tracking-[0.18em] font-medium text-[#5D5D5D]"
+
     >
       {children}
     </p>
@@ -45,7 +45,7 @@ function SectionNumber({ children }: { children: React.ReactNode }) {
   return (
     <p
       className="text-[64px] leading-[0.85] font-extrabold tracking-[-0.04em] text-[#1F1F1F] tablet:text-[88px]"
-      style={MONO}
+
     >
       {children}
     </p>
@@ -62,7 +62,7 @@ function Headline({ children }: { children: React.ReactNode }) {
 
 function Lede({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[600px] text-[15px] leading-[1.7] font-normal text-[#1F1F1F] tablet:text-[16px]">
+    <p className="max-w-[600px] text-[16px] leading-[1.7] font-normal text-[#1F1F1F] tablet:text-[16px]">
       {children}
     </p>
   );
@@ -70,7 +70,7 @@ function Lede({ children }: { children: React.ReactNode }) {
 
 function Body({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[620px] text-[14px] leading-[1.75] font-normal text-[#5D5D5D]">
+    <p className="max-w-[620px] text-[16px] leading-[1.75] font-normal text-[#5D5D5D]">
       {children}
     </p>
   );
@@ -79,8 +79,8 @@ function Body({ children }: { children: React.ReactNode }) {
 function ProvesTag({ children }: { children: React.ReactNode }) {
   return (
     <span
-      className="inline-block bg-[#1F1F1F]/10 px-[7px] py-[3px] text-[10px] tracking-[0.04em] text-[#1F1F1F]"
-      style={MONO}
+      className="inline-block bg-[#1F1F1F]/10 px-[7px] py-[3px] text-[12px] tracking-[0.04em] text-[#1F1F1F]"
+
     >
       PROVES · {children}
     </span>
@@ -117,10 +117,10 @@ function VersionChip({
 }) {
   return (
     <span
-      className={`inline-block border border-[#1F1F1F] px-[10px] py-[4px] text-[11px] font-medium ${
+      className={`inline-block border border-[#1F1F1F] px-[10px] py-[4px] text-[12px] font-medium ${
         solid ? "bg-[#1F1F1F] text-[#F4F4F4]" : "text-[#1F1F1F]"
       }`}
-      style={MONO}
+
     >
       {children}
     </span>
@@ -129,7 +129,7 @@ function VersionChip({
 
 function LinkOut({ children }: { children: React.ReactNode }) {
   return (
-    <p className="text-[11px] text-[#A0A0A0]" style={MONO}>
+    <p className="text-[12px] text-[#A0A0A0]">
       ↗ link out: {children}
     </p>
   );
@@ -169,8 +169,16 @@ function Hero() {
       <div className="flex flex-col gap-[36px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Display row — logo glyph + wordmark */}
+        {/* Display row — project number + logo + wordmark.
+            "02" is the canonical project marker (JBM Mono — the only place
+            JBM appears on the page). */}
         <div className="flex flex-wrap items-end gap-[16px]">
+          <span
+            className="text-[64px] font-extrabold leading-[0.85] tracking-[-0.04em] text-[#1F1F1F] tablet:text-[120px]"
+            style={MONO}
+          >
+            02
+          </span>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/work/volthop/volthop-logo.png"
@@ -216,7 +224,7 @@ function Hero() {
                 >
                   <dt
                     className="w-[90px] shrink-0 text-[12px] font-normal text-[#5D5D5D]"
-                    style={MONO}
+
                   >
                     {label}
                   </dt>
@@ -242,12 +250,12 @@ function Hero() {
                 <span className="text-[12px] font-medium text-[#1F1F1F]">
                   {date}
                 </span>
-                <span className="text-[11px] font-normal text-[#5D5D5D]">
+                <span className="text-[12px] font-normal text-[#5D5D5D]">
                   {label}
                 </span>
                 <span
-                  className="text-[10px] tracking-[0.05em] text-[#A0A0A0]"
-                  style={MONO}
+                  className="text-[12px] tracking-[0.05em] text-[#A0A0A0]"
+
                 >
                   {detail}
                 </span>
@@ -279,15 +287,15 @@ function RedditMock({
 }) {
   return (
     <article className="flex flex-col gap-[8px] border-2 border-[#1F1F1F] bg-[#F8F8F8] p-[16px]">
-      <p className="text-[10px] text-[#5D5D5D]" style={MONO}>
+      <p className="text-[12px] text-[#5D5D5D]">
         {subreddit} · {date}
       </p>
-      <h3 className="text-[14px] leading-[1.35] font-medium text-[#1F1F1F]">
+      <h3 className="text-[16px] leading-[1.35] font-medium text-[#1F1F1F]">
         {title}
       </h3>
       <p
-        className="text-[10px] tracking-[0.04em] text-[#A0A0A0]"
-        style={MONO}
+        className="text-[12px] tracking-[0.04em] text-[#A0A0A0]"
+
       >
         {meta}
       </p>
@@ -308,8 +316,8 @@ function StatsCallout({
   return (
     <div className="border-2 border-[#1F1F1F] bg-[#F8F8F8] p-[20px] tablet:p-[24px]">
       <p
-        className="mb-[14px] text-[11px] tracking-[0.12em] text-[#5D5D5D]"
-        style={MONO}
+        className="mb-[14px] text-[12px] tracking-[0.12em] text-[#5D5D5D]"
+
       >
         {header}
       </p>
@@ -319,7 +327,7 @@ function StatsCallout({
             <span className="text-[24px] leading-[1] font-medium tracking-[-0.02em] text-[#1F1F1F]">
               {s.number}
             </span>
-            <span className="text-[10px] leading-[1.4] text-[#5D5D5D]">
+            <span className="text-[12px] leading-[1.4] text-[#5D5D5D]">
               {s.label}
             </span>
           </div>
@@ -419,7 +427,7 @@ function GapCard({
       }`}
     >
       <div className="aspect-[4/3] w-full border border-dashed border-[#1F1F1F]/40 bg-[#1F1F1F]/[0.03]" />
-      <h3 className="text-[14px] leading-[1.3] font-medium text-[#1F1F1F]">
+      <h3 className="text-[16px] leading-[1.3] font-medium text-[#1F1F1F]">
         {title}
       </h3>
       <p className="text-[12px] leading-[1.55] font-normal text-[#5D5D5D]">
@@ -485,8 +493,8 @@ function ArchitectureDiagram() {
         {/* Borrower */}
         <div className="flex flex-col items-start gap-[8px] text-left tablet:items-end tablet:text-right">
           <p
-            className="text-[11px] tracking-[0.08em] text-[#5D5D5D]"
-            style={MONO}
+            className="text-[12px] tracking-[0.08em] text-[#5D5D5D]"
+
           >
             → AT DESTINATION
           </p>
@@ -502,7 +510,7 @@ function ArchitectureDiagram() {
         <div className="flex flex-col items-center gap-[6px] border-2 border-[#1F1F1F] bg-[#EEEEEE] px-[14px] py-[18px]">
           <p
             className="text-[12px] tracking-[0.06em] text-[#5D5D5D]"
-            style={MONO}
+
           >
             ONE USER
           </p>
@@ -510,8 +518,8 @@ function ArchitectureDiagram() {
             Folding e-bike owner who travels
           </p>
           <p
-            className="text-[14px] tracking-[0.5em] text-[#1F1F1F]"
-            style={MONO}
+            className="text-[16px] tracking-[0.5em] text-[#1F1F1F]"
+
           >
             ⇄
           </p>
@@ -520,8 +528,8 @@ function ArchitectureDiagram() {
         {/* Provider */}
         <div className="flex flex-col items-start gap-[8px] text-left">
           <p
-            className="text-[11px] tracking-[0.08em] text-[#5D5D5D]"
-            style={MONO}
+            className="text-[12px] tracking-[0.08em] text-[#5D5D5D]"
+
           >
             ← AT HOME
           </p>
@@ -534,8 +542,8 @@ function ArchitectureDiagram() {
         </div>
       </div>
       <p
-        className="mt-[20px] text-center text-[10px] tracking-[0.06em] text-[#A0A0A0]"
-        style={MONO}
+        className="mt-[20px] text-center text-[12px] tracking-[0.06em] text-[#A0A0A0]"
+
       >
         FIG. 1 — every borrower is a provider, and back again.
       </p>
@@ -566,15 +574,15 @@ function DecisionBlock({
     <article className="grid gap-[24px] border-t border-[#1F1F1F]/30 py-[24px] tablet:grid-cols-[1fr_320px] tablet:gap-[32px]">
       <div className="flex flex-col gap-[10px]">
         <p
-          className="text-[11px] tracking-[0.08em] text-[#A0A0A0]"
-          style={MONO}
+          className="text-[12px] tracking-[0.08em] text-[#A0A0A0]"
+
         >
           DECISION {index} / {group}
         </p>
         <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
           {title}
         </h3>
-        <p className="max-w-[600px] text-[13px] leading-[1.7] font-normal text-[#5D5D5D]">
+        <p className="max-w-[600px] text-[16px] leading-[1.7] font-normal text-[#5D5D5D]">
           {body}
         </p>
         {children}
@@ -594,8 +602,8 @@ function DecisionBlock({
           />
         ) : (
           <div
-            className="flex h-full w-full items-center justify-center text-[10px] tracking-[0.08em] text-[#A0A0A0]"
-            style={MONO}
+            className="flex h-full w-full items-center justify-center text-[12px] tracking-[0.08em] text-[#A0A0A0]"
+
           >
             TBD · SCREENSHOT
           </div>
@@ -629,12 +637,12 @@ function BookingFlow() {
           style={{ minWidth: 90 }}
         >
           <span
-            className="text-[9px] text-[#A0A0A0]"
-            style={MONO}
+            className="text-[12px] text-[#A0A0A0]"
+
           >
             {s.num}
           </span>
-          <span className="text-[11px] leading-[1.4] font-medium text-[#1F1F1F]">
+          <span className="text-[12px] leading-[1.4] font-medium text-[#1F1F1F]">
             {s.label}
           </span>
         </div>
@@ -739,21 +747,21 @@ function CTTimeline() {
         {/* Mar 23 — first batch */}
         <div className="flex flex-col items-center gap-[5px] border border-[#1F1F1F]/30 p-[12px] text-center">
           <span
-            className="bg-[#1F1F1F]/10 px-[8px] py-[2px] text-[10px] text-[#1F1F1F]"
-            style={MONO}
+            className="bg-[#1F1F1F]/10 px-[8px] py-[2px] text-[12px] text-[#1F1F1F]"
+
           >
             Mar 23
           </span>
           <p className="text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
             First batch invited
           </p>
-          <p className="text-[10px] text-[#5D5D5D]">24 Android testers</p>
+          <p className="text-[12px] text-[#5D5D5D]">24 Android testers</p>
         </div>
 
         {/* arrow */}
         <p
-          className="hidden text-center text-[14px] text-[#A0A0A0] tablet:flex tablet:items-center tablet:justify-center"
-          style={MONO}
+          className="hidden text-center text-[16px] text-[#A0A0A0] tablet:flex tablet:items-center tablet:justify-center"
+
           aria-hidden
         >
           →
@@ -762,21 +770,21 @@ function CTTimeline() {
         {/* Apr 9 — REJECTED (dominant center) */}
         <div className="flex flex-col items-center gap-[6px] border-2 border-[#1F1F1F] p-[14px] text-center">
           <span
-            className="bg-[#1F1F1F] px-[8px] py-[2px] text-[10px] text-[#F4F4F4]"
-            style={MONO}
+            className="bg-[#1F1F1F] px-[8px] py-[2px] text-[12px] text-[#F4F4F4]"
+
           >
             Apr 9 — rejected
           </span>
-          <p className="text-[13px] leading-[1.3] font-medium text-[#1F1F1F]">
+          <p className="text-[16px] leading-[1.3] font-medium text-[#1F1F1F]">
             More testing required
           </p>
-          <blockquote className="bg-[#1F1F1F]/[0.04] px-[9px] py-[7px] text-left text-[10px] leading-[1.45] italic text-[#1F1F1F]">
+          <blockquote className="bg-[#1F1F1F]/[0.04] px-[9px] py-[7px] text-left text-[12px] leading-[1.45] italic text-[#1F1F1F]">
             “Testers were not engaged with your app during your closed test. You
             didn't follow testing best practices, which may include gathering
             and acting on user feedback through updates to your app.” — Google
             Play, verbatim
           </blockquote>
-          <p className="text-[10px] leading-[1.5] font-medium text-[#1F1F1F]">
+          <p className="text-[12px] leading-[1.5] font-medium text-[#1F1F1F]">
             → Documented every change, every test, every feedback loop.
             Re-submitted with full audit trail.
           </p>
@@ -784,8 +792,8 @@ function CTTimeline() {
 
         {/* arrow */}
         <p
-          className="hidden text-center text-[14px] text-[#A0A0A0] tablet:flex tablet:items-center tablet:justify-center"
-          style={MONO}
+          className="hidden text-center text-[16px] text-[#A0A0A0] tablet:flex tablet:items-center tablet:justify-center"
+
           aria-hidden
         >
           →
@@ -794,20 +802,20 @@ function CTTimeline() {
         {/* Apr 25 — production */}
         <div className="flex flex-col items-center gap-[5px] border border-[#1F1F1F]/30 p-[12px] text-center">
           <span
-            className="bg-[#1F1F1F]/10 px-[8px] py-[2px] text-[10px] text-[#1F1F1F]"
-            style={MONO}
+            className="bg-[#1F1F1F]/10 px-[8px] py-[2px] text-[12px] text-[#1F1F1F]"
+
           >
             Apr 25
           </span>
           <p className="text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
             Production access granted
           </p>
-          <p className="text-[10px] text-[#5D5D5D]">Live on Google Play</p>
+          <p className="text-[12px] text-[#5D5D5D]">Live on Google Play</p>
         </div>
       </div>
       <p
-        className="text-center text-[10px] text-[#A0A0A0]"
-        style={MONO}
+        className="text-center text-[12px] text-[#A0A0A0]"
+
       >
         ↑ 16 days of documentation between fail and pass — same listening muscle
         as Reddit comments ↑
@@ -826,12 +834,12 @@ function IterationStage({
   return (
     <div className="flex flex-col gap-[4px]">
       <p
-        className="text-[10px] tracking-[0.06em] text-[#A0A0A0]"
-        style={MONO}
+        className="text-[12px] tracking-[0.06em] text-[#A0A0A0]"
+
       >
         {label}
       </p>
-      <div className="text-[13px] leading-[1.6] text-[#5D5D5D]">{children}</div>
+      <div className="text-[16px] leading-[1.6] text-[#5D5D5D]">{children}</div>
     </div>
   );
 }
@@ -869,17 +877,17 @@ function IterationRung({
       <div className="flex flex-col gap-[10px]">
         {major && (
           <span
-            className="self-start border-2 border-[#1F1F1F] bg-[#EEEEEE] px-[8px] py-[2px] text-[10px] text-[#1F1F1F]"
-            style={MONO}
+            className="self-start border-2 border-[#1F1F1F] bg-[#EEEEEE] px-[8px] py-[2px] text-[12px] text-[#1F1F1F]"
+
           >
             {rung} ★
           </span>
         )}
         <div className="flex flex-col gap-[6px] border-2 border-[#1F1F1F]/40 bg-[#F8F8F8] px-[15px] py-[11px]">
-          <p className="text-[13px] leading-[1.5] font-normal text-[#1F1F1F]">
+          <p className="text-[16px] leading-[1.5] font-normal text-[#1F1F1F]">
             “{comment}”
           </p>
-          <p className="text-[10px] text-[#A0A0A0]" style={MONO}>
+          <p className="text-[12px] text-[#A0A0A0]">
             — {source}
           </p>
         </div>
@@ -1024,8 +1032,8 @@ function MomentCard({
           />
         ) : (
           <div
-            className="flex h-full w-full items-center justify-center text-[10px] tracking-[0.08em] text-[#A0A0A0]"
-            style={MONO}
+            className="flex h-full w-full items-center justify-center text-[12px] tracking-[0.08em] text-[#A0A0A0]"
+
           >
             TBD
           </div>
@@ -1034,7 +1042,7 @@ function MomentCard({
       <h3 className="text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
         {title}
       </h3>
-      <p className="text-[11px] leading-[1.55] text-[#5D5D5D]">{body}</p>
+      <p className="text-[12px] leading-[1.55] text-[#5D5D5D]">{body}</p>
     </article>
   );
 }
@@ -1051,15 +1059,15 @@ function ChannelCard({
   return (
     <article className="flex flex-col gap-[8px] border-2 border-[#1F1F1F]/30 p-[18px]">
       <p
-        className="text-[10px] tracking-[0.08em] text-[#5D5D5D]"
-        style={MONO}
+        className="text-[12px] tracking-[0.08em] text-[#5D5D5D]"
+
       >
         CHANNEL · {channel}
       </p>
-      <h3 className="text-[14px] leading-[1.3] font-medium text-[#1F1F1F]">
+      <h3 className="text-[16px] leading-[1.3] font-medium text-[#1F1F1F]">
         {title}
       </h3>
-      <ul className="flex flex-col gap-[4px] text-[11px] leading-[1.7] text-[#5D5D5D]">
+      <ul className="flex flex-col gap-[4px] text-[12px] leading-[1.7] text-[#5D5D5D]">
         {bullets.map((b) => (
           <li key={b}>· {b}</li>
         ))}
@@ -1147,7 +1155,7 @@ function SectionGtm() {
         <div className="border-2 border-[#1F1F1F]/30 bg-[#F8F8F8] px-[16px] py-[14px]">
           <p
             className="text-[12px] leading-[1.8] text-[#5D5D5D]"
-            style={MONO}
+
           >
             <span className="text-[#5D5D5D]">Channel mix:</span> Reddit (r/ebikes,
             r/Brompton) <span className="text-[#A0A0A0]">(in flight)</span>
@@ -1194,23 +1202,23 @@ function ReviewMock() {
           className="flex flex-col gap-[8px] border-2 border-[#1F1F1F]/30 p-[14px]"
         >
           <div className="flex items-center justify-between gap-[8px]">
-            <span className="text-[13px] font-medium text-[#1F1F1F]">
+            <span className="text-[16px] font-medium text-[#1F1F1F]">
               {r.name}
             </span>
             <span
               className="text-[12px] tracking-[0.05em] text-[#1F1F1F]"
-              style={MONO}
+
             >
               {r.stars}
             </span>
           </div>
           <p
-            className="text-[10px] tracking-[0.04em] text-[#A0A0A0]"
-            style={MONO}
+            className="text-[12px] tracking-[0.04em] text-[#A0A0A0]"
+
           >
             {r.meta}
           </p>
-          <p className="text-[11px] leading-[1.6] text-[#5D5D5D]">{r.body}</p>
+          <p className="text-[12px] leading-[1.6] text-[#5D5D5D]">{r.body}</p>
         </article>
       ))}
     </div>
@@ -1231,15 +1239,15 @@ function NextMove({
   return (
     <article className="flex flex-col gap-[10px] border-t border-[#1F1F1F]/30 py-[24px]">
       <p
-        className="text-[11px] tracking-[0.08em] text-[#A0A0A0]"
-        style={MONO}
+        className="text-[12px] tracking-[0.08em] text-[#A0A0A0]"
+
       >
         NEXT · {index}
       </p>
       <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
         {title}
       </h3>
-      <p className="max-w-[620px] text-[13px] leading-[1.7] text-[#5D5D5D]">
+      <p className="max-w-[620px] text-[16px] leading-[1.7] text-[#5D5D5D]">
         {body}
       </p>
       {children}
