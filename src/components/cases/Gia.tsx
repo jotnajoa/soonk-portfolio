@@ -185,7 +185,7 @@ function Screenshot({
   if (variant === "artifact") {
     return (
       <figure
-        className={`my-[20px] overflow-hidden rounded-[4px] border border-[#1F1F1F]/20 bg-white ${className}`}
+        className={`my-[20px] max-w-[620px] overflow-hidden rounded-[4px] border border-[#1F1F1F]/10 bg-white ${className}`}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -629,14 +629,8 @@ function Challenge1() {
         variant="artifact"
       />
       <Body>
-        <em>
-          &ldquo;If a genie could grant you any outcome — ignoring
-          feasibility — what would it be?&rdquo;
-        </em>{" "}
-        Removing the build constraint on purpose surfaces the north star
-        — and the real blocker — in the same sentence.  Without it, teams
-        design from what&rsquo;s easy to ship, and the conversation
-        collapses into output and feature bloat.
+        Removing the build constraint surfaces the north star and the
+        real blocker in the same sentence.
       </Body>
 
       <SubH>
@@ -651,10 +645,8 @@ function Challenge1() {
         variant="artifact"
       />
       <Body>
-        Take the outcome from step one and lay out the path to it — who
-        does what, in what order, against which data.  This is the
-        artifact the wireframe gets built against; nothing in the
-        wireframe should exist outside the map.
+        The outcome turned into a flow — who does what, in what order,
+        against which data.
       </Body>
 
       <SubH>
@@ -669,11 +661,8 @@ function Challenge1() {
         variant="artifact"
       />
       <Body>
-        Layout, state, and data contracts in one artifact — derived from
-        the story map.  By the time review opens, the outcome is named,
-        the flow is mapped, and the visual is the consequence, not the
-        starting point.  Engineering reads this as the blueprint they
-        build to.
+        The flow turned into a blueprint — layout, state, and data
+        contracts engineering builds to.
       </Body>
     </div>
   );
