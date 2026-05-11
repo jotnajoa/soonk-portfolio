@@ -129,11 +129,12 @@ function Strong({ children }: { children: React.ReactNode }) {
   return <strong className="font-medium text-[#1F1F1F]">{children}</strong>;
 }
 
-// PullQuote — Medium-style call-out: black left bar, medium italic.
-// Sized to register without dominating the column.
+// PullQuote — italic call-out for big narrative beats.  No left bar
+// (the bar read as "decorative for the sake of being decorative");
+// emphasis sits on the italic + medium weight at 18/22 px.
 function PullQuote({ children }: { children: React.ReactNode }) {
   return (
-    <blockquote className="my-[24px] max-w-[620px] border-l-[4px] border-[#1F1F1F] pl-[18px] text-[18px] leading-[1.4] font-medium italic text-[#1F1F1F] min-[560px]:text-[22px]">
+    <blockquote className="my-[24px] max-w-[620px] text-[18px] leading-[1.4] font-medium italic text-[#1F1F1F] min-[560px]:text-[22px]">
       {children}
     </blockquote>
   );
@@ -562,15 +563,12 @@ export default function PomesCaseStudy() {
                 />
               </div>
 
-              <KeyTakeaway>
-                The biggest pattern wasn&rsquo;t about asking — it was about{" "}
-                <Strong>trust</Strong>. And trust didn&rsquo;t come from
-                proximity; it came from <Strong>physical time + repeated
-                low-stakes interactions</Strong>. Borrow and Favor only work
-                between neighbors who already trust each other.{" "}
-                <Strong>Events are the soil; Borrow and Favor are the fruit
-                that grows on it.</Strong>
-              </KeyTakeaway>
+              <PullQuote>
+                The biggest pattern wasn&rsquo;t about asking — it was about
+                trust. Trust didn&rsquo;t come from proximity; it came from
+                physical time + repeated low-stakes interactions. Events are
+                the soil; Borrow and Favor are the fruit.
+              </PullQuote>
 
               <SubH>Vibe-coded UX research tool</SubH>
               <Body>
@@ -593,64 +591,84 @@ export default function PomesCaseStudy() {
                 ))}
               </ul>
 
+              {/* Iframe — visually distinctive title above so it reads as an
+                  embedded tool, not a random screenshot.  sandbox="allow-
+                  scripts" gives the iframe a unique opaque origin per
+                  load: scripts run (drag-and-drop works) but every page
+                  refresh starts the tool from its initial state — nothing
+                  the reviewer drags persists. */}
               <figure className="my-[22px]">
-                <div className="overflow-clip rounded-[8px] border-2 border-[#1F1F1F] bg-[#F4F4F4]">
-                  <iframe
-                    src="https://jotnajoa.github.io/pbn-card-sorting/"
-                    title="POMEs interview card-sorting game"
-                    loading="lazy"
-                    className="block h-[520px] w-full"
-                  />
-                </div>
-                <figcaption className="mt-[10px] flex flex-wrap items-baseline justify-between gap-[12px] text-[12px] tracking-[0.08em] text-[#5D5D5D]">
-                  <span>CARD-SORTING TOOL · LIVE</span>
+                <div className="flex flex-wrap items-baseline justify-between gap-[12px] border-b border-[#1F1F1F]/30 pb-[8px]">
+                  <p
+                    className="text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    LIVE CARD-SORTING TOOL · DRAG TO TRY
+                  </p>
                   <a
                     href="https://jotnajoa.github.io/pbn-card-sorting/"
                     target="_blank"
                     rel="noreferrer"
-                    className="hover:text-[#1F1F1F]"
+                    className="text-[12px] tracking-[0.08em] text-[#5D5D5D] hover:text-[#1F1F1F]"
                   >
                     ↗ Open in new tab
                   </a>
-                </figcaption>
+                </div>
+                <div className="mt-[10px] overflow-clip rounded-[8px] border-2 border-[#1F1F1F] bg-[#F4F4F4]">
+                  <iframe
+                    src="https://jotnajoa.github.io/pbn-card-sorting/"
+                    title="POMEs interview card-sorting game"
+                    loading="lazy"
+                    sandbox="allow-scripts"
+                    className="block h-[520px] w-full"
+                  />
+                </div>
               </figure>
 
-              <dl className="my-[20px] flex max-w-[680px] flex-col gap-[14px] rounded-[12px] bg-[#F4F4F4] px-[24px] py-[22px]">
-                <div className="grid grid-cols-[160px_1fr] items-baseline gap-[16px]">
-                  <dt
-                    className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
-                    style={{ fontFamily: MONO }}
-                  >
-                    OK TO ASK
-                  </dt>
-                  <dd className="text-[16px] leading-[1.55] text-[#1F1F1F]">
-                    Pet sitting · watering plants · dog walking
-                  </dd>
-                </div>
-                <div className="grid grid-cols-[160px_1fr] items-baseline gap-[16px]">
-                  <dt
-                    className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
-                    style={{ fontFamily: MONO }}
-                  >
-                    NOT OK TO ASK
-                  </dt>
-                  <dd className="text-[16px] leading-[1.55] text-[#1F1F1F]">
-                    Groceries pickup · regular kid-watching · recurring needs
-                  </dd>
-                </div>
-                <div className="grid grid-cols-[160px_1fr] items-baseline gap-[16px]">
-                  <dt
-                    className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
-                    style={{ fontFamily: MONO }}
-                  >
-                    WHEN IT FLIPS
-                  </dt>
-                  <dd className="text-[16px] leading-[1.55] text-[#1F1F1F]">
-                    When the neighbor is actually trusted — otherwise the
-                    answer stays &ldquo;no.&rdquo;
-                  </dd>
-                </div>
-              </dl>
+              {/* Card-sorting exercise summary — full-width table-feel with
+                  row dividers so the three label/value rows read as a
+                  proper data structure, not a stack of cards. */}
+              <div className="my-[20px] rounded-[12px] bg-[#F4F4F4] px-[24px] py-[20px]">
+                <p
+                  className="mb-[12px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+                  style={{ fontFamily: MONO }}
+                >
+                  CARD-SORTING EXERCISE · SUMMARY
+                </p>
+                <dl className="flex flex-col">
+                  {[
+                    [
+                      "OK TO ASK",
+                      "Pet sitting · watering plants · dog walking",
+                    ],
+                    [
+                      "NOT OK TO ASK",
+                      "Groceries pickup · regular kid-watching · recurring needs",
+                    ],
+                    [
+                      "WHEN IT FLIPS",
+                      "When the neighbor is actually trusted — otherwise the answer stays “no.”",
+                    ],
+                  ].map(([label, value], i) => (
+                    <div
+                      key={label}
+                      className={`grid grid-cols-[160px_1fr] items-baseline gap-[16px] py-[14px] ${
+                        i > 0 ? "border-t border-[#1F1F1F]/15" : ""
+                      }`}
+                    >
+                      <dt
+                        className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
+                        style={{ fontFamily: MONO }}
+                      >
+                        {label}
+                      </dt>
+                      <dd className="text-[16px] leading-[1.55] text-[#1F1F1F]">
+                        {value}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
 
               <SubH>The synthesis: an inversion</SubH>
               <PullQuote>
@@ -721,36 +739,54 @@ export default function PomesCaseStudy() {
                 Home
               </h3>
 
+              {/* 4-up flow: each cell is an autoplay/looped MP4 of the
+                  real feature, encoded from assets/POMEs/ at 720p with
+                  ffmpeg.  No controls — the loops are short and the
+                  point is "look at what happens", not "play with it." */}
               <div className="my-[24px] grid grid-cols-1 gap-[20px] min-[560px]:grid-cols-2 min-[960px]:grid-cols-4 min-[960px]:gap-[18px]">
                 {[
                   {
-                    src: "/work/pomes/pomes-home-feed.png",
+                    src: "/work/pomes/home_serendipity.mp4",
                     label: "01 · Feed",
                     sub: "Serendipity",
-                    body: "Small neighbor interactions — borrows, favors, events — surface in a single feed. Offers lead. No chit-chat, no noise.",
+                    body: "Small interactions surface in one feed — building-scale moments stay visible instead of vanishing into chat.",
                   },
                   {
-                    src: "/work/pomes/pomes-home-thriving.png",
+                    src: "/work/pomes/home_ambient.mp4",
                     label: "02 · Seed Tree",
-                    sub: "Ambient growth",
-                    body: "3D visualization of monthly community activity. The tree grows as helps stack up — building life made legible without a leaderboard.",
+                    sub: "Building growth",
+                    body: "3D visualization of monthly community activity. The tree grows as helps stack up — building life made legible.",
                   },
                   {
-                    src: "/work/pomes/pomes-intro-02-top.png",
+                    src: "/work/pomes/home_modal.mp4",
                     label: "03 · Seed Detail",
-                    sub: "Modal",
-                    body: "Tap the tree to open a detail modal explaining what it responds to. No score; encouragement instead of ranking.",
+                    sub: "Encouragement modal",
+                    body: "Tap the tree for a modal that explains what it responds to — encouragement instead of a score.",
                   },
                   {
-                    src: "/work/pomes/pomes-intro-03-three.png",
-                    label: "04 · Tap-through",
-                    sub: "Section jump",
-                    body: "Any feed item deep-links into its section — a borrow item opens in Borrow, a favor in Favor. Home becomes a router.",
+                    src: "/work/pomes/home_section.mp4",
+                    label: "04 · Section connectivity",
+                    sub: "Home → every section",
+                    body: "Any feed item routes into its section: a borrow item opens in Borrow, a favor in Favor. Home is the launchpad.",
                   },
                 ].map((s) => (
                   <div key={s.label} className="flex flex-col gap-[10px]">
                     <div className="mx-auto w-full max-w-[180px]">
-                      <Phone image={s.src} alt={s.label} />
+                      <div className="relative aspect-[9/19] rounded-[16px] bg-[#1F1F1F] p-[4px]">
+                        <div className="relative h-full w-full overflow-hidden rounded-[12px] bg-[#F4F4F4]">
+                          <video
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            preload="metadata"
+                            aria-label={`POMEs ${s.label} — ${s.sub}`}
+                            className="absolute inset-0 h-full w-full object-cover"
+                          >
+                            <source src={s.src} type="video/mp4" />
+                          </video>
+                        </div>
+                      </div>
                     </div>
                     <p
                       className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
@@ -769,8 +805,8 @@ export default function PomesCaseStudy() {
               </div>
 
               <ResearchLink
-                finding="Points feel transactional and threatening; they shame the people who need most. (Multiple interviewees pushed back.)"
-                decision="No leaderboard. Tree grows from collective activity — ambient signal, never a ranking."
+                finding="Building-scale moments are small and easy to miss. Home has to surface them, signal that the community is growing, and route into every other section — all at once."
+                decision="Home = Feed (serendipity) + Seed Tree (building growth) + section launchpad. (No leaderboard — interviewees pushed back on points.)"
               />
 
               {/* Block 3 — Borrow (1 real phone — second still TBD) */}
@@ -789,8 +825,8 @@ export default function PomesCaseStudy() {
                     item stays browsable, with availability + lending history.
                   </>,
                 ]}
-                finding="WhatsApp loses memory."
-                decision="Persistent, browsable inventory."
+                finding="WhatsApp loses memory. People want to see what's already around the building before asking — and they don't want to bother neighbors with a request that didn't need to happen."
+                decision="Persistent, browsable inventory. See what's available first; the ask becomes optional."
               />
 
               {/* Block 4 — Favor (★ 2 phones, both tab states, reverse) */}
