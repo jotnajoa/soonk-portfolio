@@ -670,6 +670,45 @@ function Challenge1() {
 
 // ── Challenge 2: Familiarity over effectiveness ─────────────────────────────
 
+// Inversion diagram — the friction at the heart of Challenge 2.  Top block
+// (struck-through, muted) = what was keeping the visual in place;  bottom
+// block (inverted dark, emphasized) = what should be.  Same vocabulary as
+// the rest of POMEs / Volthop's classic "flip" devices.
+function AttachmentVsEffectivenessDiagram() {
+  return (
+    <div className="my-[28px] max-w-[620px]">
+      <div className="rounded-[10px] border border-[#A0A0A0] bg-[#F4F4F4] px-[24px] py-[18px]">
+        <p className="mb-[8px] text-[11px] tracking-[0.16em] font-medium text-[#A0A0A0]">
+          WHAT KEPT THE VISUAL
+        </p>
+        <p
+          className="text-[22px] leading-[1.2] font-medium text-[#5D5D5D]"
+          style={{ textDecoration: "line-through", textDecorationThickness: 1 }}
+        >
+          Personal attachment
+        </p>
+        <p className="mt-[6px] text-[13px] leading-[1.5] text-[#5D5D5D]">
+          Muscle memory · &ldquo;we&rsquo;ve always used it&rdquo;
+        </p>
+      </div>
+      <div className="my-[6px] flex justify-center">
+        <span aria-hidden className="text-[22px] leading-none text-[#5D5D5D]">
+          ↓
+        </span>
+      </div>
+      <div className="rounded-[10px] bg-[#1F1F1F] px-[24px] py-[18px] text-[#F4F4F4]">
+        <p className="mb-[8px] text-[11px] tracking-[0.16em] font-medium text-[#A0A0A0]">
+          WHAT SHOULD KEEP IT
+        </p>
+        <p className="text-[22px] leading-[1.2] font-medium">Effectiveness</p>
+        <p className="mt-[6px] text-[13px] leading-[1.5] text-[#D9D9D9]">
+          Does the visual answer the question?
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function Challenge2() {
   return (
     <div className="mt-[64px]">
@@ -682,19 +721,21 @@ function Challenge2() {
         </h3>
       </div>
 
-      <Body>
-        People kept the existing visuals because they were used to them —
-        even when those visuals didn&rsquo;t actually answer the question.
-        Insiders coped on muscle memory; the next thousand users
-        wouldn&rsquo;t.
-      </Body>
-      <Body>
-        Every rebuild started with the same question:{" "}
-        <Strong>what does this visualization need to answer?</Strong>
-      </Body>
+      <AttachmentVsEffectivenessDiagram />
+
+      <blockquote className="my-[20px] max-w-[620px] border-l-2 border-[#1F1F1F] py-[6px] pl-[20px]">
+        <span className="text-[11px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+          SOLUTION
+        </span>
+        <p
+          className="mt-[4px] text-[18px] leading-[1.4] font-medium italic text-[#1F1F1F] min-[560px]:text-[20px]"
+        >
+          Ask and validate what the visualization needs to answer.
+        </p>
+      </blockquote>
 
       {/* 2A · Forecasted Demand */}
-      <SubH>2A · Forecasted Demand</SubH>
+      <SubH>2A · Forecasted Demand — the conflict</SubH>
 
       <p className="my-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
         QUESTIONS TO ANSWER
@@ -753,7 +794,7 @@ function Challenge2() {
       />
 
       {/* 2B · Financial / Operational Metrics */}
-      <SubH>2B · Financial / Operational Metrics</SubH>
+      <SubH>2B · Financial / Operational Metrics — the conflict</SubH>
 
       <p className="my-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
         QUESTIONS TO ANSWER
@@ -987,19 +1028,20 @@ function Challenge3() {
           CHALLENGE 03
         </p>
         <h3 className="text-[26px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[32px]">
-          How we used it was.
+          Onshore / offshore productivity, not headcount.
         </h3>
       </div>
 
+      <PullQuote>
+        Used as acting hands, offshore burned every overlap window on
+        context transfer — not work.
+      </PullQuote>
+
       <Body>
-        Onshore / offshore is not a special model.  Everyone runs it.  The
-        failure mode is treating offshore as a pair of acting hands —
-        context broken, decisions reserved for onshore.{" "}
-        <Strong>
-          The entire overlap window gets eaten by context transfer — a
-          vicious cycle.
-        </Strong>{" "}
-        The team works long but moves slow.
+        Onshore / offshore isn&rsquo;t a special model — everyone runs
+        it.  The failure mode is handing offshore acting work without
+        the why; context breaks at the handoff, and the team works long
+        but moves slow.
       </Body>
       <Body>
         I split the designers into four profiles and approached each
