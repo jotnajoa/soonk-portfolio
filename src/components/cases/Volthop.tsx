@@ -17,6 +17,7 @@
 //                     all case studies — pass it the section list and a
 //                     read-time string.
 
+import Link from "next/link";
 import CaseStudyLeftNav, {
   type CaseStudySection,
 } from "@/components/cases/CaseStudyLeftNav";
@@ -159,29 +160,89 @@ function Hero() {
           </div>
         </div>
 
-        {/* Meta row beneath the strip — role · duration · progress only.
-            No Markets, no Stack.  Stacked vertically, left-aligned, sits
-            quietly under the cinematic strip without competing for
-            attention. */}
-        <dl className="flex flex-col gap-[14px]">
-          {[
-            ["Role", "Solo founder · design + build"],
-            ["Duration", "Jan – Apr 2026 (live, iterating)"],
-            ["Progress", "Closed Testing → Production · Apr 25"],
-          ].map(([label, value]) => (
-            <div key={label} className="flex gap-[16px]">
-              <dt
-                className="w-[110px] shrink-0 text-[12px] tracking-[0.08em] text-[#5D5D5D]"
-                style={MONO}
+        {/* Meta row beneath the strip — role · duration · progress on
+            the left, live App Store + Play Store links on the right
+            (POMEs pattern).  Stacks vertically on mobile: meta on top,
+            store links below.  The store icons + "↗" arrow telegraph
+            "this is real, here's where to download it" before the
+            reader scrolls into the case study. */}
+        <div className="grid gap-[24px] tablet:grid-cols-[1fr_auto] tablet:items-end tablet:gap-[32px]">
+          <dl className="flex flex-col gap-[14px]">
+            {[
+              ["Role", "Solo founder · design + build"],
+              ["Duration", "Jan – Apr 2026 (live, iterating)"],
+              ["Progress", "Closed Testing → Production · Apr 25"],
+            ].map(([label, value]) => (
+              <div key={label} className="flex gap-[16px]">
+                <dt
+                  className="w-[110px] shrink-0 text-[12px] tracking-[0.08em] text-[#5D5D5D]"
+                  style={MONO}
+                >
+                  {label.toUpperCase()}
+                </dt>
+                <dd className="text-[14px] leading-[1.4] text-[#1F1F1F]">
+                  {value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          {/* Live store links — match the POMEs hero exactly: Apple/Play
+              icon, label that underlines on hover, ↗ arrow that nudges
+              up-and-right on hover.  Below tablet they wrap under the
+              meta block (justify-between → App Store flush left, Play
+              Store flush right). */}
+          <div className="flex flex-row items-center justify-between gap-[24px] self-end tablet:flex-col tablet:items-stretch tablet:justify-start tablet:gap-[4px]">
+            <Link
+              href="https://apps.apple.com/us/app/volthop/id6759892609"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-[12px] py-[2px] text-[18px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden
+                className="h-[22px] w-[22px] shrink-0"
+                fill="currentColor"
               >
-                {label.toUpperCase()}
-              </dt>
-              <dd className="text-[14px] leading-[1.4] text-[#1F1F1F]">
-                {value}
-              </dd>
-            </div>
-          ))}
-        </dl>
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+              </svg>
+              <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
+                App Store
+              </span>
+              <span
+                aria-hidden
+                className="ml-auto text-[16px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]"
+              >
+                ↗
+              </span>
+            </Link>
+            <Link
+              href="https://play.google.com/store/apps/details?id=com.soonk.volthop"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group inline-flex items-center gap-[12px] py-[2px] text-[18px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden
+                className="h-[22px] w-[22px] shrink-0"
+                fill="currentColor"
+              >
+                <path d="M3.609 1.814 13.792 12 3.609 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92Zm10.89 10.886 2.302 2.302-12.6 7.227 10.298-9.529Zm3.692-3.69 2.434 1.4a1.5 1.5 0 0 1 0 2.6l-2.434 1.4-2.589-2.7 2.589-2.7Zm-1.39-.793L5.797 1.07l12.6 7.226-2.595 2.404-1-1Z" />
+              </svg>
+              <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
+                Play Store
+              </span>
+              <span
+                aria-hidden
+                className="ml-auto text-[16px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]"
+              >
+                ↗
+              </span>
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );
