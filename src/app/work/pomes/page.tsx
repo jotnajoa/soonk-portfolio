@@ -615,13 +615,42 @@ export default function PomesCaseStudy() {
                 </figcaption>
               </figure>
 
-              <KeyTakeaway>
-                <Strong>One-off asks?</Strong> People will. Pet sitting,
-                watering plants, dog walking — clear yes.{" "}
-                <Strong>Anything that looks like a recurring need?</Strong>{" "}
-                They won&rsquo;t. Groceries, regular kid-watching — clear no.
-                One-off = OK to ask a neighbor; regular = hire someone.
-              </KeyTakeaway>
+              <dl className="my-[20px] flex max-w-[680px] flex-col gap-[14px] rounded-[12px] bg-[#F4F4F4] px-[24px] py-[22px]">
+                <div className="grid grid-cols-[160px_1fr] items-baseline gap-[16px]">
+                  <dt
+                    className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    OK TO ASK
+                  </dt>
+                  <dd className="text-[16px] leading-[1.55] text-[#1F1F1F]">
+                    Pet sitting · watering plants · dog walking
+                  </dd>
+                </div>
+                <div className="grid grid-cols-[160px_1fr] items-baseline gap-[16px]">
+                  <dt
+                    className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    NOT OK TO ASK
+                  </dt>
+                  <dd className="text-[16px] leading-[1.55] text-[#1F1F1F]">
+                    Groceries pickup · regular kid-watching · recurring needs
+                  </dd>
+                </div>
+                <div className="grid grid-cols-[160px_1fr] items-baseline gap-[16px]">
+                  <dt
+                    className="text-[12px] tracking-[0.08em] font-medium text-[#5D5D5D]"
+                    style={{ fontFamily: MONO }}
+                  >
+                    WHEN IT FLIPS
+                  </dt>
+                  <dd className="text-[16px] leading-[1.55] text-[#1F1F1F]">
+                    When the neighbor is actually trusted — otherwise the
+                    answer stays &ldquo;no.&rdquo;
+                  </dd>
+                </div>
+              </dl>
 
               <SubH>The synthesis: an inversion</SubH>
               <Body>
