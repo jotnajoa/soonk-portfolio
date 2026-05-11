@@ -731,6 +731,11 @@ export default function GtmCaseStudy() {
                 title="If I had to do this again tomorrow — start here."
               />
 
+              {/* Same number-block style as §03's ProcessStep: 28-px MONO
+                  numeral baseline-aligned with the step title, body
+                  underneath.  Earlier 44/56-px column treatment made the
+                  Playbook numerals visibly larger than the ProcessStep
+                  ones and the two sub-numberings read inconsistent. */}
               <ol className="my-[28px] flex flex-col gap-[28px]">
                 {[
                   {
@@ -749,24 +754,21 @@ export default function GtmCaseStudy() {
                     body: "First touch is for signal, not conversion.  A leaflet in one building, a single post in one subreddit.  Read the response before scaling.  POMEs scaled the elevator after Tower 77 hit 10.2%; VoltHop kept posting in r/Brompton after the attachment finding landed.  Optimizing the wrong channel is the most expensive mistake.",
                   },
                 ].map((s) => (
-                  <li
-                    key={s.n}
-                    className="grid grid-cols-[80px_1fr] items-start gap-[20px] min-[560px]:grid-cols-[110px_1fr] min-[560px]:gap-[28px]"
-                  >
-                    <span
-                      className="text-[44px] leading-[0.9] font-extrabold tracking-[-0.04em] text-[#1F1F1F] min-[560px]:text-[56px]"
-                      style={{ fontFamily: MONO }}
-                    >
-                      {s.n}
-                    </span>
-                    <div className="min-w-0">
-                      <p className="mb-[8px] text-[19px] leading-[1.3] font-medium text-[#1F1F1F]">
+                  <li key={s.n} className="min-w-0">
+                    <div className="mb-[10px] flex items-baseline gap-[12px]">
+                      <span
+                        className="text-[28px] leading-[0.9] font-extrabold tracking-[-0.03em] text-[#1F1F1F]"
+                        style={{ fontFamily: MONO }}
+                      >
+                        {s.n}
+                      </span>
+                      <p className="text-[19px] leading-[1.3] font-medium text-[#1F1F1F]">
                         {s.title}
                       </p>
-                      <p className="text-[14px] leading-[1.65] text-[#5D5D5D]">
-                        {s.body}
-                      </p>
                     </div>
+                    <p className="max-w-[640px] text-[14px] leading-[1.65] text-[#5D5D5D]">
+                      {s.body}
+                    </p>
                   </li>
                 ))}
               </ol>
