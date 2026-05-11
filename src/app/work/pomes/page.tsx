@@ -257,30 +257,29 @@ export default function PomesCaseStudy() {
       >
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Logo + POMEs wordmark.  Live store links sit on the same row,
-            anchored to the right, so the case opens with the answer to
-            "is it real?" before the read begins.  (The canonical 01–09
-            project marker still appears in the sticky CaseStudyNav above;
-            duplicating it in the hero was eating space without adding
-            information.) */}
-        <div className="mb-[48px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[64px] min-[560px]:gap-[28px] min-[960px]:mb-[72px]">
-          <PomesLogoSvg className="h-[64px] w-auto shrink-0 text-[#1F1F1F] min-[560px]:h-[82px] min-[960px]:h-[104px]" />
-          <span className="text-[68px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
-            POMEs
-          </span>
+        {/* Logo + POMEs wordmark + live store links.
+            Earlier this was a single flex-wrap row — at mid widths the
+            wordmark fit on one line but pushed the store-links onto a
+            wrapped second line with `w-full justify-between`, leaving
+            App Store flush left and Play Store flush right with empty
+            space between them.  Fixed by splitting into a 2-column
+            grid (wordmark left, store-links right) that matches the
+            Volthop hero pattern: stacked vertically on the right at
+            tablet+, row-wise justify-between below tablet. */}
+        <div className="mb-[48px] grid gap-[24px] tablet:grid-cols-[1fr_auto] tablet:items-end tablet:gap-[32px] min-[560px]:mb-[64px] min-[960px]:mb-[72px]">
+          <div className="flex flex-wrap items-end gap-[20px] leading-none min-[560px]:gap-[28px]">
+            <PomesLogoSvg className="h-[64px] w-auto shrink-0 text-[#1F1F1F] min-[560px]:h-[82px] min-[960px]:h-[104px]" />
+            <span className="text-[68px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
+              POMEs
+            </span>
+          </div>
 
-          {/* Live store links.  Below the wide breakpoint they wrap
-              under the wordmark, so on mobile/tablet we lay them out
-              row-wise with justify-between (App Store flush left, Play
-              Store flush right) instead of a vertical stack that hugs
-              one side of the page.  At min-[960px] they jump back to a
-              stacked column on the right of the title row. */}
-          <div className="flex w-full flex-row items-center justify-between gap-[24px] self-end min-[960px]:ml-auto min-[960px]:w-auto min-[960px]:flex-col min-[960px]:items-stretch min-[960px]:justify-start min-[960px]:gap-[2px]">
+          <div className="flex flex-row items-center justify-between gap-[24px] self-end tablet:flex-col tablet:items-stretch tablet:justify-start tablet:gap-[4px]">
             <Link
               href="https://apps.apple.com/us/app/pomes-borrow-help-meet/id6765548381"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-[12px] py-[2px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity min-[960px]:py-[1px]"
+              className="group inline-flex items-center gap-[12px] py-[2px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity tablet:py-[1px]"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -301,7 +300,7 @@ export default function PomesCaseStudy() {
               href="https://play.google.com/store/apps/details?id=com.soonk.pomes"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-[12px] py-[2px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity min-[960px]:py-[1px]"
+              className="group inline-flex items-center gap-[12px] py-[2px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity tablet:py-[1px]"
             >
               <svg
                 viewBox="0 0 24 24"
