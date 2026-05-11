@@ -5,78 +5,56 @@ import CaseStudyLeftNav, {
   type CaseStudySection,
 } from "./CaseStudyLeftNav";
 
-// Toyota Guidehub case study (project 04 in the canonical list).
+// Toyota Guidehub case study.
 //
 // Spec source: /Volumes/External/Portfolio_Website_26/Toyota_Guidehub_Spec.md
-// (v2 — 4-section rescue-led narrative, intentionally tighter than POMEs/
-// VoltHop/GIA which sit at full 8-section depth).
 //
-// Visual system mirrors Volthop (pure monochrome, no chromatic accent), but
-// the structural differentiators are deliberate page-pacing signals:
-//   - 4 sections instead of 7
-//   - No timeline ribbon in §01 (its absence flags "shorter case" upfront)
-//   - Only 2 figures (Fig. 1 communication breakdown · Fig. 2 BRD pair)
-//   - No external linked-out pages
-//
-// Layout split:
-//   §01 Hero       — full-bleed, no left nav (max-w-[1200px] internal)
-//   §02–04         — left sticky nav (140px) + content column (~960px)
+// Visual system: pure monochrome (no chromatic accent).  Structurally the
+// page follows the same Intro → Problem(s) → Fix → Impact arc as GIA,
+// rebuilt section-by-section to address feedback (no random beat
+// dividers, no opinions about other designers, real screenshots instead
+// of placeholders).
 
 const MONO: React.CSSProperties = {
   fontFamily:
     "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace",
 };
 
-// Dark warm-gray fill used for the self-policing banner + the §02 close
-// callout.  Per spec, this is the only non-monochrome fill on the page —
-// it carries the "hire signal" beats.
-const DARK = "#3A342E";
-
 const SECTIONS: CaseStudySection[] = [
   { id: "intro", num: "01", label: "Intro" },
-  { id: "diagnosis", num: "02", label: "Diagnosis & rescue", star: true },
-  { id: "what-held", num: "03", label: "What held" },
-  { id: "next", num: "04", label: "What's next" },
+  { id: "problem", num: "02", label: "The problems", star: true },
+  { id: "fix", num: "03", label: "The fix" },
+  { id: "impact", num: "04", label: "Impact" },
 ];
 
 // ============================================================================
-// Reusable atoms — Toyota-specific weights/sizes per spec (lighter than
-// Volthop's atoms; the lighter feel is part of the editorial pacing).
+// Reusable atoms
 // ============================================================================
 
 function Eyebrow({ children }: { children: React.ReactNode }) {
   return (
-    <p
-      className="text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
-
-    >
+    <p className="mb-[18px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]">
       {children}
     </p>
   );
 }
 
-function SectionNumber({ children }: { children: React.ReactNode }) {
+function SectionHead({ n, title }: { n: string; title: React.ReactNode }) {
   return (
-    <p
-      className="text-[64px] leading-[0.85] font-medium text-[#1F1F1F] tablet:text-[76px]"
-
-    >
-      {children}
-    </p>
-  );
-}
-
-function Headline({ children }: { children: React.ReactNode }) {
-  return (
-    <h2 className="max-w-[720px] text-[20px] leading-[1.4] font-medium text-[#1F1F1F] tablet:text-[22px]">
-      {children}
-    </h2>
+    <div className="mb-[22px] grid grid-cols-[80px_1fr] items-start gap-[18px] min-[960px]:grid-cols-[110px_1fr] min-[960px]:gap-[24px]">
+      <div className="text-[64px] leading-[0.85] font-extrabold tracking-[-0.05em] text-[#1F1F1F] min-[960px]:text-[88px]">
+        {n}
+      </div>
+      <h2 className="max-w-[720px] pt-1 text-[24px] leading-[1.25] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[960px]:pt-[10px] min-[960px]:text-[32px]">
+        {title}
+      </h2>
+    </div>
   );
 }
 
 function Lede({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[720px] text-[16px] leading-[1.7] font-medium text-[#1F1F1F]">
+    <p className="my-[18px] max-w-[680px] text-[18px] leading-[1.55] font-medium text-[#1F1F1F]">
       {children}
     </p>
   );
@@ -84,272 +62,53 @@ function Lede({ children }: { children: React.ReactNode }) {
 
 function Body({ children }: { children: React.ReactNode }) {
   return (
-    <p className="max-w-[720px] text-[16px] leading-[1.7] font-normal text-[#1F1F1F]">
+    <p className="my-[14px] max-w-[680px] text-[16px] leading-[1.7] text-[#1F1F1F]">
       {children}
     </p>
   );
 }
 
-function SectionHeader({
-  number,
-  eyebrow,
-  headline,
+function SubH({ children }: { children: React.ReactNode }) {
+  return (
+    <h3 className="mt-[28px] mb-[10px] max-w-[680px] text-[20px] leading-[1.3] font-medium tracking-[-0.01em] text-[#1F1F1F] min-[560px]:text-[22px]">
+      {children}
+    </h3>
+  );
+}
+
+function Strong({ children }: { children: React.ReactNode }) {
+  return <strong className="font-semibold">{children}</strong>;
+}
+
+// Section wrapper — first section just sets scroll-margin; subsequent
+// sections add a 56-px top spacer + hairline rule.  Matches GIA's pattern,
+// drops the "BEAT N · ..." beat-divider chips from the earlier Toyota draft
+// (those were the random dividers the feedback called out).
+function Section({
+  id,
+  first = false,
+  children,
 }: {
-  number: string;
-  eyebrow: string;
-  headline: React.ReactNode;
+  id: string;
+  first?: boolean;
+  children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-[18px]">
-      <Eyebrow>+ {eyebrow}</Eyebrow>
-      <div className="flex flex-col gap-[24px]">
-        <SectionNumber>{number}</SectionNumber>
-        <Headline>{headline}</Headline>
-      </div>
-    </div>
-  );
-}
-
-// Beat divider: horizontal hairline with a centered eyebrow chip.  Used to
-// segment the three beats inside §02.
-function BeatDivider({ label }: { label: string }) {
-  return (
-    <div className="relative flex items-center py-[8px]">
-      <div className="absolute inset-x-0 top-1/2 h-px bg-[#1F1F1F]/30" />
-      <span
-        className="relative mx-auto bg-[#EEEEEE] px-[24px] py-[8px] text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
-
-      >
-        {label}
-      </span>
-    </div>
-  );
-}
-
-// ============================================================================
-// §01 Hero — full-bleed, no left nav
-// ============================================================================
-
-// Composition diagram fallback for the hero anchor visual.  Used when no
-// product screenshot is available (spec allows this fallback explicitly).
-// Top half = misaligned shapes at low opacity (the "before" — opinion-led
-// chaos); bottom half = aligned shapes solid (the "after" — principle-led
-// clarity), separated by a "PRINCIPLE APPLIED" chip.
-function HeroCompositionFallback() {
-  return (
-    <div className="relative aspect-[16/10] w-full overflow-clip border border-[#1F1F1F]/30 bg-[#F8F8F8]">
-      {/* TOP half — BEFORE (misaligned, low-opacity) */}
-      <div className="absolute inset-x-0 top-0 h-1/2 overflow-clip">
-        <svg
-          viewBox="0 0 580 200"
-          preserveAspectRatio="xMidYMid meet"
-          className="h-full w-full text-[#1F1F1F]/30"
-        >
-          <rect x={28} y={36} width={92} height={14} fill="currentColor" />
-          <rect x={140} y={28} width={140} height={22} fill="currentColor" />
-          <rect x={300} y={48} width={68} height={18} fill="currentColor" />
-          <rect
-            x={386}
-            y={32}
-            width={120}
-            height={28}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1}
-          />
-          <rect x={32} y={80} width={210} height={12} fill="currentColor" />
-          <rect
-            x={264}
-            y={78}
-            width={170}
-            height={16}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1}
-          />
-          <rect x={460} y={84} width={60} height={28} fill="currentColor" />
-          <rect x={42} y={120} width={68} height={28} fill="currentColor" />
-          <rect x={130} y={124} width={92} height={20} fill="currentColor" />
-          <rect
-            x={240}
-            y={118}
-            width={84}
-            height={32}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1}
-          />
-        </svg>
-      </div>
-
-      {/* Center divider chip */}
-      <div className="absolute inset-x-0 top-1/2 z-10 flex -translate-y-1/2 items-center">
-        <div className="h-px flex-1 bg-[#1F1F1F]/30" />
-        <span
-          className="bg-[#F8F8F8] px-[16px] py-[6px] text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
-
-        >
-          PRINCIPLE APPLIED
-        </span>
-        <div className="h-px flex-1 bg-[#1F1F1F]/30" />
-      </div>
-
-      {/* BOTTOM half — AFTER (aligned, solid) */}
-      <div className="absolute inset-x-0 bottom-0 h-1/2 overflow-clip">
-        <svg
-          viewBox="0 0 580 200"
-          preserveAspectRatio="xMidYMid meet"
-          className="h-full w-full text-[#1F1F1F]"
-        >
-          <rect x={28} y={28} width={92} height={14} fill="currentColor" />
-          <rect x={140} y={28} width={140} height={14} fill="currentColor" />
-          <rect
-            x={300}
-            y={28}
-            width={68}
-            height={14}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1}
-          />
-          <rect
-            x={388}
-            y={28}
-            width={120}
-            height={14}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1}
-          />
-          <rect x={28} y={64} width={210} height={12} fill="currentColor" />
-          <rect x={258} y={64} width={170} height={12} fill="currentColor" />
-          <rect x={448} y={64} width={104} height={12} fill="currentColor" />
-          <rect x={28} y={96} width={120} height={28} fill="currentColor" />
-          <rect
-            x={168}
-            y={96}
-            width={120}
-            height={28}
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1}
-          />
-        </svg>
-      </div>
-
-      {/* Annotation overlay (top-right corner) */}
-      <div className="absolute top-[12px] right-[12px] flex flex-col gap-[2px] bg-[#F8F8F8]/85 px-[10px] py-[6px]">
-        <p
-          className="text-[12px] tracking-[0.08em] text-[#5D5D5D]"
-
-        >
-          ⊘ before — opinion-led
-        </p>
-        <p
-          className="text-[12px] tracking-[0.08em] text-[#1F1F1F]"
-
-        >
-          ✓ after — principle-led
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function SectionHero() {
-  return (
     <section
-      id="intro"
-      className="border-b-2 border-[#1F1F1F] pt-[48px] pb-[64px] tablet:pt-[64px] tablet:pb-[96px]"
+      id={id}
+      className={
+        first
+          ? "scroll-mt-[80px] pt-[40px] tablet:pt-[56px]"
+          : "mt-[56px] scroll-mt-[80px] border-t border-[#A0A0A0] pt-[56px]"
+      }
     >
-      <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px] px-[32px]">
-        <Eyebrow>+ 01 / Intro</Eyebrow>
-
-        {/* Display: project number + logo + wordmark + subtitle.
-            "04" is JBM Mono — the only place JBM appears on the page. */}
-        <div className="flex flex-col gap-[12px]">
-          <div className="flex flex-wrap items-end gap-[22px]">
-            <span
-              className="text-[64px] font-extrabold leading-[0.85] tracking-[-0.04em] text-[#1F1F1F] tablet:text-[120px]"
-              style={MONO}
-            >
-              04
-            </span>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/work/logos/toyotalogo.png"
-              alt=""
-              aria-hidden
-              className="h-[64px] w-auto object-contain tablet:h-[92px]"
-            />
-            <h1 className="text-[64px] leading-[0.85] font-medium tracking-[-0.05em] text-[#1F1F1F] tablet:text-[120px]">
-              Toyota Guidehub
-            </h1>
-          </div>
-          <p
-            className="text-[16px] tracking-[0.04em] font-normal text-[#5D5D5D]"
-
-          >
-            Combo PCA Approval Workflow · supply-chain operations · emergency
-            rescue
-          </p>
-        </div>
-
-        {/* Two-column row: anchor visual LEFT 50% + meta block RIGHT 50% */}
-        <div className="grid gap-[36px] tablet:grid-cols-2 tablet:gap-[60px]">
-          {/* Hero anchor visual — composition diagram fallback */}
-          <HeroCompositionFallback />
-
-          {/* Meta block */}
-          <dl className="border-t border-[#1F1F1F]/30">
-            {[
-              [
-                "ROLE",
-                "Senior designer · brought in as emergency support after executive escalation",
-              ],
-              [
-                "SCOPE",
-                "Diagnose downstream symptoms → restructure the upstream artifact",
-              ],
-              ["TIMELINE", "TBD — engagement dates"],
-              [
-                "STATUS",
-                "Shipped · client trust restored · award-recognized (TBD)",
-              ],
-              ["TEAM", "TBD — # designers + # PMs/PMO led/supported"],
-            ].map(([label, value]) => (
-              <div
-                key={label}
-                className="flex flex-wrap items-baseline gap-[16px] border-b border-[#1F1F1F]/30 py-[12px]"
-              >
-                <dt
-                  className="w-[90px] shrink-0 text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
-
-                >
-                  {label}
-                </dt>
-                <dd className="flex-1 text-[16px] leading-[1.5] font-medium text-[#1F1F1F] tablet:text-[16px]">
-                  {value}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        {/* Footer cue — promises the reviewer the case length up front */}
-        <p
-          className="text-[12px] tracking-[0.04em] font-normal text-[#5D5D5D]"
-
-        >
-          ↓ Two symptoms, one cause, one fix — in 3 minutes
-        </p>
-      </div>
+      {children}
     </section>
   );
 }
 
 // ============================================================================
-// §02 Diagnosis & rescue — the whole case
+// §01 Hero
 // ============================================================================
 
 // Inline modal trigger ✦.  Renders the underlined phrase + glyph as a single
@@ -363,7 +122,7 @@ function PcaTrigger({ onOpen }: { onOpen: () => void }) {
       aria-label="What is PCA approval?"
       className="group inline-flex items-baseline gap-[4px] cursor-help align-baseline"
     >
-      <span className="font-normal text-[#1F1F1F] underline decoration-[#5D5D5D] decoration-[0.5px] underline-offset-[2px] transition-all group-hover:font-medium group-hover:decoration-[#1F1F1F]">
+      <span className="font-medium text-[#1F1F1F] underline decoration-[#5D5D5D] decoration-[0.5px] underline-offset-[2px] transition-all group-hover:font-semibold group-hover:decoration-[#1F1F1F]">
         Combo PCA approval
       </span>
       <span
@@ -376,7 +135,6 @@ function PcaTrigger({ onOpen }: { onOpen: () => void }) {
   );
 }
 
-// PCA definition modal — native <dialog>.  Esc / overlay click / × close.
 function PcaModal({
   dialogRef,
   onClose,
@@ -388,9 +146,6 @@ function PcaModal({
     <dialog
       ref={dialogRef}
       onClick={(e) => {
-        // Close when clicking the dialog backdrop (the dialog element itself
-        // is the backdrop layer; the inner <div> stops propagation so clicks
-        // on the card don't dismiss).
         if (e.target === dialogRef.current) onClose();
       }}
       className="m-auto max-h-[80vh] max-w-[560px] border-2 border-[#1F1F1F] bg-[#EEEEEE] p-0 backdrop:bg-[#1F1F1F]/60"
@@ -410,23 +165,20 @@ function PcaModal({
           <h3 className="text-[24px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[28px]">
             What is PCA approval?
           </h3>
-          <p className="text-[16px] leading-[1.7] text-[#1F1F1F] tablet:text-[16px]">
-            <strong className="font-semibold">
-              PCA (Product Configuration Approval)
-            </strong>{" "}
-            is Toyota&rsquo;s internal validation process for vehicle
+          <p className="text-[16px] leading-[1.7] text-[#1F1F1F]">
+            <Strong>PCA (Product Configuration Approval)</Strong> is
+            Toyota&rsquo;s internal validation process for vehicle
             &ldquo;Guides&rdquo; — the master configuration specs that
             downstream operations consume.
           </p>
-          <p className="text-[16px] leading-[1.7] text-[#1F1F1F] tablet:text-[16px]">
-            The <strong className="font-semibold">Combo PCA workflow</strong>{" "}
-            specifically covers the multi-persona path from auto-generated PCA
-            codes through DSM review, UUU code assignment, and function-kind
-            selection — before a Guide is approved and propagates downstream.
+          <p className="text-[16px] leading-[1.7] text-[#1F1F1F]">
+            The <Strong>Combo PCA workflow</Strong> specifically covers the
+            multi-persona path from auto-generated PCA codes through DSM
+            review, UUU code assignment, and function-kind selection — before
+            a Guide is approved and propagates downstream.
           </p>
-
           <div className="mt-[16px] border-t border-[#1F1F1F]/30 pt-[16px]">
-            <p className="text-[12px] leading-[1.5] italic font-normal text-[#5D5D5D]">
+            <p className="text-[12px] leading-[1.5] italic text-[#5D5D5D]">
               This case study is about how the design and PMO teams worked
               together — not about the PCA business logic itself. The
               definition is here for context only.
@@ -438,9 +190,6 @@ function PcaModal({
   );
 }
 
-// 5-step horizontal process flow.  Auxiliary, NOT a signature figure — sits
-// between the project context paragraph and the thesis lede so reviewers
-// who don't know Toyota's internal vocabulary can keep up.
 function PcaApprovalFlow() {
   const steps: { num: string; label: string }[] = [
     { num: "01", label: "PC Manager approves" },
@@ -450,14 +199,14 @@ function PcaApprovalFlow() {
     { num: "05", label: "Guide approved, propagates downstream" },
   ];
   return (
-    <div className="flex flex-col items-center gap-[10px]">
-      <div className="grid w-full max-w-[720px] grid-cols-1 gap-[10px] tablet:grid-cols-5">
+    <div className="my-[28px] flex flex-col items-center gap-[10px]">
+      <div className="grid w-full max-w-[760px] grid-cols-1 gap-[10px] tablet:grid-cols-5">
         {steps.map((s, i) => (
           <div key={s.num} className="flex items-center gap-[6px]">
             <div className="flex flex-1 flex-col items-start gap-[6px] border border-[#1F1F1F]/30 px-[12px] py-[10px]">
               <span
                 className="text-[12px] tracking-[0.08em] text-[#A0A0A0]"
-
+                style={MONO}
               >
                 {s.num}
               </span>
@@ -468,7 +217,6 @@ function PcaApprovalFlow() {
             {i < steps.length - 1 && (
               <span
                 className="hidden text-[12px] text-[#A0A0A0] tablet:inline"
-
                 aria-hidden
               >
                 ›
@@ -478,8 +226,8 @@ function PcaApprovalFlow() {
         ))}
       </div>
       <p
-        className="text-[12px] tracking-[0.16em] font-normal text-[#5D5D5D]"
-
+        className="text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+        style={MONO}
       >
         PCA approval flow — where the engagement lived
       </p>
@@ -487,47 +235,196 @@ function PcaApprovalFlow() {
   );
 }
 
-// Three non-negotiables — 3-cell horizontal grid, stacks to 1-col on mobile.
-function NonNegotiableCard({
-  num,
-  title,
-  body,
-  example,
-}: {
-  num: string;
-  title: string;
-  body: string;
-  example: string;
-}) {
+function SectionHero({ onOpenModal }: { onOpenModal: () => void }) {
   return (
-    <article className="flex flex-col gap-[12px] border border-[#1F1F1F]/30 bg-[#F8F8F8] p-[24px] tablet:p-[28px]">
-      <span
-        className="text-[12px] tracking-[0.16em] font-medium text-[#A0A0A0]"
+    <section
+      id="intro"
+      className="mx-auto max-w-[1200px] px-[32px] pt-[40px] pb-[40px] min-[560px]:pt-[64px] min-[560px]:pb-[48px]"
+    >
+      <Eyebrow>+ 01 / Intro</Eyebrow>
 
-      >
-        {num}
-      </span>
-      <h3 className="text-[20px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[22px]">
-        {title}
-      </h3>
-      <p className="text-[16px] leading-[1.55] font-normal text-[#1F1F1F]">
-        {body}
+      {/* Toyota wordmark — SVG logo glyph + plain wordmark, sized to
+          match the POMEs hero ramp (68 / 92 / 128 px).  No project
+          number on the wordmark — the canonical 01–04 marker lives in
+          the top CaseStudyNav and the side rail.  Logo SVG uses
+          h-auto so the source aspect drives height; the height comes
+          from the wordmark line-height so they share a baseline. */}
+      <div className="mb-[48px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[64px] min-[560px]:gap-[28px] min-[960px]:mb-[72px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/work/toyota/toyota-logo.svg"
+          alt="Toyota"
+          className="h-[44px] w-auto shrink-0 min-[560px]:h-[58px] min-[960px]:h-[78px]"
+        />
+        <span className="text-[48px] font-semibold leading-[0.9] tracking-[-0.04em] text-[#1F1F1F] min-[560px]:text-[68px] min-[960px]:text-[92px]">
+          Guidehub
+        </span>
+      </div>
+
+      {/* 2-col — tagline / context / meta dl on the left, meta-only on
+          right is overkill for a short case; keep a single column with
+          a wide tagline, then the meta dl + context paragraph stack
+          beneath it. */}
+      <p className="mb-[36px] max-w-[760px] text-[24px] leading-[1.25] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
+        Brought in as emergency support after an executive escalation —
+        diagnosed a broken upstream artifact and restructured the relay
+        that produced the surface symptoms.
       </p>
-      <p className="mt-auto text-[12px] leading-[1.6] italic font-normal text-[#5D5D5D]">
-        &ldquo;{example}&rdquo;
+
+      {/* Meta dl — 4 rows (role / scope / timeline / status).  No "team"
+          line: I led design fundamentals with two other senior designers
+          but the engagement was not formally team-led, so the row would
+          imply staffing I didn't own.  No "impact" row either — STAR
+          award + training-led recognition lives in §04 Impact and gets
+          a screenshot of the award there. */}
+      <dl className="mb-[40px] max-w-[760px] border-t border-[#A0A0A0]">
+        {[
+          [
+            "Role",
+            "Senior designer · brought in as emergency support after executive escalation",
+          ],
+          [
+            "Scope",
+            "Diagnose downstream symptoms → restructure the upstream BRD artifact",
+          ],
+          ["Timeline", "Sep 2023 – Dec 2023"],
+          ["Status", "Shipped"],
+        ].map(([l, v]) => (
+          <div
+            key={l}
+            className="grid grid-cols-[100px_1fr] items-baseline gap-[16px] border-b border-[#A0A0A0] py-[14px] min-[560px]:grid-cols-[120px_1fr]"
+          >
+            <dt
+              className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]"
+              style={MONO}
+            >
+              {l}
+            </dt>
+            <dd className="text-[15px] leading-[1.5] text-[#1F1F1F]">{v}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {/* Project context — short paragraph + flow.  Modal trigger on
+          "Combo PCA approval" gives the reviewer the business term
+          without bloating the body. */}
+      <p className="max-w-[760px] text-[16px] leading-[1.7] text-[#1F1F1F]">
+        Toyota Guidehub is Toyota&rsquo;s internal supply-chain operations
+        platform. This engagement focused on the{" "}
+        <PcaTrigger onOpen={onOpenModal} /> workflow — a multi-step flow
+        letting Distribution Service Manager personas review vehicle
+        configuration codes across linked sub-guides before approvals
+        propagated downstream. When I joined, the project had been
+        escalated to executive review and the consulting partner had been
+        switched mid-engagement. Trust was eroding.{" "}
+        <Strong>
+          I was brought in as senior emergency support to firefight.
+        </Strong>
       </p>
-    </article>
+
+      <PcaApprovalFlow />
+    </section>
   );
 }
 
-// Fig. 1 of 2 — Communication breakdown SVG.  Per spec, this is the case's
-// signature visual: Client → PMO (dominant) → Designer, with UI atoms
-// "leaking" out the bottom of the PMO box.
-function CommunicationBreakdown() {
+// ============================================================================
+// §02 The problems
+// ============================================================================
+
+// Image asset frame for the in-the-wild Toyota screenshots.  Light bg, soft
+// border, caption underneath — keeps these reading as evidence (not
+// product showcase) so they don't compete with the analysis next to them.
+function Evidence({
+  src,
+  alt,
+  caption,
+  maxWidth = 680,
+}: {
+  src: string;
+  alt: string;
+  caption: string;
+  maxWidth?: number;
+}) {
   return (
-    <figure className="flex flex-col gap-[12px]">
+    <figure
+      className="my-[18px] overflow-hidden rounded-[6px] border border-[#1F1F1F]/15 bg-white"
+      style={{ maxWidth }}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={src} alt={alt} className="block h-auto w-full" />
+      <figcaption
+        className="border-t border-[#1F1F1F]/15 bg-[#F4F4F4] px-[14px] py-[8px] text-[11px] tracking-[0.06em] text-[#5D5D5D]"
+        style={MONO}
+      >
+        {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
+// 3-up summary card grid used at the top of §02.  Short, scannable.  Each
+// card is just a numbered title + one-line summary — the detailed analysis
+// + screenshots sit below.
+function ProblemSummary() {
+  const items: { n: string; title: string; body: string }[] = [
+    {
+      n: "01",
+      title: "Action clarity",
+      body: "Every CTA was rendered as a primary button. Users couldn't tell which action was the next step.",
+    },
+    {
+      n: "02",
+      title: "Color semantics",
+      body: "Green / blue / red meant different things on different screens. The user's learned mapping was broken.",
+    },
+    {
+      n: "03",
+      title: "Viewport reality",
+      body: "Wireframes only worked on an infinite Figma canvas. At the real 1280-px implementation breakpoint, layouts broke.",
+    },
+  ];
+  return (
+    <div className="my-[24px] grid grid-cols-1 gap-[14px] min-[560px]:grid-cols-3 min-[560px]:gap-[18px]">
+      {items.map((p) => (
+        <article
+          key={p.n}
+          className="flex flex-col gap-[8px] rounded-[8px] border border-[#1F1F1F]/20 bg-[#F4F4F4] px-[18px] py-[16px]"
+        >
+          <span
+            className="text-[12px] tracking-[0.16em] font-medium text-[#A0A0A0]"
+            style={MONO}
+          >
+            {p.n}
+          </span>
+          <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
+            {p.title}
+          </h3>
+          <p className="text-[14px] leading-[1.55] text-[#5D5D5D]">{p.body}</p>
+        </article>
+      ))}
+    </div>
+  );
+}
+
+// BRD relay diagram — current (broken) state.  Used by both Problem 02
+// (to show the broken relay) and the Fix section (to contrast against
+// the improved version).  Boundary box around UI atoms makes it
+// obvious that UI specs are leaking out of the PMO step where they
+// shouldn't exist.
+function CommunicationBreakdown({
+  title,
+  caption,
+  variant = "broken",
+}: {
+  title?: string;
+  caption: string;
+  variant?: "broken" | "fixed";
+}) {
+  const isBroken = variant === "broken";
+  return (
+    <figure className="my-[24px] flex flex-col gap-[12px]">
       <svg
-        viewBox="0 0 960 360"
+        viewBox="0 0 960 320"
         preserveAspectRatio="xMidYMid meet"
         className="w-full"
       >
@@ -535,7 +432,7 @@ function CommunicationBreakdown() {
         <g>
           <rect
             x={20}
-            y={80}
+            y={70}
             width={180}
             height={120}
             fill="none"
@@ -545,7 +442,7 @@ function CommunicationBreakdown() {
           />
           <text
             x={110}
-            y={70}
+            y={60}
             textAnchor="middle"
             fontSize={11}
             letterSpacing="1.76"
@@ -557,7 +454,7 @@ function CommunicationBreakdown() {
           </text>
           <text
             x={110}
-            y={148}
+            y={138}
             textAnchor="middle"
             fontSize={20}
             fill="#1F1F1F"
@@ -571,22 +468,22 @@ function CommunicationBreakdown() {
         <g>
           <line
             x1={210}
-            y1={140}
+            y1={130}
             x2={285}
-            y2={140}
+            y2={130}
             stroke="#1F1F1F"
             strokeWidth={1.5}
           />
-          <polygon points="285,135 295,140 285,145" fill="#1F1F1F" />
+          <polygon points="285,125 295,130 285,135" fill="#1F1F1F" />
         </g>
 
-        {/* PMO box — visually dominant */}
+        {/* PMO box */}
         <g>
           <rect
             x={300}
-            y={60}
+            y={50}
             width={240}
-            height={160}
+            height={isBroken ? 200 : 150}
             fill="#F8F8F8"
             stroke="#1F1F1F"
             strokeWidth={1.5}
@@ -594,7 +491,7 @@ function CommunicationBreakdown() {
           />
           <text
             x={420}
-            y={50}
+            y={40}
             textAnchor="middle"
             fontSize={11}
             letterSpacing="1.76"
@@ -602,11 +499,11 @@ function CommunicationBreakdown() {
             fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
             fontWeight={500}
           >
-            SPECIFICATION (BROKEN)
+            {isBroken ? "SPECIFICATION (BROKEN)" : "SPECIFICATION (FIXED)"}
           </text>
           <text
             x={420}
-            y={130}
+            y={isBroken ? 110 : 130}
             textAnchor="middle"
             fontSize={24}
             fill="#1F1F1F"
@@ -614,102 +511,143 @@ function CommunicationBreakdown() {
           >
             PMO
           </text>
-        </g>
 
-        {/* UI atoms popping out of PMO bottom */}
-        <g>
-          {/* button — solid */}
-          <rect
-            x={320}
-            y={185}
-            width={44}
-            height={14}
-            fill="#1F1F1F"
-            rx={2}
-          />
-          <text
-            x={342}
-            y={213}
-            textAnchor="middle"
-            fontSize={10}
-            fill="#A0A0A0"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-          >
-            button
-          </text>
+          {/* Outcome-first label (fix variant) — sits inside the PMO box
+              where the UI atoms used to be, signalling that PMO now hands
+              over problems, not solutions. */}
+          {!isBroken && (
+            <text
+              x={420}
+              y={158}
+              textAnchor="middle"
+              fontSize={11}
+              fill="#5D5D5D"
+              fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+              letterSpacing="0.08em"
+            >
+              writes problem statements
+            </text>
+          )}
 
-          {/* dropdown — outlined w/ chevron */}
-          <rect
-            x={380}
-            y={185}
-            width={70}
-            height={14}
-            fill="none"
-            stroke="#1F1F1F"
-            strokeWidth={1}
-            rx={2}
-          />
-          <text
-            x={442}
-            y={195}
-            textAnchor="end"
-            fontSize={8}
-            fill="#1F1F1F"
-          >
-            ▼
-          </text>
-          <text
-            x={415}
-            y={213}
-            textAnchor="middle"
-            fontSize={10}
-            fill="#A0A0A0"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-          >
-            dropdown
-          </text>
-
-          {/* modal — outlined */}
-          <rect
-            x={470}
-            y={185}
-            width={46}
-            height={14}
-            fill="none"
-            stroke="#1F1F1F"
-            strokeWidth={1}
-            rx={2}
-          />
-          <text
-            x={493}
-            y={213}
-            textAnchor="middle"
-            fontSize={10}
-            fill="#A0A0A0"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-          >
-            modal
-          </text>
+          {/* UI atoms (broken variant only) — boxed as "BRD includes UI
+              specs" so the reader sees the leak. */}
+          {isBroken && (
+            <g>
+              <rect
+                x={314}
+                y={150}
+                width={212}
+                height={88}
+                fill="none"
+                stroke="#1F1F1F"
+                strokeWidth={1}
+                strokeDasharray="4 3"
+                rx={4}
+              />
+              <text
+                x={420}
+                y={166}
+                textAnchor="middle"
+                fontSize={10}
+                fill="#1F1F1F"
+                fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+                letterSpacing="0.08em"
+                fontWeight={500}
+              >
+                BRD INCLUDES UI SPECS
+              </text>
+              {/* button */}
+              <rect
+                x={328}
+                y={182}
+                width={44}
+                height={14}
+                fill="#1F1F1F"
+                rx={2}
+              />
+              <text
+                x={350}
+                y={212}
+                textAnchor="middle"
+                fontSize={10}
+                fill="#5D5D5D"
+                fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+              >
+                button
+              </text>
+              {/* dropdown */}
+              <rect
+                x={386}
+                y={182}
+                width={70}
+                height={14}
+                fill="none"
+                stroke="#1F1F1F"
+                strokeWidth={1}
+                rx={2}
+              />
+              <text
+                x={448}
+                y={192}
+                textAnchor="end"
+                fontSize={8}
+                fill="#1F1F1F"
+              >
+                ▼
+              </text>
+              <text
+                x={421}
+                y={212}
+                textAnchor="middle"
+                fontSize={10}
+                fill="#5D5D5D"
+                fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+              >
+                dropdown
+              </text>
+              {/* modal */}
+              <rect
+                x={470}
+                y={182}
+                width={46}
+                height={14}
+                fill="none"
+                stroke="#1F1F1F"
+                strokeWidth={1}
+                rx={2}
+              />
+              <text
+                x={493}
+                y={212}
+                textAnchor="middle"
+                fontSize={10}
+                fill="#5D5D5D"
+                fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+              >
+                modal
+              </text>
+            </g>
+          )}
         </g>
 
         {/* Arrow PMO → DESIGNER */}
         <g>
           <line
             x1={550}
-            y1={140}
+            y1={130}
             x2={625}
-            y2={140}
+            y2={130}
             stroke="#1F1F1F"
             strokeWidth={1.5}
           />
-          <polygon points="625,135 635,140 625,145" fill="#1F1F1F" />
+          <polygon points="625,125 635,130 625,135" fill="#1F1F1F" />
         </g>
 
         {/* DESIGNER box */}
         <g>
           <rect
             x={640}
-            y={80}
+            y={70}
             width={180}
             height={120}
             fill="none"
@@ -719,7 +657,7 @@ function CommunicationBreakdown() {
           />
           <text
             x={730}
-            y={70}
+            y={60}
             textAnchor="middle"
             fontSize={11}
             letterSpacing="1.76"
@@ -727,11 +665,11 @@ function CommunicationBreakdown() {
             fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
             fontWeight={500}
           >
-            EXECUTION (CONSTRAINED)
+            {isBroken ? "EXECUTION (CONSTRAINED)" : "DESIGN (OWNS UI)"}
           </text>
           <text
             x={730}
-            y={148}
+            y={138}
             textAnchor="middle"
             fontSize={20}
             fill="#1F1F1F"
@@ -740,396 +678,395 @@ function CommunicationBreakdown() {
             DESIGNER
           </text>
         </g>
-
-        {/* Diagnostic annotation — italic, centered */}
-        <text
-          x={480}
-          y={290}
-          textAnchor="middle"
-          fontSize={11}
-          letterSpacing="1.76"
-          fontStyle="italic"
-          fill="#5D5D5D"
-          fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-        >
-          ⊘ The relay is specifying solutions, not problems. Designer receives
-          atoms, not questions.
-        </text>
       </svg>
+      {title && (
+        <p
+          className="text-center text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
+          style={MONO}
+        >
+          {title}
+        </p>
+      )}
       <figcaption
-        className="text-center text-[12px] tracking-[0.16em] font-normal text-[#5D5D5D]"
-
+        className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+        style={MONO}
       >
-        Fig. 1 of 2 · The relay that produced the symptoms
+        {caption}
       </figcaption>
     </figure>
   );
 }
 
-// Fig. 2 of 2 — BRD before/after pair.  Real screenshots TBD; until then
-// each frame renders a labelled placeholder with the spec's annotations.
-function BrdPair() {
+function SectionProblem() {
   return (
-    <figure className="flex flex-col gap-[12px]">
-      <div className="grid gap-[16px] tablet:grid-cols-2 tablet:gap-[32px]">
-        {/* BEFORE */}
-        <div className="flex flex-col gap-[12px]">
-          <div className="relative aspect-[4/3] w-full overflow-clip border border-[#1F1F1F]/30 bg-[#F8F8F8]">
-            <div
-              className="flex h-full w-full items-center justify-center text-[12px] tracking-[0.16em] text-[#A0A0A0]"
-
-            >
-              TBD · BEFORE BRD SCREENSHOT
-            </div>
-            <div className="absolute top-[10px] right-[10px] max-w-[60%] bg-[#F8F8F8]/85 px-[10px] py-[6px]">
-              <p
-                className="text-[12px] tracking-[0.08em] italic font-normal text-[#5D5D5D]"
-
-              >
-                ⊘ solution-first language · mixed problem + current-state · no
-                validation criteria
-              </p>
-            </div>
-          </div>
-          <p
-            className="text-center text-[12px] tracking-[0.16em] font-normal text-[#5D5D5D]"
-
-          >
-            BEFORE — solution-first BRD
-          </p>
-        </div>
-
-        {/* AFTER */}
-        <div className="flex flex-col gap-[12px]">
-          <div className="relative aspect-[4/3] w-full overflow-clip border border-[#1F1F1F]/30 bg-[#F8F8F8]">
-            <div
-              className="flex h-full w-full items-center justify-center text-[12px] tracking-[0.16em] text-[#A0A0A0]"
-
-            >
-              TBD · AFTER BRD SCREENSHOT
-            </div>
-            <div className="absolute top-[10px] right-[10px] max-w-[60%] bg-[#F8F8F8]/85 px-[10px] py-[6px]">
-              <p
-                className="text-[12px] tracking-[0.08em] font-medium text-[#1F1F1F]"
-
-              >
-                ✓ 5-section problem-first structure · validation rules per
-                section
-              </p>
-            </div>
-          </div>
-          <p
-            className="text-center text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
-
-          >
-            AFTER — problem-first structure
-          </p>
-        </div>
-      </div>
-      <figcaption
-        className="text-center text-[12px] tracking-[0.16em] font-normal text-[#5D5D5D]"
-
-      >
-        Fig. 2 of 2 · The artifact, restructured
-      </figcaption>
-    </figure>
-  );
-}
-
-function SelfPolicingBanner() {
-  return (
-    <div
-      className="flex flex-col items-center gap-[8px] px-[28px] py-[36px] text-center tablet:px-[48px]"
-      style={{ backgroundColor: DARK }}
-    >
-      <p
-        className="font-serif text-[20px] leading-[1.45] italic text-[#F4F4F4] tablet:text-[22px]"
-        style={{ fontFamily: "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif" }}
-      >
-        &ldquo;If the user story describes a solution instead of a problem,
-        it should be rejected.&rdquo;
-      </p>
-      <p
-        className="text-[12px] tracking-[0.16em] font-normal text-[#F4F4F4]/80"
-
-      >
-        — Self-policing rule. Forged here. Carried into GIA later.
-      </p>
-    </div>
-  );
-}
-
-function BigCallout() {
-  return (
-    <div
-      className="flex flex-col gap-[18px] px-[32px] py-[48px] tablet:px-[60px] tablet:py-[60px]"
-      style={{ backgroundColor: DARK }}
-    >
-      <p
-        className="text-[12px] tracking-[0.16em] font-medium text-[#F4F4F4]/80"
-
-      >
-        THE TOYOTA SIGNAL
-      </p>
-      <p className="text-[24px] leading-[1.3] font-medium text-[#F4F4F4] tablet:text-[28px]">
-        When the surface keeps breaking, fix the system that produces it.
-      </p>
-      <p className="text-[16px] leading-[1.6] font-normal text-[#F4F4F4]/80 tablet:text-[16px]">
-        I diagnosed two problems — design fundamentals and a broken relay. I
-        solved one — the upstream one — and watched the surface fix itself.
-      </p>
-      <p className="text-[16px] leading-[1.5] italic font-normal text-[#F4F4F4]/70 tablet:text-[16px]">
-        Two symptoms. One artifact. The leverage was always upstream.
-      </p>
-    </div>
-  );
-}
-
-function SectionDiagnosis({ onOpenModal }: { onOpenModal: () => void }) {
-  return (
-    <section
-      id="diagnosis"
-      className="flex flex-col gap-[36px] py-[64px] tablet:py-[96px]"
-    >
-      <SectionHeader
-        number="02"
-        eyebrow="The rescue"
-        headline={
-          <>
-            When the surface kept breaking,
-            <br aria-hidden />
-            I fixed the system that produced it.
-          </>
-        }
+    <Section id="problem">
+      <Eyebrow>+ The problems</Eyebrow>
+      <SectionHead
+        n="02"
+        title="When the surface kept breaking, I traced it upstream."
       />
-
-      {/* Project context — with inline ✦ modal trigger */}
-      <p className="max-w-[720px] text-[16px] leading-[1.7] font-normal text-[#1F1F1F]">
-        Toyota Guidehub is Toyota&rsquo;s internal supply-chain operations
-        platform. This engagement focused on the{" "}
-        <PcaTrigger onOpen={onOpenModal} /> workflow — a multi-step flow
-        letting Distribution Service Manager personas review vehicle
-        configuration codes across linked sub-guides before approvals
-        propagated downstream. When I joined, the project had been escalated
-        to executive review and the consulting partner had been switched
-        mid-engagement. Trust was eroding. I was brought in as senior
-        emergency support to firefight.
-      </p>
-
-      <PcaApprovalFlow />
-
       <Lede>
-        Within the first week, the design team was treating two surface
-        problems as separate fights. From a different angle, both were the
-        same problem — the artifact that fed them. So I stopped trying to fix
-        surface symptoms and rebuilt the artifact instead.
+        The project was in crisis, so triage came first. I identified the
+        three most critical surface symptoms — the ones that were
+        objectively wrong, not matters of taste — and traced them to a
+        single upstream cause.
       </Lede>
 
-      {/* ─── BEAT 1 ─── */}
-      <div className="flex flex-col gap-[24px]">
-        <BeatDivider label="BEAT 1 · SURFACE SYMPTOM" />
-        <Body>
-          In the first design review I sat in on, the team was iterating on
-          visuals without a shared rubric. Senior gave an opinion, junior
-          wrote it down, the next senior gave a different opinion — screens
-          kept changing without a decision. The same component looked
-          different on every page. Two specific failures were everywhere:
-        </Body>
-
-        <div className="grid gap-[16px] tablet:grid-cols-3 tablet:gap-[24px]">
-          <NonNegotiableCard
-            num="01"
-            title="Action clarity"
-            body="One primary button per screen. Secondary actions carry less visual weight. The team was rendering every CTA as primary."
-            example="Two equally weighted blue buttons asking the user to do two different things — the user can't decide which is the next step."
-          />
-          <NonNegotiableCard
-            num="02"
-            title="Color semantics"
-            body="Same meaning, same color. Different meaning, different color. Color is language, not decoration. The same blue meant different things on different screens."
-            example="Success-green on one screen meant 'confirm.' On another, it meant 'disabled.' The user's learned mapping was broken."
-          />
-          <NonNegotiableCard
-            num="03"
-            title="Viewport reality"
-            body="Fitting on Figma canvas ≠ fitting at the real implementation breakpoint. A 1440 design that breaks at 1280 isn't finished."
-            example="The spec said 'stack on mobile' but no actual breakpoint was tested. Hand-off was incomplete."
-          />
+      {/* ───────────── Problem 01 — surface symptoms ───────────── */}
+      <div className="mt-[36px]">
+        <div className="mb-[14px]">
+          <p
+            className="mb-[8px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+            style={MONO}
+          >
+            PROBLEM 01
+          </p>
+          <h3 className="text-[26px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[32px]">
+            Designs were being driven by individual aesthetics, not by
+            shared principles.
+          </h3>
         </div>
 
         <Body>
-          When the team did try to fix these, they reached for taste.
-          Subjective aesthetic adjustments. Each version &ldquo;looked
-          better,&rdquo; but the structural issues weren&rsquo;t being fixed
-          — they were being rearranged. The team kept hitting the same wall.
+          Across the screens I audited in the first week, the same three
+          fundamentals were broken everywhere. Each one is an objective
+          rule, not a matter of taste — which is why I led with them.
         </Body>
+
+        <ProblemSummary />
+
+        <SubH>01 · Action clarity — every CTA looked equally important</SubH>
+        <Body>
+          One primary action per screen. Secondary actions should carry less
+          visual weight. Across the platform, almost every interactive
+          element was rendered as a filled primary button, leaving users
+          with no signal about which step was actually next.
+        </Body>
+        <Evidence
+          src="/work/toyota/everything-is-primary.png"
+          alt="Toyota Guidehub screen with every button rendered as a primary action"
+          caption="Toyota Guidehub — every action rendered as primary"
+        />
+
+        <SubH>
+          02 · Color semantics — same color, different meaning across
+          screens
+        </SubH>
+        <Body>
+          Color is language, not decoration. Same meaning → same color;
+          different meaning → different color. In the platform, success-
+          green, info-blue, and error-red each meant something different
+          depending on the section — so the user&rsquo;s learned mapping
+          broke every time they navigated.
+        </Body>
+        <Evidence
+          src="/work/toyota/color-semantics-problem.png"
+          alt="Toyota Guidehub screens showing inconsistent color semantics"
+          caption="Toyota Guidehub — green / blue / red carry different meanings per section"
+        />
+
+        <SubH>
+          03 · Viewport reality — wireframes only worked on an infinite
+          canvas
+        </SubH>
+        <Body>
+          A 1440-design that breaks at the real implementation breakpoint
+          isn&rsquo;t finished. The form below was specified at full Figma
+          canvas width, with all fields visible at once — so the bottom
+          actions appeared reachable on paper but were never on screen at
+          implementation size.
+        </Body>
+        <Evidence
+          src="/work/toyota/form-exceeding-screen.png"
+          alt="Form spec that exceeds a realistic screen size, drawn on infinite Figma canvas"
+          caption="Form spec drawn on infinite canvas — fields visible in Figma, hidden at 1280 px"
+        />
+        <Evidence
+          src="/work/toyota/viewport-reality.png"
+          alt="Same layout with an unrealistic horizontal scroll at the real implementation breakpoint"
+          caption="Same layout at the real implementation breakpoint — horizontal scroll, unusable"
+        />
       </div>
 
-      {/* ─── BEAT 2 ─── */}
-      <div className="flex flex-col gap-[24px]">
-        <BeatDivider label="BEAT 2 · A DIFFERENT ANGLE" />
+      {/* ───────────── Problem 02 — BRD root cause ───────────── */}
+      <div className="mt-[56px] border-t border-[#A0A0A0] pt-[40px]">
+        <div className="mb-[14px]">
+          <p
+            className="mb-[8px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+            style={MONO}
+          >
+            PROBLEM 02
+          </p>
+          <h3 className="text-[26px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[32px]">
+            The hierarchy was breaking because the BRD was pre-deciding
+            the UI.
+          </h3>
+        </div>
+
         <Body>
-          I asked a different question — not <em>which fix is right</em> but{" "}
-          <em>where do these errors originate?</em> Tracing the artifact
-          upstream, the breakdown wasn&rsquo;t on the design team&rsquo;s
-          surface. It was in the relay between the client and design.
+          Once the surface symptoms were named, I looked for the cause.
+          Tracing the artifact upstream, the breakdown wasn&rsquo;t on
+          the design team&rsquo;s side — it was in what the design team
+          was being handed.
         </Body>
 
-        <CommunicationBreakdown />
+        <ul className="my-[18px] flex max-w-[680px] flex-col gap-[10px] text-[16px] leading-[1.6] text-[#1F1F1F]">
+          <li className="grid grid-cols-[14px_1fr] items-baseline gap-[12px]">
+            <span aria-hidden className="text-[#1F1F1F]">
+              ·
+            </span>
+            <span>
+              The <Strong>BRD specified UI elements</Strong> — buttons,
+              dropdowns, modals — as part of the requirements.
+            </span>
+          </li>
+          <li className="grid grid-cols-[14px_1fr] items-baseline gap-[12px]">
+            <span aria-hidden className="text-[#1F1F1F]">
+              ·
+            </span>
+            <span>
+              Designers received those UI atoms and placed them all at the
+              same hierarchy level, because the BRD asked for them
+              equally.
+            </span>
+          </li>
+          <li className="grid grid-cols-[14px_1fr] items-baseline gap-[12px]">
+            <span aria-hidden className="text-[#1F1F1F]">
+              ·
+            </span>
+            <span>
+              Result: cluttered, undifferentiated interfaces. The design
+              spec was being decided by the BRD; designers were
+              effectively painting it.
+            </span>
+          </li>
+        </ul>
 
-        <Body>
-          The PMO was receiving business requirements from the client and
-          translating them into UI specifications — buttons, dropdowns,
-          modals — <em>before the design team ever saw the work</em>.
-          Designers received UI atoms, not problems. They had no entry point
-          to question whether the dropdown was the right answer. So when
-          something looked wrong, the only tool they had was visual
-          adjustment. The fundamentals problems were a downstream effect.
-        </Body>
+        <CommunicationBreakdown
+          caption="The relay specifies solutions, not problems. Designers receive atoms, not questions."
+        />
       </div>
-
-      {/* ─── BEAT 3 ─── */}
-      <div className="flex flex-col gap-[24px]">
-        <BeatDivider label="BEAT 3 · THE FIX" />
-        <Body>
-          The leverage point was the <strong className="font-semibold">
-            BRD itself
-          </strong>{" "}
-          — the artifact that crossed the boundary between PMO and design
-          team. If the BRD specified problems instead of UI, the relay would
-          invert. PMO would write problem statements; designers would respond
-          with UI. The team would have agency.
-        </Body>
-
-        <Body>
-          I rebuilt the BRD format around a 5-section, problem-first structure
-          with a self-policing rule per section. The same structural rule I
-          would later apply at GIA — but this engagement was where it was
-          forged.
-        </Body>
-
-        <BrdPair />
-
-        <SelfPolicingBanner />
-
-        <Body>
-          Once the BRDs migrated to problem-first, the surface symptoms
-          dissolved. PMO couldn&rsquo;t specify a dropdown without first
-          specifying the user question that justified it. Designer reviews
-          became professional rather than personal. The three non-negotiables
-          stopped being a corrective tool and became part of the team&rsquo;s
-          default vocabulary.{" "}
-          <strong className="font-semibold">
-            The team didn&rsquo;t need me telling them which screen was
-            broken — they could see it themselves.
-          </strong>
-        </Body>
-      </div>
-
-      <BigCallout />
-    </section>
+    </Section>
   );
 }
 
 // ============================================================================
-// §03 What held — 3-stat outcome row + closing body
+// §03 The fix
 // ============================================================================
 
-function StatOutcome({
-  number,
-  label,
-}: {
-  number: string;
-  label: string;
-}) {
+function BeforeAfterPair() {
   return (
-    <div className="flex flex-col gap-[8px]">
-      <span
-        className="text-[48px] leading-[0.9] font-medium text-[#1F1F1F] tablet:text-[56px]"
+    <figure className="my-[28px] flex flex-col gap-[16px]">
+      <div className="grid gap-[20px] tablet:grid-cols-2 tablet:gap-[24px]">
+        <div className="flex flex-col gap-[10px]">
+          <span
+            className="text-[12px] tracking-[0.16em] font-medium text-[#A0A0A0]"
+            style={MONO}
+          >
+            BEFORE
+          </span>
+          <div className="overflow-hidden rounded-[6px] border border-[#1F1F1F]/15 bg-white">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/work/toyota/everything-is-primary.png"
+              alt="Toyota Guidehub before fix — every action rendered as primary"
+              className="block h-auto w-full"
+            />
+          </div>
+          <p className="text-[14px] leading-[1.5] text-[#5D5D5D]">
+            Every action rendered as primary; no hierarchy signal.
+          </p>
+        </div>
+        <div className="flex flex-col gap-[10px]">
+          <span
+            className="text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
+            style={MONO}
+          >
+            AFTER
+          </span>
+          <div className="overflow-hidden rounded-[6px] border border-[#1F1F1F]/15 bg-white">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/work/toyota/after.png"
+              alt="Toyota Guidehub after fix — primary action carries the screen, secondary actions step back"
+              className="block h-auto w-full"
+            />
+          </div>
+          <p className="text-[14px] leading-[1.5] text-[#1F1F1F]">
+            One primary action; consistent secondary + tertiary treatment.
+          </p>
+        </div>
+      </div>
+    </figure>
+  );
+}
 
-      >
-        {number}
-      </span>
-      <span
-        className="text-[12px] tracking-[0.16em] font-medium leading-[1.4] text-[#5D5D5D]"
-
-      >
-        {label}
-      </span>
+function BrdFrameworkCard() {
+  return (
+    <div className="my-[24px] grid max-w-[760px] gap-[20px] rounded-[8px] border border-[#1F1F1F]/20 bg-[#F4F4F4] px-[22px] py-[20px] tablet:grid-cols-2 tablet:gap-[28px] tablet:px-[28px] tablet:py-[24px]">
+      <div>
+        <p
+          className="mb-[10px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+          style={MONO}
+        >
+          ✕ WHAT WAS MISSING IN THE OLD BRD
+        </p>
+        <ul className="flex flex-col gap-[8px] text-[14px] leading-[1.55] text-[#1F1F1F]">
+          <li className="grid grid-cols-[10px_1fr] items-baseline gap-[10px]">
+            <span aria-hidden>·</span>
+            <span>What the user was trying to accomplish, or why</span>
+          </li>
+          <li className="grid grid-cols-[10px_1fr] items-baseline gap-[10px]">
+            <span aria-hidden>·</span>
+            <span>
+              Context around who the user is and what scenario they&rsquo;re
+              in
+            </span>
+          </li>
+          <li className="grid grid-cols-[10px_1fr] items-baseline gap-[10px]">
+            <span aria-hidden>·</span>
+            <span>
+              Anything that didn&rsquo;t read as a build spec — colors,
+              button placement, and interactions were hard-coded
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <p
+          className="mb-[10px] text-[12px] tracking-[0.16em] font-medium text-[#1F1F1F]"
+          style={MONO}
+        >
+          ✓ WHAT THE NEW BRD FRAMEWORK CAPTURED
+        </p>
+        <ul className="flex flex-col gap-[8px] text-[14px] leading-[1.55] text-[#1F1F1F]">
+          <li className="grid grid-cols-[10px_1fr] items-baseline gap-[10px]">
+            <span aria-hidden>·</span>
+            <span>
+              <Strong>Desired outcome first</Strong>, not the interface
+            </span>
+          </li>
+          <li className="grid grid-cols-[10px_1fr] items-baseline gap-[10px]">
+            <span aria-hidden>·</span>
+            <span>
+              <Strong>Problem context + intent</Strong>, not just feature
+              lists
+            </span>
+          </li>
+          <li className="grid grid-cols-[10px_1fr] items-baseline gap-[10px]">
+            <span aria-hidden>·</span>
+            <span>
+              <Strong>UX-option pathways</Strong> that allow discussion and
+              choice
+            </span>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }
 
-function SectionWhatHeld() {
+function SectionFix() {
   return (
-    <section
-      id="what-held"
-      className="flex flex-col gap-[36px] py-[64px] tablet:py-[96px]"
-    >
-      <SectionHeader
-        number="03"
-        eyebrow="Result"
-        headline="What the upstream fix pulled back."
+    <Section id="fix">
+      <Eyebrow>+ The fix</Eyebrow>
+      <SectionHead
+        n="03"
+        title="Two moves: clean up the visible damage, then fix the artifact that produced it."
       />
+      <Lede>
+        I didn&rsquo;t try to fix every screen. I picked the three most
+        objectively-evaluable problems on the surface and rebuilt the
+        upstream BRD so the same problems stopped getting generated.
+      </Lede>
 
-      <div className="grid gap-[24px] border-y border-[#1F1F1F]/30 py-[32px] tablet:grid-cols-3">
-        <StatOutcome
-          number="1"
-          label="industry award won — engagement rescued from executive escalation (TBD: confirm name + year)"
-        />
-        <StatOutcome
-          number="All"
-          label="BRDs migrated to problem-first format (TBD: exact count)"
-        />
-        <StatOutcome
-          number="Within weeks"
-          label="team self-policed without my prompts"
-        />
-      </div>
-
+      <SubH>Surface fix — visual hierarchy, restored</SubH>
       <Body>
-        The most concrete result: the project — escalated to executives when
-        I joined — was rescued. Client trust was restored. The engagement won
-        an industry award (TBD). But the most durable result was upstream:
-        the BRD restructure outlived the engagement, and the three
-        non-negotiables were carried into onboarding for new designers.{" "}
-        <strong className="font-semibold">
-          More than the screen fixes I made, what stayed was the subjectivity
-          I cut out.
-        </strong>
+        For Action clarity specifically, I led a pass that restored a
+        single primary action per screen and pulled secondary / tertiary
+        actions down a tier in weight. The same logic applied to color
+        semantics and viewport audits across the platform — but the
+        before / after is clearest on the action-hierarchy fix.
       </Body>
-    </section>
+      <BeforeAfterPair />
+
+      <SubH>Upstream fix — a new BRD communication framework</SubH>
+      <Body>
+        The surface fix would have only held if the BRD kept handing
+        designers UI atoms. So I worked with the design and business
+        teams to define a new BRD communication framework — one that
+        carried outcome and context across the relay, and left the UI
+        decision on the design side where it belonged.
+      </Body>
+
+      <BrdFrameworkCard />
+
+      <CommunicationBreakdown
+        title="THE RELAY, RESTRUCTURED"
+        caption="UI specs no longer cross the boundary. PMO hands over problems; design owns the UI."
+        variant="fixed"
+      />
+    </Section>
   );
 }
 
 // ============================================================================
-// §04 What's next — narrow column reflection
+// §04 Impact
 // ============================================================================
 
-function SectionNext() {
+function SectionImpact() {
   return (
-    <section
-      id="next"
-      className="flex flex-col gap-[36px] py-[64px] tablet:py-[96px]"
-    >
-      <SectionHeader
-        number="04"
-        eyebrow="Reflection"
-        headline="What's next."
+    <Section id="impact">
+      <Eyebrow>+ Impact</Eyebrow>
+      <SectionHead
+        n="04"
+        title="Earning trust through action."
       />
+      <Lede>
+        The most concrete result was the project itself — escalated to
+        executives when I joined, rescued by the time it shipped. The
+        more durable result was what came after.
+      </Lede>
+
+      <Body>
+        Beyond resolving the tactical issues, I played a core role in
+        upskilling and unblocking the design team — and the relationship
+        outlived the engagement.
+      </Body>
+
+      <Body>
+        As a result, I was later asked to lead training initiatives —{" "}
+        <Strong>Designers&rsquo; Collective</Strong>,{" "}
+        <Strong>Figma Fundamentals</Strong>, and the{" "}
+        <Strong>Data Visualization Practicum</Strong> — shaping the next
+        generation of internal design talent.
+      </Body>
+
+      <figure className="my-[28px] max-w-[680px] overflow-hidden rounded-[8px] border border-[#1F1F1F]/15 bg-white">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/work/toyota/award.jpeg"
+          alt="S&A Superior Talent Appreciation Reward (STAR) recognition note"
+          className="block h-auto w-full"
+        />
+        <figcaption
+          className="border-t border-[#1F1F1F]/15 bg-[#F4F4F4] px-[14px] py-[8px] text-[11px] tracking-[0.06em] text-[#5D5D5D]"
+          style={MONO}
+        >
+          S&amp;A Superior Talent Appreciation Reward (STAR) — Deloitte
+          internal recognition
+        </figcaption>
+      </figure>
+
       <p
-        className="max-w-[640px] text-[20px] leading-[1.5] italic font-normal text-[#1F1F1F] tablet:text-[24px]"
-        style={{
-          fontFamily:
-            "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif",
-        }}
+        className="my-[24px] max-w-[680px] border-l-2 border-[#1F1F1F] py-[6px] pl-[20px] text-[18px] leading-[1.4] font-medium italic text-[#1F1F1F] min-[560px]:text-[22px]"
       >
-        Surface symptoms are easier to argue about. Structural causes are
-        easier to fix. What I&rsquo;d carry into the next emergency
-        engagement: ask &ldquo;where does this artifact come from?&rdquo;
-        before fixing what it produces.
+        Surface symptoms are easier to argue about. Structural causes
+        are easier to fix. The lesson I&rsquo;d carry into the next
+        emergency engagement: ask &ldquo;where does this artifact come
+        from?&rdquo; before fixing what it produces.
       </p>
-    </section>
+    </Section>
   );
 }
 
@@ -1143,19 +1080,16 @@ export default function ToyotaCaseStudy() {
   const closeModal = () => dialogRef.current?.close();
 
   // Mount-gate the modal: native <dialog> rendered during SSR has been
-  // observed to clash with React 19's hydration in turbopack dev mode
-  // ("Failed to execute 'removeChild' on 'Node'").  Delaying the dialog
-  // node until after the first client commit keeps the SSR markup simple
-  // and avoids the reconciler walking over it twice.
+  // observed to clash with React 19's hydration in turbopack dev mode.
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
   return (
     <>
-      <SectionHero />
+      <SectionHero onOpenModal={openModal} />
 
       {/* §02–04 — left sticky nav + content column */}
-      <div className="mx-auto max-w-[1200px] px-[32px]">
+      <div className="mx-auto max-w-[1200px] px-[32px] pb-[80px]">
         <div className="flex tablet:gap-[40px]">
           <CaseStudyLeftNav
             currentSlug="toyota"
@@ -1163,9 +1097,9 @@ export default function ToyotaCaseStudy() {
             sections={SECTIONS}
           />
           <div className="min-w-0 flex-1">
-            <SectionDiagnosis onOpenModal={openModal} />
-            <SectionWhatHeld />
-            <SectionNext />
+            <SectionProblem />
+            <SectionFix />
+            <SectionImpact />
           </div>
         </div>
       </div>
