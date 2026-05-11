@@ -999,14 +999,22 @@ export default function PomesCaseStudy() {
                   {
                     label: "Event created",
                     note: "Host sets time, place, capacity.",
+                    src: "/work/pomes/event/01_created.png",
+                  },
+                  {
+                    label: "Chat opens",
+                    note: "Event-scoped thread spins up so attendees can coordinate.",
+                    src: "/work/pomes/event/02_chat_opens.png",
                   },
                   {
                     label: "Neighbors RSVP",
-                    note: "Joining opens an event-scoped thread.",
+                    note: "Joining surfaces inside the thread.",
+                    src: "/work/pomes/event/03_rsvp.png",
                   },
                   {
                     label: "Event happens",
                     note: "Thread closes the morning after.",
+                    src: "/work/pomes/event/04_happening.png",
                   },
                 ]}
               />
