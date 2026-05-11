@@ -275,12 +275,12 @@ export default function PomesCaseStudy() {
               Store flush right) instead of a vertical stack that hugs
               one side of the page.  At min-[960px] they jump back to a
               stacked column on the right of the title row. */}
-          <div className="flex w-full flex-row items-center justify-between gap-[24px] self-end min-[960px]:w-auto min-[960px]:flex-col min-[960px]:items-stretch min-[960px]:justify-start">
+          <div className="flex w-full flex-row items-center justify-between gap-[24px] self-end min-[960px]:ml-auto min-[960px]:w-auto min-[960px]:flex-col min-[960px]:items-stretch min-[960px]:justify-start min-[960px]:gap-[2px]">
             <Link
               href="https://apps.apple.com/us/app/pomes-borrow-help-meet/id6765548381"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity"
+              className="group inline-flex items-center gap-[12px] py-[2px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity min-[960px]:py-[1px]"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -301,7 +301,7 @@ export default function PomesCaseStudy() {
               href="https://play.google.com/store/apps/details?id=com.soonk.pomes"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity"
+              className="group inline-flex items-center gap-[12px] py-[2px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity min-[960px]:py-[1px]"
             >
               <svg
                 viewBox="0 0 24 24"
