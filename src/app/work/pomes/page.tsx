@@ -947,6 +947,7 @@ export default function PomesCaseStudy() {
                   {
                     label: "Request to borrow",
                     note: "Borrower taps Request on the item.",
+                    src: "/work/pomes/borrow/01_request.png",
                   },
                   {
                     label: "Chat opens",
@@ -955,10 +956,12 @@ export default function PomesCaseStudy() {
                   {
                     label: "Owner lends item",
                     note: "Item moves to On loan — still visible to the building, but not bookable until it's returned.",
+                    src: "/work/pomes/borrow/03_lends.png",
                   },
                   {
                     label: "Borrower returns",
                     note: "Marks the item returned; owner asked to confirm.",
+                    src: "/work/pomes/borrow/04_returns.png",
                   },
                   {
                     label: "Owner confirms · thanks",
@@ -1562,7 +1565,7 @@ function ChatFlow({
   steps,
 }: {
   title: string;
-  steps: { label: string; note?: string }[];
+  steps: { label: string; note?: string; src?: string }[];
 }) {
   return (
     <div className="my-[18px] rounded-[12px] bg-[#F4F4F4] p-[20px] tablet:p-[24px]">
@@ -1581,9 +1584,18 @@ function ChatFlow({
         {steps.map((s, i) => (
           <div key={i} className="flex flex-col gap-[8px]">
             <div className="relative aspect-[1206/2622] w-full overflow-clip rounded-[8px] border-2 border-[#1F1F1F] bg-[#D9D9D9]">
-              <div className="flex h-full w-full items-center justify-center px-[6px] text-center text-[10px] tracking-[0.06em] text-[#5D5D5D]">
-                TBD
-              </div>
+              {s.src ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={s.src}
+                  alt={s.label}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              ) : (
+                <div className="flex h-full w-full items-center justify-center px-[6px] text-center text-[10px] tracking-[0.06em] text-[#5D5D5D]">
+                  TBD
+                </div>
+              )}
             </div>
             <p
               className="text-[12px] tracking-[0.06em] text-[#5D5D5D]"
