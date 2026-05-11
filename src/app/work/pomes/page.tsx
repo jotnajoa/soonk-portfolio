@@ -1161,25 +1161,25 @@ export default function PomesCaseStudy() {
                   </p>
                 </div>
 
+                {/* Final week — YouTube Shorts walkthrough I recorded and
+                    posted to the building chat.  9:16 native aspect; sized
+                    down to ~200 px wide so its height lands close to the
+                    PDF cards on the left and the row reads as one band. */}
                 <div className="flex flex-col items-center gap-[10px]">
-                  <div className="relative aspect-[1206/2622] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
-                    <video
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      preload="metadata"
-                      aria-label="POMEs app — personal demo walkthrough sent to the building before launch"
-                      className="absolute inset-0 h-full w-full object-cover"
-                    >
-                      <source src="/work/pomes/demo.mp4" type="video/mp4" />
-                    </video>
+                  <div className="relative aspect-[9/16] w-full max-w-[200px] overflow-hidden rounded-[12px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
+                    <iframe
+                      src="https://www.youtube.com/embed/CcLhZs-jwG4?autoplay=1&mute=1&loop=1&playlist=CcLhZs-jwG4&controls=0&playsinline=1&modestbranding=1&rel=0"
+                      title="POMEs — personal walkthrough Short sent to the building before launch"
+                      allow="autoplay; encrypted-media; picture-in-picture"
+                      allowFullScreen
+                      className="absolute inset-0 h-full w-full"
+                    />
                   </div>
                   <p
                     className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
                     style={{ fontStyle: "italic" }}
                   >
-                    Final — personal walkthrough video before launch.
+                    Final — personal walkthrough Short before launch.
                   </p>
                 </div>
               </div>
