@@ -129,34 +129,46 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
             >
               Work
             </Link>
-            {/* Indicator squares — bare 16×16 boxes by default; on hover
-                each expands into a pill that reveals the project's brand
-                name in line, pushing siblings to the right.  Implemented
-                with a max-w + pl transition on the label so the indicator
-                itself stays the same fixed size and the row reflows
-                smoothly.  duration-300 reads as a deliberate slide, not
-                a snap. */}
+            {/* Indicator squares — 16×16 each, fixed size at rest, no
+                row reflow on hover.  Hovering a square:
+                  (1) fills the square with #00FB00 (Soonk accent green)
+                      while keeping its black border, and
+                  (2) reveals an editorial tooltip card below the row
+                      with the project's brand + tagline — same green
+                      fill, hard 4-px offset shadow for the brutalist
+                      drop-shadow feel.
+                Tooltip is absolutely positioned below the square so
+                siblings don't shift on hover.  pointer-events-none keeps
+                the card from interfering with hover continuity. */}
             {tiles.map((t) => {
               const active = t.slug === currentSlug;
               return (
-                <Link
-                  key={t.id}
-                  href={`/work/${t.slug}`}
-                  aria-label={`${t.id} · ${t.brand}`}
-                  className="group flex items-center no-underline"
-                >
-                  <span
-                    aria-hidden
-                    className={`block size-4 shrink-0 border border-[#1F1F1F] transition-colors ${
+                <span key={t.id} className="group relative flex items-center">
+                  <Link
+                    href={`/work/${t.slug}`}
+                    aria-label={`${t.id} · ${t.brand}`}
+                    className={`block size-4 border border-[#1F1F1F] transition-colors ${
                       active
-                        ? "bg-[#1F1F1F]"
-                        : "bg-transparent group-hover:bg-[#D9D9D9]"
+                        ? "bg-[#1F1F1F] group-hover:bg-[#00FB00]"
+                        : "bg-transparent group-hover:bg-[#00FB00]"
                     }`}
                   />
-                  <span className="max-w-0 overflow-hidden pl-0 text-[13px] font-medium whitespace-nowrap text-[#1F1F1F] transition-all duration-300 ease-out group-hover:max-w-[180px] group-hover:pl-[8px]">
-                    {t.brand}
+                  <span
+                    role="tooltip"
+                    aria-hidden
+                    className="pointer-events-none absolute top-[calc(100%+14px)] left-1/2 z-50 w-max max-w-[260px] -translate-x-1/2 -translate-y-1 border-2 border-[#1F1F1F] bg-[#00FB00] px-[14px] py-[10px] opacity-0 shadow-[4px_4px_0_0_#1F1F1F] transition-[opacity,transform] duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100"
+                  >
+                    <span className="block text-[10px] tracking-[0.16em] font-medium text-[#1F1F1F]/70" style={{ fontFamily: "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace" }}>
+                      {t.id}
+                    </span>
+                    <span className="block text-[15px] leading-[1.2] font-semibold text-[#1F1F1F]">
+                      {t.brand}
+                    </span>
+                    <span className="block text-[12px] leading-[1.35] font-medium text-[#1F1F1F]">
+                      {t.tagline}
+                    </span>
                   </span>
-                </Link>
+                </span>
               );
             })}
           </div>
