@@ -1126,34 +1126,52 @@ export default function PomesCaseStudy() {
               <Lede>
                 I didn&rsquo;t want to disappear into a build and drop a
                 finished app on my neighbors&rsquo; heads.  So from week 1 —
-                long before TestFlight existed — I sent progress reports
-                into the apt group chat (PDF below), and capped the run
-                with a personal demo walkthrough before launch.
+                long before TestFlight existed — I sent two progress
+                reports into the apt group chat (PDFs below) and capped
+                the run with a personal demo walkthrough before launch.
               </Lede>
 
-              {/* 2-up artifact row: the week-1 community update (paginated
-                  via react-pdf) and the final-week YouTube Shorts
-                  walkthrough.  Sized so both cards land at ~360 px tall
-                  (PdfBook at width=260 → ~362 px, YT short at 9:16 with
-                  max-w 200 → ~356 px) and centered vertically in each
-                  column so the row reads level. */}
-              <div className="my-[18px] grid grid-cols-1 items-center justify-items-center gap-[28px] min-[560px]:grid-cols-2">
+              {/* 3-up artifact row: two paginated weekly PDFs (what I
+                  was hearing → what was taking shape) and the final-week
+                  YouTube Shorts walkthrough.  Sized so each card lands
+                  around ~340–360 px tall (PdfBook at width=240 → ~336 px
+                  PDF area + ~24 paginator; YT short at 9:16 with
+                  max-w 190 → ~338 px) and centered vertically so the row
+                  reads level despite the different artifact shapes.
+                  Captions are intentionally distinct: same channel, but
+                  each card's prose tells you *why* this artifact, not
+                  just *what number week*. */}
+              <div className="my-[18px] grid grid-cols-1 items-center justify-items-center gap-[24px] min-[560px]:grid-cols-3">
                 <div className="flex flex-col items-center gap-[10px]">
                   <PdfBook
                     src="/work/pomes/week1_updates.pdf"
                     title="COMMUNITY UPDATE · WEEK 1"
-                    width={260}
+                    width={240}
                   />
                   <p
-                    className="max-w-[260px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                    className="max-w-[240px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
                     style={{ fontStyle: "italic" }}
                   >
-                    Mid-build progress note — posted to the apt group chat.
+                    Week 1 — what I&rsquo;d been hearing from neighbors.
                   </p>
                 </div>
 
                 <div className="flex flex-col items-center gap-[10px]">
-                  <div className="relative aspect-[9/16] w-full max-w-[200px] overflow-hidden rounded-[12px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
+                  <PdfBook
+                    src="/work/pomes/week2_updates.pdf"
+                    title="COMMUNITY UPDATE · WEEK 2"
+                    width={240}
+                  />
+                  <p
+                    className="max-w-[240px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                    style={{ fontStyle: "italic" }}
+                  >
+                    Week 2 — what the app was starting to look like.
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center gap-[10px]">
+                  <div className="relative aspect-[9/16] w-full max-w-[190px] overflow-hidden rounded-[12px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
                     <iframe
                       src="https://www.youtube.com/embed/CcLhZs-jwG4?autoplay=1&mute=1&loop=1&playlist=CcLhZs-jwG4&controls=0&playsinline=1&modestbranding=1&rel=0"
                       title="POMEs — personal walkthrough Short sent to the building before launch"
@@ -1163,10 +1181,10 @@ export default function PomesCaseStudy() {
                     />
                   </div>
                   <p
-                    className="max-w-[260px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                    className="max-w-[240px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
                     style={{ fontStyle: "italic" }}
                   >
-                    Final walkthrough Short — sent before launch.
+                    Final — personal walkthrough Short before launch.
                   </p>
                 </div>
               </div>
