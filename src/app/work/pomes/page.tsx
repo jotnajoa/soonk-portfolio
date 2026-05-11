@@ -1034,13 +1034,14 @@ export default function PomesCaseStudy() {
                 ))}
               </div>
 
-              {/* Demo video — encoded from ~/Downloads/pomes clip.MP4
-                  (1180×2556 phone capture, 12 s, ~150 KB after H.264 +
-                  faststart).  Same phone-bezel treatment as the hero
-                  landing video for visual continuity. */}
+              {/* Demo video — encoded from assets/POMEs/ demo_video.mov
+                  (1206×2622 phone capture, 58 s).  Web build via ffmpeg:
+                  scale=-2:720 · libx264 -preset slow -crf 26 · +faststart
+                  · -an → ~1.35 MB.  Same phone-bezel treatment as the
+                  hero landing video for visual continuity. */}
               <SubH>Personal demo video</SubH>
               <div className="my-[18px] flex flex-col items-center gap-[10px]">
-                <div className="relative aspect-[1180/2556] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
+                <div className="relative aspect-[1206/2622] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
                   <video
                     autoPlay
                     muted
