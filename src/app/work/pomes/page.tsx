@@ -680,24 +680,46 @@ export default function PomesCaseStudy() {
                 grows mutual help.
               </Lede>
 
-              {/* Nav-strip reference — the app has 5 tabs.  Home and Feed
-                  are one screen, not two; the strip clarifies that up front
-                  so the read below doesn't double back on terminology. */}
+              {/* Nav-strip reference — the 5 bottom-nav tabs the actual
+                  POMEs app ships, each tab paired with its real glyph from
+                  /assets/icons. */}
               <div className="mt-[28px] grid grid-cols-5 border-y border-[#A0A0A0]">
-                {["Home", "Borrow", "Favor", "Event", "Chat"].map((tab, i) => (
+                {[
+                  { label: "Home", icon: "/work/pomes/icons/home.svg" },
+                  { label: "Borrow", icon: "/work/pomes/icons/borrow.svg" },
+                  { label: "Favor", icon: "/work/pomes/icons/favor.svg" },
+                  { label: "Event", icon: "/work/pomes/icons/event.svg" },
+                  { label: "Chat", icon: "/work/pomes/icons/chat.svg" },
+                ].map((tab, i) => (
                   <div
-                    key={tab}
-                    className={`flex items-center justify-center py-[18px] text-[14px] font-medium tracking-[0.04em] text-[#1F1F1F] min-[560px]:text-[16px] ${
+                    key={tab.label}
+                    className={`flex items-center justify-center gap-[8px] py-[16px] text-[14px] font-medium tracking-[0.04em] text-[#1F1F1F] min-[560px]:text-[16px] ${
                       i > 0 ? "border-l border-[#A0A0A0]" : ""
                     }`}
                   >
-                    {tab}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={tab.icon}
+                      alt=""
+                      aria-hidden
+                      className="h-[18px] w-[18px] shrink-0"
+                    />
+                    <span>{tab.label}</span>
                   </div>
                 ))}
               </div>
               {/* Block 1 — HOME (which IS the feed).  Four-screenshot flow
                   showing the four roles the single home screen plays. */}
-              <SubH>Home · One screen, four roles</SubH>
+              <h3 className="mt-9 mb-[14px] flex items-center gap-[10px] text-[20px] font-medium text-[#1F1F1F]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/work/pomes/icons/home.svg"
+                  alt=""
+                  aria-hidden
+                  className="h-[22px] w-[22px] shrink-0"
+                />
+                Home
+              </h3>
 
               <div className="my-[24px] grid grid-cols-1 gap-[20px] min-[560px]:grid-cols-2 min-[960px]:grid-cols-4 min-[960px]:gap-[18px]">
                 {[
