@@ -4,6 +4,7 @@ import CaseStudyNav from "@/components/cases/CaseStudyNav";
 import CaseStudyLeftNav, {
   type CaseStudySection,
 } from "@/components/cases/CaseStudyLeftNav";
+import PdfBook from "./PdfBook";
 
 // POMEs case study — single long-scroll page, light-mode editorial.
 // Aligned with the landing's design system: Archivo (display + body) +
@@ -1119,76 +1120,67 @@ export default function PomesCaseStudy() {
               />
               <Lede>
                 I didn&rsquo;t want to disappear into a build and drop a
-                finished app on my neighbors&rsquo; heads. From week 2 — long
-                before TestFlight existed — engagement ran on two tracks:
+                finished app on my neighbors&rsquo; heads.  So from week 2 —
+                long before TestFlight existed — I sent weekly progress
+                reports into the apt group chat (PDFs below), and capped the
+                run with a personal demo walkthrough before launch.
               </Lede>
 
-              {/* Two engagement tracks — bullets up front, evidence below */}
-              <ul className="my-[16px] flex max-w-[680px] flex-col gap-[8px] text-[16px] leading-[1.6] text-[#1F1F1F]">
-                <li>
-                  <Strong>Weekly progress report → the apt group chat.</Strong>{" "}
-                  Sketches, decisions, what I was wrestling with — straight
-                  into the WhatsApp thread the building already used.
-                </li>
-                <li>
-                  <Strong>Demo video of the app → the neighbors.</Strong> A
-                  personal walkthrough so the app didn&rsquo;t feel like a
-                  cold install — they&rsquo;d already watched me use it.
-                </li>
-              </ul>
-
-              {/* Weekly progress report — 3 placeholder thumbnails until Soonk
-                  drops the actual report screenshots into /work/pomes/. */}
-              <SubH>Weekly progress report</SubH>
-              <div className="my-[18px] grid grid-cols-1 gap-[14px] min-[560px]:grid-cols-3">
-                {["Week 02", "Week 04", "Week 06"].map((wk) => (
-                  <div key={wk}>
-                    <div className="relative flex aspect-[3/4] items-center justify-center overflow-clip rounded-[12px] border-2 border-[#1F1F1F] bg-[#F4F4F4]">
-                      <div
-                        className="text-center text-[12px] tracking-[0.08em] text-[#5D5D5D]"
-                        style={{ fontFamily: MONO }}
-                      >
-                        TBD · {wk}
-                        <br />
-                        REPORT SCREENSHOT
-                      </div>
-                    </div>
-                    <p
-                      className="mt-[8px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
-                      style={{ fontStyle: "italic" }}
-                    >
-                      {wk} update to the apt group chat.
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Demo video — encoded from assets/POMEs/ demo_video.mov
-                  (1206×2622 phone capture, 58 s).  Web build via ffmpeg:
-                  scale=-2:720 · libx264 -preset slow -crf 26 · +faststart
-                  · -an → ~1.35 MB.  Same phone-bezel treatment as the
-                  hero landing video for visual continuity. */}
-              <SubH>Personal demo video</SubH>
-              <div className="my-[18px] flex flex-col items-center gap-[10px]">
-                <div className="relative aspect-[1206/2622] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
-                  <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-label="POMEs app — personal demo walkthrough sent to the building before launch"
-                    className="absolute inset-0 h-full w-full object-cover"
+              {/* 3-up grid: two PDF books (week 1 + week 2 updates,
+                  paginated via react-pdf) and the final week's video
+                  walkthrough.  Each cell stacks artifact above caption so
+                  the row aligns at the caption baseline even though PDF
+                  pages and a phone-portrait video have different aspects. */}
+              <div className="my-[18px] grid grid-cols-1 items-start gap-[20px] min-[560px]:grid-cols-3">
+                <div className="flex flex-col items-center gap-[10px]">
+                  <PdfBook
+                    src="/work/pomes/week1_updates.pdf"
+                    title="WEEK 1 · UPDATE"
+                    width={260}
+                  />
+                  <p
+                    className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                    style={{ fontStyle: "italic" }}
                   >
-                    <source src="/work/pomes/demo.mp4" type="video/mp4" />
-                  </video>
+                    Week 1 — apt group chat update.
+                  </p>
                 </div>
-                <p
-                  className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
-                  style={{ fontStyle: "italic" }}
-                >
-                  Personal walkthrough — sent to the building before launch.
-                </p>
+
+                <div className="flex flex-col items-center gap-[10px]">
+                  <PdfBook
+                    src="/work/pomes/week2_updates.pdf"
+                    title="WEEK 2 · UPDATE"
+                    width={260}
+                  />
+                  <p
+                    className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                    style={{ fontStyle: "italic" }}
+                  >
+                    Week 2 — apt group chat update.
+                  </p>
+                </div>
+
+                <div className="flex flex-col items-center gap-[10px]">
+                  <div className="relative aspect-[1206/2622] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
+                    <video
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      aria-label="POMEs app — personal demo walkthrough sent to the building before launch"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    >
+                      <source src="/work/pomes/demo.mp4" type="video/mp4" />
+                    </video>
+                  </div>
+                  <p
+                    className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                    style={{ fontStyle: "italic" }}
+                  >
+                    Final — personal walkthrough video before launch.
+                  </p>
+                </div>
               </div>
 
               <Body>
@@ -1250,33 +1242,70 @@ export default function PomesCaseStudy() {
                 </div>
               </div>
 
-              <div className="my-[28px] grid grid-cols-2 gap-[18px] border-y border-[#A0A0A0] py-[26px] min-[560px]:grid-cols-4">
-                {[
-                  ["60+", "buildings audited"],
-                  ["9", "leafletted"],
-                  ["97", "signups in 3 weeks"],
-                  ["10.2%", "peak (Tower 77)"],
-                ].map(([n, l]) => (
-                  <div key={l}>
-                    <div className="mb-[8px] text-[40px] leading-none font-extrabold tracking-[-0.02em] text-[#1F1F1F]">
-                      {n}
-                    </div>
-                    <div className="text-[12px] leading-[1.4] tracking-[0.04em] text-[#A0A0A0]">
-                      {l}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <Body>
+                Audited <Strong>60+ buildings</Strong>, picked{" "}
+                <Strong>9</Strong> across{" "}
+                <Strong>3 neighborhoods</Strong> (LIC, Williamsburg,
+                Greenpoint), and leafletted them by hand — taping flyers in
+                elevators, lobbies, and mailrooms.
+              </Body>
 
-              {/* Fig. 3 — GTM evidence */}
-              <figure className="mb-[24px] rounded-[12px] bg-[#F4F4F4] p-[24px]">
-                <div className="grid grid-cols-1 gap-[24px] min-[560px]:grid-cols-2">
-                  <NycMapSvg />
-                  <ConversionBarSvg />
+              {/* Leaflet evidence — LEFT: 3 in-the-field photos, slightly
+                  rotated like they were pasted by hand.  RIGHT: NYC map of
+                  neighborhoods + conversion bar (stacked). */}
+              <figure className="my-[24px] rounded-[12px] bg-[#F4F4F4] p-[24px]">
+                <div className="grid grid-cols-1 gap-[24px] tablet:grid-cols-[1fr_1.1fr]">
+                  {/* ---- Left column — 3 leaflet photos -------------- */}
+                  <div className="flex flex-col gap-[14px]">
+                    {[
+                      {
+                        src: "/work/pomes/leaflet/01_prepping.jpg",
+                        alt: "Prepping leaflets before going out",
+                        rot: "-1.2deg",
+                        label: "01 · Prepping",
+                      },
+                      {
+                        src: "/work/pomes/leaflet/02_posting.jpg",
+                        alt: "Posting a leaflet in the wild",
+                        rot: "0.8deg",
+                        label: "02 · Posting",
+                      },
+                      {
+                        src: "/work/pomes/leaflet/03_mailroom.jpg",
+                        alt: "Leaflet pinned in a building mailroom",
+                        rot: "-0.6deg",
+                        label: "03 · Mailroom",
+                      },
+                    ].map((p) => (
+                      <figure
+                        key={p.src}
+                        className="m-0"
+                        style={{ transform: `rotate(${p.rot})` }}
+                      >
+                        <div className="overflow-hidden rounded-[8px] border border-[#1F1F1F]/15 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={p.src}
+                            alt={p.alt}
+                            className="block aspect-[4/3] h-auto w-full object-cover"
+                          />
+                        </div>
+                        <figcaption
+                          className="mt-[6px] text-[10px] tracking-[0.08em] text-[#A0A0A0]"
+                          style={{ fontFamily: MONO }}
+                        >
+                          {p.label}
+                        </figcaption>
+                      </figure>
+                    ))}
+                  </div>
+
+                  {/* ---- Right column — map + bar (stacked) ----------- */}
+                  <div className="flex flex-col gap-[18px]">
+                    <NycMapSvg />
+                    <ConversionBarSvg />
+                  </div>
                 </div>
-                <figcaption className="mt-[14px] text-right text-[12px] tracking-[0.08em] text-[#A0A0A0]">
-                  FIG. 3 OF 3 · GTM EVIDENCE — 4 NEIGHBORHOODS, 1 WINNER
-                </figcaption>
               </figure>
 
               <Body>
