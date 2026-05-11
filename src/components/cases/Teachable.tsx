@@ -147,18 +147,20 @@ function SectionHero() {
       <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px] px-[32px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Display: logo + wordmark + subtitle.  Same display rhythm as
-            POMEs so the two founder-grade case studies anchor each other. */}
+        {/* Display: logo + wordmark + subtitle — POMEs hero spec
+            (68 / 92 / 128 px, font-semibold, tracking -0.05).  The two
+            founder-grade case studies anchor each other on the same
+            typographic ramp. */}
         <div className="flex flex-col gap-[10px]">
-          <div className="flex flex-wrap items-end gap-[18px]">
+          <div className="flex flex-wrap items-end gap-[20px] leading-none min-[560px]:gap-[28px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/work/logos/teachable_logo.png"
               alt=""
               aria-hidden
-              className="h-[56px] w-auto object-contain tablet:h-[96px]"
+              className="h-[64px] w-auto shrink-0 object-contain min-[560px]:h-[82px] min-[960px]:h-[104px]"
             />
-            <h1 className="text-[64px] leading-[0.9] font-black tracking-[-0.05em] text-[#1F1F1F] tablet:text-[120px]">
+            <h1 className="text-[68px] leading-[0.9] font-semibold tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
               Teachable
             </h1>
           </div>
@@ -185,12 +187,14 @@ function SectionHero() {
           </div>
 
           <div className="flex flex-col gap-[24px] tablet:gap-[28px]">
-            <p className="text-[22px] leading-[1.3] font-medium tracking-[-0.01em] text-[#1F1F1F] tablet:text-[26px]">
+            {/* Tagline — POMEs hero spec (24 / 28 / 36, leading 1.2, max-w 620). */}
+            <p className="max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
               Designed the report. Designed how it would be measured. Then
               refused to read low usage as failure.
             </p>
 
-            <dl className="border-t border-[#1F1F1F]/30">
+            {/* Meta dl — POMEs spec (110 px label col, 18 gap, 14 py). */}
+            <dl className="border-t border-[#A0A0A0]">
               {[
                 { label: "Role", value: "Solo IC" },
                 { label: "Timeline", value: "2022" },
@@ -202,16 +206,13 @@ function SectionHero() {
               ].map(({ label, value, bold }) => (
                 <div
                   key={label}
-                  className="grid grid-cols-[90px_1fr] items-baseline gap-[14px] border-b border-[#1F1F1F]/30 py-[12px]"
+                  className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
                 >
-                  <dt
-                    className="text-[11px] tracking-[0.14em] font-medium text-[#5D5D5D]"
-                    style={MONO}
-                  >
-                    {label.toUpperCase()}
+                  <dt className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]">
+                    {label}
                   </dt>
                   <dd
-                    className={`text-[14px] leading-[1.5] text-[#1F1F1F] tablet:text-[15px] ${
+                    className={`text-[16px] leading-[1.5] text-[#1F1F1F] ${
                       bold ? "font-semibold" : "font-normal"
                     }`}
                   >

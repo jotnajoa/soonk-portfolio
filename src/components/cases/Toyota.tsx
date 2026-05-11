@@ -243,40 +243,35 @@ function SectionHero({ onOpenModal }: { onOpenModal: () => void }) {
     >
       <Eyebrow>+ 01 / Intro</Eyebrow>
 
-      {/* Toyota wordmark — SVG logo glyph + plain wordmark, sized to
-          match the POMEs hero ramp (68 / 92 / 128 px).  No project
-          number on the wordmark — the canonical 01–04 marker lives in
-          the top CaseStudyNav and the side rail.  Logo SVG uses
-          h-auto so the source aspect drives height; the height comes
-          from the wordmark line-height so they share a baseline. */}
+      {/* Toyota wordmark — SVG logo glyph + plain wordmark, matched to
+          the POMEs hero scale (68 / 92 / 128 px, font-semibold,
+          tracking -0.05) so every case-study hero anchors on the same
+          typographic ramp.  No project number on the wordmark — the
+          canonical 01–04 marker lives in the top CaseStudyNav and the
+          side rail.  Logo height tracks the wordmark line-height so
+          they share a baseline. */}
       <div className="mb-[48px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[64px] min-[560px]:gap-[28px] min-[960px]:mb-[72px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/work/toyota/toyota-logo.svg"
           alt="Toyota"
-          className="h-[44px] w-auto shrink-0 min-[560px]:h-[58px] min-[960px]:h-[78px]"
+          className="h-[64px] w-auto shrink-0 min-[560px]:h-[82px] min-[960px]:h-[104px]"
         />
-        <span className="text-[48px] font-semibold leading-[0.9] tracking-[-0.04em] text-[#1F1F1F] min-[560px]:text-[68px] min-[960px]:text-[92px]">
+        <span className="text-[68px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
           Guidehub
         </span>
       </div>
 
-      {/* 2-col — tagline / context / meta dl on the left, meta-only on
-          right is overkill for a short case; keep a single column with
-          a wide tagline, then the meta dl + context paragraph stack
-          beneath it. */}
-      <p className="mb-[36px] max-w-[760px] text-[24px] leading-[1.25] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
+      {/* Tagline — POMEs hero spec (24 / 28 / 36, leading 1.2, max-w 620). */}
+      <p className="mb-[36px] max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
         Brought in as emergency support after an executive escalation —
         diagnosed a broken upstream artifact and restructured the relay
         that produced the surface symptoms.
       </p>
 
-      {/* Meta dl — 4 rows (role / scope / timeline / status).  No "team"
-          line: I led design fundamentals with two other senior designers
-          but the engagement was not formally team-led, so the row would
-          imply staffing I didn't own.  No "impact" row either — STAR
-          award + training-led recognition lives in §04 Impact and gets
-          a screenshot of the award there. */}
+      {/* Meta dl — POMEs spec (110 px label col, 18 gap, 14 py, dt 12 px
+          Archivo medium tracked, dd 16 px).  4 rows: role / scope /
+          timeline / status. */}
       <dl className="mb-[40px] max-w-[760px] border-t border-[#A0A0A0]">
         {[
           [
@@ -292,15 +287,12 @@ function SectionHero({ onOpenModal }: { onOpenModal: () => void }) {
         ].map(([l, v]) => (
           <div
             key={l}
-            className="grid grid-cols-[100px_1fr] items-baseline gap-[16px] border-b border-[#A0A0A0] py-[14px] min-[560px]:grid-cols-[120px_1fr]"
+            className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
           >
-            <dt
-              className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]"
-              style={MONO}
-            >
+            <dt className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]">
               {l}
             </dt>
-            <dd className="text-[15px] leading-[1.5] text-[#1F1F1F]">{v}</dd>
+            <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">{v}</dd>
           </div>
         ))}
       </dl>

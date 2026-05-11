@@ -286,12 +286,12 @@ function Hero() {
         />
 
         <div className="flex min-w-0 flex-col gap-[28px] tablet:gap-[32px]">
-          {/* Tagline — short, POMEs font-sizing */}
-          <p className="max-w-[480px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
+          {/* Tagline — POMEs hero spec (24 / 28 / 36, leading 1.2, max-w 620). */}
+          <p className="max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
             I got a stalled enterprise design team moving again.
           </p>
 
-          {/* Meta — Role + Scope */}
+          {/* Meta — Role + Scope (POMEs dl spec: 110 px label col, 18 gap, 14 py). */}
           <dl className="border-t border-[#A0A0A0]">
             {[
               ["Role", "UX Lead — onshore + offshore design teams"],
@@ -299,12 +299,12 @@ function Hero() {
             ].map(([l, v]) => (
               <div
                 key={l}
-                className="grid grid-cols-[100px_1fr] items-baseline gap-[16px] border-b border-[#A0A0A0] py-[14px]"
+                className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
               >
                 <dt className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]">
                   {l}
                 </dt>
-                <dd className="text-[15px] leading-[1.5] text-[#1F1F1F]">
+                <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">
                   {v}
                 </dd>
               </div>

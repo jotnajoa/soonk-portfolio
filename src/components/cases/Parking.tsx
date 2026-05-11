@@ -173,9 +173,12 @@ function Hero() {
       <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px] px-[32px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Display — wordmark only. No glyph mark, no project number
-            prefix — the question is the brand. */}
-        <h1 className="max-w-[1100px] text-[40px] leading-[0.95] font-black tracking-[-0.03em] text-[#1F1F1F] tablet:text-[88px]">
+        {/* Display — wordmark only.  No glyph mark, no project number
+            prefix — the question is the brand.  Font weight + tracking
+            aligned to POMEs hero family (font-semibold, tracking -0.04);
+            size stays smaller than POMEs because the phrase wraps to
+            two lines and the POMEs scale would blow the layout. */}
+        <h1 className="max-w-[1100px] text-[40px] leading-[0.95] font-semibold tracking-[-0.04em] text-[#1F1F1F] min-[560px]:text-[64px] min-[960px]:text-[88px]">
           Is street parking
           <br aria-hidden />
           really free?
@@ -183,11 +186,13 @@ function Hero() {
 
         {/* Hero grid — tagline + meta */}
         <div className="grid gap-[36px] tablet:grid-cols-[1fr_320px] tablet:items-start">
-          <p className="max-w-[520px] text-[20px] leading-[1.4] font-medium text-[#1F1F1F] tablet:text-[21px]">
+          {/* Tagline — POMEs hero spec (24 / 28 / 36, leading 1.2, max-w 620). */}
+          <p className="max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
             A self-initiated investigation into 60,000 NYC parking tickets.
           </p>
 
-          <dl className="border-t border-[#1F1F1F]/30">
+          {/* Meta dl — POMEs spec (110 px label col, 18 gap, 14 py). */}
+          <dl className="border-t border-[#A0A0A0]">
             {[
               ["Role", "Solo · research, design, build"],
               ["Data", "NYC Open Data — Parking Violations Issued"],
@@ -195,15 +200,12 @@ function Hero() {
             ].map(([label, value]) => (
               <div
                 key={label}
-                className="flex border-b border-[#1F1F1F]/30 py-[9px]"
+                className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
               >
-                <dt
-                  className="w-[90px] shrink-0 text-[12px] font-normal text-[#5D5D5D]"
-
-                >
+                <dt className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]">
                   {label}
                 </dt>
-                <dd className="text-[12px] text-[#1F1F1F]">{value}</dd>
+                <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">{value}</dd>
               </div>
             ))}
           </dl>

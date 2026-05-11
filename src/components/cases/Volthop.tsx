@@ -169,24 +169,20 @@ function Hero() {
       <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px] px-[32px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Display row — project number + logo + wordmark.
-            "02" is the canonical project marker (JBM Mono — the only place
-            JBM appears on the page). */}
-        <div className="flex flex-wrap items-end gap-[16px]">
-          <span
-            className="text-[64px] font-extrabold leading-[0.85] tracking-[-0.04em] text-[#1F1F1F] tablet:text-[120px]"
-            style={MONO}
-          >
-            02
-          </span>
+        {/* Display row — logo + wordmark, POMEs hero spec (68 / 92 / 128 px,
+            font-semibold, tracking -0.05).  Project number "02" was dropped
+            from the hero because the canonical 01–09 marker already lives
+            in the top CaseStudyNav and the side rail — duplicating it here
+            ate space without adding information (same call as POMEs). */}
+        <div className="flex flex-wrap items-end gap-[20px] leading-none min-[560px]:gap-[28px]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/work/volthop/volthop-logo.png"
             alt=""
             aria-hidden
-            className="h-[64px] w-auto tablet:h-[92px]"
+            className="h-[64px] w-auto shrink-0 min-[560px]:h-[82px] min-[960px]:h-[104px]"
           />
-          <h1 className="text-[64px] leading-[0.85] font-black tracking-[-0.05em] text-[#1F1F1F] tablet:text-[120px]">
+          <h1 className="text-[68px] leading-[0.9] font-semibold tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
             Volthop
           </h1>
         </div>
@@ -204,13 +200,14 @@ function Hero() {
           </div>
 
           <div className="flex flex-col gap-[24px]">
-            <p className="max-w-[520px] text-[20px] leading-[1.4] font-medium text-[#1F1F1F] tablet:text-[21px]">
+            {/* Tagline — POMEs hero spec (24 / 28 / 36, leading 1.2, max-w 620). */}
+            <p className="max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
               Bring the bike. Borrow the battery. A peer-to-peer marketplace for
               folding e-bike travelers — built from the threads that asked for it.
             </p>
 
-            {/* Meta block */}
-            <dl className="border-t border-[#1F1F1F]/30">
+            {/* Meta dl — POMEs spec (110 px label col, 18 gap, 14 py). */}
+            <dl className="border-t border-[#A0A0A0]">
               {[
                 ["Role", "Solo founder · design + build"],
                 ["Stack", "Flutter · Firebase · Google Maps"],
@@ -220,15 +217,12 @@ function Hero() {
               ].map(([label, value]) => (
                 <div
                   key={label}
-                  className="flex border-b border-[#1F1F1F]/30 py-[9px]"
+                  className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
                 >
-                  <dt
-                    className="w-[90px] shrink-0 text-[12px] font-normal text-[#5D5D5D]"
-
-                  >
+                  <dt className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]">
                     {label}
                   </dt>
-                  <dd className="text-[12px] text-[#1F1F1F]">{value}</dd>
+                  <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">{value}</dd>
                 </div>
               ))}
             </dl>

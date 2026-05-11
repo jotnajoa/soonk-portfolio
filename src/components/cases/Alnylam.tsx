@@ -174,11 +174,18 @@ function SectionHero() {
     >
       <Eyebrow>+ 01 / Intro</Eyebrow>
 
-      {/* Wordmark — pure typographic treatment.  No Alnylam logo SVG;
-          the case is about the method, not the brand. */}
-      <div className="mb-[48px] flex flex-wrap items-end leading-none min-[560px]:mb-[64px] min-[960px]:mb-[72px]">
-        <span className="text-[56px] font-semibold leading-[0.9] tracking-[-0.04em] text-[#1F1F1F] min-[560px]:text-[80px] min-[960px]:text-[112px]">
-          Alnylam SSOT
+      {/* Logo + wordmark — POMEs hero spec (68 / 92 / 128 px, font-semibold,
+          tracking -0.05).  Alnylam brand mark sits on the same baseline
+          ramp as the wordmark; logo height tracks the wordmark line-height. */}
+      <div className="mb-[48px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[64px] min-[560px]:gap-[28px] min-[960px]:mb-[72px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/work/logos/alnylamlogo.png"
+          alt="Alnylam"
+          className="h-[64px] w-auto shrink-0 object-contain min-[560px]:h-[82px] min-[960px]:h-[104px]"
+        />
+        <span className="text-[68px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
+          SSOT
         </span>
       </div>
 
@@ -193,11 +200,13 @@ function SectionHero() {
         />
 
         <div className="flex min-w-0 flex-col gap-[28px] tablet:gap-[32px]">
-          <p className="max-w-[480px] text-[22px] leading-[1.4] font-medium tracking-[-0.01em] text-[#1F1F1F] min-[560px]:text-[24px] min-[960px]:text-[28px]">
+          {/* Tagline — POMEs hero spec (24 / 28 / 36, leading 1.2, max-w 620). */}
+          <p className="max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
             Sketches as catalysts, not artifacts. The wrong one made the right
             one obvious.
           </p>
 
+          {/* Meta dl — POMEs spec (110 px label col, 18 gap, 14 py). */}
           <dl className="border-t border-[#A0A0A0]">
             {[
               ["Role", "Senior IC"],
@@ -209,15 +218,12 @@ function SectionHero() {
             ].map(([l, v]) => (
               <div
                 key={l}
-                className="grid grid-cols-[90px_1fr] items-baseline gap-[14px] border-b border-[#A0A0A0] py-[12px]"
+                className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
               >
-                <dt
-                  className="text-[11px] font-medium tracking-[0.06em] text-[#5D5D5D]"
-                  style={MONO}
-                >
+                <dt className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]">
                   {l}
                 </dt>
-                <dd className="text-[14px] leading-[1.55] text-[#1F1F1F]">
+                <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">
                   {v}
                 </dd>
               </div>
