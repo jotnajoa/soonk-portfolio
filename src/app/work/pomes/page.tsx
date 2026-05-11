@@ -1251,13 +1251,17 @@ export default function PomesCaseStudy() {
                 elevators, lobbies, and mailrooms.
               </Body>
 
-              {/* Leaflet evidence — LEFT: 3 in-the-field photos, slightly
-                  rotated like they were pasted by hand.  RIGHT: NYC map of
-                  neighborhoods + conversion bar (stacked). */}
+              {/* Leaflet evidence — LEFT: 3 in-the-field photos sized so
+                  the stack matches the height of the RIGHT column's map +
+                  bar viz.  Right viz is two SVGs (300×280) stacked → roughly
+                  1.87 × col_w tall.  Picking 16:9 for the photos gives
+                  3 × (0.56·col_w) + gaps + captions ≈ the same height, so
+                  the two columns sit truly side-by-side.  Equal-width grid
+                  so neither side overpowers the other. */}
               <figure className="my-[24px] rounded-[12px] bg-[#F4F4F4] p-[24px]">
-                <div className="grid grid-cols-1 gap-[24px] tablet:grid-cols-[1fr_1.1fr]">
-                  {/* ---- Left column — 3 leaflet photos -------------- */}
-                  <div className="flex flex-col gap-[14px]">
+                <div className="grid grid-cols-1 gap-[24px] tablet:grid-cols-2 tablet:items-center">
+                  {/* ---- Left column — 3 leaflet thumbnails ---------- */}
+                  <div className="flex flex-col gap-[12px]">
                     {[
                       {
                         src: "/work/pomes/leaflet/01_prepping.jpg",
@@ -1283,16 +1287,16 @@ export default function PomesCaseStudy() {
                         className="m-0"
                         style={{ transform: `rotate(${p.rot})` }}
                       >
-                        <div className="overflow-hidden rounded-[8px] border border-[#1F1F1F]/15 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.06)]">
+                        <div className="overflow-hidden rounded-[6px] border border-[#1F1F1F]/15 bg-white shadow-[0_2px_6px_rgba(0,0,0,0.06)]">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
                             src={p.src}
                             alt={p.alt}
-                            className="block aspect-[4/3] h-auto w-full object-cover"
+                            className="block aspect-[16/9] h-auto w-full object-cover"
                           />
                         </div>
                         <figcaption
-                          className="mt-[6px] text-[10px] tracking-[0.08em] text-[#A0A0A0]"
+                          className="mt-[5px] text-[10px] tracking-[0.08em] text-[#A0A0A0]"
                           style={{ fontFamily: MONO }}
                         >
                           {p.label}
