@@ -267,14 +267,14 @@ export default function PomesCaseStudy() {
             POMEs
           </span>
 
-          {/* Live store links — icon + label + ↗ arrow, stacked.  Sized
-              up + given a hairline underline accent so they register
-              against the giant POMEs wordmark to their left (the
-              previous 14 px plain links were getting swallowed). */}
-          <div className="flex flex-col gap-[8px] self-end min-[960px]:ml-auto">
+          {/* Live store links — icon + label + ↗ arrow, stacked.  Single
+              hairline divider lives BETWEEN the two rows (not under
+              both) so the affordance reads as one grouped block, not
+              two separate underlined links. */}
+          <div className="flex flex-col self-end divide-y divide-[#A0A0A0] min-[960px]:ml-auto">
             <Link
               href="#"
-              className="group inline-flex items-center gap-[12px] border-b border-[#1F1F1F] py-[6px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
+              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -291,7 +291,7 @@ export default function PomesCaseStudy() {
             </Link>
             <Link
               href="#"
-              className="group inline-flex items-center gap-[12px] border-b border-[#1F1F1F] py-[6px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
+              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -313,11 +313,12 @@ export default function PomesCaseStudy() {
             + progress timeline (right).  Earlier iterations used an
             autoplay video here, but a 40 s loop on the landing screen
             was overkill — a single still does the job and keeps the
-            page light.  Below 960 px the column stacks vertically. */}
-        <div className="mb-[40px] grid gap-[32px] min-[960px]:mb-[48px] min-[960px]:grid-cols-[auto_1fr] min-[960px]:items-start min-[960px]:gap-[48px]">
+            page light.  Below tablet (800 px) the column stacks
+            vertically (image on top). */}
+        <div className="mb-[40px] grid gap-[32px] tablet:mb-[48px] tablet:grid-cols-[320px_1fr] tablet:items-start tablet:gap-[48px]">
           {/* Left: phone hero image — 1179×2556 source aspect, same 2 px
               bezel as the landing list view's PhonesPair frames. */}
-          <div className="relative mx-auto aspect-[1179/2556] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F] min-[960px]:mx-0 min-[960px]:max-w-[320px]">
+          <div className="relative mx-auto aspect-[1179/2556] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F] tablet:mx-0 tablet:max-w-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/work/pomes/landing.png"
@@ -331,7 +332,7 @@ export default function PomesCaseStudy() {
               under the hero; Soonk pushed it into the right column so the
               "what is this / what did I do / when" answer sits in one
               visual block next to the image. */}
-          <div className="flex flex-col gap-[28px] min-[960px]:gap-[32px]">
+          <div className="flex min-w-0 flex-col gap-[28px] tablet:gap-[32px]">
             <p className="max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
               A neighbor app where you brag about what you can offer, not
               beg for help.
