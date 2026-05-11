@@ -224,11 +224,14 @@ function Hero() {
           inside their viewBoxes).  + is font-black and scales 1:1 with the
           logo height so it carries the weight between them. */}
       <div className="mb-[28px] flex flex-wrap items-center gap-[16px] leading-none min-[560px]:mb-[36px] min-[560px]:gap-[24px]">
+        {/* GIA SVG viewBox is tighter than Deloitte's (the outline curl
+            reaches the edges), so rendered at equal heights GIA reads
+            visually larger.  Pulled GIA down ~12% to match. */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/work/logos/GIA_Logo.svg"
           alt="GIA logo"
-          className="h-[56px] w-auto shrink-0 min-[560px]:h-[72px] min-[960px]:h-[96px]"
+          className="h-[50px] w-auto shrink-0 min-[560px]:h-[64px] min-[960px]:h-[84px]"
         />
         <span className="text-[40px] font-black leading-none text-[#1F1F1F] min-[560px]:text-[56px] min-[960px]:text-[72px]">
           +
