@@ -35,6 +35,33 @@ export default function ProjectNav() {
   const fallbackActive = PATH_TO_TILE_ID[pathname ?? ""] ?? tiles[0]?.id ?? null;
   const [activeId, setActiveId] = useState<string | null>(fallbackActive);
 
+  // Hash-based scroll-to-tile on landing.
+  //
+  // Case-study pages link "← BACK TO PORTFOLIO" (and the mobile breadcrumb)
+  // to "/#work-list-<tile.id>" so the user returns to the list with their
+  // project already in view.  The hash itself is just an anchor: there's no
+  // real <element id="work-list-04"> on the page (the list rows use
+  // [data-tile-id="04"][data-tile-list] instead, which Next's hashchange
+  // resolver can't see).  On mount, parse the hash, locate the matching
+  // list row, and scroll it into view — with a short timeout so the
+  // ProjectList has actually rendered before we measure.
+  useEffect(() => {
+    if (!isLanding) return;
+    const m = /^#work-list-(\d{2})$/.exec(window.location.hash);
+    if (!m) return;
+    const id = m[1];
+    const tile = document.querySelector(
+      `[data-tile-list][data-tile-id="${id}"]`,
+    );
+    if (!tile) return;
+    // One paint later: the list is mounted, but its grid may still be
+    // settling.  rAF + setTimeout(0) covers both single-paint and slower
+    // hydration paths.
+    requestAnimationFrame(() => {
+      tile.scrollIntoView({ behavior: "auto", block: "start" });
+    });
+  }, [isLanding]);
+
   // Active-tile tracking via scroll position (NOT IntersectionObserver).
   //
   // We previously used IntersectionObserver + ratio-sort, but that has a

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { tiles } from "@/data/tiles";
 import { TileLogo } from "@/components/TileLogo";
@@ -25,19 +24,19 @@ import { TileLogo } from "@/components/TileLogo";
 //     It's a brand link, not a back affordance — a user navigating between
 //     case studies expects "Soonk" to take them home, not back to whichever
 //     other case study they happened to land on first.
-//   - "Work" (top-bar label next to the 9 indicator squares) → "/#work".
+//   - "Work" (top-bar label next to the 9 indicator squares) → "/#work-grid".
 //     Primary nav, jumps to the projects section on home.
-//   - "← BACK TO PORTFOLIO" → uses goBack(): router.back() if there is
-//     prior history (so home-page scroll position + hero state is preserved),
-//     falling back to router.push("/") on direct loads.  This is the only
-//     control that semantically *should* go "back" rather than to a fixed
-//     route.
-//   - Mobile breadcrumb (project number + logo + brand, top-left mobile bar)
-//     also uses goBack() — it reads as the inverse of the project label
-//     the user just tapped into, not as a brand mark.
+//   - "← BACK TO PORTFOLIO" (desktop right) AND the mobile breadcrumb
+//     (project number + logo + brand) → Link to "/#work-list-<tile.id>".
+//     Earlier these used router.back(), which would surface "the last page
+//     you came from" — if a user navigated case → case → case via the next
+//     rail, "BACK TO PORTFOLIO" would send them to the previous case
+//     instead of the home list.  The hash anchor (#work-list-<id>) is read
+//     by ProjectNav on mount: when the home page loads with that hash, it
+//     scrolls the matching list row into view, so the user lands back in
+//     the work list with their project already in focus.
 
 export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   // The clip-path circle for the menu open/close animation emanates from
@@ -46,14 +45,6 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
   const [clipOrigin, setClipOrigin] = useState("calc(100% - 60px) 32px");
 
   const tile = tiles.find((t) => t.slug === currentSlug) ?? null;
-
-  const goBack = () => {
-    if (typeof window !== "undefined" && window.history.length > 1) {
-      router.back();
-    } else {
-      router.push("/");
-    }
-  };
 
   const openMenu = () => {
     if (buttonRef.current) {
@@ -77,10 +68,9 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
       <header className="sticky top-0 z-40 border-b-2 border-[#1F1F1F] bg-[#EEEEEE]/95 backdrop-blur">
         {/* ---- Mobile bar (<800) — project number + logo + name + hamburger ---- */}
         <div className="flex h-[64px] items-center justify-between px-[24px] tablet:hidden">
-          <button
-            type="button"
-            onClick={goBack}
-            className="flex cursor-pointer items-center gap-[10px]"
+          <Link
+            href={tile ? `/#work-list-${tile.id}` : "/"}
+            className="flex items-center gap-[10px] no-underline"
             aria-label="Back to portfolio"
           >
             {tile && (
@@ -98,7 +88,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
             <span className="text-[16px] leading-[0.92] font-bold text-[#1F1F1F]">
               {tile?.brand ?? "Soonk"}
             </span>
-          </button>
+          </Link>
 
           <button
             ref={buttonRef}
@@ -188,13 +178,12 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
             Resume
           </Link>
 
-          <button
-            type="button"
-            onClick={goBack}
-            className="ml-auto cursor-pointer text-[12px] tracking-[0.08em] text-[#5D5D5D] hover:text-[#1F1F1F]"
+          <Link
+            href={tile ? `/#work-list-${tile.id}` : "/"}
+            className="ml-auto text-[12px] tracking-[0.08em] text-[#5D5D5D] no-underline hover:text-[#1F1F1F]"
           >
             ← BACK TO PORTFOLIO
-          </button>
+          </Link>
         </nav>
       </header>
 
