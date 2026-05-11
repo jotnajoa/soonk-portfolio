@@ -868,11 +868,11 @@ function ExistingForecastChart() {
         <span className="absolute top-[12%] bottom-[18%] left-1/2 w-px bg-[#A0A0A0]/40" />
         <span className="absolute top-1/2 right-[8%] left-[8%] h-px bg-[#A0A0A0]/40" />
         {[
-          { l: "A", w: 96, t: 18, x: 60 },
-          { l: "B", w: 72, t: 30, x: 50 },
-          { l: "C", w: 84, t: 52, x: 22 },
-          { l: "D", w: 56, t: 64, x: 22 },
-          { l: "E", w: 44, t: 76, x: 12 },
+          { l: "A", w: 96, t: 18, x: 60, fill: "rgba(233, 168, 88, 0.7)", stroke: "#B07A2C" },
+          { l: "B", w: 72, t: 30, x: 50, fill: "rgba(107, 180, 196, 0.7)", stroke: "#357585" },
+          { l: "C", w: 84, t: 52, x: 22, fill: "rgba(157, 188, 92, 0.7)", stroke: "#647D2E" },
+          { l: "D", w: 56, t: 64, x: 22, fill: "rgba(168, 121, 195, 0.7)", stroke: "#724E94" },
+          { l: "E", w: 44, t: 76, x: 12, fill: "rgba(216, 139, 114, 0.7)", stroke: "#9A4F2F" },
         ].map((b) => (
           <span
             key={b.l}
@@ -881,8 +881,10 @@ function ExistingForecastChart() {
               height: b.w,
               top: `${b.t}%`,
               left: `${b.x}%`,
+              backgroundColor: b.fill,
+              borderColor: b.stroke,
             }}
-            className="absolute flex items-center justify-center rounded-full border border-[#5D5D5D] bg-[#D9D9D9]/70 text-[14px] font-medium text-[#1F1F1F]"
+            className="absolute flex items-center justify-center rounded-full border text-[14px] font-medium text-[#1F1F1F]"
           >
             {b.l}
           </span>
