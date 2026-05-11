@@ -2,11 +2,17 @@
 
 import Link from "next/link";
 import { TileLogo } from "@/components/TileLogo";
+import { killGridScrollTriggers } from "@/components/FlyingSquares";
 
-// Each list tile is now a clickable card linking to /works/{slug}.  We wrap
+// Each list tile is a clickable card linking to /work/{slug}.  We wrap
 // each <article> in a TileLink (a Next.js <Link>) so the whole tile is a
 // single tap target — that keeps the existing data-tile-* attrs on the
 // article intact (ProjectNav / MobileNav / ViewportSync still query them).
+//
+// onClick fires killGridScrollTriggers BEFORE Next.js navigation so the
+// GSAP pin-spacer on the desktop grid unwinds cleanly — without this,
+// React's reconciler hits "Failed to execute 'removeChild'" on tear-down
+// (the spacer wraps the grid outside React's tree).
 function TileLink({
   slug,
   children,
@@ -16,7 +22,8 @@ function TileLink({
 }) {
   return (
     <Link
-      href={`/works/${slug}`}
+      href={`/work/${slug}`}
+      onClick={killGridScrollTriggers}
       className="block w-full text-inherit no-underline outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#1F1F1F]"
       aria-label={`Open ${slug} case study`}
     >
@@ -190,8 +197,8 @@ function ListPomes() {
         </div>
       </div>
       <PhonesPair
-        a={{ src: "/works/screenshots/pomes-1.png", alt: "POMEs app screen 1" }}
-        b={{ src: "/works/screenshots/pomes-2.png", alt: "POMEs app screen 2" }}
+        a={{ src: "/work/screenshots/pomes-1.png", alt: "POMEs app screen 1" }}
+        b={{ src: "/work/screenshots/pomes-2.png", alt: "POMEs app screen 2" }}
       />
     </article>
     </TileLink>
@@ -220,8 +227,8 @@ function ListVolthop() {
         </div>
       </div>
       <PhonesPair
-        a={{ src: "/works/screenshots/volthop-1.png", alt: "Volthop app screen 1" }}
-        b={{ src: "/works/screenshots/volthop-2.png", alt: "Volthop app screen 2" }}
+        a={{ src: "/work/screenshots/volthop-1.png", alt: "Volthop app screen 1" }}
+        b={{ src: "/work/screenshots/volthop-2.png", alt: "Volthop app screen 2" }}
       />
     </article>
     </TileLink>
@@ -249,8 +256,8 @@ function ListGia() {
         </div>
       </div>
       <DesktopsOverlap
-        a={{ src: "/works/screenshots/gia-1.png", alt: "GIA Platform desktop 1" }}
-        b={{ src: "/works/screenshots/gia-2.png", alt: "GIA Platform desktop 2" }}
+        a={{ src: "/work/screenshots/gia-1.png", alt: "GIA Platform desktop 1" }}
+        b={{ src: "/work/screenshots/gia-2.png", alt: "GIA Platform desktop 2" }}
       />
     </article>
     </TileLink>
@@ -286,8 +293,8 @@ function ListToyota() {
         </div>
       </div>
       <DesktopsOverlap
-        a={{ src: "/works/screenshots/toyota-1.png", alt: "Toyota Guidehub screen 1" }}
-        b={{ src: "/works/screenshots/toyota-2.png", alt: "Toyota Guidehub screen 2" }}
+        a={{ src: "/work/screenshots/toyota-1.png", alt: "Toyota Guidehub screen 1" }}
+        b={{ src: "/work/screenshots/toyota-2.png", alt: "Toyota Guidehub screen 2" }}
       />
     </article>
     </TileLink>
@@ -314,7 +321,7 @@ function ListAlnylam() {
         </div>
       </div>
       <SingleThumb
-        thumb={{ src: "/works/screenshots/alnylam-1.jpeg", alt: "Alnylam SSOT" }}
+        thumb={{ src: "/work/screenshots/alnylam-1.jpeg", alt: "Alnylam SSOT" }}
       />
     </article>
     </TileLink>
@@ -344,7 +351,7 @@ function ListTeachable() {
         </div>
       </div>
       <SingleThumb
-        thumb={{ src: "/works/screenshots/teachable-1.jpeg", alt: "Teachable" }}
+        thumb={{ src: "/work/screenshots/teachable-1.jpeg", alt: "Teachable" }}
       />
     </article>
     </TileLink>
@@ -373,7 +380,7 @@ function ListNyc() {
         </div>
       </div>
       <SingleThumb
-        thumb={{ src: "/works/screenshots/parking-1.png", alt: "NYC parking analysis" }}
+        thumb={{ src: "/work/screenshots/parking-1.png", alt: "NYC parking analysis" }}
       />
     </article>
     </TileLink>
@@ -399,7 +406,7 @@ function ListWordup() {
         </div>
       </div>
       <SingleThumb
-        thumb={{ src: "/works/screenshots/wordup-1.png", alt: "Word-up analysis" }}
+        thumb={{ src: "/work/screenshots/wordup-1.png", alt: "Word-up analysis" }}
       />
     </article>
     </TileLink>
@@ -438,14 +445,14 @@ function ListGtm() {
 export default function ProjectList() {
   return (
     <section
-      id="works-list"
+      id="work-list"
       // Section bg stretches full viewport; inner column caps at 1200px
-      // and centers (matches Hero / Grid / ProjectNav cap).  Padding lives
-      // on the section so the bg has consistent edge gutters even on wide
-      // monitors where content stops growing.
-      className="flex w-full flex-col items-stretch bg-[#EEEEEE] px-[32px] pt-4 pb-24 tablet:pt-2"
+      // and centers (matches Hero / Grid / ProjectNav cap).  Bg stays
+      // full-bleed; horizontal padding moves to the inner 1200px container
+      // so the list's left edge lines up with the nav's "Soonk" text.
+      className="flex w-full flex-col items-stretch bg-[#EEEEEE] pt-4 pb-24 tablet:pt-2"
     >
-      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-4">
+      <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 px-[32px]">
         {/* Section heading — desktop (≥800px) only.  Per Figma 101:1486
             the desktop list view opens with a big WORK title above the 9
             tiles.  On mobile the sticky <MobileNav/> bar carries the WORK

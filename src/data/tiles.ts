@@ -23,7 +23,7 @@
 
 export type Tile = {
   id: string;
-  /** URL slug — used for the case-study route /works/{slug}. */
+  /** URL slug — used for the case-study route /work/{slug}. */
   slug: string;
   brand: string;
   category: "Founder" | "Client" | "Personal" | "Side";

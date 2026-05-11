@@ -1,9 +1,23 @@
 "use client";
 
 import Image from "next/image";
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
+import dynamic from "next/dynamic";
 import gsap from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { useGSAP } from "@gsap/react";
+import { useRef, useState } from "react";
+
+// Lottie player loaded client-side only so its internal <canvas> mount /
+// unmount stays inside the client lifecycle.  Without `ssr: false` the
+// player's DOM gets created during SSR/hydration, and the cleanup on a
+// route navigation can race with React's reconciler — that's a classic
+// "Failed to execute 'removeChild'" trigger.
+const DotLottieReact = dynamic(
+  () =>
+    import("@lottiefiles/dotlottie-react").then((m) => ({
+      default: m.DotLottieReact,
+    })),
+  { ssr: false },
+);
 
 // Hero animation — six-phase scroll-triggered timeline.
 //
@@ -113,72 +127,66 @@ function ScrollForMore() {
 }
 
 export default function Hero() {
-  const ref = useRef<HTMLElement>(null);
   // Lottie is mounted only when the timeline reaches the cross-fade beat —
   // that way the user sees frame 0 (just-logo, no-shadow) at reveal, not
   // somewhere mid-animation while it ran invisibly.
   const [showLottie, setShowLottie] = useState(false);
 
-  useEffect(() => {
-    // Initial visibility: graphics ON, text OFF.  Note that
-    // `.hero-text-reveal` and `.hero-lottie-wrap` ALSO carry an inline
-    // `opacity: 0` so they're hidden BEFORE gsap.set even runs — that
-    // protects against a hydration flash where the final-state text
-    // pops in for a frame (or several, on slow mobile devices) until
-    // JS finishes loading.  The gsap.set below is then a redundant
-    // belt-and-braces reset for SPA navigations.
-    gsap.set(".hero-rect", { xPercent: 0, opacity: 1 });
-    gsap.set(".hero-portrait", { opacity: 1 });
-    gsap.set(".hero-svg-circles", { opacity: 1 });
-    gsap.set(".hero-lottie-wrap", { opacity: 0 });
-    gsap.set(".hero-text-reveal", { opacity: 0 });
+  // Section ref — used both for `<section>` rendering and as the GSAP
+  // context scope so cleanup tracks every animation owned by this Hero.
+  const heroRef = useRef<HTMLElement>(null);
 
-    const tl = gsap.timeline({ delay: 0.4 });
+  // useGSAP (vs a raw useEffect) ensures the entire animation context is
+  // reverted synchronously when this component unmounts — including any
+  // lingering tweens on `.hero-text-reveal`, `.hero-lottie-wrap`, etc.
+  // Without that, a Next-router navigation away from `/` while the
+  // timeline is mid-flight can leave React's reconciler trying to clean
+  // up DOM that GSAP has been mutating, surfacing the well-known
+  // "Failed to execute 'removeChild' on 'Node'" crash.
+  useGSAP(
+    () => {
+      gsap.set(".hero-rect", { xPercent: 0, opacity: 1 });
+      gsap.set(".hero-portrait", { opacity: 1 });
+      gsap.set(".hero-svg-circles", { opacity: 1 });
+      gsap.set(".hero-lottie-wrap", { opacity: 0 });
+      gsap.set(".hero-text-reveal", { opacity: 0 });
 
-    // Phase 2 — lime rect slides off, portrait dims.
-    tl.to(".hero-rect", { xPercent: -130, opacity: 0, duration: 1.1, ease: "power3.in" }, 0.5);
-    tl.to(".hero-portrait", { opacity: 0.4, duration: 0.9, ease: "power2.inOut" }, 0.7);
+      const tl = gsap.timeline({ delay: 0.4 });
 
-    // Phase 3 — face + mouth circles trace in.
-    tl.to(".hero-outer-circle", { strokeDashoffset: 0, duration: 1.0, ease: "power2.inOut" }, 1.55);
-    tl.to(".hero-inner-circle", { strokeDashoffset: 0, duration: 0.55, ease: "power2.inOut" }, 2.2);
+      tl.to(".hero-rect", { xPercent: -130, opacity: 0, duration: 1.1, ease: "power3.in" }, 0.5);
+      tl.to(".hero-portrait", { opacity: 0.4, duration: 0.9, ease: "power2.inOut" }, 0.7);
+      tl.to(".hero-outer-circle", { strokeDashoffset: 0, duration: 1.0, ease: "power2.inOut" }, 1.55);
+      tl.to(".hero-inner-circle", { strokeDashoffset: 0, duration: 0.55, ease: "power2.inOut" }, 2.2);
+      tl.to(".hero-bg", { backgroundColor: "#EEEEEE", duration: 1.0, ease: "power2.inOut" }, 3.1);
+      tl.to(".hero-portrait", { opacity: 0, duration: 0.8 }, 3.1);
+      tl.to(".hero-svg-circles", { opacity: 0, duration: 0.5 }, 3.55);
+      tl.add(() => setShowLottie(true), 3.55);
+      tl.to(".hero-lottie-wrap", { opacity: 1, duration: 0.5 }, 3.6);
+      tl.to(".hero-text-reveal", { opacity: 1, duration: 0.7, ease: "power2.out" }, 4.2);
 
-    // Phase 4 — bg dark → soft-white, portrait dissolves.
-    tl.to(".hero-bg", { backgroundColor: "#EEEEEE", duration: 1.0, ease: "power2.inOut" }, 3.1);
-    tl.to(".hero-portrait", { opacity: 0, duration: 0.8 }, 3.1);
+      tl.play(0);
 
-    // Phase 5 — SVG circles → Lottie shadow morph cross-fade.
-    tl.to(".hero-svg-circles", { opacity: 0, duration: 0.5 }, 3.55);
-    tl.add(() => setShowLottie(true), 3.55);
-    tl.to(".hero-lottie-wrap", { opacity: 1, duration: 0.5 }, 3.6);
+      // Lock scroll for the first ~3s of the landing animation so the
+      // user can't blast past the dark phase.  Body-style mutation is
+      // outside GSAP's tracking, so we still need an explicit cleanup
+      // function below.
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      const unlockId = window.setTimeout(() => {
+        document.body.style.overflow = prevOverflow;
+      }, 3000);
 
-    // Phase 6 — TEXT REVEAL.  Once the lens-logo morph is in place, the
-    // entire typeset layout fades in together.
-    tl.to(".hero-text-reveal", { opacity: 1, duration: 0.7, ease: "power2.out" }, 4.2);
-
-    tl.play(0);
-
-    // Lock scroll for the first ~3s of the landing animation so the user
-    // can't blast past the dark phase before they realize what's happening.
-    // We don't lock for the full 5s timeline — once the bg flips to soft
-    // white (Phase 4 ≈ t=3.1s + 0.4s delay = 3.5s) the user has all the
-    // context they need, so it's fine for them to scroll if they want.
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const unlockId = window.setTimeout(() => {
-      document.body.style.overflow = prevOverflow;
-    }, 3000);
-
-    return () => {
-      tl.kill();
-      window.clearTimeout(unlockId);
-      document.body.style.overflow = prevOverflow;
-    };
-  }, []);
+      return () => {
+        window.clearTimeout(unlockId);
+        document.body.style.overflow = prevOverflow;
+      };
+    },
+    { scope: heroRef },
+  );
 
   return (
     <section
-      ref={ref}
+      ref={heroRef}
       className="hero relative min-h-screen w-full overflow-hidden"
     >
       <div className="hero-bg absolute inset-0 bg-[#1F1F1F]" aria-hidden />

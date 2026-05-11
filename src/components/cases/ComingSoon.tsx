@@ -6,7 +6,7 @@ const MONO_STYLE: React.CSSProperties = {
     "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace",
 };
 
-// ComingSoon — placeholder for /works/{slug} routes whose case study isn't
+// ComingSoon — placeholder for /work/{slug} routes whose case study isn't
 // written yet.  Renders the project's index card + a stub message so the
 // link still feels intentional (vs. landing on an error page).
 export default function ComingSoon({ tile }: { tile: Tile }) {
@@ -34,7 +34,7 @@ export default function ComingSoon({ tile }: { tile: Tile }) {
           jump to a completed case study via the indicator dots in the nav.
         </p>
         <Link
-          href="/#works-list"
+          href="/#work-list"
           className="border-2 border-[#1F1F1F] bg-[#1F1F1F] px-[24px] py-[12px] text-[14px] font-medium text-[#F4F4F4] no-underline transition-transform hover:-translate-y-[2px]"
         >
           ← Back to portfolio

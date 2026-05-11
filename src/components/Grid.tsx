@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { TileLogo } from "@/components/TileLogo";
+import { killGridScrollTriggers } from "@/components/FlyingSquares";
 
 // Grid 3×3 — Figma node 55:458 (Desktop-4).
 //
@@ -32,13 +34,24 @@ import { TileLogo } from "@/components/TileLogo";
 const SHELL = "relative flex h-[280px] overflow-clip border-2 border-[#1F1F1F]";
 
 // ---- 01 POMEs ---------------------------------------------------------------
+// POMEs has a published case study at /work/pomes — the absolute-positioned
+// Link covers the whole tile (hover hint via `group-hover` if we want it
+// later).  All the layout content stays as-is so flying-squares geometry
+// and data-tile-id measurements are unchanged.
 function TilePomes() {
   return (
     <article
       data-tile-id="01"
       data-tile-grid
-      className={`${SHELL} flex-col gap-[16px] px-[16px] py-[24px]`}
+      className={`${SHELL} group flex-col gap-[16px] px-[16px] py-[24px]`}
     >
+      <Link
+        href="/work/pomes"
+        aria-label="POMEs case study"
+        className="absolute inset-0 z-10"
+        onClick={killGridScrollTriggers}
+      />
+
       <div className="flex shrink-0 items-center gap-[12px]">
         <TileLogo tileId="01" />
         <h3 className="text-[30px] leading-[0.92] font-black text-[#1F1F1F]">
@@ -298,17 +311,16 @@ function TileGtm() {
 export default function Grid() {
   return (
     <section
-      id="works-grid"
+      id="work-grid"
       // pb is intentionally minimal: the FlyingSquares pin already provides
       // the visual transition into the list, so any extra bottom padding
       // here just reads as dead scroll between the two sections.
-      className="relative z-30 hidden w-full flex-col items-start gap-[64px] bg-[#EEEEEE] px-[32px] pt-[96px] pb-4 tablet:flex"
+      className="relative z-30 hidden w-full flex-col items-start gap-[64px] bg-[#EEEEEE] pt-[96px] pb-4 tablet:flex"
     >
-      {/* Section bg + padding stretch full viewport (so the page reads as
-          one continuous color band), but the 3×3 grid itself caps at
-          1200px and centers — keeps the layout from sprawling on wide
-          monitors and matches the cap on Hero / ProjectList / nav. */}
-      <div className="mx-auto grid w-full max-w-[1200px] grid-cols-3 gap-[16px]">
+      {/* Bg full-bleed (continuous color band); horizontal padding lives on
+          the inner 1200px container so the grid's left edge lines up with
+          the nav's "Soonk" text — same alignment rule as Hero / ProjectList. */}
+      <div className="mx-auto grid w-full max-w-[1200px] grid-cols-3 gap-[16px] px-[32px]">
         {/* row 1 */}
         <TilePomes />
         <TileVolthop />
