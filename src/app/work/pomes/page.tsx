@@ -504,15 +504,15 @@ export default function PomesCaseStudy() {
                 30-min sessions:
               </Body>
 
-              <div className="my-[24px] flex max-w-[660px] flex-col gap-[10px]">
+              <div className="my-[24px] flex max-w-[680px] flex-col gap-[10px]">
                 {[
                   [
                     "Q1",
-                    "Tell me about the last time you needed help from a neighbor — even something tiny. What happened?",
+                    "What makes you hesitate to ask a neighbor for help?",
                   ],
                   [
                     "Q2",
-                    "If you had a neighbor who was happy to help with X, would you ask? What would make it easy or hard?",
+                    "What makes you trust — or distrust — a neighbor?",
                   ],
                 ].map(([q, t]) => (
                   <div
@@ -533,38 +533,43 @@ export default function PomesCaseStudy() {
               </div>
 
               <Body>
-                The themes came back fast. Three of eight said the same thing
-                about asking; the fourth voice flipped that on its head about
-                offering. The pattern is the case study.
+                Hesitation answers clustered around <Strong>self-image</Strong>.
+                Trust answers clustered around <Strong>time</Strong> — most
+                interviewees said they simply couldn&rsquo;t trust a neighbor
+                they hadn&rsquo;t actually spent time with.
               </Body>
 
               <div className="my-[18px] flex max-w-[680px] flex-col gap-[14px]">
                 <AnonymousQuote
-                  speaker="Neighbor A"
+                  speaker="Neighbor A · on hesitation"
                   quote="I could do it on the app. Face-to-face damages my image."
                   implies="Asking in person feels exposing; a digital layer makes it bearable."
                 />
                 <AnonymousQuote
-                  speaker="Neighbor B"
+                  speaker="Neighbor B · on hesitation"
                   quote="I won't ask while I can still do it myself."
                   implies="Self-reliance is performed — the bar for 'I need help' is set too high."
                 />
                 <AnonymousQuote
-                  speaker="Neighbor C"
-                  quote="I can do it directly, so I won't have someone do it for me."
-                  implies="Independence is the default; receiving help reads as dependency."
+                  speaker="Neighbor C · on trust"
+                  quote="I'd need to actually know them. A face in the elevator isn't enough."
+                  implies="Familiarity, not proximity, is what unlocks trust."
                 />
                 <AnonymousQuote
-                  speaker="Neighbor D"
-                  quote="I love helping people in that situation. I've been there myself."
-                  implies="The offer side has no embarrassment cost. People want to give."
+                  speaker="Neighbor D · on trust"
+                  quote="If we'd talked a few times — sure. Out of the blue? No."
+                  implies="Trust ladders up from repeated low-stakes contact, not a single big ask."
                 />
               </div>
 
               <KeyTakeaway>
-                The cost wasn&rsquo;t the favor itself — it was the{" "}
-                <Strong>social cost of asking.</Strong> Offering had no such
-                cost.
+                The biggest pattern wasn&rsquo;t about asking — it was about{" "}
+                <Strong>trust</Strong>. And trust didn&rsquo;t come from
+                proximity; it came from <Strong>physical time + repeated
+                low-stakes interactions</Strong>. Borrow and Favor only work
+                between neighbors who already trust each other.{" "}
+                <Strong>Events are the soil; Borrow and Favor are the fruit
+                that grows on it.</Strong>
               </KeyTakeaway>
 
               <SubH>Vibe-coded UX research tool</SubH>
