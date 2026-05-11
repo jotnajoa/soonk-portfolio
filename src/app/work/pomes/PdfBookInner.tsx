@@ -17,10 +17,18 @@ const MONO: React.CSSProperties = {
 //
 // Layout:
 //   ┌─────────────────────┐
+//   │                     │
 //   │   PDF page (canvas) │  ← rendered by react-pdf <Page>
+//   │                     │
 //   ├─────────────────────┤
-//   │ ← 02 / 05 →   label │  ← chrome we draw, not pdf.js
-//   └─────────────────────┘
+//   │ TITLE   ◀  3 / 6  ▶ │  ← chunky control bar, INSIDE the card
+//   └─────────────────────┘            (dark bg so it reads as chrome,
+//                                       not a label below the artifact)
+//
+// Earlier version put the paginator OUTSIDE the bordered card in a
+// thin grey row — testers didn't notice it.  Pulling it inside the
+// border with a #1F1F1F bg + bigger touch targets makes it read as
+// "this artifact has more pages" at a glance.
 //
 // Text + annotation layers are turned off — the case study just shows
 // the document's visual; no selection/search expected.  Drops the JS
@@ -38,9 +46,13 @@ export default function PdfBook({
   const [total, setTotal] = useState<number | null>(null);
 
   return (
-    <div className="flex flex-col gap-[10px]">
+    <div
+      className="flex flex-col overflow-hidden rounded-[8px] border-2 border-[#1F1F1F] bg-[#F4F4F4]"
+      style={{ width }}
+    >
+      {/* ---- PDF page ------------------------------------------------- */}
       <div
-        className="flex justify-center overflow-hidden rounded-[8px] border-2 border-[#1F1F1F] bg-[#F4F4F4]"
+        className="flex justify-center"
         style={{ minHeight: width * 1.3 }}
       >
         <Document
@@ -72,19 +84,25 @@ export default function PdfBook({
         </Document>
       </div>
 
-      <div className="flex items-center justify-between gap-[8px] text-[12px] text-[#5D5D5D]">
-        <span style={MONO}>{title}</span>
-        <div className="flex items-center gap-[10px]">
+      {/* ---- Control bar — inside the card --------------------------- */}
+      <div
+        className="flex items-center justify-between gap-[8px] border-t-2 border-[#1F1F1F] bg-[#1F1F1F] px-[12px] py-[10px] text-[#F4F4F4]"
+        style={MONO}
+      >
+        <span className="truncate text-[10px] tracking-[0.08em]">
+          {title}
+        </span>
+        <div className="flex shrink-0 items-center gap-[12px]">
           <button
             type="button"
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page <= 1}
             aria-label="Previous page"
-            className="cursor-pointer text-[16px] leading-none text-[#1F1F1F] disabled:cursor-default disabled:text-[#A0A0A0]"
+            className="flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-[4px] text-[14px] leading-none transition-colors hover:bg-white/15 disabled:cursor-default disabled:text-[#5D5D5D] disabled:hover:bg-transparent"
           >
             ←
           </button>
-          <span style={MONO} className="tabular-nums">
+          <span className="tabular-nums text-[12px] tracking-[0.04em]">
             {page} / {total ?? "—"}
           </span>
           <button
@@ -92,7 +110,7 @@ export default function PdfBook({
             onClick={() => setPage((p) => (total ? Math.min(total, p + 1) : p))}
             disabled={total !== null && page >= total}
             aria-label="Next page"
-            className="cursor-pointer text-[16px] leading-none text-[#1F1F1F] disabled:cursor-default disabled:text-[#A0A0A0]"
+            className="flex h-[24px] w-[24px] cursor-pointer items-center justify-center rounded-[4px] text-[14px] leading-none transition-colors hover:bg-white/15 disabled:cursor-default disabled:text-[#5D5D5D] disabled:hover:bg-transparent"
           >
             →
           </button>

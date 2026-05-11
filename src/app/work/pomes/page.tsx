@@ -1142,34 +1142,25 @@ export default function PomesCaseStudy() {
                   each card's prose tells you *why* this artifact, not
                   just *what number week*. */}
               <div className="my-[18px] grid grid-cols-1 items-center justify-items-center gap-[24px] min-[560px]:grid-cols-3">
-                <div className="flex flex-col items-center gap-[10px]">
-                  <PdfBook
-                    src="/work/pomes/week1_updates.pdf"
-                    title="COMMUNITY UPDATE · WEEK 1"
-                    width={240}
-                  />
-                  <p
-                    className="max-w-[240px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
-                    style={{ fontStyle: "italic" }}
-                  >
-                    Week 1 — what I&rsquo;d been hearing from neighbors.
-                  </p>
-                </div>
+                {/* Week 1 + Week 2 — the PDF cards now carry their own
+                    title in the dark control bar at the bottom of the
+                    card, so no external caption needed (it just repeated
+                    the title in italic prose). */}
+                <PdfBook
+                  src="/work/pomes/week1_updates.pdf"
+                  title="COMMUNITY UPDATE · WEEK 1"
+                  width={240}
+                />
+                <PdfBook
+                  src="/work/pomes/week2_updates.pdf"
+                  title="COMMUNITY UPDATE · WEEK 2"
+                  width={240}
+                />
 
-                <div className="flex flex-col items-center gap-[10px]">
-                  <PdfBook
-                    src="/work/pomes/week2_updates.pdf"
-                    title="COMMUNITY UPDATE · WEEK 2"
-                    width={240}
-                  />
-                  <p
-                    className="max-w-[240px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
-                    style={{ fontStyle: "italic" }}
-                  >
-                    Week 2 — what the app was starting to look like.
-                  </p>
-                </div>
-
+                {/* Final week — YouTube Shorts walkthrough.  Keeps the
+                    italic caption: the video itself has no built-in
+                    title row like the PDF cards do, so the caption is
+                    the only thing saying "what is this thing". */}
                 <div className="flex flex-col items-center gap-[10px]">
                   <div className="relative aspect-[9/16] w-full max-w-[190px] overflow-hidden rounded-[12px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
                     <iframe
@@ -1256,12 +1247,58 @@ export default function PomesCaseStudy() {
                 elevators, lobbies, and mailrooms.
               </Body>
 
+              {/* Field photos — 3-up horizontal strip of leaflet activity
+                  (prepping → posting → mailroom).  Slight rotation per
+                  photo so the row feels hand-pasted, not catalog-grid.
+                  Sits between the body line that says "leafletted by
+                  hand" and the map+bar evidence fig — the photos are the
+                  receipt for that claim. */}
+              <div className="my-[18px] grid grid-cols-3 gap-[10px] min-[560px]:gap-[14px]">
+                {[
+                  {
+                    src: "/work/pomes/leaflet/01_prepping.jpg",
+                    alt: "Prepping leaflets in bags labeled Indoor Elevators",
+                    rot: "-1.2deg",
+                    label: "01 · Prepping",
+                  },
+                  {
+                    src: "/work/pomes/leaflet/02_posting.jpg",
+                    alt: "Posting a leaflet outside a target building",
+                    rot: "0.8deg",
+                    label: "02 · Posting",
+                  },
+                  {
+                    src: "/work/pomes/leaflet/03_mailroom.jpg",
+                    alt: "Leaflet up on a mailroom wall",
+                    rot: "-0.6deg",
+                    label: "03 · Mailroom",
+                  },
+                ].map((p) => (
+                  <figure
+                    key={p.src}
+                    className="m-0"
+                    style={{ transform: `rotate(${p.rot})` }}
+                  >
+                    <div className="overflow-hidden rounded-[6px] border border-[#1F1F1F]/15 bg-white shadow-[0_2px_6px_rgba(0,0,0,0.06)]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={p.src}
+                        alt={p.alt}
+                        className="block aspect-[4/3] h-auto w-full object-cover"
+                      />
+                    </div>
+                    <figcaption
+                      className="mt-[5px] text-[10px] tracking-[0.08em] text-[#A0A0A0]"
+                      style={{ fontFamily: MONO }}
+                    >
+                      {p.label}
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+
               {/* GTM evidence — NYC neighborhood map on the left, top-
-                  building conversion bar on the right.  Single full-width
-                  fig, no leaflet photos: tried adding them to the left in
-                  thumbnail form, but at small sizes they didn't add real
-                  information beyond what the body already says ("leafletted
-                  by hand"), so they were just decoration. */}
+                  building conversion bar on the right. */}
               <figure className="my-[24px] rounded-[12px] bg-[#F4F4F4] p-[24px]">
                 <div className="grid grid-cols-1 gap-[24px] min-[560px]:grid-cols-2">
                   <NycMapSvg />
