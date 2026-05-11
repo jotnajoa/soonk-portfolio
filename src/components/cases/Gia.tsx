@@ -156,21 +156,46 @@ function Section({
   );
 }
 
-// Screenshot — thin dark bezel, 16:10.  When the bg image 404s, the label
-// underneath shows through (no broken-icon).
+// Screenshot — two variants:
+//
+//   variant="laptop"  (default)
+//     16:10 frame with a thin dark bezel — for product screenshots.
+//     Background image so a missing file 404s silently (the label layer
+//     underneath shows through).
+//
+//   variant="artifact"
+//     For workshop artifacts (genie worksheet, story map, low-fi etc.) —
+//     show the image at its NATURAL aspect ratio so nothing gets cropped.
+//     Hairline 1px border, no dark bezel.
 function Screenshot({
   src,
   alt,
   label,
   hint,
+  variant = "laptop",
   className = "",
 }: {
   src: string;
   alt: string;
   label: string;
   hint?: string;
+  variant?: "laptop" | "artifact";
   className?: string;
 }) {
+  if (variant === "artifact") {
+    return (
+      <figure
+        className={`my-[20px] overflow-hidden rounded-[4px] border border-[#1F1F1F]/20 bg-white ${className}`}
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt={alt}
+          className="block h-auto w-full"
+        />
+      </figure>
+    );
+  }
   return (
     <div
       className={`rounded-[6px] bg-[#2A2A2A] p-[4px] min-[560px]:p-[6px] ${className}`}
@@ -601,6 +626,7 @@ function Challenge1() {
         src="/work/gia/genie-question.png"
         alt="GIA Platform — Genie question worksheet"
         label="Genie question — workshop artifact"
+        variant="artifact"
       />
       <Body>
         <em>
@@ -622,6 +648,7 @@ function Challenge1() {
         src="/work/gia/user-story-map.png"
         alt="GIA Platform — User story map artifact"
         label="User story map — outcome → flow"
+        variant="artifact"
       />
       <Body>
         Take the outcome from step one and lay out the path to it — who
@@ -639,6 +666,7 @@ function Challenge1() {
         src="/work/gia/lowfi-wireframe.png"
         alt="GIA Platform — Low-fi wireframe"
         label="Low-fi wireframe — engineering-ready"
+        variant="artifact"
       />
       <Body>
         Layout, state, and data contracts in one artifact — derived from
