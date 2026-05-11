@@ -76,65 +76,6 @@ function Body({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ProvesTag({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      className="inline-block bg-[#1F1F1F]/10 px-[7px] py-[3px] text-[12px] tracking-[0.04em] text-[#1F1F1F]"
-
-    >
-      PROVES · {children}
-    </span>
-  );
-}
-
-function PullQuote({
-  children,
-  attribution,
-}: {
-  children: React.ReactNode;
-  attribution?: string;
-}) {
-  return (
-    <figure className="max-w-[520px] border-l-2 border-[#1F1F1F] pl-[18px]">
-      <blockquote className="text-[20px] leading-[1.45] font-normal italic text-[#1F1F1F]">
-        {children}
-      </blockquote>
-      {attribution && (
-        <figcaption className="mt-[10px] text-[12px] font-normal text-[#5D5D5D]">
-          {attribution}
-        </figcaption>
-      )}
-    </figure>
-  );
-}
-
-function VersionChip({
-  children,
-  solid = false,
-}: {
-  children: React.ReactNode;
-  solid?: boolean;
-}) {
-  return (
-    <span
-      className={`inline-block border border-[#1F1F1F] px-[10px] py-[4px] text-[12px] font-medium ${
-        solid ? "bg-[#1F1F1F] text-[#F4F4F4]" : "text-[#1F1F1F]"
-      }`}
-
-    >
-      {children}
-    </span>
-  );
-}
-
-function LinkOut({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-[12px] text-[#A0A0A0]">
-      ↗ link out: {children}
-    </p>
-  );
-}
-
 // Shared section shell — eyebrow + section-number + headline + lede.
 function SectionHeader({
   number,
@@ -167,96 +108,80 @@ function Hero() {
   return (
     <section className="border-b-2 border-[#1F1F1F] pt-[48px] pb-[64px] tablet:pt-[64px] tablet:pb-[96px]">
       <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px] px-[32px]">
-        <Eyebrow>+ 01 / Intro</Eyebrow>
+        <Eyebrow>+ Intro</Eyebrow>
 
-        {/* Display row — logo + wordmark, POMEs hero spec (68 / 92 / 128 px,
-            font-semibold, tracking -0.05).  Project number "02" was dropped
-            from the hero because the canonical 01–09 marker already lives
-            in the top CaseStudyNav and the side rail — duplicating it here
-            ate space without adding information (same call as POMEs). */}
-        <div className="flex flex-wrap items-end gap-[20px] leading-none min-[560px]:gap-[28px]">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/work/volthop/volthop-logo.png"
-            alt=""
-            aria-hidden
-            className="h-[64px] w-auto shrink-0 min-[560px]:h-[82px] min-[960px]:h-[104px]"
+        {/* Cinematic letterbox strip — marketing-site hero style.
+            The 1280×720 promo is cropped via object-cover into a wider
+            aspect (≈21:9), shaving top/bottom while keeping the centre
+            composition.  A dark scrim provides legibility for the white
+            logo + wordmark + thesis sitting on top.
+            All overlay type uses the portfolio fonts: Archivo for display
+            (logo + wordmark + thesis), JBM only for the eyebrow / small
+            accents kept outside the strip. */}
+        <div className="relative aspect-[21/9] w-full overflow-clip border-2 border-[#1F1F1F] bg-[#1F1F1F]">
+          <video
+            src="/work/volthop/hero.mp4"
+            poster="/work/volthop/volthop-map-nyc.png"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+            aria-label="Volthop app demo loop"
           />
-          <h1 className="text-[68px] leading-[0.9] font-semibold tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
-            Volthop
-          </h1>
-        </div>
+          {/* Scrim: lighter at top, heavier at bottom where the text sits. */}
+          <div
+            className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/75"
+            aria-hidden
+          />
 
-        {/* Hero grid — phone + tagline/meta */}
-        <div className="grid gap-[36px] tablet:grid-cols-[200px_1fr] tablet:items-start">
-          {/* Phone (NYC discovery map) */}
-          <div className="relative aspect-[1179/2556] w-[180px] overflow-clip border-2 border-[#1F1F1F] tablet:w-[200px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/work/volthop/volthop-map-nyc.png"
-              alt="Volthop NYC discovery map"
-              className="absolute inset-0 h-full w-full object-cover"
-            />
-          </div>
-
-          <div className="flex flex-col gap-[24px]">
-            {/* Tagline — POMEs hero spec (24 / 28 / 36, leading 1.2, max-w 620). */}
-            <p className="max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
-              Bring the bike. Borrow the battery. A peer-to-peer marketplace for
-              folding e-bike travelers — built from the threads that asked for it.
+          {/* Overlay content — bottom-left, the way marketing-site hero
+              lays its title + tagline.  `invert` flips the monochrome
+              #1F1F1F logo SVG to white without needing a separate asset. */}
+          <div className="relative z-10 flex h-full flex-col justify-end gap-[12px] p-[20px] tablet:gap-[20px] tablet:p-[48px]">
+            <div className="flex flex-wrap items-end gap-[12px] tablet:gap-[16px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/work/volthop/volthop-logo.svg"
+                alt=""
+                aria-hidden
+                className="h-[36px] w-auto invert tablet:h-[64px]"
+              />
+              <h1 className="text-[40px] leading-[0.85] font-black tracking-[-0.05em] text-[#F4F4F4] tablet:text-[88px]">
+                Volthop
+              </h1>
+            </div>
+            <p className="max-w-[840px] text-[18px] leading-[1.15] font-black tracking-[-0.01em] text-[#F4F4F4] tablet:text-[32px]">
+              I posted the problem.
+              <br aria-hidden className="tablet:hidden" /> They wrote the
+              product.
             </p>
-
-            {/* Meta dl — POMEs spec (110 px label col, 18 gap, 14 py). */}
-            <dl className="border-t border-[#A0A0A0]">
-              {[
-                ["Role", "Solo founder · design + build"],
-                ["Stack", "Flutter · Firebase · Google Maps"],
-                ["Started", "Jan 2026"],
-                ["Status", "Live (Closed Testing → Production Apr 25)"],
-                ["Markets", "EU + US, single Google Play / App Store listing"],
-              ].map(([label, value]) => (
-                <div
-                  key={label}
-                  className="grid grid-cols-[110px_1fr] items-baseline gap-[18px] border-b border-[#A0A0A0] py-[14px]"
-                >
-                  <dt className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]">
-                    {label}
-                  </dt>
-                  <dd className="text-[16px] leading-[1.5] text-[#1F1F1F]">{value}</dd>
-                </div>
-              ))}
-            </dl>
           </div>
         </div>
 
-        {/* Timeline ribbon — 5 nodes */}
-        <div className="border-t border-b border-[#1F1F1F]/30 py-[18px]">
-          <div className="grid grid-cols-2 gap-x-[12px] gap-y-[24px] tablet:grid-cols-5">
-            {[
-              ["Jan 26", "Concept", "Reddit posts, no app"],
-              ["Feb 26", "Build", "Flutter MVP"],
-              ["Mar 23", "Closed Testing", "24 testers, EU + US"],
-              ["Apr 25", "Production", "Live on Play Store"],
-              ["May 26", "Iterating", "Brompton meetups"],
-            ].map(([date, label, detail]) => (
-              <div key={label} className="flex flex-col gap-[6px]">
-                <span className="block h-[18px] w-[2px] bg-[#1F1F1F]" aria-hidden />
-                <span className="text-[12px] font-medium text-[#1F1F1F]">
-                  {date}
-                </span>
-                <span className="text-[12px] font-normal text-[#5D5D5D]">
-                  {label}
-                </span>
-                <span
-                  className="text-[12px] tracking-[0.05em] text-[#A0A0A0]"
-
-                >
-                  {detail}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
+        {/* Meta row beneath the strip — role · duration · progress only.
+            No Markets, no Stack.  Stacked vertically, left-aligned, sits
+            quietly under the cinematic strip without competing for
+            attention. */}
+        <dl className="flex flex-col gap-[14px]">
+          {[
+            ["Role", "Solo founder · design + build"],
+            ["Duration", "Jan – Apr 2026 (live, iterating)"],
+            ["Progress", "Closed Testing → Production · Apr 25"],
+          ].map(([label, value]) => (
+            <div key={label} className="flex gap-[16px]">
+              <dt
+                className="w-[110px] shrink-0 text-[12px] tracking-[0.08em] text-[#5D5D5D]"
+                style={MONO}
+              >
+                {label.toUpperCase()}
+              </dt>
+              <dd className="text-[14px] leading-[1.4] text-[#1F1F1F]">
+                {value}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );
@@ -266,133 +191,120 @@ function Hero() {
 // §02 Insight — "I posted the problem. They wrote the product."
 // ============================================================================
 
-function RedditMock({
-  subreddit,
-  date,
-  title,
-  meta,
-  body,
-}: {
-  subreddit: string;
-  date: string;
-  title: string;
-  meta: string;
-  body: string;
-}) {
-  return (
-    <article className="flex flex-col gap-[8px] border-2 border-[#1F1F1F] bg-[#F8F8F8] p-[16px]">
-      <p className="text-[12px] text-[#5D5D5D]">
-        {subreddit} · {date}
-      </p>
-      <h3 className="text-[16px] leading-[1.35] font-medium text-[#1F1F1F]">
-        {title}
-      </h3>
-      <p
-        className="text-[12px] tracking-[0.04em] text-[#A0A0A0]"
-
-      >
-        {meta}
-      </p>
-      <p className="border-l-2 border-[#1F1F1F]/30 pl-[10px] text-[12px] leading-[1.55] font-normal text-[#5D5D5D]">
-        {body}
-      </p>
-    </article>
-  );
-}
-
-function StatsCallout({
-  header,
-  stats,
-}: {
-  header: string;
-  stats: { number: string; label: string }[];
-}) {
-  return (
-    <div className="border-2 border-[#1F1F1F] bg-[#F8F8F8] p-[20px] tablet:p-[24px]">
-      <p
-        className="mb-[14px] text-[12px] tracking-[0.12em] text-[#5D5D5D]"
-
-      >
-        {header}
-      </p>
-      <div className="grid grid-cols-2 gap-[20px] tablet:grid-cols-5">
-        {stats.map((s) => (
-          <div key={s.label} className="flex flex-col gap-[4px]">
-            <span className="text-[24px] leading-[1] font-medium tracking-[-0.02em] text-[#1F1F1F]">
-              {s.number}
-            </span>
-            <span className="text-[12px] leading-[1.4] text-[#5D5D5D]">
-              {s.label}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 function SectionInsight() {
+  // §02 "How it started" — the personal context.  Per feedback, kept VERY
+  // short: one diagram + four beats.  No prose wall.  The diagram shows
+  // the actual physical problem (a battery that can't board a plane).
   return (
     <section
-      id="insight"
+      id="context"
       className="border-t border-[#1F1F1F]/30 py-[48px] first:border-t-0 first:pt-0 tablet:py-[64px]"
     >
       <div className="flex flex-col gap-[36px]">
         <SectionHeader
           number="02"
-          eyebrow="Insight"
-          headline={
-            <>
-              I posted the problem.
-              <br aria-hidden />
-              They wrote the product.
-            </>
-          }
-          lede="Before any code, I posted the friction in r/ebikes and r/Brompton — folding-bike travelers can't take their battery on planes, and rental shops don't carry compatible packs. The threads filled in faster than I could prompt them. The receipts below are real."
+          eyebrow="Context"
+          headline="How it started."
+          lede="Before any of this — I was the user."
         />
 
-        {/* 2-up Reddit thread mock */}
-        <div className="grid gap-[16px] tablet:grid-cols-2">
-          <RedditMock
-            subreddit="r/ebikes"
-            date="Jan 14, 2026"
-            title="Fly with the bike, leave the battery — anyone solved this?"
-            meta="142 upvotes · 38 comments · 2.1k views"
-            body="Bromptons are TSA-friendly bikes but the battery is a brick at any airport. I keep landing in cities where I'd ride if the battery situation wasn't a logistics nightmare."
-          />
-          <RedditMock
-            subreddit="r/Brompton"
-            date="Jan 16, 2026"
-            title="Air BnBattery? Why doesn't this exist yet"
-            meta="208 upvotes · 64 comments · 3.4k views"
-            body="Idea: rent a battery from a local rider when you land. Same model, charged, hand it off. Half the comments named it before OP did. Manufacturer chimed in to confirm the gap."
-          />
-        </div>
+        {/* Flight-line diagram: US → EU, battery blocked at the gate.
+            Abstract over a literal world map because the literal map would
+            cost paragraphs and add nothing the line + the × can't say. */}
+        <figure className="flex flex-col gap-[20px] border-2 border-[#1F1F1F]/30 bg-[#F8F8F8] p-[24px] tablet:p-[40px]">
+          <div className="grid items-center gap-[12px] tablet:grid-cols-[auto_1fr_auto] tablet:gap-[20px]">
+            <span
+              className="text-[14px] tracking-[0.1em] font-medium text-[#1F1F1F]"
+              style={MONO}
+            >
+              US
+            </span>
+            <div className="relative h-[24px]">
+              {/* dotted flight line */}
+              <div
+                className="absolute inset-x-0 top-1/2 h-0 -translate-y-1/2 border-t-2 border-dashed border-[#1F1F1F]/40"
+                aria-hidden
+              />
+              {/* plane glyph + battery-X marker, both centered */}
+              <div className="absolute inset-0 flex items-center justify-center gap-[10px]">
+                <span className="bg-[#F8F8F8] px-[8px] text-[18px]" aria-hidden>
+                  ✈
+                </span>
+                <span
+                  className="bg-[#1F1F1F] px-[10px] py-[2px] text-[10px] tracking-[0.1em] text-[#F4F4F4]"
+                  style={MONO}
+                >
+                  ⚡ × NO BOARD
+                </span>
+              </div>
+            </div>
+            <span
+              className="text-[14px] tracking-[0.1em] font-medium text-[#1F1F1F]"
+              style={MONO}
+            >
+              EU
+            </span>
+          </div>
+          <figcaption
+            className="text-center text-[11px] tracking-[0.06em] text-[#A0A0A0]"
+            style={MONO}
+          >
+            FIG. 1 · The watt-hour rule turns a folding e-bike into a regular
+            folding bike the moment you land.
+          </figcaption>
+        </figure>
 
-        {/* RECEIPT stats callout */}
-        <StatsCallout
-          header="RECEIPT — what the threads proved"
-          stats={[
-            { number: "350+", label: "upvotes across 2 threads" },
-            { number: "102", label: "comments naming the problem" },
-            { number: "5.5k", label: "views in 72 hours" },
-            { number: "11", label: "DMs offering to host" },
-            { number: "1", label: "manufacturer confirmation" },
-          ]}
-        />
-
-        {/* Pull quote */}
-        <PullQuote attribution="Top comment, r/Brompton — Jan 16, 2026">
-          “Air BnBattery? Why doesn't this exist yet — I'd pay double if I knew
-          the battery was waiting.”
-        </PullQuote>
+        {/* Four beats — bullets, not paragraphs. */}
+        <ol className="flex flex-col gap-[10px] text-[14px] leading-[1.6] text-[#1F1F1F] tablet:text-[15px]">
+          <li className="flex gap-[14px]">
+            <span
+              className="w-[24px] shrink-0 text-[#A0A0A0]"
+              style={MONO}
+            >
+              01
+            </span>
+            <span>I&rsquo;m a Brompton electric rider, planning a multi-city trip.</span>
+          </li>
+          <li className="flex gap-[14px]">
+            <span
+              className="w-[24px] shrink-0 text-[#A0A0A0]"
+              style={MONO}
+            >
+              02
+            </span>
+            <span>
+              The battery exceeds the FAA / EU watt-hour cap for carry-on, and
+              checked-luggage lithium is a hard no.
+            </span>
+          </li>
+          <li className="flex gap-[14px]">
+            <span
+              className="w-[24px] shrink-0 text-[#A0A0A0]"
+              style={MONO}
+            >
+              03
+            </span>
+            <span>
+              I search for rentals at the destination — nobody carries a
+              compatible pack.
+            </span>
+          </li>
+          <li className="flex gap-[14px]">
+            <span
+              className="w-[24px] shrink-0 text-[#A0A0A0]"
+              style={MONO}
+            >
+              04
+            </span>
+            <span>
+              I see the same friction posted across forums. It isn&rsquo;t just me.
+            </span>
+          </li>
+        </ol>
 
         <Body>
-          The thesis the threads handed me was sharper than anything I would have
-          written cold: the user is one person who sometimes borrows and
-          sometimes hosts, and the product needs to make that switch invisible.
-          Every later decision — onboarding, the listing, the booking flow,
-          even the deliberate omissions — traces back to that one frame.
+          Next: figure out whether the demand was real, or whether I was just
+          the loudest person in a small room.
         </Body>
       </div>
     </section>
@@ -400,77 +312,107 @@ function SectionInsight() {
 }
 
 // ============================================================================
-// §03 The gap — 3-card grid w/ PROVES tags
+// §03 Validation — thesis highlight + Reddit receipt + side note
 // ============================================================================
 
-function GapCard({
-  title,
-  body,
-  proves,
-  featured = false,
-}: {
-  title: string;
-  body: string;
-  proves: string;
-  featured?: boolean;
-}) {
-  return (
-    <article
-      className={`flex flex-col gap-[12px] border-2 p-[16px] ${
-        featured ? "border-[#1F1F1F] bg-[#1F1F1F]/[0.04]" : "border-[#1F1F1F]/30"
-      }`}
-    >
-      <div className="aspect-[4/3] w-full border border-dashed border-[#1F1F1F]/40 bg-[#1F1F1F]/[0.03]" />
-      <h3 className="text-[16px] leading-[1.3] font-medium text-[#1F1F1F]">
-        {title}
-      </h3>
-      <p className="text-[12px] leading-[1.55] font-normal text-[#5D5D5D]">
-        {body}
-      </p>
-      <ProvesTag>{proves}</ProvesTag>
-    </article>
-  );
-}
-
 function SectionGap() {
+  // §03 Validation — Reddit posts → demand check.  Layout per feedback:
+  //   - thesis highlight bar full width (kept)
+  //   - 2-column row: actual Reddit post screenshot on the LEFT,
+  //     four hero stats stacked on the RIGHT.  The screenshot is the
+  //     anchor — without it the stats feel arbitrary.  Stacks on mobile.
+  //   - manufacturer admission as a small side note at the bottom.
+  // Killed: the small "REDDIT POST INSIGHTS · screenshot drops in here"
+  // caption and the "TBD · Multi-channel sentiment" placeholder, both of
+  // which were unreadable JBM noise.
+  const stats: { number: string; label: string }[] = [
+    { number: "#8", label: "all-time within a week" },
+    { number: "r/Brompton", label: "subreddit" },
+    { number: "2 threads", label: "r/Brompton · r/ebikes" },
+    { number: "Both sides", label: "demand + supply replied" },
+  ];
   return (
     <section
-      id="gap"
+      id="validation"
       className="border-t border-[#1F1F1F]/30 py-[48px] first:border-t-0 first:pt-0 tablet:py-[64px]"
     >
       <div className="flex flex-col gap-[36px]">
         <SectionHeader
           number="03"
-          eyebrow="The gap"
+          eyebrow="Validation"
           headline={
             <>
-              A real problem. The manufacturer admitted it. Three users named
-              it before I did.
+              The threads filled in faster
+              <br aria-hidden />
+              than I could prompt them.
             </>
           }
-          lede="The gap isn't speculative — it's documented across user threads, manufacturer messaging, and live community DMs. Below: three independent receipts, each pointing at the same hole."
+          lede="To check whether the demand was real, I posted the friction in r/Brompton and r/ebikes — no app, no waitlist, just the question. The replies wrote the rest of this case study."
         />
 
-        <div className="grid gap-[16px] tablet:grid-cols-3">
-          <GapCard
-            title="Brompton owners hit the same wall on every trip"
-            body="Three separate threads, three different cities, same complaint: the bike folds, the battery doesn't fly. Air carriers and rental shops aren't filling it."
-            proves="user demand"
-          />
-          <GapCard
-            title="Brompton itself confirmed the gap, on the record"
-            body="Customer service rep, replying in r/Brompton: 'we're aware travelers struggle with battery logistics — we don't currently offer a rental partnership.' Shipped to my inbox."
-            proves="manufacturer admission"
-            featured
-          />
-          <GapCard
-            title="Owners offered to host before I built anything"
-            body="Eleven separate users DM'd offering to lend their batteries to fellow Bromptoneers — months before there was a product. Supply showed up before demand was activated."
-            proves="latent supply"
-          />
+        {/* Thesis highlight — punchy line, left bar, no card. */}
+        <aside className="border-l-4 border-[#1F1F1F] bg-[#F8F8F8] px-[20px] py-[18px] tablet:px-[28px] tablet:py-[24px]">
+          <p className="text-[20px] leading-[1.25] font-black tracking-[-0.01em] text-[#1F1F1F] tablet:text-[28px]">
+            I posted the problem. They wrote the product.
+          </p>
+        </aside>
+
+        {/* Receipt row — Reddit post screenshot LEFT, hero stats RIGHT.
+            Single-column on mobile (screenshot first, stats below) so the
+            artefact still anchors the metrics. */}
+        <div className="grid gap-[24px] tablet:grid-cols-[1.2fr_1fr] tablet:items-center tablet:gap-[32px]">
+          {/* LEFT — the actual Reddit post that hit #8 all-time */}
+          <figure className="flex flex-col gap-[10px]">
+            <div className="relative w-full overflow-clip border-2 border-[#1F1F1F] bg-[#F8F8F8]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/work/volthop/reddit-post.png"
+                alt="The r/Brompton post — 'I built a free app to solve the Brompton Electric travel battery problem, thanks to this community' — that hit #8 all-time within a week"
+                className="block w-full"
+              />
+            </div>
+          </figure>
+
+          {/* RIGHT — four hero stats, stacked vertically.  Larger gap so
+              they don't feel like a single dense table; left-aligned to
+              match the screenshot's edge. */}
+          <dl className="grid grid-cols-2 gap-x-[24px] gap-y-[24px] tablet:grid-cols-1">
+            {stats.map((s) => (
+              <div key={s.label} className="flex flex-col gap-[6px]">
+                <dt className="text-[28px] leading-[1] font-medium tracking-[-0.02em] text-[#1F1F1F] tablet:text-[36px]">
+                  {s.number}
+                </dt>
+                <dd className="text-[13px] leading-[1.5] text-[#5D5D5D]">
+                  {s.label}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        <LinkOut>longer thread analysis + verbatim manufacturer reply</LinkOut>
+        <Body>
+          Across every channel the same shape kept landing: hot interest, real
+          friction, and people offering supply before I&rsquo;d built anything to
+          sell. That&rsquo;s the answer I needed before writing a line of code.
+        </Body>
+
+        {/* Side note — manufacturer admission.  Per feedback, NOT its own
+            chapter — just a small confirmation pinned to the bottom of
+            validation. */}
+        <aside className="border-t border-[#1F1F1F]/20 pt-[18px]">
+          <p
+            className="mb-[6px] text-[11px] tracking-[0.12em] text-[#A0A0A0]"
+            style={MONO}
+          >
+            SIDE NOTE
+          </p>
+          <p className="text-[13px] leading-[1.6] text-[#5D5D5D]">
+            Brompton&rsquo;s own customer service confirmed the gap on the record:
+            travellers do struggle, no rental partnership exists. A small
+            receipt but a useful one — manufacturer-level acknowledgement that
+            the friction is real.
+          </p>
+        </aside>
       </div>
     </section>
   );
@@ -480,826 +422,732 @@ function SectionGap() {
 // §04 MVP — dual-role architecture + 6 decision blocks
 // ============================================================================
 
-function ArchitectureDiagram() {
-  return (
-    <div className="border-2 border-[#1F1F1F] bg-[#1F1F1F]/[0.04] px-[24px] py-[32px]">
-      <div className="grid items-center gap-[24px] tablet:grid-cols-[1fr_auto_1fr]">
-        {/* Borrower */}
-        <div className="flex flex-col items-start gap-[8px] text-left tablet:items-end tablet:text-right">
-          <p
-            className="text-[12px] tracking-[0.08em] text-[#5D5D5D]"
-
-          >
-            → AT DESTINATION
-          </p>
-          <p className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
-            Borrower
-          </p>
-          <p className="max-w-[260px] text-[12px] leading-[1.6] text-[#5D5D5D]">
-            Search by model + dates. Request a battery from a local rider.
-          </p>
-        </div>
-
-        {/* Center: ONE USER */}
-        <div className="flex flex-col items-center gap-[6px] border-2 border-[#1F1F1F] bg-[#EEEEEE] px-[14px] py-[18px]">
-          <p
-            className="text-[12px] tracking-[0.06em] text-[#5D5D5D]"
-
-          >
-            ONE USER
-          </p>
-          <p className="text-center text-[16px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[18px]">
-            Folding e-bike owner who travels
-          </p>
-          <p
-            className="text-[16px] tracking-[0.5em] text-[#1F1F1F]"
-
-          >
-            ⇄
-          </p>
-        </div>
-
-        {/* Provider */}
-        <div className="flex flex-col items-start gap-[8px] text-left">
-          <p
-            className="text-[12px] tracking-[0.08em] text-[#5D5D5D]"
-
-          >
-            ← AT HOME
-          </p>
-          <p className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
-            Provider
-          </p>
-          <p className="max-w-[260px] text-[12px] leading-[1.6] text-[#5D5D5D]">
-            List the same battery you'd otherwise leave at home. Earn while away.
-          </p>
-        </div>
-      </div>
-      <p
-        className="mt-[20px] text-center text-[12px] tracking-[0.06em] text-[#A0A0A0]"
-
-      >
-        FIG. 1 — every borrower is a provider, and back again.
-      </p>
-    </div>
-  );
-}
-
-function DecisionBlock({
-  index,
-  group,
-  title,
-  body,
-  why,
-  imageSrc,
-  imageAlt,
-  children,
-}: {
-  index: string;
-  group: string;
-  title: string;
-  body: string;
-  why: string;
-  imageSrc?: string;
-  imageAlt?: string;
-  children?: React.ReactNode;
-}) {
-  return (
-    <article className="grid gap-[24px] border-t border-[#1F1F1F]/30 py-[24px] tablet:grid-cols-[1fr_320px] tablet:gap-[32px]">
-      <div className="flex flex-col gap-[10px]">
-        <p
-          className="text-[12px] tracking-[0.08em] text-[#A0A0A0]"
-
-        >
-          DECISION {index} / {group}
-        </p>
-        <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
-          {title}
-        </h3>
-        <p className="max-w-[600px] text-[16px] leading-[1.7] font-normal text-[#5D5D5D]">
-          {body}
-        </p>
-        {children}
-        <p className="text-[12px] leading-[1.65] font-normal text-[#5D5D5D]">
-          <span className="italic">Why:</span> {why}
-        </p>
-      </div>
-
-      {/* Visual */}
-      <div className="aspect-[3/4] w-full overflow-clip border-2 border-[#1F1F1F] bg-[#1F1F1F]/[0.04] tablet:aspect-auto tablet:h-[280px] tablet:w-[320px]">
-        {imageSrc ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={imageSrc}
-            alt={imageAlt ?? ""}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div
-            className="flex h-full w-full items-center justify-center text-[12px] tracking-[0.08em] text-[#A0A0A0]"
-
-          >
-            TBD · SCREENSHOT
-          </div>
-        )}
-      </div>
-    </article>
-  );
-}
-
-function BookingFlow() {
-  const steps: { num: string; label: string; highlighted?: boolean }[] = [
-    { num: "01", label: "Browse map" },
-    { num: "02", label: "Tap listing" },
-    { num: "03", label: "Request (or contact-first)", highlighted: true },
-    { num: "04", label: "Accept / reject" },
-    { num: "05", label: "Upcoming schedule" },
-    { num: "06", label: "Deposit reminder" },
-    { num: "07", label: "Meet IRL + handoff" },
-    { num: "08", label: "Return + rating" },
+// HappyPathStrip — the full 10-step happy path shown as a numbered flow
+// (step labels only), followed by 3 sample screens.  Per feedback: don't
+// dump all 10 screenshots — too many, eyes glaze — show the path, sample
+// the interesting frames.
+function HappyPathStrip() {
+  // Sampled frames are the four steps Soonk explicitly checked off in
+  // review: 01 Explore, 04 Map view, 05 Request battery, 09 Check
+  // handoff spot.  These are the moments that change what the user can
+  // do — everything else in between is glue.
+  const steps: { num: string; label: string; sample?: string }[] = [
+    { num: "01", label: "Explore", sample: "/work/volthop/happy-path/01explore.PNG" },
+    { num: "02", label: "Address input" },
+    { num: "03", label: "Date selection" },
+    { num: "04", label: "Map view", sample: "/work/volthop/happy-path/04mapview.PNG" },
+    { num: "05", label: "Request battery", sample: "/work/volthop/happy-path/05RequestBatter.png" },
+    { num: "06", label: "Confirm request" },
+    { num: "07", label: "Contact owner (optional)" },
+    { num: "08", label: "Approved contract" },
+    { num: "09", label: "Check handoff spot", sample: "/work/volthop/happy-path/09checkinghandoffspot.PNG" },
+    { num: "10", label: "Upcoming schedule" },
   ];
+  const sampleSteps = steps.filter((s) => !!s.sample);
   return (
-    <div className="my-[10px] flex flex-wrap gap-[4px]">
-      {steps.map((s) => (
-        <div
-          key={s.num}
-          className={`flex flex-1 flex-col items-center gap-[4px] border px-[8px] py-[10px] text-center ${
-            s.highlighted
-              ? "border-2 border-[#1F1F1F] bg-[#1F1F1F]/[0.04]"
-              : "border-[#1F1F1F]/30"
-          }`}
-          style={{ minWidth: 90 }}
-        >
-          <span
-            className="text-[12px] text-[#A0A0A0]"
-
+    <div className="flex flex-col gap-[20px]">
+      {/* Flow strip — labels only */}
+      <ol className="flex flex-wrap gap-[6px]">
+        {steps.map((s) => (
+          <li
+            key={s.num}
+            className={`flex flex-1 flex-col items-start gap-[4px] border px-[10px] py-[10px] ${
+              s.sample
+                ? "border-2 border-[#1F1F1F] bg-[#1F1F1F]/[0.04]"
+                : "border-[#1F1F1F]/30"
+            }`}
+            style={{ minWidth: 96 }}
           >
-            {s.num}
-          </span>
-          <span className="text-[12px] leading-[1.4] font-medium text-[#1F1F1F]">
-            {s.label}
-          </span>
-        </div>
-      ))}
+            <span className="text-[10px] text-[#A0A0A0]" style={MONO}>
+              {s.num}
+            </span>
+            <span className="text-[11px] leading-[1.3] font-medium text-[#1F1F1F]">
+              {s.label}
+            </span>
+          </li>
+        ))}
+      </ol>
+
+      {/* 4 sample frames from the path */}
+      <div className="grid gap-[16px] tablet:grid-cols-4">
+        {sampleSteps.map((s) => (
+          <figure
+            key={s.num}
+            className="flex flex-col gap-[8px]"
+          >
+            <div className="relative aspect-[1179/2556] w-full overflow-clip border-2 border-[#1F1F1F]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={s.sample}
+                alt={`Volthop happy-path step ${s.num} — ${s.label}`}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
+            <figcaption
+              className="text-[10px] tracking-[0.06em] text-[#A0A0A0]"
+              style={MONO}
+            >
+              {s.num} · {s.label}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
     </div>
   );
 }
 
 function SectionMvp() {
+  // §04 Conservative MVP Scoping — per feedback: NO dual-role-architecture
+  // diagram (it was just text in boxes), NO 6 decision blocks (too dense),
+  // NO contact-reveal feature (it doesn't exist in the app).
+  //
+  // Replaced with: an oversimplified system breakdown, a short "why no
+  // chat" note, and the actual happy path (10 steps, 3 sample screens).
   return (
     <section
-      id="mvp"
+      id="scope"
       className="border-t border-[#1F1F1F]/30 py-[48px] first:border-t-0 first:pt-0 tablet:py-[64px]"
     >
       <div className="flex flex-col gap-[36px]">
         <SectionHeader
           number="04"
-          eyebrow="MVP ★"
-          headline={
-            <>
-              Every borrower is a provider.
-              <br aria-hidden />
-              Everything else served that.
-            </>
-          }
-          lede="The dual-role architecture isn't a feature. It's the founding decision the whole product collapses into. Onboarding, the listing, the booking flow, and the deliberate omissions all exist to keep that one user from feeling like two."
+          eyebrow="MVP scope"
+          headline="Conservative MVP scoping."
+          lede="First-time app developer. Minimum outcome. Skip heavy engineering wherever the design can carry the load instead."
         />
 
-        <ArchitectureDiagram />
-
-        <div className="flex flex-col">
-          <DecisionBlock
-            index="01"
-            group="Onboarding"
-            title="Set your home location at signup. Both roles activate from one map pin."
-            body="The signup flow opens a map and asks for a single thing: drop the marker on your home. From that one input the app derives both 'where I host from' and 'where I'm searching when I land somewhere else.'"
-            why="Two-role onboarding would duplicate state and double the abandonment surface. The pin reads as setup, not commitment to becoming a host."
-            imageSrc="/work/volthop/volthop-signup-marker.png"
-            imageAlt="Volthop signup with home-location marker"
-          />
-          <DecisionBlock
-            index="02"
-            group="Discovery"
-            title="One map, scoped to model. Filter by destination dates."
-            body="Every listing is a pin on the same map. Filters live in a single chip strip — model (Brompton, Tern, Lectric), date range, distance from drop point. The map is shared between borrowers searching and providers checking demand around them."
-            why="Two separate UIs (one for browsing, one for hosting) would make the dual-role architecture harder to feel. The map is the surface where both roles live at once."
-            imageSrc="/work/volthop/volthop-map-europe.png"
-            imageAlt="Volthop discovery map across Europe"
-          />
-          <DecisionBlock
-            index="03"
-            group="Listing"
-            title="Show the spot, not the seller."
-            body="Listing detail leads with the handoff location and battery model — what a borrower needs to make the trip work — and demotes the host's profile to a footer block. Profile photos are optional; reviews are not."
-            why="Receiver convenience > host vanity. The thread receipts in §02 made it clear travelers were optimizing for logistics confidence, not host shopping."
-            imageSrc="/work/volthop/volthop-detail-brooklyn.png"
-            imageAlt="Volthop Brooklyn listing detail"
-          />
-          <DecisionBlock
-            index="04"
-            group="No in-app chat (deliberate)"
-            title="Contact reveal at booking confirmation, not before."
-            body="Borrowers and providers exchange phone or Telegram only after the request is accepted. Pre-booking conversation happens via the structured request form (model, dates, drop point, message)."
-            why="Chat invites haggling, ghosting, and moderation surface area I couldn't staff solo. The structured request keeps the data clean for v2 receipts and makes acceptance reversible."
-          />
-          <DecisionBlock
-            index="05"
-            group="Booking flow"
-            title="Eight steps, one branch — and that branch is the only deliberate UX risk in v1."
-            body="The booking flow is mostly linear. The only place I gave the user a choice is Step 03: request directly OR ask the host a clarifying question first. That branch exists because the threads showed two distinct intents — confident borrowers and cautious ones — and forcing both through the same form would lose the cautious cohort."
-            why="The branch costs me one extra UI state and saves me an entire abandonment cohort. Worth it. Step 03 is the only place I let the user steer; everything else is rails."
-            imageSrc="/work/volthop/volthop-saved.png"
-            imageAlt="Volthop saved listings + upcoming"
-          >
-            <BookingFlow />
-          </DecisionBlock>
-          <DecisionBlock
-            index="06"
-            group="No escrow (deliberate)"
-            title="Cash deposit at handoff, refundable at return."
-            body="No in-app payments in v1. Both parties exchange a deposit in cash (or Wise / PayPal off-platform) at the IRL handoff, refunded on return. The app reminds both sides 24 hours before the meet."
-            why="Escrow opens KYC, regulatory, and dispute surface area I couldn't carry solo. Cash + reminder is the smallest mechanism that doesn't break trust. The reminder is the design — not the payment rail."
-          />
+        {/* Oversimplified system — Role / Event / Key feature trio. */}
+        <div className="grid gap-[16px] border-2 border-[#1F1F1F]/30 bg-[#F8F8F8] p-[20px] tablet:grid-cols-3 tablet:gap-[24px] tablet:p-[28px]">
+          {/* Role */}
+          <div className="flex flex-col gap-[10px]">
+            <p
+              className="text-[10px] tracking-[0.12em] text-[#5D5D5D]"
+              style={MONO}
+            >
+              ROLE
+            </p>
+            <ul className="flex flex-col gap-[4px] text-[14px] leading-[1.5] text-[#1F1F1F]">
+              <li>· Provider</li>
+              <li>· Borrower</li>
+            </ul>
+          </div>
+          {/* Event */}
+          <div className="flex flex-col gap-[10px]">
+            <p
+              className="text-[10px] tracking-[0.12em] text-[#5D5D5D]"
+              style={MONO}
+            >
+              EVENT
+            </p>
+            <ul className="flex flex-col gap-[6px] text-[13px] leading-[1.5] text-[#1F1F1F]">
+              <li>
+                <span className="text-[#5D5D5D]">Borrower:</span> plan trip →
+                explore → find → book → return
+              </li>
+              <li>
+                <span className="text-[#5D5D5D]">Provider:</span> register →
+                accept → lend → pick up
+              </li>
+            </ul>
+          </div>
+          {/* Key feature */}
+          <div className="flex flex-col gap-[10px]">
+            <p
+              className="text-[10px] tracking-[0.12em] text-[#5D5D5D]"
+              style={MONO}
+            >
+              KEY FEATURE
+            </p>
+            <ul className="flex flex-col gap-[6px] text-[13px] leading-[1.5] text-[#1F1F1F]">
+              <li>
+                <span className="text-[#5D5D5D]">Borrower:</span> explore, save,
+                request, contact method
+              </li>
+              <li>
+                <span className="text-[#5D5D5D]">Provider:</span> register,
+                contact method
+              </li>
+            </ul>
+          </div>
         </div>
 
-        <LinkOut>
-          longer write-up of each decision + the negative ones I cut from v1
-        </LinkOut>
+        {/* No-chat rationale — short black-bar callout. */}
+        <aside className="border-l-4 border-[#1F1F1F] bg-[#F8F8F8] px-[20px] py-[18px]">
+          <p className="text-[14px] leading-[1.6] text-[#1F1F1F]">
+            <span className="font-medium">Not going to build a chat function.</span>{" "}
+            Chat is nice, but without it, letting users connect by other
+            messengers or text message does the same job. Heavy engineering is
+            going to be skipped.
+          </p>
+        </aside>
+
+        {/* Onboarding decision — the actual 3-screen flow.
+            Per feedback: onboarding's job is to ask "are you also a
+            supplier?" and if yes, capture the minimum requirements to
+            list a battery.  The previous version used the supplier-info
+            screen twice (screens 02 and 03 looked identical); fixed so
+            screen 03 is the Contact Methods step — the rule for how
+            borrowers reach a supplier when there is no in-app chat.
+            Screens:
+              01 · Landing / sign-up entry
+              02 · Bike profile + "Register as supplier too" toggle ON
+                   (also surfaces the Supplier minimum requirements form)
+              03 · Contact methods — at least one must stay reachable */}
+        <div className="flex flex-col gap-[18px]">
+          <div className="flex flex-col gap-[8px]">
+            <p
+              className="text-[11px] tracking-[0.08em] text-[#A0A0A0]"
+              style={MONO}
+            >
+              ONBOARDING
+            </p>
+            <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
+              Ask once: are you also a supplier? If yes, here&rsquo;s the
+              minimum.
+            </h3>
+            <p className="max-w-[600px] text-[13px] leading-[1.7] text-[#5D5D5D]">
+              Sign-up branches on a single toggle. Borrower-only users skip
+              the supplier fields. Supplier opt-ins capture the smallest set
+              of fields a listing needs, then choose how borrowers can reach
+              them — since there is no in-app chat, at least one contact
+              method has to stay on.
+            </p>
+          </div>
+
+          <div className="grid gap-[16px] tablet:grid-cols-3 tablet:gap-[20px]">
+            {[
+              {
+                num: "01",
+                label: "Sign up",
+                note: "Email · Google · Apple",
+                src: "/work/volthop/onboarding/01-landing.png",
+              },
+              {
+                num: "02",
+                label: "Bike profile + supplier toggle",
+                note: "Default OFF. Flip ON → Supply Info appears (Country · Location · Price · Dates).",
+                src: "/work/volthop/onboarding/02-bike-profile-supplier-toggle.png",
+              },
+              {
+                num: "03",
+                label: "Contact methods",
+                note: "Text Message is default. Adding WhatsApp / FB Messenger lets the user drop SMS — but at least one stays on.",
+                src: "/work/volthop/onboarding/03-contact-methods.png",
+              },
+            ].map((s) => (
+              <figure key={s.num} className="flex flex-col gap-[8px]">
+                <div className="relative aspect-[1179/2556] w-full overflow-clip border-2 border-[#1F1F1F]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={s.src}
+                    alt={`Volthop onboarding step ${s.num} — ${s.label}`}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </div>
+                <figcaption className="flex flex-col gap-[2px]">
+                  <span
+                    className="text-[10px] tracking-[0.08em] text-[#A0A0A0]"
+                    style={MONO}
+                  >
+                    {s.num} · {s.label.toUpperCase()}
+                  </span>
+                  <span className="text-[12px] leading-[1.4] text-[#5D5D5D]">
+                    {s.note}
+                  </span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+
+        {/* Happy path — full flow + 3 sample frames */}
+        <div className="flex flex-col gap-[14px]">
+          <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
+            The full happy path.
+          </h3>
+          <p className="max-w-[600px] text-[13px] leading-[1.7] text-[#5D5D5D]">
+            Ten steps, mostly linear. Highlighted cells in the strip below are
+            the frames sampled underneath.
+          </p>
+          <HappyPathStrip />
+        </div>
       </div>
     </section>
   );
 }
 
 // ============================================================================
-// §05 Iterations — 4-rung ladder, Rung 1 carries Closed Testing timeline
+// §05 Iterations — community-driven changes that shipped
 // ============================================================================
 
-function CTTimeline() {
-  return (
-    <div className="my-[12px] flex flex-col gap-[10px]">
-      <div className="grid items-stretch gap-[8px] tablet:grid-cols-[1fr_24px_1.5fr_24px_1fr]">
-        {/* Mar 23 — first batch */}
-        <div className="flex flex-col items-center gap-[5px] border border-[#1F1F1F]/30 p-[12px] text-center">
-          <span
-            className="bg-[#1F1F1F]/10 px-[8px] py-[2px] text-[12px] text-[#1F1F1F]"
-
-          >
-            Mar 23
-          </span>
-          <p className="text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
-            First batch invited
-          </p>
-          <p className="text-[12px] text-[#5D5D5D]">24 Android testers</p>
-        </div>
-
-        {/* arrow */}
-        <p
-          className="hidden text-center text-[16px] text-[#A0A0A0] tablet:flex tablet:items-center tablet:justify-center"
-
-          aria-hidden
-        >
-          →
-        </p>
-
-        {/* Apr 9 — REJECTED (dominant center) */}
-        <div className="flex flex-col items-center gap-[6px] border-2 border-[#1F1F1F] p-[14px] text-center">
-          <span
-            className="bg-[#1F1F1F] px-[8px] py-[2px] text-[12px] text-[#F4F4F4]"
-
-          >
-            Apr 9 — rejected
-          </span>
-          <p className="text-[16px] leading-[1.3] font-medium text-[#1F1F1F]">
-            More testing required
-          </p>
-          <blockquote className="bg-[#1F1F1F]/[0.04] px-[9px] py-[7px] text-left text-[12px] leading-[1.45] italic text-[#1F1F1F]">
-            “Testers were not engaged with your app during your closed test. You
-            didn't follow testing best practices, which may include gathering
-            and acting on user feedback through updates to your app.” — Google
-            Play, verbatim
-          </blockquote>
-          <p className="text-[12px] leading-[1.5] font-medium text-[#1F1F1F]">
-            → Documented every change, every test, every feedback loop.
-            Re-submitted with full audit trail.
-          </p>
-        </div>
-
-        {/* arrow */}
-        <p
-          className="hidden text-center text-[16px] text-[#A0A0A0] tablet:flex tablet:items-center tablet:justify-center"
-
-          aria-hidden
-        >
-          →
-        </p>
-
-        {/* Apr 25 — production */}
-        <div className="flex flex-col items-center gap-[5px] border border-[#1F1F1F]/30 p-[12px] text-center">
-          <span
-            className="bg-[#1F1F1F]/10 px-[8px] py-[2px] text-[12px] text-[#1F1F1F]"
-
-          >
-            Apr 25
-          </span>
-          <p className="text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
-            Production access granted
-          </p>
-          <p className="text-[12px] text-[#5D5D5D]">Live on Google Play</p>
-        </div>
-      </div>
-      <p
-        className="text-center text-[12px] text-[#A0A0A0]"
-
-      >
-        ↑ 16 days of documentation between fail and pass — same listening muscle
-        as Reddit comments ↑
-      </p>
-    </div>
-  );
-}
-
-function IterationStage({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex flex-col gap-[4px]">
-      <p
-        className="text-[12px] tracking-[0.06em] text-[#A0A0A0]"
-
-      >
-        {label}
-      </p>
-      <div className="text-[16px] leading-[1.6] text-[#5D5D5D]">{children}</div>
-    </div>
-  );
-}
-
-function IterationRung({
-  rung,
-  major = false,
-  comment,
-  source,
-  version,
-  needed,
-  reflected,
-  difficulty,
-  difficultyEmbed,
-}: {
-  rung: string;
-  major?: boolean;
-  comment: string;
-  source: string;
-  version: string;
-  needed: React.ReactNode;
-  reflected: React.ReactNode;
-  difficulty: React.ReactNode;
-  difficultyEmbed?: React.ReactNode;
-}) {
-  return (
-    <article
-      className={`grid gap-[20px] tablet:grid-cols-[200px_1fr] ${
-        major
-          ? "border-2 border-[#1F1F1F] bg-[#1F1F1F]/[0.04] p-[24px] tablet:p-[28px]"
-          : "border border-[#1F1F1F]/30 p-[18px] tablet:p-[20px]"
-      }`}
-    >
-      {/* Left: rung label + comment + version */}
-      <div className="flex flex-col gap-[10px]">
-        {major && (
-          <span
-            className="self-start border-2 border-[#1F1F1F] bg-[#EEEEEE] px-[8px] py-[2px] text-[12px] text-[#1F1F1F]"
-
-          >
-            {rung} ★
-          </span>
-        )}
-        <div className="flex flex-col gap-[6px] border-2 border-[#1F1F1F]/40 bg-[#F8F8F8] px-[15px] py-[11px]">
-          <p className="text-[16px] leading-[1.5] font-normal text-[#1F1F1F]">
-            “{comment}”
-          </p>
-          <p className="text-[12px] text-[#A0A0A0]">
-            — {source}
-          </p>
-        </div>
-        <VersionChip solid={major}>{version}</VersionChip>
-      </div>
-
-      {/* Right: 3 stages */}
-      <div className="flex flex-col gap-[10px]">
-        <IterationStage label="WHAT WAS NEEDED">{needed}</IterationStage>
-        <IterationStage label="HOW IT WAS REFLECTED">{reflected}</IterationStage>
-        <IterationStage label="DIFFICULTIES">{difficulty}</IterationStage>
-        {difficultyEmbed}
-      </div>
-    </article>
-  );
-}
-
 function SectionIterations() {
+  // §05 Iterations — THE main act.  Three things shipped because the
+  // community asked for them:
+  //   1. EU + multi-country support  (real demand is US→EU air travellers)
+  //   2. Deposit suggestion          (people worried about theft)
+  //   3. Brompton meetups            (in-person install acquisition)
+  //
+  // Old Closed-Testing-timeline / 4-rung-ladder / per-comment scaffolding
+  // is gone — Soonk flagged it as dense and off-topic.  Bullets do the work.
   return (
     <section
       id="iterations"
       className="border-t border-[#1F1F1F]/30 py-[48px] first:border-t-0 first:pt-0 tablet:py-[64px]"
     >
-      <div className="flex flex-col gap-[36px]">
+      <div className="flex flex-col gap-[44px]">
         <SectionHeader
           number="05"
           eyebrow="Iterations ★"
           headline={
             <>
-              One comment opened the longest road.
+              I posted the problem.
               <br aria-hidden />
-              Three more reshaped the rest.
+              They wrote the product.
             </>
           }
-          lede="Four rungs. Each one starts with a real comment from a real user — Reddit DM, Brompton meetup, Closed Testing email, Play Store review. Rung 1 is dominant because the road it opened was the longest of the build: an EU/Android cascade that cost me 16 days of Closed Testing documentation."
+          lede="The community didn't just validate the idea — it shipped the next three changes for me. Each one started in a comment or a face-to-face conversation, and each one re-shaped what got built."
         />
 
-        <div className="flex flex-col gap-[16px]">
-          {/* Rung 1 — major */}
-          <IterationRung
-            rung="Rung 1"
-            major
-            comment="If this only works in NYC I'm out. I land in Berlin half my year."
-            source="DM, r/Brompton, Jan 22 2026"
-            version="v1.0 → v1.2 (EU + Android cascade)"
-            needed="A single store listing that covered EU travelers from day one — not 'US first, EU later.' Same auth, same map, same payment gateway, same legal."
-            reflected={
-              <>
-                Five cascading changes: ① flipped the Firebase region to EU
-                multi-region; ② added German + French copy strings to the
-                signup; ③ built Brompton/Tern/Lectric model coverage for both
-                markets at once; ④ moved KYC out of v1 entirely (deferred to
-                v2) so neither market needed compliance review; ⑤ submitted
-                Closed Testing to both stores from one repo.
-              </>
-            }
-            difficulty="Closed Testing rejected on Apr 9 with the verbatim Google rejection below — 16 days of documentation later, production granted Apr 25."
-            difficultyEmbed={<CTTimeline />}
-          />
+        {/* ---- Iteration 01 — Europe & multi-country expansion --------
+            Layout matches §03 Validation: EU map screenshot on the LEFT
+            (the artefact anchors what shipped), all content on the RIGHT
+            (bullets → community quotes → summary).  Stacks on mobile. */}
+        <article className="flex flex-col gap-[16px]">
+          <header className="flex flex-wrap items-center gap-[10px]">
+            <span
+              className="bg-[#1F1F1F] px-[8px] py-[2px] text-[10px] tracking-[0.1em] text-[#F4F4F4]"
+              style={MONO}
+            >
+              ITERATION 01
+            </span>
+            <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[20px]">
+              The real demand isn&rsquo;t US-only — it&rsquo;s air travellers.
+            </h3>
+          </header>
 
-          {/* Rung 2 */}
-          <IterationRung
-            rung="Rung 2"
-            comment="The handoff time is harder to coordinate than the booking itself."
-            source="Brompton meetup, Brooklyn, Apr 12 2026"
-            version="v1.3"
-            needed="A way to pin the handoff window inside the booking flow without forcing a chat layer."
-            reflected="Added a 'meet window' field to the request form (default 2 hours, custom range allowed). Surfaces the time inside the upcoming-bookings tile so both parties see the same clock."
-            difficulty="Defaulting to 2 hours felt long for some users and short for others — A/B'd 1h vs 3h, settled on 2h after meetup feedback."
-          />
+          <div className="grid gap-[24px] tablet:grid-cols-[240px_1fr] tablet:items-start tablet:gap-[32px]">
+            {/* LEFT — EU map screenshot only */}
+            <div className="relative aspect-[1179/2556] w-full max-w-[240px] overflow-clip border-2 border-[#1F1F1F]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/work/volthop/volthop-map-europe.png"
+                alt="Volthop discovery map covering Europe — UK, Netherlands, Germany, France"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </div>
 
-          {/* Rung 3 */}
-          <IterationRung
-            rung="Rung 3"
-            comment="I forgot the deposit at handoff and so did the host. Awkward."
-            source="Play Store review, May 2 2026, 4★"
-            version="v1.4"
-            needed="A nudge that arrives at the right moment for both parties — not a generic notification."
-            reflected="Push notification 24 hours and 1 hour before the scheduled meet, with the deposit amount inline. Same template both sides."
-            difficulty="Apple's notification approval flow doesn't let me schedule timezone-shifted pushes natively — wrote a small Cloud Function instead."
-          />
+            {/* RIGHT — bullets, community quotes from r/Brompton, summary. */}
+            <div className="flex flex-col gap-[18px]">
+              <ul className="flex flex-col gap-[8px] text-[14px] leading-[1.6] text-[#1F1F1F] tablet:text-[15px]">
+                <li className="flex gap-[12px]">
+                  <span className="shrink-0 text-[#A0A0A0]">·</span>
+                  <span>
+                    Some Europeans mostly take{" "}
+                    <span className="font-medium">trains</span> — they don&rsquo;t
+                    need a rental network the same way.
+                  </span>
+                </li>
+                <li className="flex gap-[12px]">
+                  <span className="shrink-0 text-[#A0A0A0]">·</span>
+                  <span>
+                    The real demand is people flying{" "}
+                    <span className="font-medium">US → EU</span>, or
+                    country-to-country, where the bike folds but the battery
+                    is grounded.
+                  </span>
+                </li>
+                <li className="flex gap-[12px]">
+                  <span className="shrink-0 text-[#A0A0A0]">·</span>
+                  <span>
+                    A US-only release would have{" "}
+                    <span className="font-medium">missed the main cohort</span>.
+                    EU + multi-country had to ship in v1.
+                  </span>
+                </li>
+              </ul>
 
-          {/* Rung 4 */}
-          <IterationRung
-            rung="Rung 4"
-            comment="Listings are noisy in cities. I want to see who I've met before."
-            source="Phxfold IG DM, May 5 2026"
-            version="v1.5"
-            needed="A signal that surfaces returning hosts without polluting the search ranking."
-            reflected="Added a small 'met before' badge to listings where the borrower has at least one prior completed booking. No re-ranking, just a glyph."
-            difficulty="Resisted the temptation to A/B a 'follow' graph — that's a different product. Badge stays neutral."
-          />
-        </div>
+              <div className="flex flex-col gap-[12px]">
+                <figure className="border-l-4 border-[#1F1F1F] bg-[#F8F8F8] px-[18px] py-[14px]">
+                  <blockquote className="text-[15px] leading-[1.55] text-[#1F1F1F]">
+                    &ldquo;Brompton should&rsquo;ve solved this by now &hellip;
+                    the community needs to figure it out ourselves.&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-[8px] text-[12px] leading-[1.4] text-[#5D5D5D]">
+                    — Deviantdefective, Top 1% Commenter, r/Brompton
+                  </figcaption>
+                </figure>
 
-        <Body>
-          The pattern across all four rungs: the comment is the spec. I'm not
-          interpreting users; I'm shipping what they already wrote, and
-          documenting the gaps when the platform pushes back. Rung 1 is the
-          long version of that pattern — same listening muscle, just stretched
-          over 16 days of Closed Testing paperwork.
-        </Body>
+                <figure className="border-l-4 border-[#1F1F1F] bg-[#F8F8F8] px-[18px] py-[14px]">
+                  <blockquote className="text-[15px] leading-[1.55] text-[#1F1F1F]">
+                    &ldquo;Some cities already have Brompton hire — what
+                    about battery hire?&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-[8px] text-[12px] leading-[1.4] text-[#5D5D5D]">
+                    — ChaosCalmed, r/Brompton
+                  </figcaption>
+                </figure>
 
-        <LinkOut>full Closed Testing audit trail + rejection email</LinkOut>
+                <figure className="border-l-4 border-[#1F1F1F] bg-[#F8F8F8] px-[18px] py-[14px]">
+                  <blockquote className="text-[15px] leading-[1.55] text-[#1F1F1F]">
+                    &ldquo;Brompton&rsquo;s CEO mentioned a battery rental
+                    scheme in a Q&amp;A — still un-launched.&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-[8px] text-[12px] leading-[1.4] text-[#5D5D5D]">
+                    — JanCumin, r/Brompton
+                  </figcaption>
+                </figure>
+              </div>
+
+              <p className="text-[14px] leading-[1.7] text-[#5D5D5D]">
+                Five different commenters independently sketched a P2P
+                battery rental on the thread before VoltHop was ever
+                mentioned — concept familiarity was already there. The
+                question wasn&rsquo;t whether to build it, but whether to
+                ship US-only or include EU from day one. The EU voices
+                above answered that.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        {/* ---- Iteration 02 — Deposit feature ------------------------- */}
+        <article className="flex flex-col gap-[16px]">
+          <header className="flex flex-wrap items-center gap-[10px]">
+            <span
+              className="bg-[#1F1F1F] px-[8px] py-[2px] text-[10px] tracking-[0.1em] text-[#F4F4F4]"
+              style={MONO}
+            >
+              ITERATION 02
+            </span>
+            <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[20px]">
+              &ldquo;What if someone runs off with the battery?&rdquo;
+            </h3>
+          </header>
+
+          {/* Layout matches Iteration 01 / §03 Validation: screenshots on
+              the LEFT, organized content on the RIGHT.  Two phone screens
+              stacked vertically in the left column (deal accepted → deposit
+              modal); right column carries the callout + three curated
+              community quotes + a short summary.  Quotes pulled from the
+              Reddit/Facebook threads Soonk surfaced (r/ebikes, r/Brompton,
+              Brompton Electric Owners FB group) — 11 comments narrowed to
+              the three sharpest. */}
+          <div className="grid gap-[24px] tablet:grid-cols-[200px_1fr] tablet:items-start tablet:gap-[32px]">
+            {/* LEFT — deal accepted + deposit modal, stacked */}
+            <div className="flex flex-col gap-[16px]">
+              <figure className="flex flex-col gap-[8px]">
+                <div className="relative aspect-[1179/2556] w-full overflow-clip border-2 border-[#1F1F1F]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/work/volthop/deal_before_hitting_deposit.png"
+                    alt="Volthop — deal accepted screen before deposit prompt"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </div>
+                <figcaption className="text-[12px] leading-[1.4] text-[#5D5D5D]">
+                  01 · Deal accepted
+                </figcaption>
+              </figure>
+              <figure className="flex flex-col gap-[8px]">
+                <div className="relative aspect-[1179/2556] w-full overflow-clip border-2 border-[#1F1F1F]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/work/volthop/deposit.png"
+                    alt="Volthop — deposit recommendation modal"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </div>
+                <figcaption className="text-[12px] leading-[1.4] text-[#5D5D5D]">
+                  02 · Deposit recommendation modal
+                </figcaption>
+              </figure>
+            </div>
+
+            {/* RIGHT — callout + curated quotes + summary */}
+            <div className="flex flex-col gap-[18px]">
+              <aside className="border-l-4 border-[#1F1F1F] bg-[#F8F8F8] px-[20px] py-[16px]">
+                <p className="text-[14px] leading-[1.6] text-[#1F1F1F]">
+                  The community surfaced the trust risk before the first
+                  booking ever happened. The answer was a{" "}
+                  <span className="font-medium">deposit suggestion</span>:
+                  when a deal closes, both sides see a recommended deposit
+                  amount and a short note on how to exchange it at the
+                  handoff.
+                </p>
+              </aside>
+
+              <div className="flex flex-col gap-[12px]">
+                <figure className="border-l-4 border-[#1F1F1F] bg-[#F8F8F8] px-[18px] py-[14px]">
+                  <blockquote className="text-[15px] leading-[1.55] text-[#1F1F1F]">
+                    &ldquo;A good battery is easily $500 &hellip; you can
+                    sell a used battery pretty quick on Facebook for
+                    $2&ndash;300. There needs to be a good system to
+                    protect the person lending their battery.&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-[8px] text-[12px] leading-[1.4] text-[#5D5D5D]">
+                    — Ramone45454, r/ebikes
+                  </figcaption>
+                </figure>
+
+                <figure className="border-l-4 border-[#1F1F1F] bg-[#F8F8F8] px-[18px] py-[14px]">
+                  <blockquote className="text-[15px] leading-[1.55] text-[#1F1F1F]">
+                    &ldquo;Unscrupulous renter leases your battery, returns
+                    their worn-out battery instead.&rdquo;
+                  </blockquote>
+                  <figcaption className="mt-[8px] text-[12px] leading-[1.4] text-[#5D5D5D]">
+                    — EvilPencil, r/ebikes
+                  </figcaption>
+                </figure>
+
+                <figure className="border-l-4 border-[#1F1F1F] bg-[#F8F8F8] px-[18px] py-[14px]">
+                  <blockquote className="text-[15px] leading-[1.55] text-[#1F1F1F]">
+                    &ldquo;What happens if a renter damages, loses, swaps
+                    or doesn&rsquo;t return the battery? Who holds the
+                    deposit and how is it released?&rdquo;
+                    <span className="mt-[6px] block text-[13px] text-[#5D5D5D]">
+                      &hellip; after the conversation:{" "}
+                      <span className="font-medium text-[#1F1F1F]">
+                        &ldquo;I&rsquo;ll sign up and see how it goes.&rdquo;
+                      </span>
+                    </span>
+                  </blockquote>
+                  <figcaption className="mt-[8px] text-[12px] leading-[1.4] text-[#5D5D5D]">
+                    — kingfrank_bromptons, r/Brompton
+                  </figcaption>
+                </figure>
+              </div>
+
+              <p className="text-[14px] leading-[1.7] text-[#5D5D5D]">
+                Seven different people across four Reddit threads and one
+                Facebook group raised the same shape of concern — theft,
+                battery swaps, who holds the money. The deposit-at-deal-close
+                screen answered the most-asked version of the question
+                directly, and at least one skeptic explicitly flipped after
+                the conversation.
+              </p>
+            </div>
+          </div>
+        </article>
+
+        {/* ---- Iteration 03 — Brompton meetups (IRL distribution) ---- */}
+        <article className="flex flex-col gap-[16px]">
+          <header className="flex flex-wrap items-center gap-[10px]">
+            <span
+              className="bg-[#1F1F1F] px-[8px] py-[2px] text-[10px] tracking-[0.1em] text-[#F4F4F4]"
+              style={MONO}
+            >
+              ITERATION 03
+            </span>
+            <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[20px]">
+              Showed up at Brompton meetups, came home with installs.
+            </h3>
+          </header>
+
+          <p className="max-w-[620px] text-[14px] leading-[1.7] text-[#5D5D5D] tablet:text-[15px]">
+            I went to local Brompton meetups in person — talked to people,
+            promoted the app, listened. New app installs followed.
+          </p>
+
+          {/* 4-up meetup grid */}
+          <div className="grid grid-cols-2 gap-[12px] tablet:grid-cols-4">
+            {[
+              "/work/volthop/meetup-1.jpeg",
+              "/work/volthop/meetup-2.jpeg",
+              "/work/volthop/meetup-3.jpeg",
+              "/work/volthop/meetup-4.jpeg",
+            ].map((src, i) => (
+              <div
+                key={src}
+                className="relative aspect-square w-full overflow-clip border-2 border-[#1F1F1F]"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={src}
+                  alt={`Brompton meetup ${i + 1}`}
+                  className="absolute inset-0 h-full w-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+        </article>
       </div>
     </section>
   );
 }
 
 // ============================================================================
-// §06 GTM — live state callout + 3 moments + SEO/AEO + channel mix
+// §06 SEO & AEO — marketing site + AI-assistant retrieval
 // ============================================================================
 
-function MomentCard({
-  title,
-  body,
-  imageSrc,
-  imageAlt,
-  imagePair,
-}: {
-  title: string;
-  body: string;
-  imageSrc?: string;
-  imageAlt?: string;
-  imagePair?: { a: string; b: string };
-}) {
-  return (
-    <article className="flex flex-col gap-[10px] border-2 border-[#1F1F1F]/30 p-[14px]">
-      <div className="aspect-[4/3] w-full overflow-clip border border-[#1F1F1F]/30 bg-[#1F1F1F]/[0.03]">
-        {imagePair ? (
-          <div className="grid h-full grid-cols-2 gap-[2px]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={imagePair.a} alt="" className="h-full w-full object-cover" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={imagePair.b} alt="" className="h-full w-full object-cover" />
-          </div>
-        ) : imageSrc ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
-            src={imageSrc}
-            alt={imageAlt ?? ""}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          <div
-            className="flex h-full w-full items-center justify-center text-[12px] tracking-[0.08em] text-[#A0A0A0]"
-
-          >
-            TBD
-          </div>
-        )}
-      </div>
-      <h3 className="text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
-        {title}
-      </h3>
-      <p className="text-[12px] leading-[1.55] text-[#5D5D5D]">{body}</p>
-    </article>
-  );
-}
-
-function ChannelCard({
-  channel,
-  title,
-  bullets,
-}: {
-  channel: string;
-  title: string;
-  bullets: string[];
-}) {
-  return (
-    <article className="flex flex-col gap-[8px] border-2 border-[#1F1F1F]/30 p-[18px]">
-      <p
-        className="text-[12px] tracking-[0.08em] text-[#5D5D5D]"
-
-      >
-        CHANNEL · {channel}
-      </p>
-      <h3 className="text-[16px] leading-[1.3] font-medium text-[#1F1F1F]">
-        {title}
-      </h3>
-      <ul className="flex flex-col gap-[4px] text-[12px] leading-[1.7] text-[#5D5D5D]">
-        {bullets.map((b) => (
-          <li key={b}>· {b}</li>
-        ))}
-      </ul>
-    </article>
-  );
-}
-
 function SectionGtm() {
+  // §06 SEO & AEO — content pulled directly from volthop.app (the live
+  // marketing site).  Screenshots (home + blog index) captured headless
+  // and stored under /work/volthop/marketing/.  Bullets describe what's
+  // visible on the site rather than what I'd LIKE to be there.
   return (
     <section
-      id="gtm"
+      id="channels"
       className="border-t border-[#1F1F1F]/30 py-[48px] first:border-t-0 first:pt-0 tablet:py-[64px]"
     >
       <div className="flex flex-col gap-[36px]">
         <SectionHeader
           number="06"
-          eyebrow="GTM"
-          headline={
-            <>
-              The community built it.
-              <br aria-hidden />
-              Now I had to find them in the wild.
-            </>
-          }
-          lede="Threads got me to v1. Beyond v1, I needed to meet riders where they already were — IRL meetups, search, AI assistants — without buying an audience."
+          eyebrow="SEO & AEO"
+          headline="Finding them in the wild."
+          lede="Once v1 was live, the channels mattered. Two tracks: classic search (SEO) and AI-assistant retrieval (AEO).  Both small, both focused."
         />
 
-        {/* 4-up live state stats (TBD pending Play Store data) */}
-        <StatsCallout
-          header="LIVE STATE — May 2026 (TBD pending fresh Play Store pull)"
-          stats={[
-            { number: "TBD", label: "active listings (EU + US combined)" },
-            { number: "TBD", label: "Android installs since Apr 25" },
-            { number: "TBD", label: "App Store downloads since launch" },
-            { number: "TBD", label: "monthly Search Console impressions" },
-          ]}
-        />
-
-        {/* 3 moments */}
-        <div className="grid gap-[16px] tablet:grid-cols-3">
-          <MomentCard
-            title="Reddit thread → Closed Testing waitlist"
-            body="Posted v1 access in the same r/Brompton thread that named the product. 31 testers signed up in 48 hours."
-          />
-          <MomentCard
-            title="Brompton meetups, Brooklyn"
-            body="Showed up to two folding-bike meetups in Brooklyn with a printed flyer and a working app. Got 7 hosts onboarded on the spot, 4 of whom became Rung 2/3 sources."
-            imagePair={{
-              a: "/work/volthop/meetup-bikes.jpg",
-              b: "/work/volthop/meetup-group.jpeg",
-            }}
-          />
-          <MomentCard
-            title="@phxfold IG — DM volunteer-host"
-            body="A Phoenix-area Brompton owner DM'd offering to host before I'd posted in r/Brompton US. Became Rung 4's source."
-          />
-        </div>
-
-        {/* SEO + AEO 2-up */}
-        <div className="grid gap-[14px] tablet:grid-cols-2">
-          <ChannelCard
-            channel="SEO"
-            title="Long-tail terms riders actually search"
-            bullets={[
-              "‘brompton battery rental [city]’ in title + h1",
-              "schema.org/RentalService markup on listing pages",
-              "Search Console + GSC sitemap from week 1",
-              "City landing pages auto-generated from listing density",
-            ]}
-          />
-          <ChannelCard
-            channel="AEO"
-            title="Make the answer easy for the AI assistants"
-            bullets={[
-              "FAQ schema covering the 8 questions threads keep asking",
-              "‘How do I rent a Brompton battery in Berlin?’ Q→A pairs",
-              "robots.txt allowlist for GPTBot, PerplexityBot, ClaudeBot",
-              "Tracking referral source via UTM on AI chat surfaces",
-            ]}
-          />
-        </div>
-
-        {/* Channel mix strip */}
-        <div className="border-2 border-[#1F1F1F]/30 bg-[#F8F8F8] px-[16px] py-[14px]">
-          <p
-            className="text-[12px] leading-[1.8] text-[#5D5D5D]"
-
-          >
-            <span className="text-[#5D5D5D]">Channel mix:</span> Reddit (r/ebikes,
-            r/Brompton) <span className="text-[#A0A0A0]">(in flight)</span>
-            {" · "}IRL meetups <span className="text-[#A0A0A0]">(in flight)</span>
-            {" · "}IG DMs <span className="text-[#A0A0A0]">(reactive)</span>
-            {" · "}SEO <span className="text-[#A0A0A0]">(in flight)</span>
-            {" · "}AEO <span className="text-[#A0A0A0]">(planned)</span>
-            {" · "}email/newsletter <span className="text-[#A0A0A0]">(planned)</span>
-          </p>
-        </div>
-
-        <LinkOut>live Search Console + Play Store screenshots, refreshed monthly</LinkOut>
-      </div>
-    </section>
-  );
-}
-
-// ============================================================================
-// §07 Next — reflection + 4 next-move blocks
-// ============================================================================
-
-function ReviewMock() {
-  return (
-    <div className="grid gap-[14px] tablet:grid-cols-2">
-      {[
-        {
-          name: "Borrower review",
-          stars: "★★★★★",
-          meta:
-            "Borrowed Brompton C-Line battery · Brooklyn, NY · May 2026",
-          body:
-            "Handoff was painless — Sarah met me at the cafe, charged + ready. Cash deposit at meet, refunded at return. Would do this every trip.",
-        },
-        {
-          name: "Provider review",
-          stars: "★★★★★",
-          meta: "Hosted to a returning Brompton C-Line traveler · May 2026",
-          body:
-            "Easy. Borrower showed up on time, returned clean, paid the deposit before riding. The 24h reminder is the reason we both showed up at the right cafe.",
-        },
-      ].map((r) => (
-        <article
-          key={r.name}
-          className="flex flex-col gap-[8px] border-2 border-[#1F1F1F]/30 p-[14px]"
-        >
-          <div className="flex items-center justify-between gap-[8px]">
-            <span className="text-[16px] font-medium text-[#1F1F1F]">
-              {r.name}
-            </span>
+        {/* ---- SEO --------------------------------------------------- */}
+        <article className="flex flex-col gap-[16px]">
+          <header className="flex flex-wrap items-center gap-[10px]">
             <span
-              className="text-[12px] tracking-[0.05em] text-[#1F1F1F]"
-
+              className="bg-[#1F1F1F] px-[8px] py-[2px] text-[10px] tracking-[0.1em] text-[#F4F4F4]"
+              style={MONO}
             >
-              {r.stars}
+              SEO
             </span>
+            <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[20px]">
+              A marketing site, indexed deliberately.
+            </h3>
+          </header>
+
+          <div className="grid gap-[20px] tablet:grid-cols-[1fr_1fr] tablet:items-start tablet:gap-[28px]">
+            <ul className="flex flex-col gap-[8px] text-[14px] leading-[1.6] text-[#1F1F1F] tablet:text-[15px]">
+              <li className="flex gap-[12px]">
+                <span className="shrink-0 text-[#A0A0A0]">·</span>
+                <span>
+                  Built a dedicated marketing site (
+                  <span style={MONO}>volthop.app</span>) so the app store page
+                  isn&rsquo;t the only crawlable surface.
+                </span>
+              </li>
+              <li className="flex gap-[12px]">
+                <span className="shrink-0 text-[#A0A0A0]">·</span>
+                <span>
+                  Targeted long-tail queries riders actually type — &ldquo;ebike
+                  battery on a plane&rdquo;, &ldquo;Brompton battery rental&rdquo;,
+                  &ldquo;fly with folding ebike&rdquo;.
+                </span>
+              </li>
+              <li className="flex gap-[12px]">
+                <span className="shrink-0 text-[#A0A0A0]">·</span>
+                <span>
+                  Title + H1 mirror the query verbatim (
+                  <span className="italic">
+                    &ldquo;Can You Take an E-Bike Battery on a Plane? Complete
+                    2026 Guide&rdquo;
+                  </span>
+                  ); year in the title for recency signal.
+                </span>
+              </li>
+              <li className="flex gap-[12px]">
+                <span className="shrink-0 text-[#A0A0A0]">·</span>
+                <span>
+                  Compatible-brand list on home page (Brompton, Tern, Dahon,
+                  Lectric, Aventon, Ride1Up, &hellip;) seeds brand-specific
+                  long-tail.
+                </span>
+              </li>
+            </ul>
+
+            {/* Marketing home screenshot — captured live from volthop.app. */}
+            <figure className="flex flex-col gap-[8px]">
+              <div className="relative aspect-[1440/900] w-full overflow-clip border-2 border-[#1F1F1F]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/work/volthop/marketing/marketing-home.png"
+                  alt="VoltHop marketing home page — Don't Let Airlines Ground Your E-Bike"
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                />
+              </div>
+              <figcaption
+                className="text-[10px] tracking-[0.06em] text-[#A0A0A0]"
+                style={MONO}
+              >
+                volthop.app — marketing home
+              </figcaption>
+            </figure>
           </div>
-          <p
-            className="text-[12px] tracking-[0.04em] text-[#A0A0A0]"
 
-          >
-            {r.meta}
+          <p className="text-[12px] text-[#A0A0A0]">
+            ↗ link out:{" "}
+            <a
+              href="https://volthop.app/blog"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-[#A0A0A0] underline-offset-[3px] hover:text-[#1F1F1F]"
+            >
+              volthop.app/blog
+            </a>
           </p>
-          <p className="text-[12px] leading-[1.6] text-[#5D5D5D]">{r.body}</p>
         </article>
-      ))}
-    </div>
-  );
-}
 
-function NextMove({
-  index,
-  title,
-  body,
-  children,
-}: {
-  index: string;
-  title: string;
-  body: string;
-  children?: React.ReactNode;
-}) {
-  return (
-    <article className="flex flex-col gap-[10px] border-t border-[#1F1F1F]/30 py-[24px]">
-      <p
-        className="text-[12px] tracking-[0.08em] text-[#A0A0A0]"
+        {/* ---- AEO --------------------------------------------------- */}
+        <article className="flex flex-col gap-[16px]">
+          <header className="flex flex-wrap items-center gap-[10px]">
+            <span
+              className="bg-[#1F1F1F] px-[8px] py-[2px] text-[10px] tracking-[0.1em] text-[#F4F4F4]"
+              style={MONO}
+            >
+              AEO
+            </span>
+            <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[20px]">
+              Make the answer easy for the AI assistants.
+            </h3>
+          </header>
 
-      >
-        NEXT · {index}
-      </p>
-      <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F]">
-        {title}
-      </h3>
-      <p className="max-w-[620px] text-[16px] leading-[1.7] text-[#5D5D5D]">
-        {body}
-      </p>
-      {children}
-    </article>
-  );
-}
+          <div className="grid gap-[20px] tablet:grid-cols-[1fr_1fr] tablet:items-start tablet:gap-[28px]">
+            <ul className="flex flex-col gap-[8px] text-[14px] leading-[1.6] text-[#1F1F1F] tablet:text-[15px]">
+              <li className="flex gap-[12px]">
+                <span className="shrink-0 text-[#A0A0A0]">·</span>
+                <span>
+                  Answer-first article structure: the H1 is the question,
+                  paragraph one is the answer in plain words. Assistants quote
+                  that paragraph.
+                </span>
+              </li>
+              <li className="flex gap-[12px]">
+                <span className="shrink-0 text-[#A0A0A0]">·</span>
+                <span>
+                  Airline-by-airline policy table — structured rows assistants
+                  can lift into a comparison without re-parsing prose.
+                </span>
+              </li>
+              <li className="flex gap-[12px]">
+                <span className="shrink-0 text-[#A0A0A0]">·</span>
+                <span>
+                  FAQ section at the bottom of every article (5+ Q&amp;A pairs)
+                  so retrieval picks up the exact phrasing users ask.
+                </span>
+              </li>
+              <li className="flex gap-[12px]">
+                <span className="shrink-0 text-[#A0A0A0]">·</span>
+                <span>
+                  Dated authority (&ldquo;2026 IATA SOC rule&rdquo;,
+                  &ldquo;Southwest 300Wh cap&rdquo;) so freshness checks favour
+                  this page over older blog posts.
+                </span>
+              </li>
+            </ul>
 
-function SectionNext() {
-  return (
-    <section
-      id="next"
-      className="border-t border-[#1F1F1F]/30 py-[48px] first:border-t-0 first:pt-0 tablet:py-[64px]"
-    >
-      <div className="flex flex-col gap-[36px]">
-        <SectionHeader
-          number="07"
-          eyebrow="What's next"
-          headline="What's next."
-        />
-
-        <p className="max-w-[600px] text-[20px] leading-[1.5] font-normal italic text-[#1F1F1F]">
-          The product was a conversation. The next year is whether the
-          conversation can scale past the people who started it.
-        </p>
-
-        <div className="flex flex-col">
-          <NextMove
-            index="01"
-            title="Dealer outreach — get into the bike-shop counter conversation"
-            body="The same shops that sell Bromptons and Terns are the ones travelers ask first. Get a counter card + QR code in 12 NYC + 8 Brooklyn shops by July, then 20+ EU shops by EOY."
-          />
-          <NextMove
-            index="02"
-            title="Mutual review functionality — make the trust layer explicit"
-            body="Both sides leave a review after the booking closes. Same template, same star count, both visible on each profile. No private feedback channel — that's what DMs were for, and they didn't scale."
-          >
-            <div className="mt-[8px]">
-              <ReviewMock />
-            </div>
-          </NextMove>
-          <NextMove
-            index="03"
-            title="Social — short-form video of actual handoffs"
-            body="The handoff IS the product moment. Filming 30-sec POV clips of real meetups (consent + monochrome edit so the work matches the system) and dropping them into TikTok + IG Reels."
-          />
-          <NextMove
-            index="04"
-            title="Partnerships — the manufacturer admission becomes a co-marketing line"
-            body="Brompton's customer service confirmed the gap on the record. The next conversation: turn that admission into an official partner badge — 'Brompton-friendly host network.' If they say no, the receipt still goes on the page."
-          />
-        </div>
-
-        <Body>
-          The case study ends here, but the work doesn't. The next iteration is
-          already being written by people I haven't met yet, in threads I
-          haven't searched yet. The job is to keep listening at the same
-          volume.
-        </Body>
+            <figure className="flex flex-col gap-[8px]">
+              <div className="relative aspect-[1440/900] w-full overflow-clip border-2 border-[#1F1F1F]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/work/volthop/marketing/marketing-blog.png"
+                  alt="VoltHop blog index — answer-first articles structured for AI retrieval"
+                  className="absolute inset-0 h-full w-full object-cover object-top"
+                />
+              </div>
+              <figcaption
+                className="text-[10px] tracking-[0.06em] text-[#A0A0A0]"
+                style={MONO}
+              >
+                volthop.app/blog — answer-first article index
+              </figcaption>
+            </figure>
+          </div>
+        </article>
       </div>
     </section>
   );
@@ -1308,14 +1156,19 @@ function SectionNext() {
 // ============================================================================
 // Page composition
 // ============================================================================
+//
+// Per feedback the case study ends at §06 SEO & AEO — the previous
+// §07 "What's next" block (reflection + 4 next-move tiles + mocked
+// reviews) was removed because (a) it leaned heavily on prose, (b) the
+// review tiles were fabricated content that doesn't belong in a
+// portfolio, and (c) the user explicitly outlined only §02–§06.
 
 const SECTIONS: CaseStudySection[] = [
-  { id: "insight", num: "02", label: "Insight" },
-  { id: "gap", num: "03", label: "The gap" },
-  { id: "mvp", num: "04", label: "MVP", star: true },
+  { id: "context", num: "02", label: "How it started" },
+  { id: "validation", num: "03", label: "Validation" },
+  { id: "scope", num: "04", label: "MVP scope" },
   { id: "iterations", num: "05", label: "Iterations", star: true },
-  { id: "gtm", num: "06", label: "GTM" },
-  { id: "next", num: "07", label: "Next" },
+  { id: "channels", num: "06", label: "SEO & AEO" },
 ];
 
 export default function VolthopCaseStudy() {
@@ -1323,7 +1176,7 @@ export default function VolthopCaseStudy() {
     <>
       <Hero />
 
-      {/* §02–07 in a two-column layout: sticky left nav + content column.
+      {/* §02–06 in a two-column layout: sticky left nav + content column.
           Left nav is hidden below the tablet breakpoint so the read on
           mobile stays linear (top-to-bottom, no side rail). */}
       <div className="border-t-2 border-[#1F1F1F]">
@@ -1340,7 +1193,6 @@ export default function VolthopCaseStudy() {
             <SectionMvp />
             <SectionIterations />
             <SectionGtm />
-            <SectionNext />
           </div>
         </div>
       </div>
