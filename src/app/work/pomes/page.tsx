@@ -498,12 +498,6 @@ export default function PomesCaseStudy() {
                 ]}
               />
 
-              <KeyTakeaway>
-                Each tool solved a slice. <Strong>None was built for a single
-                60-unit building where the same 60 people live next to each
-                other for years.</Strong>
-              </KeyTakeaway>
-
               <SubH>What I asked in interviews</SubH>
               <Body>
                 Two questions did most of the heavy lifting across 8 scheduled
