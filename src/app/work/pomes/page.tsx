@@ -1019,14 +1019,6 @@ export default function PomesCaseStudy() {
                 ]}
               />
 
-              {/* Trust-loop — small inline diagram, no card bg.  Event drives
-                  IRL interaction → trust → engagement → more events. */}
-              <figure className="my-[24px] max-w-[480px]">
-                <TrustLoopDiagramSvg />
-                <figcaption className="mt-[6px] text-right text-[12px] tracking-[0.08em] text-[#5D5D5D]">
-                  FIG. · THE TRUST LOOP
-                </figcaption>
-              </figure>
             </Section>
 
             {/* ===== 06 Built & shipped ===== */}
@@ -1799,82 +1791,6 @@ function InversionDiagramSvg() {
         fontFamily="Archivo, sans-serif"
       >
         &ldquo;I can help with X&rdquo;
-      </text>
-    </svg>
-  );
-}
-
-function TrustLoopDiagramSvg() {
-  return (
-    <svg viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg" className="block h-auto w-full">
-      <defs>
-        <marker
-          id="arrLoop"
-          viewBox="0 0 10 10"
-          refX="9"
-          refY="5"
-          markerWidth="7"
-          markerHeight="7"
-          orient="auto"
-        >
-          <path d="M 0 1 L 10 5 L 0 9 z" fill="#1F1F1F" />
-        </marker>
-      </defs>
-      <rect x="100" y="20" width="80" height="40" fill="#1F1F1F" rx="4" />
-      <text x="140" y="44" textAnchor="middle" fontSize="14" fontWeight="500" fill="#EEEEEE" fontFamily="Archivo">
-        Events
-      </text>
-      <rect x="185" y="120" width="80" height="42" fill="#D9D9D9" rx="4" />
-      <text x="225" y="143" textAnchor="middle" fontSize="11" fontWeight="500" fill="#5D5D5D" fontFamily="Archivo">
-        IRL
-      </text>
-      <text x="225" y="156" textAnchor="middle" fontSize="11" fontWeight="500" fill="#5D5D5D" fontFamily="Archivo">
-        interaction
-      </text>
-      <rect x="100" y="222" width="80" height="40" fill="#D9D9D9" rx="4" />
-      <text x="140" y="246" textAnchor="middle" fontSize="14" fontWeight="500" fill="#5D5D5D" fontFamily="Archivo">
-        Trust
-      </text>
-      <rect x="15" y="120" width="80" height="42" fill="#D9D9D9" rx="4" />
-      <text x="55" y="145" textAnchor="middle" fontSize="11" fontWeight="500" fill="#5D5D5D" fontFamily="Archivo">
-        Engagement
-      </text>
-      <path d="M 180 40 Q 220 40, 220 118" fill="none" stroke="#1F1F1F" strokeWidth="1" markerEnd="url(#arrLoop)" />
-      <path d="M 220 164 Q 220 240, 180 240" fill="none" stroke="#1F1F1F" strokeWidth="1" markerEnd="url(#arrLoop)" />
-      <path d="M 100 240 Q 60 240, 60 164" fill="none" stroke="#1F1F1F" strokeWidth="1" markerEnd="url(#arrLoop)" />
-      <path d="M 60 118 Q 60 40, 100 40" fill="none" stroke="#1F1F1F" strokeWidth="1" markerEnd="url(#arrLoop)" />
-      <text
-        x="140"
-        y="138"
-        textAnchor="middle"
-        fontSize="10"
-        fill="#A0A0A0"
-        letterSpacing="0.06em"
-        fontFamily="Archivo"
-      >
-        The loop
-      </text>
-      <text
-        x="140"
-        y="158"
-        textAnchor="middle"
-        fontSize="11"
-        fill="#5D5D5D"
-        fontStyle="italic"
-        fontFamily="Archivo"
-      >
-        events build trust.
-      </text>
-      <text
-        x="140"
-        y="176"
-        textAnchor="middle"
-        fontSize="11"
-        fill="#5D5D5D"
-        fontStyle="italic"
-        fontFamily="Archivo"
-      >
-        chat would skip it.
       </text>
     </svg>
   );
