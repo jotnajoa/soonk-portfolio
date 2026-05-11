@@ -1664,7 +1664,7 @@ function OtherReports() {
       {reports.map((r) => (
         <li
           key={r.title}
-          className="flex items-baseline justify-between gap-[12px] border-b border-[#A0A0A0] py-[12px]"
+          className="flex items-baseline justify-between gap-[12px] border-b border-[#A0A0A0] py-[12px] last:border-b-0"
         >
           <span className="text-[16px] leading-[1.4] text-[#1F1F1F]">
             {r.title}
