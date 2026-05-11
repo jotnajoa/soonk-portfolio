@@ -1,30 +1,20 @@
-// GIA Platform case study — uses the portfolio's monochrome design system
-// (shared with the sister POMEs case study at /work/pomes).
+// GIA Platform case study — light-mode editorial, aligned with the sister
+// POMEs case study at /work/pomes.
 //
-// Feedback iterations (most recent first):
-//   - Use shared CaseStudyLeftNav (not a local GiaNav)
-//   - Eyebrow color must match POMEs: #5D5D5D / font-medium
-//   - Typography aligned with POMEs (16px body, 20px SubH, 24/32 SectionHead)
-//   - Hero image: gia-account-sales-jnj from /assets/GIA Platform Resources
-//   - Thinner border on the hero screenshot
-//   - All English (the brief's bilingual rule was explicitly overridden)
-//   - Logo composite: GIA + Deloitte (matches the homepage tile)
-//
-// Design tokens (same vocabulary as POMEs / landing):
-//   bg          #EEEEEE
-//   surface     #F4F4F4   (cards / lifts)
-//   tile        #D9D9D9   (mid-grey)
-//   text        #1F1F1F   (primary)
-//   muted       #5D5D5D   (body, eyebrow)
-//   tertiary    #A0A0A0   (caption, hairline)
-//
-// Sections (6, per the feedback restructure):
-//   §01 Intro            full-bleed hero
-//   §02 Project overview five modules — placeholder screenshots
-//   §03 Challenge · Rituals      (boiled UX cycle into a 3-step flow)
-//   §04 Challenge · Visualizations (Forecasted Demand · Financial Metrics)
-//   §05 Challenge · Offshore     (4-Type talent framework)
-//   §06 Reflection & impact
+// 2nd-round feedback applied:
+//   - Title weight reduced to font-semibold (POMEs lowered theirs too)
+//   - Hero sentence shortened, sized to POMEs (24/28/36 medium)
+//   - Timeline put back (Jan 2024 → on-going)
+//   - 6 module screenshots dropped in from /assets/GIA Platform Resources
+//   - Flow pipeline wraps on narrow viewports + words color-coded:
+//       Outcome   = green (#16A34A)
+//       flow      = orange (#EA580C)
+//       Blueprint = blue (#1E40AF)
+//   - "Build" → "Blueprint to Dev"
+//   - §03 collapsed to one Challenges section with 3 sub-challenges (was
+//     three separate top-level sections)
+//   - Per-challenge content cut to bullet points (no rambling prose)
+//   - Each designer-type detail compacted to Solution + Why it worked
 
 import CaseStudyLeftNav, {
   type CaseStudySection,
@@ -34,13 +24,17 @@ const MONO =
   "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace";
 const MONO_STYLE: React.CSSProperties = { fontFamily: MONO };
 
+// Concept colors — used ONLY for the pipeline highlight + the 3 sub-blocks
+// that follow.  Everything else stays monochrome.
+const C_OUTCOME = "font-bold text-[#16A34A]";
+const C_FLOW = "font-bold text-[#EA580C]";
+const C_BLUEPRINT = "font-bold text-[#1E40AF]";
+
 const SECTIONS: CaseStudySection[] = [
   { id: "intro", num: "01", label: "Intro" },
   { id: "overview", num: "02", label: "Project overview" },
-  { id: "rituals", num: "03", label: "Rituals", star: true },
-  { id: "visuals", num: "04", label: "Visualizations" },
-  { id: "offshore", num: "05", label: "Offshore" },
-  { id: "reflection", num: "06", label: "Reflection" },
+  { id: "challenges", num: "03", label: "Challenges", star: true },
+  { id: "reflection", num: "04", label: "Reflection" },
 ];
 
 // ===========================================================================
@@ -107,8 +101,38 @@ function Strong({ children }: { children: React.ReactNode }) {
   return <strong className="font-medium text-[#1F1F1F]">{children}</strong>;
 }
 
+// PullQuote — left-bar italic call-out (POMEs's signature device).  Used in
+// Challenge 1 to land the "I just needed three things" beat.
+function PullQuote({ children }: { children: React.ReactNode }) {
+  return (
+    <blockquote className="my-[28px] max-w-[620px] border-l-2 border-[#1F1F1F] py-[6px] pl-[20px] text-[18px] leading-[1.4] font-medium italic text-[#1F1F1F] min-[560px]:text-[22px]">
+      {children}
+    </blockquote>
+  );
+}
+
+// Compact bullet list — used heavily inside the challenges (feedback was
+// explicit: bullet points over prose).
+function Bullets({ items }: { items: React.ReactNode[] }) {
+  return (
+    <ul className="my-[14px] flex max-w-[620px] flex-col gap-[8px]">
+      {items.map((t, i) => (
+        <li
+          key={i}
+          className="grid grid-cols-[14px_1fr] items-start gap-[10px] text-[15px] leading-[1.55] text-[#1F1F1F]"
+        >
+          <span
+            aria-hidden
+            className="mt-[8px] block size-[6px] shrink-0 bg-[#1F1F1F]"
+          />
+          <span>{t}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 // Section wrapper — `id` matches CaseStudyLeftNav's section id (no prefix).
-// `first` skips the top border + 56px gap that separates each section.
 function Section({
   id,
   first = false,
@@ -132,10 +156,8 @@ function Section({
   );
 }
 
-// Production-screenshot placeholder.  CSS background-image so a missing file
-// 404s silently (no broken-image icon) — when the file lands at the
-// expected path, the bg layer covers the placeholder.  Frame is the thin
-// dark device-frame (per feedback: previous version was too thick).
+// Screenshot — thin dark bezel, 16:10.  When the bg image 404s, the label
+// underneath shows through (no broken-icon).
 function Screenshot({
   src,
   alt,
@@ -196,65 +218,105 @@ function Hero() {
     >
       <Eyebrow>+ 01 / Intro</Eyebrow>
 
-      {/* Logo composite — GIA + Deloitte */}
-      <div className="mb-[24px] flex flex-wrap items-center gap-[14px] min-[560px]:mb-[28px]">
+      {/* Logo composite — GIA + Deloitte.  Font-weight reduced from black
+          to semibold per feedback (POMEs did the same). */}
+      <div className="mb-[28px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[36px] min-[560px]:gap-[28px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/work/logos/GIA_Logo.svg"
           alt="GIA logo"
-          className="h-[56px] w-auto min-[560px]:h-[72px] min-[960px]:h-[84px]"
+          className="h-[60px] w-auto shrink-0 min-[560px]:h-[80px] min-[960px]:h-[112px]"
         />
-        <span className="px-[6px] text-[36px] leading-none font-black text-[#1F1F1F] min-[560px]:text-[48px]">
+        <span className="px-[2px] text-[36px] font-semibold leading-none text-[#1F1F1F] min-[560px]:text-[48px] min-[960px]:text-[64px]">
           +
         </span>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/work/logos/Deloittelogo.svg"
           alt="Deloitte logo"
-          className="h-[56px] w-auto min-[560px]:h-[72px] min-[960px]:h-[84px]"
+          className="h-[60px] w-auto shrink-0 min-[560px]:h-[80px] min-[960px]:h-[112px]"
         />
       </div>
 
-      <h1 className="mb-[12px] text-[64px] leading-[0.9] font-black tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[96px] min-[960px]:text-[120px]">
+      <h1 className="mb-[10px] text-[68px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
         GIA Platform
       </h1>
       <p className="mb-[40px] text-[14px] tracking-[0.04em] text-[#5D5D5D] min-[560px]:text-[15px] min-[960px]:mb-[48px]">
         Growth Insights &amp; Activation · Deloitte enterprise platform
       </p>
 
-      {/* 60/40 — screenshot left, statement + meta right */}
-      <div className="mb-[40px] grid gap-[28px] min-[720px]:grid-cols-[60%_40%] min-[720px]:gap-[40px] min-[960px]:mb-[48px]">
+      {/* 2-col — screenshot left + tagline / meta / timeline right */}
+      <div className="mb-[40px] grid gap-[32px] tablet:mb-[48px] tablet:grid-cols-[60%_1fr] tablet:items-start tablet:gap-[48px]">
         <Screenshot
           src="/work/gia/hero-account-sales-jnj.png"
-          alt="GIA Platform — Account Deep Dive · Sales Insights (3M Company, production)"
+          alt="GIA Platform — Account Deep Dive · Sales Insights (production)"
           label="Account Deep Dive · Sales Insights"
-          hint="Account Deep Dive → 3M Company → Sales Insights (production)"
+          hint="Account Deep Dive → 3M Company → Sales Insights"
         />
-        <div className="flex flex-col gap-[24px]">
-          <p className="text-[20px] leading-[1.35] font-medium tracking-[-0.01em] text-[#1F1F1F] min-[560px]:text-[22px]">
-            I joined a stalled enterprise platform and rebuilt how its design
-            team operated — turning rituals into a flow, opinions into
-            evidence, and headcount into a talent model.
+
+        <div className="flex min-w-0 flex-col gap-[28px] tablet:gap-[32px]">
+          {/* Tagline — short, POMEs font-sizing */}
+          <p className="max-w-[480px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
+            I got a stalled enterprise design team moving again.
           </p>
+
+          {/* Meta — Role + Scope */}
           <dl className="border-t border-[#A0A0A0]">
             {[
               ["Role", "UX Lead — onshore + offshore design teams"],
-              [
-                "Scope",
-                "Design system · UX framework · cross-shore enablement · stakeholder validation",
-              ],
+              ["Scope", "Design system · UX framework · cross-shore enablement"],
             ].map(([l, v]) => (
               <div
                 key={l}
-                className="grid grid-cols-[80px_1fr] items-baseline gap-[16px] border-b border-[#A0A0A0] py-[14px]"
+                className="grid grid-cols-[100px_1fr] items-baseline gap-[16px] border-b border-[#A0A0A0] py-[14px]"
               >
                 <dt className="text-[12px] font-medium tracking-[0.06em] text-[#5D5D5D]">
                   {l}
                 </dt>
-                <dd className="text-[15px] leading-[1.5] text-[#1F1F1F]">{v}</dd>
+                <dd className="text-[15px] leading-[1.5] text-[#1F1F1F]">
+                  {v}
+                </dd>
               </div>
             ))}
           </dl>
+
+          {/* Timeline — Jan 2024 → on-going (per feedback request).  Same
+              vertical-tick + hairline layout as POMEs's right-column
+              timeline. */}
+          <div>
+            <p
+              className="mb-[12px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+              style={MONO_STYLE}
+            >
+              TIMELINE
+            </p>
+            <ol className="flex flex-col">
+              {[
+                ["Jan 2024", "Joined as UX Lead"],
+                ["2024", "Rebuilt the design cycle"],
+                ["2024–25", "Inherited visuals · offshore reshape"],
+                ["On-going", "Operating at scale"],
+              ].map(([d, l], i) => (
+                <li
+                  key={l}
+                  className={`grid grid-cols-[120px_1fr] items-center gap-[14px] py-[10px] ${
+                    i > 0 ? "border-t border-[#A0A0A0]/50" : ""
+                  }`}
+                >
+                  <span className="flex items-center gap-[10px] text-[12px] tracking-[0.04em] text-[#5D5D5D]">
+                    <span
+                      aria-hidden
+                      className="block h-[10px] w-[2px] bg-[#1F1F1F]"
+                    />
+                    {d}
+                  </span>
+                  <span className="text-[15px] leading-[1.3] font-medium text-[#1F1F1F]">
+                    {l}
+                  </span>
+                </li>
+              ))}
+            </ol>
+          </div>
         </div>
       </div>
 
@@ -274,7 +336,7 @@ function Hero() {
           [
             "×2",
             "Product launches",
-            "Saved resources re-invested into parallel product launches.",
+            "Saved resources re-invested into parallel launches.",
           ],
         ].map(([num, lbl, desc]) => (
           <div key={lbl} className="flex flex-col gap-[6px]">
@@ -296,7 +358,7 @@ function Hero() {
 }
 
 // ===========================================================================
-// §02 Project overview — five modules, alternating row layout
+// §02 Project overview — five modules
 // ===========================================================================
 
 type Module = {
@@ -313,7 +375,7 @@ const MODULES: Module[] = [
     num: "01",
     name: "Dashboard",
     tagline: "An always-on monitor.",
-    body: "Surfaces each user's most-viewed views — a single pane of glass on what they already care about.  Watch the market without re-finding the chart.",
+    body: "Surfaces each user's most-viewed views — a single pane of glass on what they already care about.",
     src: "/work/gia/dashboard.png",
     hint: "Dashboard — pinned modules + live metrics",
   },
@@ -329,7 +391,7 @@ const MODULES: Module[] = [
     num: "03",
     name: "Demand sensing",
     tagline: "Read the market.",
-    body: "Surfaces market signals in each industry and sector so leaders can catch where the opportunity is moving and reposition Deloitte's offer early.",
+    body: "Surfaces market signals in each industry and sector so leaders can catch where opportunity is moving and reposition Deloitte's offer early.",
     src: "/work/gia/demand-sensing.png",
     hint: "Demand sensing — Forecasted Demand by sector",
   },
@@ -337,15 +399,15 @@ const MODULES: Module[] = [
     num: "04",
     name: "Account deep dive",
     tagline: "360° on one account.",
-    body: "A full view of one account — tech stack, contract history, financial / operational performance, and forward-looking opportunities — so a leader walks in prepared.",
-    src: "/work/gia/account-deep-dive.png",
+    body: "A full view of one account — tech stack, contract history, financial / operational performance, and forward-looking opportunities.",
+    src: "/work/gia/account-deepdive.png",
     hint: "Account Deep Dive — 3M Company · Sales / Technology / Financial tabs",
   },
   {
     num: "05",
     name: "Growth platform (Alliance)",
     tagline: "Partner-led pipeline.",
-    body: 'How Deloitte and its alliance partners have sold together, and where the next "sell with" plays sit.  Synergy made legible — not assumed.',
+    body: 'How Deloitte and its alliance partners have sold together, and where the next "sell with" plays sit.',
     src: "/work/gia/growth-platform.png",
     hint: "Growth Platform — Alliance partnerships + Sell-With opportunities",
   },
@@ -400,8 +462,7 @@ function SectionOverview() {
         GIA is Deloitte&rsquo;s internal enterprise platform for Account
         Leaders, Alliance Leaders, and sales teams.  Five modules sit
         inside one shell, each cut for a different audience and a different
-        decision — together they take a leader from market signal to a
-        prepared meeting.
+        decision.
       </Lede>
       {MODULES.map((m, i) => (
         <ModuleRow key={m.num} m={m} reverse={i % 2 === 1} />
@@ -411,147 +472,328 @@ function SectionOverview() {
 }
 
 // ===========================================================================
-// §03 Challenge · Rituals — Outcome → User Story → Low-fi
+// §03 Challenges — single section with 3 sub-challenges
 // ===========================================================================
 
+// Pipeline — 4 cards, wraps cleanly on narrow viewports (was overflow-scroll).
+// Words inside each card are color-coded so the chain reads as a single
+// sentence even when the cards wrap.
 function FlowPipeline() {
-  const steps = [
-    { tag: "01", label: "Identify outcome", note: "Genie question" },
-    { tag: "02", label: "User story map", note: "Outcome → flow" },
-    { tag: "03", label: "Low-fi wireframe", note: "Flow → blueprint" },
-    { tag: "04", label: "Build", note: "Engineering hand-off" },
-  ];
+  const steps: { tag: string; label: React.ReactNode; note: React.ReactNode }[] =
+    [
+      {
+        tag: "01",
+        label: (
+          <>
+            Identify <span className={C_OUTCOME}>Outcome</span>
+          </>
+        ),
+        note: "The Genie question",
+      },
+      {
+        tag: "02",
+        label: "User story map",
+        note: (
+          <>
+            <span className={C_OUTCOME}>Outcome</span>
+            {" → "}
+            <span className={C_FLOW}>flow</span>
+          </>
+        ),
+      },
+      {
+        tag: "03",
+        label: "Low-fi wireframe",
+        note: (
+          <>
+            <span className={C_FLOW}>Flow</span>
+            {" → "}
+            <span className={C_BLUEPRINT}>blueprint</span>
+          </>
+        ),
+      },
+      {
+        tag: "04",
+        label: (
+          <>
+            <span className={C_BLUEPRINT}>Blueprint</span> to Dev
+          </>
+        ),
+        note: "Ready to build",
+      },
+    ];
   return (
-    <div className="my-[28px] overflow-x-auto pb-[4px]">
-      <ol className="flex min-w-max items-stretch gap-[10px]">
-        {steps.map((s, i) => (
-          <li key={s.tag} className="flex items-stretch gap-[10px]">
-            <div className="flex w-[160px] flex-col gap-[6px] rounded-[10px] bg-[#F4F4F4] px-[16px] py-[14px]">
-              <span
-                className="text-[10px] tracking-[0.16em] text-[#5D5D5D]"
-                style={MONO_STYLE}
-              >
-                {s.tag}
-              </span>
-              <span className="text-[14px] leading-[1.3] font-medium text-[#1F1F1F]">
-                {s.label}
-              </span>
-              <span className="text-[12px] leading-[1.4] text-[#5D5D5D]">
-                {s.note}
-              </span>
-            </div>
-            {i < steps.length - 1 && (
-              <span
-                aria-hidden
-                className="self-center text-[18px] font-bold text-[#5D5D5D]"
-              >
-                →
-              </span>
-            )}
-          </li>
-        ))}
-      </ol>
+    <div className="my-[28px] grid grid-cols-1 gap-[10px] min-[480px]:grid-cols-2 min-[960px]:grid-cols-4">
+      {steps.map((s) => (
+        <div
+          key={s.tag}
+          className="flex flex-col gap-[6px] rounded-[10px] bg-[#F4F4F4] px-[16px] py-[14px]"
+        >
+          <span
+            className="text-[10px] tracking-[0.16em] text-[#5D5D5D]"
+            style={MONO_STYLE}
+          >
+            {s.tag}
+          </span>
+          <span className="text-[14px] leading-[1.3] font-medium text-[#1F1F1F]">
+            {s.label}
+          </span>
+          <span className="text-[12px] leading-[1.4] text-[#5D5D5D]">
+            {s.note}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
 
-function SectionRituals() {
+// ── Challenge 1: Rituals over outcomes ──────────────────────────────────────
+
+function Challenge1() {
   return (
-    <Section id="rituals">
-      <Eyebrow>+ Challenge 01 — Rituals over outcomes</Eyebrow>
-      <SectionHead
-        n="03"
-        title={
-          <>
-            A stuck enterprise platform — and the four things I was asked to
-            fix.
-          </>
-        }
-      />
-      <Lede>
-        Each design pass was reverse-engineered from a feature, not an
-        outcome.  PMs handed over &ldquo;add a dropdown,&rdquo; designers
-        drew it, review re-litigated it — and no one agreed on why the
-        dropdown was there in the first place.  Every sprint repeated the
-        same conversation.{" "}
-        <Strong>I needed a framework that moved them.</Strong>
-      </Lede>
+    <div className="mt-[40px]">
+      <div className="mb-[14px]">
+        <p className="mb-[8px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+          CHALLENGE 01
+        </p>
+        <h3 className="text-[26px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[32px]">
+          Rituals over outcomes
+        </h3>
+      </div>
+
       <Body>
-        So I boiled the cycle down to three steps that fed each other — and
-        made the chain visible to PMs, engineering, and business
-        stakeholders so the &ldquo;why are you doing this?&rdquo; question
-        stopped landing in design reviews.
+        The team was busy.  Design pass after design pass came through —
+        review, redraw, re-litigate.  Yet the platform wasn&rsquo;t moving.
+        Every sprint repeated the same conversation because no one had
+        agreed on <em>why</em> any of it was being built.
       </Body>
+      <Body>
+        I cleared the rituals.  Three steps survived — and they actually
+        moved the team.
+      </Body>
+
+      <PullQuote>I just needed three things to make it move.</PullQuote>
 
       <FlowPipeline />
 
-      <SubH>01 · Identify the outcome — the Genie question</SubH>
-      <Screenshot
-        src="/work/gia/genie-test.png"
-        alt="GIA Platform — Genie question worksheet"
-        label="Genie question — workshop artifact"
-        hint="Soonk to drop the actual screenshot"
-      />
       <Body>
-        Before any wireframe, I asked stakeholders one question:{" "}
-        <em>&ldquo;If a genie could grant you any outcome — ignoring
-        feasibility — what would it be?&rdquo;</em>  The genie removes
-        constraints on purpose.  Without it, teams design from what is
-        easy to build; the conversation collapses into output and feature
-        bloat, and no one can name the north star.
-      </Body>
-      <Body>
-        With it, the right outcome surfaces — and so does whatever real
-        constraint is blocking it.  Both arrive in the same sentence.
-        That becomes the source of truth for the next two steps.
+        Each step feeds the next, and the chain is visible.  Once PMs,
+        engineering, and business stakeholders could see how an{" "}
+        <span className={C_OUTCOME}>Outcome</span> became a{" "}
+        <span className={C_FLOW}>flow</span> and a flow became a{" "}
+        <span className={C_BLUEPRINT}>Blueprint</span>, the
+        &ldquo;why are you doing this?&rdquo; question stopped landing in
+        design reviews.
       </Body>
 
-      <SubH>02 · User story mapping</SubH>
+      {/* Per-step blocks */}
+      <SubH>
+        01 · Identify the <span className={C_OUTCOME}>Outcome</span> — the
+        Genie question
+      </SubH>
+      <Screenshot
+        src="/work/gia/genie-question.png"
+        alt="GIA Platform — Genie question worksheet"
+        label="Genie question — workshop artifact"
+      />
+      <Body>
+        <em>
+          &ldquo;If a genie could grant you any outcome — ignoring
+          feasibility — what would it be?&rdquo;
+        </em>{" "}
+        Removing the build constraint on purpose surfaces the north star
+        — and the real blocker — in the same sentence.  Without it, teams
+        design from what&rsquo;s easy to ship, and the conversation
+        collapses into output and feature bloat.
+      </Body>
+
+      <SubH>
+        02 · User story map — turn the{" "}
+        <span className={C_OUTCOME}>outcome</span> into a{" "}
+        <span className={C_FLOW}>flow</span>
+      </SubH>
       <Screenshot
         src="/work/gia/user-story-map.png"
         alt="GIA Platform — User story map artifact"
         label="User story map — outcome → flow"
-        hint="Soonk to drop the actual screenshot"
       />
       <Body>
-        Take the outcome from step one and lay out the path to it as a flow
-        — who does what, in what order, against which data.  The story map
-        is what the low-fi wireframe is then built against; nothing in the
-        wireframe should exist outside this map.
+        Take the outcome from step one and lay out the path to it — who
+        does what, in what order, against which data.  This is the
+        artifact the wireframe gets built against; nothing in the
+        wireframe should exist outside the map.
       </Body>
 
-      <SubH>03 · Low-fi wireframe</SubH>
+      <SubH>
+        03 · Low-fi wireframe — turn the{" "}
+        <span className={C_FLOW}>flow</span> into a{" "}
+        <span className={C_BLUEPRINT}>blueprint</span>
+      </SubH>
       <Screenshot
-        src="/work/gia/low-fi.png"
+        src="/work/gia/lowfi-wireframe.png"
         alt="GIA Platform — Low-fi wireframe"
-        label="Low-fi wireframe — engineering blueprint"
-        hint="Soonk to drop the actual screenshot"
+        label="Low-fi wireframe — engineering-ready"
       />
       <Body>
-        The blueprint engineering reads — front-end <em>and</em> back-end.
-        Layout, state, and data contracts in one artifact, derived from
-        the story map.  By the time it reaches review, the outcome is
-        articulated, the flow is mapped, and the visual is the
-        consequence — not the starting point.
+        Layout, state, and data contracts in one artifact — derived from
+        the story map.  By the time review opens, the outcome is named,
+        the flow is mapped, and the visual is the consequence, not the
+        starting point.  Engineering reads this as the blueprint they
+        build to.
       </Body>
-
-      <Body italic>
-        Three artifacts, one chain.  Each makes the next one defensible.
-      </Body>
-    </Section>
+    </div>
   );
 }
 
-// ===========================================================================
-// §04 Challenge · Visualizations
-// ===========================================================================
+// ── Challenge 2: Familiarity over effectiveness ─────────────────────────────
+
+function Challenge2() {
+  return (
+    <div className="mt-[64px]">
+      <div className="mb-[14px]">
+        <p className="mb-[8px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+          CHALLENGE 02
+        </p>
+        <h3 className="text-[26px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[32px]">
+          Familiarity over effectiveness
+        </h3>
+      </div>
+
+      <Body>
+        People kept the existing visuals because they were used to them —
+        even when those visuals didn&rsquo;t actually answer the question.
+        Insiders coped on muscle memory; the next thousand users
+        wouldn&rsquo;t.
+      </Body>
+      <Body>
+        Every rebuild started with the same question:{" "}
+        <Strong>what does this visualization need to answer?</Strong>
+      </Body>
+
+      {/* 2A · Forecasted Demand */}
+      <SubH>2A · Forecasted Demand</SubH>
+
+      <p className="my-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+        QUESTIONS TO ANSWER
+      </p>
+      <Bullets
+        items={[
+          "Who has the biggest current value?",
+          "Who will have the biggest future value?",
+          "How much growth — or shrink — in between?",
+        ]}
+      />
+
+      <p className="mt-[28px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+        EXISTING VISUAL
+      </p>
+      <ExistingForecastChart />
+
+      <p className="mt-[20px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+        PROBLEMS
+      </p>
+      <Bullets
+        items={[
+          <>
+            X-axis = growth rate, Y-axis = future value, bubble size =
+            current value — with <em>no scale legend</em>.  Current values
+            cannot be compared.
+          </>,
+          <>
+            No way to tell at a glance whether a value grew dramatically
+            or shrank from a larger base.
+          </>,
+          <>
+            Drawn manually in PowerPoint — when bubbles overlapped, the
+            deck builder repositioned them by hand.{" "}
+            <em>The visual stopped matching the data.</em>
+          </>,
+          <>Closer to a painting than a chart.  Cannot scale.</>,
+        ]}
+      />
+
+      <p className="mt-[28px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+        SOLVED BY
+      </p>
+      <Body>
+        Setting the goal first and verifying the new visual answers it —
+        which is what overcame emotional attachment to the existing
+        version.
+      </Body>
+
+      <Screenshot
+        src="/work/gia/demand-forecast.png"
+        alt="GIA Platform — Forecasted Demand, slope/dual-bar production"
+        label="Forecasted Demand — production"
+        hint="Horizontal slope/dual-bar; Current → Forecasted, sorted by spend"
+        className="my-[24px]"
+      />
+
+      {/* 2B · Financial / Operational Metrics */}
+      <SubH>2B · Financial / Operational Metrics</SubH>
+
+      <p className="my-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+        QUESTIONS TO ANSWER
+      </p>
+      <Bullets
+        items={[
+          "Where does my account sit relative to its peers?",
+          "Strong or weak — and on which metrics?",
+          "Outlier, majority, or tail of the distribution?",
+        ]}
+      />
+
+      <p className="mt-[28px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+        EXISTING VISUAL
+      </p>
+      <Screenshot
+        src="/work/gia/existing-financial-metrics.png"
+        alt="GIA Platform — Existing peer-analysis table"
+        label="Existing peer-analysis table"
+        hint="12 financial metrics shipped as a color-tiered table"
+        className="my-[20px]"
+      />
+
+      <p className="mt-[20px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+        PROBLEMS
+      </p>
+      <Bullets
+        items={[
+          "Distribution invisible.",
+          "Outlier status invisible.",
+          'Directional "strong / weak" read absent.',
+          "Existing users coped on muscle memory; the next cohort wouldn't.",
+        ]}
+      />
+
+      <p className="mt-[28px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+        SOLVED BY
+      </p>
+      <Body>
+        Working backwards from the questions, listing the data needed,
+        and picking a visual primitive — quartile box-plot cards — that
+        made the answers readable at a glance.
+      </Body>
+
+      <Screenshot
+        src="/work/gia/financial-after.png"
+        alt="GIA Platform — Financial / Operational Performance (production)"
+        label="Financial / Operational Performance — production"
+        hint="Account Deep Dive → 3M Company · Quartile box-plot cards · 12 metrics in a 3×4 grid"
+        className="my-[24px]"
+      />
+    </div>
+  );
+}
+
+// ── Challenge 3: How we used it was (offshore) ──────────────────────────────
 
 function ExistingForecastChart() {
   return (
-    <figure className="my-[28px] flex flex-col gap-[12px]">
+    <figure className="my-[20px] flex flex-col gap-[12px]">
       <div className="relative aspect-[16/10] w-full max-w-[640px] overflow-hidden rounded-[8px] border border-[#A0A0A0] bg-[#F4F4F4]">
         <span className="absolute top-[14px] left-[20px] text-[10px] tracking-[0.18em] font-medium text-[#5D5D5D]">
-          EXISTING VISUAL · 4-QUADRANT SCATTER
+          EXISTING · 4-QUADRANT SCATTER
         </span>
         <span className="absolute bottom-[18px] left-1/2 -translate-x-1/2 text-[10px] tracking-[0.16em] text-[#5D5D5D]">
           GROWTH RATE →
@@ -582,223 +824,9 @@ function ExistingForecastChart() {
           </span>
         ))}
       </div>
-      <figcaption className="text-[11px] tracking-[0.16em] font-medium text-[#5D5D5D]">
-        Fig. — Forecasted Demand · the inherited chart.  Bubble size =
-        current value (no scale legend).
-      </figcaption>
     </figure>
   );
 }
-
-function ProblemBox({
-  items,
-}: {
-  items: { n: string; text: React.ReactNode }[];
-}) {
-  return (
-    <div className="my-[20px] max-w-[640px] rounded-[10px] bg-white px-[24px] py-[20px]">
-      <div
-        className="mb-[12px] text-[11px] tracking-[0.16em] font-medium text-[#5D5D5D]"
-        style={MONO_STYLE}
-      >
-        PROBLEMS
-      </div>
-      <ol className="flex flex-col gap-[10px]">
-        {items.map((p) => (
-          <li
-            key={p.n}
-            className="grid grid-cols-[28px_1fr] items-start gap-[10px] text-[14px] leading-[1.6] text-[#1F1F1F]"
-          >
-            <span
-              className="pt-[2px] text-[12px] font-medium text-[#5D5D5D]"
-              style={MONO_STYLE}
-            >
-              {p.n}
-            </span>
-            <span>{p.text}</span>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-}
-
-function TwoTrackColumns() {
-  return (
-    <div className="my-[28px] grid max-w-[680px] grid-cols-1 gap-[24px] border-y border-[#A0A0A0] py-[24px] min-[560px]:grid-cols-2 min-[560px]:gap-[40px]">
-      <div>
-        <div className="mb-[8px] text-[11px] tracking-[0.16em] font-medium text-[#5D5D5D]">
-          CURRENT USERS
-        </div>
-        <p className="text-[15px] leading-[1.7] text-[#1F1F1F]">
-          Safety check.  Does the new visual still work for someone running
-          on muscle memory?  Catches regressions.  This is the minimum bar,
-          not the test.
-        </p>
-      </div>
-      <div>
-        <div className="mb-[8px] text-[11px] tracking-[0.16em] font-medium text-[#5D5D5D]">
-          NON-USERS + FUTURE USERS
-        </div>
-        <p className="text-[15px] leading-[1.7] text-[#1F1F1F]">
-          Readability check.  Can someone with no prior exposure read it
-          and act on it?  This is what familiarity bias hides.  A new
-          visual only ships when both tracks pass.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function SectionVisualizations() {
-  return (
-    <Section id="visuals">
-      <Eyebrow>+ Challenge 02 — Inherited visuals</Eyebrow>
-      <SectionHead
-        n="04"
-        title={
-          <>
-            Visualizations that didn&rsquo;t answer
-            <br />
-            the question they were asked.
-          </>
-        }
-      />
-      <Lede>
-        Both charts had been kept because they were familiar.{" "}
-        <Strong>&ldquo;Current users are fine with it&rdquo;</Strong>{" "}
-        hides a problem: at scale, the next thousand users — who never
-        built that muscle memory — fall off the chart.  Two visuals
-        needed rebuilding, in two different shapes.
-      </Lede>
-
-      <SubH>2A · Forecasted Demand</SubH>
-      <Body>
-        The inherited Forecasted Demand chart was a 4-quadrant scatter.
-        X-axis was growth rate, Y-axis future value, bubble size mapped to
-        current value with no scale legend.  Right data, wrong shape.
-      </Body>
-
-      <ExistingForecastChart />
-
-      <ProblemBox
-        items={[
-          {
-            n: "01",
-            text: "Bubble size mapped to current value with no reference scale — so opportunities couldn't be compared on the metric that mattered most.",
-          },
-          {
-            n: "02",
-            text: "No way to read whether a value was large or small at a glance — the question the chart was supposed to answer was the one it didn't.",
-          },
-          {
-            n: "03",
-            text: "When bubbles overlapped at presentation time, the deck builder repositioned them by hand in PowerPoint — and the visual stopped matching the data.",
-          },
-          {
-            n: "04",
-            text: "The 4-quadrant frame implied all four corners mattered equally; the team only acted on high-growth × high-value.",
-          },
-        ]}
-      />
-
-      <Body>
-        I refused to debate chart preferences.  One question went into
-        every review:{" "}
-        <em>&ldquo;What is this chart supposed to help us decide?&rdquo;</em>{" "}
-        Answer: next-quarter opportunity priority.  Then the follow-up:{" "}
-        <em>&ldquo;Does this chart let you decide that?&rdquo;</em>  No.
-        The conversation stopped being about taste.
-      </Body>
-
-      <Screenshot
-        src="/work/gia/forecasted-demand-after.png"
-        alt="GIA Platform — Forecasted Demand, slope/dual-bar production version"
-        label="Forecasted Demand — production"
-        hint="Horizontal slope/dual-bar; Current → Forecasted, sorted by spend, color-coded by Advise / Implement / Operate."
-        className="my-[24px]"
-      />
-
-      <Body>
-        Horizontal slope bars sorted by projected value descending.  Two
-        bars per row — current and forecasted, with the growth arrow
-        between them.  Bars colored by category (Advise / Implement /
-        Operate).  The data <em>is</em> the visual.  No hand-editing is
-        possible — and the team stopped doing it.
-      </Body>
-
-      <SubH>2B · Financial / Operational Metrics</SubH>
-      <Body>
-        The inherited financial dashboard shipped the numbers but not the
-        insight.  Twelve metrics (1-Year TSR, Revenue growth, EBITDA, ROA,
-        R&amp;D, AR Days, ...)  packed into a peer-analysis table with
-        color-coded tiers — and the question{" "}
-        <Strong>
-          &ldquo;where does my account sit relative to its peers?&rdquo;
-        </Strong>{" "}
-        wasn&rsquo;t anywhere on the screen.
-      </Body>
-
-      <Screenshot
-        src="/work/gia/existing-financial-metrics.png"
-        alt="GIA Platform — Existing Financial Metrics peer-analysis table"
-        label="Existing Financial Metrics — peer-analysis table"
-        hint="Soonk to drop the screenshot of the cluttered peer-analysis page"
-        className="my-[24px]"
-      />
-
-      <Body>
-        Distribution was invisible.  Outlier status was invisible.  The
-        &ldquo;strong vs.&nbsp;weak&rdquo; directional read — the one
-        Account Leaders actually came for — wasn&rsquo;t there.  Current
-        users coped because they had learned to read it sideways; the
-        next cohort would not.
-      </Body>
-
-      <Body>
-        Rather than argue that the existing chart was bad, I worked
-        backwards from the questions an Account Leader walks in with —
-        and listed the information needed to answer each.  Then I asked
-        what visual primitive would make those answers visible at a
-        glance.  <em>Emotional attachment to the existing chart had to be
-        replaced with outcome-driven thinking.</em>
-      </Body>
-
-      <Body>
-        <Strong>Testing — two-track usability.</Strong>  Current users had
-        too much muscle memory to detect their own blind spots, so I split
-        recruitment into two tracks.  The new design only shipped when
-        both passed.
-      </Body>
-      <TwoTrackColumns />
-
-      <Body>
-        The shipped version is a quartile box-plot card per metric — Tail
-        (5 / 95 %), Outlier (25 / 75 %), Majority of accounts band, with
-        strong / weak directional markers.  Your account sits as a pink
-        dot, peers as gray.  Twelve cards in a 3 × 4 grid replace the old
-        wall of numbers.
-      </Body>
-
-      <Screenshot
-        src="/work/gia/financial-after.png"
-        alt="GIA Platform — Financial / Operational Performance, quartile box-plot cards (production)"
-        label="Financial / Operational Performance — quartile box-plot cards"
-        hint="Account Deep Dive → 3M Company → Financial / Operational Performance · Your account (pink) vs Peer accounts (gray) · 12 cards in a 3×4 grid"
-        className="my-[24px]"
-      />
-
-      <Body italic>
-        Both charts moved from &ldquo;the one we&rsquo;ve always
-        used&rdquo; to &ldquo;the one that answers the question.&rdquo;
-      </Body>
-    </Section>
-  );
-}
-
-// ===========================================================================
-// §05 Challenge · Offshore — 4-Type talent framework
-// ===========================================================================
 
 function SkillDots({ level }: { level: number }) {
   return (
@@ -820,73 +848,59 @@ function SkillDots({ level }: { level: number }) {
 type DesignerType = {
   num: string;
   name: string;
-  arc: string;
   skills: { label: string; level: number }[];
-  assessment: string;
-  provided: string;
-  goal: string;
+  solution: string;
+  why: string;
 };
 
 const DESIGNER_TYPES: DesignerType[] = [
   {
     num: "01",
     name: "Foundational Builder",
-    arc: "Needs low-fi guidance → grows through structured UX exposure",
     skills: [
       { label: "Visual design", level: 2 },
       { label: "Product thinking", level: 2 },
       { label: "Stakeholder", level: 2 },
     ],
-    assessment:
-      "Generally strong skillset, capable of structuring user flows.  Struggled to articulate end-to-end process and outcomes in stakeholder discussions.",
-    provided:
-      "Low-fidelity wireframes as structural guidance, paired with mentoring that encouraged them to sketch their own ideas.",
-    goal: "Independent ownership of full product flows — gradually reducing reliance on support.",
+    solution:
+      "Hand them a low-fi wireframe as scaffolding, then mentor them to extend it.",
+    why: "Capable end-to-end, but stalls on articulating process upstream — the scaffold lets them own the flow without losing the thread.",
   },
   {
     num: "02",
     name: "Collaborative Leader",
-    arc: "Leads a design stream → grows into a team-lead role",
     skills: [
       { label: "Visual design", level: 3 },
       { label: "Product thinking", level: 3 },
       { label: "Stakeholder", level: 1 },
     ],
-    assessment:
-      "Strong in both visual and product thinking, with growing stakeholder communication.  Ready to lead features autonomously and contribute to async collaboration.",
-    provided:
-      "Mentored on BRD clarification, then delegated full ownership of product streams and empowered them to co-lead offshore design reviews.",
-    goal: "Senior-level ownership and leadership capacity across time zones.",
+    solution:
+      "Delegate a full product stream and put them in front of stakeholders.",
+    why: "Visual and product muscles are already strong — the only gap is reps owning the room.  Ownership accelerates the last leg.",
   },
   {
     num: "03",
     name: "Visual Specialist",
-    arc: "Owns stand-alone components",
     skills: [
       { label: "Visual design", level: 3 },
       { label: "Product thinking", level: 1 },
       { label: "Stakeholder", level: 1 },
     ],
-    assessment:
-      "Highly skilled in UI / visual design but lacked strong UX reasoning and product thinking.",
-    provided:
-      "Standalone, static design tasks — paired with Type 01 designers to reinforce UX logic from the other direction.",
-    goal: "Strengthen UX understanding while maximizing visual output quality.",
+    solution:
+      "Standalone visual tasks, paired with a Type 01 designer for the UX logic.",
+    why: "Forcing UX reasoning solo would underuse the visual strength; pairing lets the visual ship while the product muscle grows on the side.",
   },
   {
     num: "04",
     name: "Strategic Convert",
-    arc: "Focuses on foundational training → grows into full-stack product designer",
     skills: [
       { label: "Visual design", level: 0 },
       { label: "Product thinking", level: 1 },
       { label: "Stakeholder", level: 3 },
     ],
-    assessment:
-      "No formal design background — but strong business logic and stakeholder communication, often transitioning from a strategy role.",
-    provided:
-      "Hands-on training during onshore overlap sessions covering design tools, fundamentals, and applied UX practice.",
-    goal: "Evolve into fully contributing product designers by combining business fluency with design execution.",
+    solution:
+      "Hands-on training during onshore overlap — tools, fundamentals, applied UX.",
+    why: "Business + stakeholder skills are the rare half; teaching the craft turns them into full-stack product designers faster than hiring would.",
   },
 ];
 
@@ -917,7 +931,7 @@ function TypeCard({ t }: { t: DesignerType }) {
 function TypeDetail({ t }: { t: DesignerType }) {
   return (
     <div className="border-l-2 border-[#1F1F1F] py-[8px] pl-[16px]">
-      <div className="mb-[6px] flex items-baseline gap-[10px]">
+      <div className="mb-[10px] flex items-baseline gap-[10px]">
         <span className="text-[11px] tracking-[0.16em] font-medium text-[#5D5D5D]">
           TYPE {t.num}
         </span>
@@ -925,14 +939,10 @@ function TypeDetail({ t }: { t: DesignerType }) {
           {t.name}
         </span>
       </div>
-      <p className="mb-[14px] text-[13px] italic leading-[1.5] text-[#5D5D5D]">
-        {t.arc}
-      </p>
       <dl className="grid grid-cols-[110px_1fr] gap-x-[14px] gap-y-[8px]">
         {[
-          ["Assessment", t.assessment],
-          ["What I provided", t.provided],
-          ["Goal", t.goal],
+          ["Solution", t.solution],
+          ["Why it works", t.why],
         ].map(([k, v]) => (
           <div key={k} className="contents">
             <dt className="text-[11px] tracking-[0.06em] font-medium text-[#5D5D5D]">
@@ -946,39 +956,42 @@ function TypeDetail({ t }: { t: DesignerType }) {
   );
 }
 
-function SectionOffshore() {
+function Challenge3() {
   return (
-    <Section id="offshore">
-      <Eyebrow>+ Challenge 03 — Offshore</Eyebrow>
-      <SectionHead
-        n="05"
-        title={
-          <>
-            Offshore wasn&rsquo;t the model.
-            <br />
-            How we used it was.
-          </>
-        }
-      />
-      <Lede>
+    <div className="mt-[64px]">
+      <div className="mb-[14px]">
+        <p className="mb-[8px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]">
+          CHALLENGE 03
+        </p>
+        <h3 className="text-[26px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[32px]">
+          How we used it was.
+        </h3>
+      </div>
+
+      <Body>
         Onshore / offshore is not a special model.  Everyone runs it.  The
         failure mode is treating offshore as a pair of acting hands —
-        context missing, decisions reserved for onshore.  Quality drops,
-        the 24-hour clock stops actually buying speed, and the model{" "}
-        <em>looks</em> efficient on paper while costing more in rework.
-      </Lede>
+        context broken, decisions reserved for onshore.{" "}
+        <Strong>
+          The entire overlap window gets eaten by context transfer — a
+          vicious cycle.
+        </Strong>{" "}
+        The team works long but moves slow.
+      </Body>
       <Body>
-        I solved it not by changing the shore split, but by re-evaluating
-        each designer and matching the work to the profile — a four-type
-        framework that ran the staffing decision from then on.
+        I split the designers into four profiles and approached each
+        differently — the goal at every desk was{" "}
+        <Strong>autonomy and ownership</Strong>, not handouts.
       </Body>
 
+      {/* 2×2 type grid */}
       <div className="my-[28px] grid grid-cols-1 gap-[14px] min-[560px]:grid-cols-2 min-[560px]:gap-[18px]">
         {DESIGNER_TYPES.map((t) => (
           <TypeCard key={t.num} t={t} />
         ))}
       </div>
 
+      {/* Per-type Solution / Why */}
       <div className="my-[28px] flex flex-col gap-[22px]">
         {DESIGNER_TYPES.map((t) => (
           <TypeDetail key={t.num} t={t} />
@@ -987,14 +1000,31 @@ function SectionOffshore() {
 
       <Body italic>
         Re-evaluating talent instead of re-evaluating cost.  Offshore
-        became a velocity-and-talent lever — not a headcount one.
+        became a velocity-and-talent lever, not a headcount one.
       </Body>
+    </div>
+  );
+}
+
+function SectionChallenges() {
+  return (
+    <Section id="challenges">
+      <Eyebrow>+ Challenges</Eyebrow>
+      <SectionHead n="03" title="Challenges." />
+      <Lede>
+        Three operational problems and three rebuilds.  Each follows the
+        same beat — what was broken, the move that fixed it, and what
+        held after I stepped back.
+      </Lede>
+      <Challenge1 />
+      <Challenge2 />
+      <Challenge3 />
     </Section>
   );
 }
 
 // ===========================================================================
-// §06 Reflection & Impact
+// §04 Reflection & Impact
 // ===========================================================================
 
 function StatCard({
@@ -1024,8 +1054,8 @@ function SectionReflection() {
     <Section id="reflection">
       <Eyebrow>+ Reflection</Eyebrow>
       <SectionHead
-        n="06"
-        title="What shipped, what didn't, what I'd carry into the next role."
+        n="04"
+        title="What shipped, what didn't, what I'd carry forward."
       />
 
       <SubH>What went well</SubH>
@@ -1055,35 +1085,23 @@ function SectionReflection() {
       </Body>
 
       <SubH>What I learned</SubH>
-      <ul className="my-[18px] flex max-w-[620px] flex-col gap-[10px]">
-        <li className="grid grid-cols-[16px_1fr] items-start gap-[10px]">
-          <span
-            aria-hidden
-            className="mt-[8px] block size-[6px] shrink-0 bg-[#1F1F1F]"
-          />
-          <span className="text-[16px] leading-[1.6] text-[#1F1F1F]">
-            <Strong>Strong design systems are as much about education
-            as execution.</Strong>
-          </span>
-        </li>
-        <li className="grid grid-cols-[16px_1fr] items-start gap-[10px]">
-          <span
-            aria-hidden
-            className="mt-[8px] block size-[6px] shrink-0 bg-[#1F1F1F]"
-          />
-          <span className="text-[16px] leading-[1.6] text-[#1F1F1F]">
-            <Strong>Systems solve what people can&rsquo;t argue
-            through.</Strong>
-          </span>
-        </li>
-      </ul>
+      <Bullets
+        items={[
+          <Strong key="a">
+            Strong design systems are as much about education as
+            execution.
+          </Strong>,
+          <Strong key="b">
+            Systems solve what people can&rsquo;t argue through.
+          </Strong>,
+        ]}
+      />
       <Body>
         Focusing on individual performance matters — but system-level
-        changes often solve the deeper, recurring problems more
-        effectively.  Frontend implementation inconsistencies got
-        addressed not by adding meetings, but by introducing a design QA
-        layer.  Offshore collaboration improved not by collaborating more,
-        but by segmenting roles clearly and reshaping the handoff.
+        changes solve the deeper, recurring problems more effectively.
+        Frontend implementation inconsistencies got addressed by a design
+        QA layer, not more meetings.  Offshore collaboration improved by
+        segmenting roles and reshaping the handoff.
       </Body>
       <Body italic>
         When the system is clear, people can focus on the work — not on
@@ -1105,14 +1123,12 @@ export default function GiaCaseStudy() {
         <div className="mx-auto flex max-w-[1200px] gap-[32px] px-[24px] pt-[40px] pb-[80px] min-[560px]:px-[32px] tablet:gap-[48px] tablet:pt-[56px] tablet:pb-[96px]">
           <CaseStudyLeftNav
             currentSlug="gia"
-            readTime="~8 MIN READ"
+            readTime="~7 MIN READ"
             sections={SECTIONS}
           />
           <main className="min-w-0 flex-1">
             <SectionOverview />
-            <SectionRituals />
-            <SectionVisualizations />
-            <SectionOffshore />
+            <SectionChallenges />
             <SectionReflection />
           </main>
         </div>
