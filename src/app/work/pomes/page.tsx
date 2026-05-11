@@ -775,7 +775,8 @@ export default function PomesCaseStudy() {
 
               {/* Block 3 — Borrow (1 real phone — second still TBD) */}
               <ScrBlock
-                eyebrow="BORROW / PERSISTENT INVENTORY"
+                name="Borrow"
+                icon="/work/pomes/icons/borrow.svg"
                 heading="Borrow what neighbors have, not what they're saying right now."
                 phones={["/work/pomes/pomes-borrow.png"]}
                 phoneAlts={["POMEs borrow inventory"]}
@@ -795,7 +796,8 @@ export default function PomesCaseStudy() {
               {/* Block 4 — Favor (★ 2 phones, both tab states, reverse) */}
               <ScrBlock
                 reverse
-                eyebrow="FAVOR / DEFAULT TO OFFERING"
+                name="Favor"
+                icon="/work/pomes/icons/favor.svg"
                 heading="The generous action is the default tap."
                 phones={[
                   "/work/pomes/pomes-favor-offers.png",
@@ -829,7 +831,8 @@ export default function PomesCaseStudy() {
 
               {/* Block 5 — Event (singular, per nav rename) */}
               <ScrBlock
-                eyebrow="EVENT / THE TRUST SPINE"
+                name="Event"
+                icon="/work/pomes/icons/event.svg"
                 heading="The screen that pulls people out of the app."
                 phones={["/work/pomes/pomes-event-calendar.png"]}
                 phoneAlts={["POMEs event calendar"]}
@@ -853,7 +856,19 @@ export default function PomesCaseStudy() {
               {/* Block 6 — Chat (item-tied, the 5th tab in the nav strip).
                   Lives at the design layer, not in §06 (build) — Chat is a
                   product surface, not infrastructure. */}
-              <SubH>Chat · Item-tied, not direct messaging.</SubH>
+              <h3 className="mt-9 mb-[14px] flex items-center gap-[10px] text-[20px] font-medium text-[#1F1F1F]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/work/pomes/icons/chat.svg"
+                  alt=""
+                  aria-hidden
+                  className="h-[22px] w-[22px] shrink-0"
+                />
+                Chat
+              </h3>
+              <p className="mb-[14px] text-[18px] leading-[1.35] font-medium tracking-[-0.01em] text-[#1F1F1F]">
+                Item-tied, not direct messaging.
+              </p>
               <Body>
                 Every chat thread is{" "}
                 <Strong>scoped to a specific item, favor, or event</Strong> —
@@ -1556,7 +1571,8 @@ function OtherReports() {
 }
 
 function ScrBlock({
-  eyebrow,
+  name,
+  icon,
   heading,
   phones,
   phoneAlts,
@@ -1565,7 +1581,10 @@ function ScrBlock({
   decision,
   reverse = false,
 }: {
-  eyebrow: string;
+  /** Tab name (Borrow / Favor / Event).  Rendered alongside the icon as
+   *  the section anchor so every sub-block opens with [icon] [Name]. */
+  name: string;
+  icon: string;
   heading: string;
   phones: string[];
   phoneAlts: string[];
@@ -1575,8 +1594,7 @@ function ScrBlock({
   reverse?: boolean;
 }) {
   // Layout: phones col + text col.  On mobile, phones first regardless of
-  // reverse (matches HTML preview's `.scr-block.reverse .scr-phones { order: 0 }`
-  // breakdown at <960).  On desktop, reverse swaps the column order.
+  // reverse.  On desktop, reverse swaps the column order.
   const phonesEl = (
     <div className={`flex gap-[14px] ${phones.length === 1 ? "justify-start" : ""}`}>
       {phones.map((p, i) => (
@@ -1592,12 +1610,14 @@ function ScrBlock({
 
   const textEl = (
     <div className="min-w-0">
-      <div className="mb-[8px] text-[12px] tracking-[0.16em] text-[#A0A0A0]">
-        {eyebrow}
-      </div>
-      <h3 className="mb-[14px] text-[22px] leading-[1.25] font-medium tracking-[-0.01em] text-[#1F1F1F]">
-        {heading}
+      <h3 className="mb-[14px] flex items-center gap-[10px] text-[20px] font-medium text-[#1F1F1F]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={icon} alt="" aria-hidden className="h-[22px] w-[22px] shrink-0" />
+        {name}
       </h3>
+      <p className="mb-[14px] text-[18px] leading-[1.35] font-medium tracking-[-0.01em] text-[#1F1F1F]">
+        {heading}
+      </p>
       {paras.map((p, i) => (
         <p
           key={i}
