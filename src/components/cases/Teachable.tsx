@@ -147,9 +147,8 @@ function SectionHero() {
       <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px] px-[32px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Display: logo + wordmark, then subtitle.  Wordmark weight +
-            leading + tracking mirror the POMEs hero so the two founder-grade
-            case studies anchor the same display rhythm. */}
+        {/* Display: logo + wordmark + subtitle.  Same display rhythm as
+            POMEs so the two founder-grade case studies anchor each other. */}
         <div className="flex flex-col gap-[10px]">
           <div className="flex flex-wrap items-end gap-[18px]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -168,16 +167,14 @@ function SectionHero() {
           </p>
         </div>
 
-        {/* Tagline */}
-        <p className="max-w-[600px] text-[20px] leading-[1.4] font-medium text-[#1F1F1F] tablet:text-[22px]">
-          Designed the report. Designed how it would be measured. Then refused
-          to read low usage as failure.
-        </p>
-
-        {/* Two-column row: hero image (flexes) + 3-row meta block on right. */}
-        <div className="grid gap-[36px] tablet:grid-cols-[1fr_320px] tablet:items-start tablet:gap-[48px]">
-          {/* Hero image — the polished dashboard, 16:9 to honor the source
-              asset's aspect ratio without cropping. */}
+        {/* Two-column row: hero image on the left + tagline on the right.
+            The tagline used to sit full-width above the image, which made
+            it read like a subtitle of the wordmark; pairing it with the
+            image instead reads as the project's thesis next to the
+            artifact that proves it.  Below the row, the meta dl runs as
+            a single horizontal strip — Role · Timeline · Outcome — so
+            it doesn't compete with the tagline for the right column. */}
+        <div className="grid gap-[36px] tablet:grid-cols-[1fr_360px] tablet:items-center tablet:gap-[48px]">
           <div className="relative aspect-video w-full overflow-clip border-2 border-[#1F1F1F]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -187,39 +184,46 @@ function SectionHero() {
             />
           </div>
 
-          {/* Slim meta block — ROLE, TIMELINE, OUTCOME only.  Scope + Stack
-              cut per feedback to remove noise around the result. */}
-          <dl className="border-t border-[#1F1F1F]/30">
-            {[
-              { label: "ROLE", value: "Solo IC · end-to-end" },
-              { label: "TIMELINE", value: "2022" },
-              {
-                label: "OUTCOME",
-                value: "87% engagement vs previous 20% (4.4× lift)",
-                bold: true,
-              },
-            ].map(({ label, value, bold }) => (
-              <div
-                key={label}
-                className="flex flex-wrap items-baseline gap-[14px] border-b border-[#1F1F1F]/30 py-[12px]"
-              >
-                <dt
-                  className="w-[90px] shrink-0 text-[11px] tracking-[0.14em] font-medium text-[#5D5D5D]"
-                  style={MONO}
-                >
-                  {label}
-                </dt>
-                <dd
-                  className={`flex-1 text-[14px] leading-[1.5] text-[#1F1F1F] tablet:text-[15px] ${
-                    bold ? "font-semibold" : "font-normal"
-                  }`}
-                >
-                  {value}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <p className="text-[22px] leading-[1.3] font-medium tracking-[-0.01em] text-[#1F1F1F] tablet:text-[28px]">
+            Designed the report. Designed how it would be measured. Then
+            refused to read low usage as failure.
+          </p>
         </div>
+
+        {/* Meta strip — horizontal 3-up (Role · Timeline · Outcome).
+            On mobile, the columns stack.  "Solo IC · end-to-end" trimmed
+            to just "Solo IC" — the case study text already shows it was
+            end-to-end, the extra phrase was filler. */}
+        <dl className="grid grid-cols-1 border-t border-[#1F1F1F]/30 tablet:grid-cols-[120px_120px_1fr]">
+          {[
+            { label: "Role", value: "Solo IC" },
+            { label: "Timeline", value: "2022" },
+            {
+              label: "Outcome",
+              value: "87% engagement vs previous 20% (4.4× lift)",
+              bold: true,
+            },
+          ].map(({ label, value, bold }) => (
+            <div
+              key={label}
+              className="flex flex-col gap-[6px] border-b border-[#1F1F1F]/30 py-[14px] tablet:py-[16px]"
+            >
+              <dt
+                className="text-[11px] tracking-[0.14em] font-medium text-[#5D5D5D]"
+                style={MONO}
+              >
+                {label.toUpperCase()}
+              </dt>
+              <dd
+                className={`text-[14px] leading-[1.5] text-[#1F1F1F] tablet:text-[15px] ${
+                  bold ? "font-semibold" : "font-normal"
+                }`}
+              >
+                {value}
+              </dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );
