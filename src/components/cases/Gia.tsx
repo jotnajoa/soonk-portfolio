@@ -218,23 +218,26 @@ function Hero() {
     >
       <Eyebrow>+ 01 / Intro</Eyebrow>
 
-      {/* Logo composite — GIA + Deloitte.  Font-weight reduced from black
-          to semibold per feedback (POMEs did the same). */}
-      <div className="mb-[28px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[36px] min-[560px]:gap-[28px]">
+      {/* Logo composite — GIA + Deloitte.  items-center aligns the visual
+          midlines (was items-end, which bottom-aligned bounding boxes and
+          looked tilted because the two SVGs distribute mass differently
+          inside their viewBoxes).  + is font-black and scales 1:1 with the
+          logo height so it carries the weight between them. */}
+      <div className="mb-[28px] flex flex-wrap items-center gap-[16px] leading-none min-[560px]:mb-[36px] min-[560px]:gap-[24px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/work/logos/GIA_Logo.svg"
           alt="GIA logo"
-          className="h-[60px] w-auto shrink-0 min-[560px]:h-[80px] min-[960px]:h-[112px]"
+          className="h-[56px] w-auto shrink-0 min-[560px]:h-[72px] min-[960px]:h-[96px]"
         />
-        <span className="px-[2px] text-[36px] font-semibold leading-none text-[#1F1F1F] min-[560px]:text-[48px] min-[960px]:text-[64px]">
+        <span className="text-[40px] font-black leading-none text-[#1F1F1F] min-[560px]:text-[56px] min-[960px]:text-[72px]">
           +
         </span>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/work/logos/Deloittelogo.svg"
           alt="Deloitte logo"
-          className="h-[60px] w-auto shrink-0 min-[560px]:h-[80px] min-[960px]:h-[112px]"
+          className="h-[56px] w-auto shrink-0 min-[560px]:h-[72px] min-[960px]:h-[96px]"
         />
       </div>
 
