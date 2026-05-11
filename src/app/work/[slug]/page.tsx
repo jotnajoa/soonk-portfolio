@@ -8,6 +8,7 @@ import ParkingCaseStudy from "@/components/cases/Parking";
 import GiaCaseStudy from "@/components/cases/Gia";
 import TeachableCaseStudy from "@/components/cases/Teachable";
 import AlnylamCaseStudy from "@/components/cases/Alnylam";
+import WordupCaseStudy from "@/components/cases/WordUp";
 import ComingSoon from "@/components/cases/ComingSoon";
 
 // Pre-render the static list of valid slugs at build time so the case-study
@@ -57,6 +58,8 @@ export default async function CaseStudyPage({
         <TeachableCaseStudy />
       ) : slug === "alnylam" ? (
         <AlnylamCaseStudy />
+      ) : slug === "wordup" ? (
+        <WordupCaseStudy />
       ) : (
         <ComingSoon tile={tile} />
       )}
