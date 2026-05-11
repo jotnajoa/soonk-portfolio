@@ -130,12 +130,12 @@ function Strong({ children }: { children: React.ReactNode }) {
   return <strong className="font-medium text-[#1F1F1F]">{children}</strong>;
 }
 
-// PullQuote — italic call-out for big narrative beats.  No left bar
-// (the bar read as "decorative for the sake of being decorative");
-// emphasis sits on the italic + medium weight at 18/22 px.
+// PullQuote — italic call-out for big narrative beats.  Left bar marks
+// this out as a synthesis/conclusion line — used in §04 to separate the
+// 4 individual quotes (now bare) from the takeaway that ties them.
 function PullQuote({ children }: { children: React.ReactNode }) {
   return (
-    <blockquote className="my-[24px] max-w-[620px] text-[18px] leading-[1.4] font-medium italic text-[#1F1F1F] min-[560px]:text-[22px]">
+    <blockquote className="my-[24px] max-w-[620px] border-l-2 border-[#1F1F1F] py-[6px] pl-[20px] text-[18px] leading-[1.4] font-medium italic text-[#1F1F1F] min-[560px]:text-[22px]">
       {children}
     </blockquote>
   );
@@ -163,9 +163,10 @@ function KeyTakeaway({
   );
 }
 
-// AnonymousQuote — interview citation with anonymized neighbor label,
-// visually distinct from body text.  Left-bar block with the quote
-// (italic, primary ink) and an arrow → implication line below.
+// AnonymousQuote — interview citation with anonymized neighbor label.
+// No left bar: the bar is reserved for the §04 PullQuote conclusion
+// that ties these quotes together, so the synthesis stands out from
+// the raw evidence above it.
 function AnonymousQuote({
   speaker,
   quote,
@@ -176,7 +177,7 @@ function AnonymousQuote({
   implies: string;
 }) {
   return (
-    <blockquote className="border-l-2 border-[#1F1F1F] py-[10px] pl-[20px]">
+    <blockquote className="py-[6px]">
       <p
         className="text-[18px] leading-[1.5] font-medium text-[#1F1F1F]"
         style={{ fontStyle: "italic" }}
