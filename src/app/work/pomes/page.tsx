@@ -269,16 +269,16 @@ export default function PomesCaseStudy() {
             POMEs
           </span>
 
-          {/* Live store links — icon + label + ↗ arrow, stacked.  Single
-              hairline divider lives BETWEEN the two rows (not under
-              both) so the affordance reads as one grouped block, not
-              two separate underlined links. */}
-          <div className="flex flex-col self-end divide-y divide-[#A0A0A0] min-[960px]:ml-auto">
+          {/* Live store links — icon + label + ↗ arrow, stacked.  No
+              divider between them: the previous hairline made the block
+              read as a list/menu; without it the two stand as plain
+              CTAs with the underline only kicking in on hover. */}
+          <div className="flex flex-col self-end min-[960px]:ml-auto">
             <Link
               href="https://apps.apple.com/us/app/pomes-borrow-help-meet/id6765548381"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
+              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -288,7 +288,9 @@ export default function PomesCaseStudy() {
               >
                 <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
               </svg>
-              <span>App Store</span>
+              <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
+                App Store
+              </span>
               <span aria-hidden className="ml-auto text-[18px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
                 ↗
               </span>
@@ -297,7 +299,7 @@ export default function PomesCaseStudy() {
               href="https://play.google.com/store/apps/details?id=com.soonk.pomes"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
+              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -307,7 +309,9 @@ export default function PomesCaseStudy() {
               >
                 <path d="M3.609 1.814 13.792 12 3.609 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92Zm10.89 10.886 2.302 2.302-12.6 7.227 10.298-9.529Zm3.692-3.69 2.434 1.4a1.5 1.5 0 0 1 0 2.6l-2.434 1.4-2.589-2.7 2.589-2.7Zm-1.39-.793L5.797 1.07l12.6 7.226-2.595 2.404-1-1Z" />
               </svg>
-              <span>Play Store</span>
+              <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
+                Play Store
+              </span>
               <span aria-hidden className="ml-auto text-[18px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
                 ↗
               </span>
