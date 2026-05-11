@@ -1234,65 +1234,16 @@ export default function PomesCaseStudy() {
                 elevators, lobbies, and mailrooms.
               </Body>
 
-              {/* Leaflet evidence — LEFT: 3 in-the-field photos sized so
-                  the stack matches the height of the RIGHT column's map +
-                  bar viz.  Right viz is two SVGs (300×280) stacked → roughly
-                  1.87 × col_w tall.  Picking 16:9 for the photos gives
-                  3 × (0.56·col_w) + gaps + captions ≈ the same height, so
-                  the two columns sit truly side-by-side.  Equal-width grid
-                  so neither side overpowers the other. */}
+              {/* GTM evidence — NYC neighborhood map on the left, top-
+                  building conversion bar on the right.  Single full-width
+                  fig, no leaflet photos: tried adding them to the left in
+                  thumbnail form, but at small sizes they didn't add real
+                  information beyond what the body already says ("leafletted
+                  by hand"), so they were just decoration. */}
               <figure className="my-[24px] rounded-[12px] bg-[#F4F4F4] p-[24px]">
-                <div className="grid grid-cols-1 gap-[24px] tablet:grid-cols-2 tablet:items-center">
-                  {/* ---- Left column — 3 leaflet thumbnails ---------- */}
-                  <div className="flex flex-col gap-[12px]">
-                    {[
-                      {
-                        src: "/work/pomes/leaflet/01_prepping.jpg",
-                        alt: "Prepping leaflets before going out",
-                        rot: "-1.2deg",
-                        label: "01 · Prepping",
-                      },
-                      {
-                        src: "/work/pomes/leaflet/02_posting.jpg",
-                        alt: "Posting a leaflet in the wild",
-                        rot: "0.8deg",
-                        label: "02 · Posting",
-                      },
-                      {
-                        src: "/work/pomes/leaflet/03_mailroom.jpg",
-                        alt: "Leaflet pinned in a building mailroom",
-                        rot: "-0.6deg",
-                        label: "03 · Mailroom",
-                      },
-                    ].map((p) => (
-                      <figure
-                        key={p.src}
-                        className="m-0"
-                        style={{ transform: `rotate(${p.rot})` }}
-                      >
-                        <div className="overflow-hidden rounded-[6px] border border-[#1F1F1F]/15 bg-white shadow-[0_2px_6px_rgba(0,0,0,0.06)]">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={p.src}
-                            alt={p.alt}
-                            className="block aspect-[16/9] h-auto w-full object-cover"
-                          />
-                        </div>
-                        <figcaption
-                          className="mt-[5px] text-[10px] tracking-[0.08em] text-[#A0A0A0]"
-                          style={{ fontFamily: MONO }}
-                        >
-                          {p.label}
-                        </figcaption>
-                      </figure>
-                    ))}
-                  </div>
-
-                  {/* ---- Right column — map + bar (stacked) ----------- */}
-                  <div className="flex flex-col gap-[18px]">
-                    <NycMapSvg />
-                    <ConversionBarSvg />
-                  </div>
+                <div className="grid grid-cols-1 gap-[24px] min-[560px]:grid-cols-2">
+                  <NycMapSvg />
+                  <ConversionBarSvg />
                 </div>
               </figure>
 
