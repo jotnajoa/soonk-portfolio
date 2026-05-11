@@ -275,7 +275,9 @@ export default function PomesCaseStudy() {
               two separate underlined links. */}
           <div className="flex flex-col self-end divide-y divide-[#A0A0A0] min-[960px]:ml-auto">
             <Link
-              href="#"
+              href="https://apps.apple.com/us/app/pomes-borrow-help-meet/id6765548381"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
             >
               <svg
@@ -292,7 +294,9 @@ export default function PomesCaseStudy() {
               </span>
             </Link>
             <Link
-              href="#"
+              href="https://play.google.com/store/apps/details?id=com.soonk.pomes"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
             >
               <svg
