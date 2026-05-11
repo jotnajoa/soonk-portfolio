@@ -20,11 +20,21 @@ import { TileLogo } from "@/components/TileLogo";
 //     uses, except items here navigate to /work/{slug} instead of
 //     scrolling to data-tile-list anchors (which only exist on /).
 //
-// "Soonk" + "← BACK TO PORTFOLIO" + the inverted hamburger-menu's "Work"
-// row use router.back() when the tab has any prior history, falling back
-// to router.push("/") on direct loads.  router.back() lets the browser
-// restore the user's scroll position on the home page so they don't have
-// to re-watch the hero animation.
+// Brand + primary nav routing rules:
+//   - "Soonk" (brand mark, top-left in both layouts) → always Link to "/".
+//     It's a brand link, not a back affordance — a user navigating between
+//     case studies expects "Soonk" to take them home, not back to whichever
+//     other case study they happened to land on first.
+//   - "Work" (top-bar label next to the 9 indicator squares) → "/#work".
+//     Primary nav, jumps to the projects section on home.
+//   - "← BACK TO PORTFOLIO" → uses goBack(): router.back() if there is
+//     prior history (so home-page scroll position + hero state is preserved),
+//     falling back to router.push("/") on direct loads.  This is the only
+//     control that semantically *should* go "back" rather than to a fixed
+//     route.
+//   - Mobile breadcrumb (project number + logo + brand, top-left mobile bar)
+//     also uses goBack() — it reads as the inverse of the project label
+//     the user just tapped into, not as a brand mark.
 
 export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
   const router = useRouter();
@@ -104,23 +114,21 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
 
         {/* ---- Desktop bar (≥800) — full nav row ---- */}
         <nav className="mx-auto hidden max-w-[1200px] items-center gap-4 px-[32px] py-4 tablet:flex">
-          <button
-            type="button"
-            onClick={goBack}
-            className="cursor-pointer text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#5D5D5D] hover:text-[#1F1F1F]"
+          <Link
+            href="/"
+            className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#5D5D5D] no-underline hover:text-[#1F1F1F]"
           >
             Soonk
-          </button>
+          </Link>
           <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={goBack}
-              className="cursor-pointer text-[16px] leading-[0.92] font-semibold whitespace-nowrap text-[#1F1F1F] hover:underline"
+            <Link
+              href="/#work-grid"
+              className="text-[16px] leading-[0.92] font-semibold whitespace-nowrap text-[#1F1F1F] no-underline hover:underline"
             >
               Work
-            </button>
+            </Link>
             {tiles.map((t) => {
               const active = t.slug === currentSlug;
               return (
@@ -197,29 +205,24 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
             </button>
           </div>
 
-          <button
-            type="button"
-            onClick={() => {
-              close();
-              goBack();
-            }}
-            className="self-start text-[32px] leading-[0.92] font-normal text-[#A0A0A0] hover:text-[#F4F4F4]"
+          <Link
+            href="/"
+            onClick={close}
+            className="self-start text-[32px] leading-[0.92] font-normal text-[#A0A0A0] no-underline hover:text-[#F4F4F4]"
           >
             Soonk
-          </button>
+          </Link>
 
           <div className="h-[2px] w-full bg-[#F4F4F4]" />
 
           <div className="flex flex-col gap-[16px]">
-            <button
-              onClick={() => {
-                close();
-                goBack();
-              }}
-              className="flex cursor-pointer items-center gap-[8px] self-start text-[32px] leading-[0.92] font-medium text-[#F4F4F4]"
+            <Link
+              href="/#work-grid"
+              onClick={close}
+              className="flex items-center gap-[8px] self-start text-[32px] leading-[0.92] font-medium text-[#F4F4F4] no-underline"
             >
               <span>Work</span>
-            </button>
+            </Link>
 
             <ul className="flex flex-col gap-[16px] pl-1">
               {tiles.map((t) => {
