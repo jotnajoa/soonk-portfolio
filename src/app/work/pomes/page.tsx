@@ -322,8 +322,8 @@ export default function PomesCaseStudy() {
           <div className="relative mx-auto aspect-[1179/2556] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F] tablet:mx-0 tablet:max-w-none">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/work/pomes/landing.png"
-              alt="POMEs app landing screen"
+              src="/work/pomes/pomes-home-thriving.png"
+              alt="POMEs home screen with active building activity — events, borrows, and a Thriving status"
               className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
@@ -370,7 +370,7 @@ export default function PomesCaseStudy() {
                 className="mb-[12px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
                 style={{ fontFamily: MONO }}
               >
-                TIMELINE · MAR 15 – APR 30, 2026 (~7 WEEKS)
+                TIMELINE
               </p>
               <ol className="flex flex-col">
                 {[
