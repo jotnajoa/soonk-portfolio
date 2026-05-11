@@ -1034,21 +1034,27 @@ export default function PomesCaseStudy() {
                 ))}
               </div>
 
-              {/* Demo video — placeholder until the external file lands at
-                  /work/pomes/demo.mp4 (or an embed URL). */}
+              {/* Demo video — encoded from ~/Downloads/pomes clip.MP4
+                  (1180×2556 phone capture, 12 s, ~150 KB after H.264 +
+                  faststart).  Same phone-bezel treatment as the hero
+                  landing video for visual continuity. */}
               <SubH>Personal demo video</SubH>
-              <div className="my-[18px]">
-                <div className="relative aspect-[16/9] overflow-clip rounded-[12px] border-2 border-[#1F1F1F] bg-[#F4F4F4]">
-                  <div
-                    className="flex h-full w-full flex-col items-center justify-center gap-[10px] text-center text-[12px] tracking-[0.08em] text-[#5D5D5D]"
-                    style={{ fontFamily: MONO }}
+              <div className="my-[18px] flex flex-col items-center gap-[10px]">
+                <div className="relative aspect-[1180/2556] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
+                  <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label="POMEs app — personal demo walkthrough sent to the building before launch"
+                    className="absolute inset-0 h-full w-full object-cover"
                   >
-                    <span className="text-[40px] leading-none">▶</span>
-                    TBD · DEMO VIDEO
-                  </div>
+                    <source src="/work/pomes/demo.mp4" type="video/mp4" />
+                  </video>
                 </div>
                 <p
-                  className="mt-[10px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                  className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
                   style={{ fontStyle: "italic" }}
                 >
                   Personal walkthrough — sent to the building before launch.
