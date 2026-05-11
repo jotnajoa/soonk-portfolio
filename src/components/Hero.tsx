@@ -143,8 +143,32 @@ export default function Hero() {
   // timeline is mid-flight can leave React's reconciler trying to clean
   // up DOM that GSAP has been mutating, surfacing the well-known
   // "Failed to execute 'removeChild' on 'Node'" crash.
+  //
+  // Returning-from-case-study fast path: when the user clicks "← BACK
+  // TO PORTFOLIO" from a /work/{slug} page, the link lands here with a
+  // `#work-list-XX` hash.  In that case we skip the 4-second intro
+  // timeline entirely — jump every element to its end state, mount
+  // Lottie immediately, and DON'T lock body scroll.  That way the
+  // browser's native hash scroll can carry the user straight to the
+  // matching tile without the dark-phase entry choreography replaying
+  // every time they come back to the list.
   useGSAP(
     () => {
+      const returningToList =
+        typeof window !== "undefined" &&
+        /^#work-list-\d{2}$/.test(window.location.hash);
+
+      if (returningToList) {
+        gsap.set(".hero-rect", { xPercent: -130, opacity: 0 });
+        gsap.set(".hero-portrait", { opacity: 0 });
+        gsap.set(".hero-svg-circles", { opacity: 0 });
+        gsap.set(".hero-bg", { backgroundColor: "#EEEEEE" });
+        gsap.set(".hero-lottie-wrap", { opacity: 1 });
+        gsap.set(".hero-text-reveal", { opacity: 1 });
+        setShowLottie(true);
+        return;
+      }
+
       gsap.set(".hero-rect", { xPercent: 0, opacity: 1 });
       gsap.set(".hero-portrait", { opacity: 1 });
       gsap.set(".hero-svg-circles", { opacity: 1 });

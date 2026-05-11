@@ -187,7 +187,7 @@ function SingleThumb({ thumb }: { thumb: Thumb }) {
 function ListPomes() {
   return (
     <TileLink slug="pomes">
-    <article data-tile-id="01" data-tile-list className={ROW}>
+    <article id="work-list-01" data-tile-id="01" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>01</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>01</p>
@@ -217,7 +217,7 @@ function ListPomes() {
 function ListVolthop() {
   return (
     <TileLink slug="volthop">
-    <article data-tile-id="02" data-tile-list className={ROW}>
+    <article id="work-list-02" data-tile-id="02" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>02</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>02</p>
@@ -247,7 +247,7 @@ function ListVolthop() {
 function ListGia() {
   return (
     <TileLink slug="gia">
-    <article data-tile-id="03" data-tile-list className={ROW}>
+    <article id="work-list-03" data-tile-id="03" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>03</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>03</p>
@@ -279,7 +279,7 @@ function ListGia() {
 function ListToyota() {
   return (
     <TileLink slug="toyota">
-    <article data-tile-id="04" data-tile-list className={ROW}>
+    <article id="work-list-04" data-tile-id="04" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>04</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>04</p>
@@ -313,7 +313,7 @@ function ListToyota() {
 function ListAlnylam() {
   return (
     <TileLink slug="alnylam">
-    <article data-tile-id="05" data-tile-list className={ROW}>
+    <article id="work-list-05" data-tile-id="05" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>05</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>05</p>
@@ -340,7 +340,7 @@ function ListAlnylam() {
 function ListTeachable() {
   return (
     <TileLink slug="teachable">
-    <article data-tile-id="06" data-tile-list className={ROW}>
+    <article id="work-list-06" data-tile-id="06" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>06</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>06</p>
@@ -370,7 +370,7 @@ function ListTeachable() {
 function ListNyc() {
   return (
     <TileLink slug="parking">
-    <article data-tile-id="07" data-tile-list className={ROW}>
+    <article id="work-list-07" data-tile-id="07" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>07</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>07</p>
@@ -399,7 +399,7 @@ function ListNyc() {
 function ListWordup() {
   return (
     <TileLink slug="wordup">
-    <article data-tile-id="08" data-tile-list className={ROW}>
+    <article id="work-list-08" data-tile-id="08" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>08</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>08</p>
@@ -425,7 +425,7 @@ function ListWordup() {
 function ListGtm() {
   return (
     <TileLink slug="gtm">
-    <article data-tile-id="09" data-tile-list className={ROW}>
+    <article id="work-list-09" data-tile-id="09" data-tile-list className={ROW}>
       <p className={NUM_DESKTOP} style={MONO_STYLE}>09</p>
       <div className={CONTENT_COL}>
         <p className={NUM_MOBILE} style={MONO_STYLE}>09</p>

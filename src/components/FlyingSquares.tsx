@@ -90,6 +90,33 @@ export default function FlyingSquares() {
     (_ctx, contextSafe) => {
       if (!isWide) return;
 
+      // Returning-from-case-study fast path: when the user lands here
+      // with a `#work-list-XX` hash (set by the BACK TO PORTFOLIO link
+      // on case-study pages), skip the entire grid → indicators
+      // choreography.  Just make the top nav visible — that's the only
+      // bit of the timeline's end state that's actually in view at the
+      // work-list scroll position they're being scrolled to.
+      //
+      // Why we can't just let the timeline run: ScrollTrigger.pin
+      // creates a pin-spacer that adds ~600px of layout to the page.
+      // If the user is already past the pin range when the spacer is
+      // injected, their visible content shifts by 600px and they end
+      // up above the tile the browser scrolled them to.  Skipping pin
+      // entirely sidesteps that — the grid stays static, the tile they
+      // want stays at the right Y position.
+      const returningToList =
+        typeof window !== "undefined" &&
+        /^#work-list-\d{2}$/.test(window.location.hash);
+      if (returningToList) {
+        const showNav = contextSafe!(() => {
+          const nav = document.querySelector<HTMLElement>("[data-project-nav]");
+          if (nav) gsap.set(nav, { opacity: 1, pointerEvents: "auto" });
+        });
+        // setTimeout so the nav has actually mounted before we touch it.
+        const navId = window.setTimeout(showNav, 50);
+        return () => window.clearTimeout(navId);
+      }
+
       // The 250ms wait is for sibling components (Grid, ProjectNav) to
       // finish their first paint so getBoundingClientRect() returns
       // settled positions.  contextSafe ensures GSAP calls made inside
