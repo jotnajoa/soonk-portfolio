@@ -263,9 +263,9 @@ export default function PomesCaseStudy() {
             project marker still appears in the sticky CaseStudyNav above;
             duplicating it in the hero was eating space without adding
             information.) */}
-        <div className="mb-[28px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[36px] min-[560px]:gap-[28px]">
-          <PomesLogoSvg className="h-[80px] w-auto shrink-0 text-[#1F1F1F] min-[560px]:h-[100px] min-[960px]:h-[124px]" />
-          <span className="text-[80px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[110px] min-[960px]:text-[152px]">
+        <div className="mb-[48px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[64px] min-[560px]:gap-[28px] min-[960px]:mb-[72px]">
+          <PomesLogoSvg className="h-[64px] w-auto shrink-0 text-[#1F1F1F] min-[560px]:h-[82px] min-[960px]:h-[104px]" />
+          <span className="text-[68px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
             POMEs
           </span>
 
