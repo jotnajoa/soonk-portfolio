@@ -130,32 +130,65 @@ export default function ProjectNav() {
           </span>
           {tiles.map((t) => {
             const active = t.id === activeId;
-            const indicatorClasses = `size-4 border border-[#1F1F1F] transition-colors ${
-              active ? "bg-[#1F1F1F]" : "bg-transparent hover:bg-[#D9D9D9]"
+            // Hover bg uses the green accent (#00FB00) — same treatment
+            // as the case-study CaseStudyNav so the two nav surfaces
+            // share a single hover language.
+            const indicatorClasses = `block size-4 border border-[#1F1F1F] transition-colors ${
+              active
+                ? "bg-[#1F1F1F] group-hover:bg-[#00FB00]"
+                : "bg-transparent group-hover:bg-[#00FB00]"
             }`;
-            // Same visual + same data-nav-indicator (FlyingSquares targets
-            // it on the landing) — only the click behaviour differs.
+            // Each indicator is wrapped in a `relative group` so the
+            // editorial tooltip can position itself below without
+            // pushing siblings.  The indicator element itself keeps the
+            // data-nav-indicator attribute + 16×16 size so FlyingSquares
+            // continues to measure it correctly.
+            const tooltip = (
+              <span
+                role="tooltip"
+                aria-hidden
+                className="pointer-events-none absolute top-[calc(100%+14px)] left-1/2 z-50 w-max max-w-[260px] -translate-x-1/2 -translate-y-1 border-2 border-[#1F1F1F] bg-[#00FB00] px-[14px] py-[10px] opacity-0 shadow-[4px_4px_0_0_#1F1F1F] transition-[opacity,transform] duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100"
+              >
+                <span
+                  className="block text-[10px] tracking-[0.16em] font-medium text-[#1F1F1F]/70"
+                  style={{
+                    fontFamily:
+                      "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace",
+                  }}
+                >
+                  {t.id}
+                </span>
+                <span className="block text-[15px] leading-[1.2] font-semibold text-[#1F1F1F]">
+                  {t.brand}
+                </span>
+                <span className="block text-[12px] leading-[1.35] font-medium text-[#1F1F1F]">
+                  {t.tagline}
+                </span>
+              </span>
+            );
             if (isLanding) {
               return (
-                <button
-                  key={t.id}
-                  onClick={() => goTo(t.id)}
-                  aria-label={`${t.id} · ${t.brand}`}
-                  title={`${t.id} · ${t.brand}`}
-                  data-nav-indicator={t.id}
-                  className={indicatorClasses}
-                />
+                <span key={t.id} className="group relative flex items-center">
+                  <button
+                    onClick={() => goTo(t.id)}
+                    aria-label={`${t.id} · ${t.brand}`}
+                    data-nav-indicator={t.id}
+                    className={indicatorClasses}
+                  />
+                  {tooltip}
+                </span>
               );
             }
             return (
-              <Link
-                key={t.id}
-                href={`/#work-list-${t.id}`}
-                aria-label={`${t.id} · ${t.brand}`}
-                title={`${t.id} · ${t.brand}`}
-                data-nav-indicator={t.id}
-                className={indicatorClasses}
-              />
+              <span key={t.id} className="group relative flex items-center">
+                <Link
+                  href={`/#work-list-${t.id}`}
+                  aria-label={`${t.id} · ${t.brand}`}
+                  data-nav-indicator={t.id}
+                  className={indicatorClasses}
+                />
+                {tooltip}
+              </span>
             );
           })}
         </div>
