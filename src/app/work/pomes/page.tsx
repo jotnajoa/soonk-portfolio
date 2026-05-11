@@ -285,41 +285,41 @@ export default function PomesCaseStudy() {
           </div>
         </div>
 
-        {/* Hero 2-column: phone-shaped autoplay video (left) + tagline +
-            meta (right).  Replaces the earlier 4-phone screenshot row —
-            small thumbnails read as unreadable mocks; one looped video of
-            the live app reads as the product itself.
-
-            Below 960px the column stacks vertically (video on top). */}
+        {/* Hero 2-column: phone-shaped hero image (left) + tagline + meta
+            + progress timeline (right).  Earlier iterations used an
+            autoplay video here, but a 40 s loop on the landing screen
+            was overkill — a single still does the job and keeps the
+            page light.  Below 960 px the column stacks vertically. */}
         <div className="mb-[40px] grid gap-[32px] min-[960px]:mb-[48px] min-[960px]:grid-cols-[auto_1fr] min-[960px]:items-start min-[960px]:gap-[48px]">
-          {/* Left: phone video — 1206×2622 source aspect, 2px bezel matches
-              the landing list view's PhonesPair frames. */}
-          <div className="relative mx-auto aspect-[1206/2622] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F] min-[960px]:mx-0 min-[960px]:max-w-[320px]">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-label="POMEs app — landing flow"
+          {/* Left: phone hero image — 1179×2556 source aspect, same 2 px
+              bezel as the landing list view's PhonesPair frames. */}
+          <div className="relative mx-auto aspect-[1179/2556] w-full max-w-[260px] overflow-clip rounded-[24px] border-2 border-[#1F1F1F] bg-[#1F1F1F] min-[960px]:mx-0 min-[960px]:max-w-[320px]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/work/pomes/landing.png"
+              alt="POMEs app landing screen"
               className="absolute inset-0 h-full w-full object-cover"
-            >
-              <source src="/work/pomes/landing.mp4" type="video/mp4" />
-            </video>
+            />
           </div>
 
-          {/* Right: tagline + meta block */}
-          <div className="flex flex-col gap-[28px] min-[960px]:gap-[36px]">
+          {/* Right column — tagline / meta / progress timeline, stacked
+              vertically.  The 5-phase ribbon used to live full-width
+              under the hero; Soonk pushed it into the right column so the
+              "what is this / what did I do / when" answer sits in one
+              visual block next to the image. */}
+          <div className="flex flex-col gap-[28px] min-[960px]:gap-[32px]">
             <p className="max-w-[620px] text-[24px] leading-[1.2] font-medium tracking-[-0.02em] text-[#1F1F1F] min-[560px]:text-[28px] min-[960px]:text-[36px]">
               A neighbor app where you brag about what you can offer, not
               beg for help.
             </p>
 
+            {/* Meta dl — Role / Progress / Stack.  "Scope" renamed to
+                "Progress" per Soonk; the Timeline row drops out because
+                the 5-phase block immediately below carries the dates. */}
             <dl className="border-t border-[#A0A0A0]">
               {[
                 ["Role", "Solo · end-to-end"],
-                ["Scope", "Research → design → vibe-coded engineering → GTM"],
-                ["Timeline", "Mar 15 – Apr 30, 2026 (~7 weeks)"],
+                ["Progress", "Research → design → vibe-coded engineering → GTM"],
                 ["Stack", "iOS · Android · React Native · Firebase"],
               ].map(([l, v]) => (
                 <div
@@ -335,40 +335,45 @@ export default function PomesCaseStudy() {
                 </div>
               ))}
             </dl>
-          </div>
-        </div>
 
-        {/* Timeline ribbon — vertical tick markers, dates above labels.
-            Mobile: each step is a stacked row (date over label, hairline
-            divider below).  Desktop ≥560: 5-column horizontal ribbon with
-            a single hairline rule running across the ticks. */}
-        <div className="mb-[24px] pt-[8px]">
-          <div className="relative grid grid-cols-1 min-[560px]:grid-cols-5 min-[560px]:gap-0">
-            {/* hairline rule — tablet+ only, runs through the tick marks */}
-            <span
-              aria-hidden
-              className="absolute top-[7px] right-[10%] left-[10%] hidden h-px bg-[#A0A0A0] min-[560px]:block"
-            />
-            {[
-              ["Mar 15", "Concept"],
-              ["Mar 16–26", "Research"],
-              ["Mar 25 – Apr 20", "Design + build"],
-              ["Apr 25", "GTM"],
-              ["Apr 30", "Live"],
-            ].map(([d, l], i) => (
-              <div
-                key={i}
-                className="relative z-[1] border-b border-[#A0A0A0] py-[14px] text-left min-[560px]:border-0 min-[560px]:px-2 min-[560px]:py-0 min-[560px]:text-center"
+            {/* Progress timeline — 5 phases as a vertical list (date ·
+                label) so it fits the narrower right column.  Hairline
+                between rows; small black tick to mark each phase. */}
+            <div>
+              <p
+                className="mb-[12px] text-[12px] tracking-[0.16em] font-medium text-[#5D5D5D]"
+                style={{ fontFamily: MONO }}
               >
-                <span className="block h-[14px] w-[2px] bg-[#1F1F1F] min-[560px]:mx-auto" />
-                <div className="mt-[8px] text-[12px] tracking-[0.04em] text-[#5D5D5D] min-[560px]:mt-[14px]">
-                  {d}
-                </div>
-                <div className="mt-[4px] text-[16px] leading-[1.3] font-medium text-[#1F1F1F] min-[560px]:mt-[6px]">
-                  {l}
-                </div>
-              </div>
-            ))}
+                TIMELINE · MAR 15 – APR 30, 2026 (~7 WEEKS)
+              </p>
+              <ol className="flex flex-col">
+                {[
+                  ["Mar 15", "Concept"],
+                  ["Mar 16–26", "Research"],
+                  ["Mar 25 – Apr 20", "Design + build"],
+                  ["Apr 25", "GTM"],
+                  ["Apr 30", "Live"],
+                ].map(([d, l], i) => (
+                  <li
+                    key={l}
+                    className={`grid grid-cols-[140px_1fr] items-center gap-[14px] py-[10px] ${
+                      i > 0 ? "border-t border-[#A0A0A0]/50" : ""
+                    }`}
+                  >
+                    <span className="flex items-center gap-[10px] text-[12px] tracking-[0.04em] text-[#5D5D5D]">
+                      <span
+                        aria-hidden
+                        className="block h-[10px] w-[2px] bg-[#1F1F1F]"
+                      />
+                      {d}
+                    </span>
+                    <span className="text-[16px] leading-[1.3] font-medium text-[#1F1F1F]">
+                      {l}
+                    </span>
+                  </li>
+                ))}
+              </ol>
+            </div>
           </div>
         </div>
 
