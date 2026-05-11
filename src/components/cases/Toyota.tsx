@@ -699,7 +699,7 @@ function CommunicationBreakdown({
 
 function SectionProblem() {
   return (
-    <Section id="problem">
+    <Section id="problem" first>
       <Eyebrow>+ The problems</Eyebrow>
       <SectionHead
         n="02"
