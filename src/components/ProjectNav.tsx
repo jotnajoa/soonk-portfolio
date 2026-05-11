@@ -225,7 +225,7 @@ export default function ProjectNav() {
           href="/#publication"
           className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#A0A0A0] hover:text-black"
         >
-          Publication
+          Lecture &amp; Publication
         </Link>
         <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
         <Link

@@ -168,7 +168,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
             href="/#publication"
             className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#5D5D5D] hover:text-[#1F1F1F]"
           >
-            Publication
+            Lecture &amp; Publication
           </Link>
           <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
           <Link
@@ -276,7 +276,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
             onClick={close}
             className="self-start text-[32px] leading-[0.92] font-normal text-[#A0A0A0] hover:text-[#F4F4F4] no-underline"
           >
-            Publications
+            Lecture &amp; Publication
           </Link>
 
           <Link

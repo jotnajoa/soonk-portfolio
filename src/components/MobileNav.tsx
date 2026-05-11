@@ -175,7 +175,7 @@ export default function MobileNav() {
             onClick={close}
             className="flex cursor-pointer items-center gap-[8px] text-left text-[32px] leading-[0.92] font-normal text-[#8E8E8E]"
           >
-            <span>Publications</span>
+            <span>Lecture &amp; Publication</span>
             <span aria-hidden className="text-[18px]">∨</span>
           </button>
 
