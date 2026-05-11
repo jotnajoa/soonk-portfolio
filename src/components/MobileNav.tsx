@@ -18,42 +18,12 @@ export default function MobileNav() {
   const barRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
-  const [activeId, setActiveId] = useState<string | null>(tiles[0]?.id ?? null);
   const [stuck, setStuck] = useState(false);
   // The clip-path circle for the menu open/close animation emanates from
   // the hamburger button.  Because the bar lives in normal flow until it
   // sticks, the button's viewport position depends on scroll — capture it
   // at click time instead of hard-coding a "calc(100% - 56px) X" value.
   const [clipOrigin, setClipOrigin] = useState("calc(100% - 60px) 32px");
-
-  // Active list-tile tracking — same scroll-position logic as ProjectNav.
-  // (See that file for the explanation of why we don't use IntersectionObserver.)
-  useEffect(() => {
-    const compute = () => {
-      const els = Array.from(
-        document.querySelectorAll<HTMLElement>("[data-tile-list]"),
-      );
-      if (els.length === 0) return;
-      const trigger = window.innerHeight * 0.3;
-      let nextId: string | null = els[0].getAttribute("data-tile-id");
-      for (const el of els) {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= trigger) {
-          nextId = el.getAttribute("data-tile-id");
-        } else {
-          break;
-        }
-      }
-      if (nextId) setActiveId(nextId);
-    };
-    compute();
-    window.addEventListener("scroll", compute, { passive: true });
-    window.addEventListener("resize", compute);
-    return () => {
-      window.removeEventListener("scroll", compute);
-      window.removeEventListener("resize", compute);
-    };
-  }, []);
 
   // Sticky-active detection (for the drop-shadow visual cue).
   useEffect(() => {
@@ -184,30 +154,26 @@ export default function MobileNav() {
               <span aria-hidden className="text-[18px]">∧</span>
             </button>
 
+            {/* All projects render in uniform inactive style.  The
+                home-page hamburger menu is reached from the list view
+                where the user is browsing *all* projects — highlighting
+                whichever project happens to be scrolled into view
+                (with the bold + dot treatment) reads as "you're inside
+                this case study", which is misleading.  The bold + dot
+                indicator is reserved for the case-study CaseStudyNav,
+                where currentSlug actually means the user is on that
+                project's page. */}
             <ul className="flex flex-col gap-[16px] pl-1">
-              {tiles.map((t) => {
-                const active = t.id === activeId;
-                return (
-                  <li key={t.id} className="flex items-center gap-[16px]">
-                    <button
-                      onClick={() => goTo(t.id)}
-                      className={`cursor-pointer text-left text-[24px] leading-[0.92] ${
-                        active
-                          ? "font-bold text-[#F4F4F4]"
-                          : "font-normal text-[#8E8E8E]"
-                      }`}
-                    >
-                      {t.brand}
-                    </button>
-                    {active && (
-                      <span
-                        aria-hidden
-                        className="size-3 shrink-0 rounded-full bg-[#F4F4F4]"
-                      />
-                    )}
-                  </li>
-                );
-              })}
+              {tiles.map((t) => (
+                <li key={t.id} className="flex items-center gap-[16px]">
+                  <button
+                    onClick={() => goTo(t.id)}
+                    className="cursor-pointer text-left text-[24px] leading-[0.92] font-normal text-[#8E8E8E]"
+                  >
+                    {t.brand}
+                  </button>
+                </li>
+              ))}
             </ul>
           </div>
 
