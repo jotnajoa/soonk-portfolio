@@ -263,22 +263,24 @@ export default function PomesCaseStudy() {
             project marker still appears in the sticky CaseStudyNav above;
             duplicating it in the hero was eating space without adding
             information.) */}
-        <div className="mb-[28px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[36px] min-[560px]:gap-[28px]">
-          <PomesLogoSvg className="h-[80px] w-auto shrink-0 text-[#1F1F1F] min-[560px]:h-[100px] min-[960px]:h-[124px]" />
-          <span className="text-[80px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[110px] min-[960px]:text-[152px]">
+        <div className="mb-[48px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[64px] min-[560px]:gap-[28px] min-[960px]:mb-[72px]">
+          <PomesLogoSvg className="h-[64px] w-auto shrink-0 text-[#1F1F1F] min-[560px]:h-[82px] min-[960px]:h-[104px]" />
+          <span className="text-[68px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
             POMEs
           </span>
 
-          {/* Live store links — icon + label + ↗ arrow, stacked.  Single
-              hairline divider lives BETWEEN the two rows (not under
-              both) so the affordance reads as one grouped block, not
-              two separate underlined links. */}
-          <div className="flex flex-col self-end divide-y divide-[#A0A0A0] min-[960px]:ml-auto">
+          {/* Live store links.  Below the wide breakpoint they wrap
+              under the wordmark, so on mobile/tablet we lay them out
+              row-wise with justify-between (App Store flush left, Play
+              Store flush right) instead of a vertical stack that hugs
+              one side of the page.  At min-[960px] they jump back to a
+              stacked column on the right of the title row. */}
+          <div className="flex w-full flex-row items-center justify-between gap-[24px] self-end min-[960px]:ml-auto min-[960px]:w-auto min-[960px]:flex-col min-[960px]:items-stretch min-[960px]:justify-start min-[960px]:gap-[2px]">
             <Link
               href="https://apps.apple.com/us/app/pomes-borrow-help-meet/id6765548381"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
+              className="group inline-flex items-center gap-[12px] py-[2px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity min-[960px]:py-[1px]"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -288,7 +290,9 @@ export default function PomesCaseStudy() {
               >
                 <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
               </svg>
-              <span>App Store</span>
+              <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
+                App Store
+              </span>
               <span aria-hidden className="ml-auto text-[18px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
                 ↗
               </span>
@@ -297,7 +301,7 @@ export default function PomesCaseStudy() {
               href="https://play.google.com/store/apps/details?id=com.soonk.pomes"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-[12px] py-[8px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity hover:opacity-60"
+              className="group inline-flex items-center gap-[12px] py-[2px] text-[20px] font-semibold tracking-[-0.01em] text-[#1F1F1F] no-underline transition-opacity min-[960px]:py-[1px]"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -307,7 +311,9 @@ export default function PomesCaseStudy() {
               >
                 <path d="M3.609 1.814 13.792 12 3.609 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92Zm10.89 10.886 2.302 2.302-12.6 7.227 10.298-9.529Zm3.692-3.69 2.434 1.4a1.5 1.5 0 0 1 0 2.6l-2.434 1.4-2.589-2.7 2.589-2.7Zm-1.39-.793L5.797 1.07l12.6 7.226-2.595 2.404-1-1Z" />
               </svg>
-              <span>Play Store</span>
+              <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
+                Play Store
+              </span>
               <span aria-hidden className="ml-auto text-[18px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
                 ↗
               </span>
@@ -1126,34 +1132,43 @@ export default function PomesCaseStudy() {
               <Lede>
                 I didn&rsquo;t want to disappear into a build and drop a
                 finished app on my neighbors&rsquo; heads.  So from week 1 —
-                long before TestFlight existed — I sent progress reports
-                into the apt group chat (PDF below), and capped the run
-                with a personal demo walkthrough before launch.
+                long before TestFlight existed — I sent two progress
+                reports into the apt group chat (PDFs below) and capped
+                the run with a personal demo walkthrough before launch.
               </Lede>
 
-              {/* 2-up artifact row: the week-1 community update (paginated
-                  via react-pdf) and the final-week YouTube Shorts
-                  walkthrough.  Sized so both cards land at ~360 px tall
-                  (PdfBook at width=260 → ~362 px, YT short at 9:16 with
-                  max-w 200 → ~356 px) and centered vertically in each
-                  column so the row reads level. */}
-              <div className="my-[18px] grid grid-cols-1 items-center justify-items-center gap-[28px] min-[560px]:grid-cols-2">
-                <div className="flex flex-col items-center gap-[10px]">
-                  <PdfBook
-                    src="/work/pomes/week1_updates.pdf"
-                    title="COMMUNITY UPDATE · WEEK 1"
-                    width={260}
-                  />
-                  <p
-                    className="max-w-[260px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
-                    style={{ fontStyle: "italic" }}
-                  >
-                    Mid-build progress note — posted to the apt group chat.
-                  </p>
-                </div>
+              {/* 3-up artifact row: two paginated weekly PDFs (what I
+                  was hearing → what was taking shape) and the final-week
+                  YouTube Shorts walkthrough.  Sized so each card lands
+                  around ~340–360 px tall (PdfBook at width=240 → ~336 px
+                  PDF area + ~24 paginator; YT short at 9:16 with
+                  max-w 190 → ~338 px) and centered vertically so the row
+                  reads level despite the different artifact shapes.
+                  Captions are intentionally distinct: same channel, but
+                  each card's prose tells you *why* this artifact, not
+                  just *what number week*. */}
+              <div className="my-[18px] grid grid-cols-1 items-center justify-items-center gap-[24px] min-[560px]:grid-cols-3">
+                {/* Week 1 + Week 2 — the PDF cards now carry their own
+                    title in the dark control bar at the bottom of the
+                    card, so no external caption needed (it just repeated
+                    the title in italic prose). */}
+                <PdfBook
+                  src="/work/pomes/week1_updates.pdf"
+                  title="COMMUNITY UPDATE · WEEK 1"
+                  width={240}
+                />
+                <PdfBook
+                  src="/work/pomes/week2_updates.pdf"
+                  title="COMMUNITY UPDATE · WEEK 2"
+                  width={240}
+                />
 
+                {/* Final week — YouTube Shorts walkthrough.  Keeps the
+                    italic caption: the video itself has no built-in
+                    title row like the PDF cards do, so the caption is
+                    the only thing saying "what is this thing". */}
                 <div className="flex flex-col items-center gap-[10px]">
-                  <div className="relative aspect-[9/16] w-full max-w-[200px] overflow-hidden rounded-[12px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
+                  <div className="relative aspect-[9/16] w-full max-w-[190px] overflow-hidden rounded-[12px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
                     <iframe
                       src="https://www.youtube.com/embed/CcLhZs-jwG4?autoplay=1&mute=1&loop=1&playlist=CcLhZs-jwG4&controls=0&playsinline=1&modestbranding=1&rel=0"
                       title="POMEs — personal walkthrough Short sent to the building before launch"
@@ -1163,10 +1178,10 @@ export default function PomesCaseStudy() {
                     />
                   </div>
                   <p
-                    className="max-w-[260px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                    className="max-w-[240px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
                     style={{ fontStyle: "italic" }}
                   >
-                    Final walkthrough Short — sent before launch.
+                    Final — personal walkthrough Short before launch.
                   </p>
                 </div>
               </div>
@@ -1238,12 +1253,58 @@ export default function PomesCaseStudy() {
                 elevators, lobbies, and mailrooms.
               </Body>
 
+              {/* Field photos — 3-up horizontal strip of leaflet activity
+                  (prepping → posting → mailroom).  Slight rotation per
+                  photo so the row feels hand-pasted, not catalog-grid.
+                  Sits between the body line that says "leafletted by
+                  hand" and the map+bar evidence fig — the photos are the
+                  receipt for that claim. */}
+              <div className="my-[18px] grid grid-cols-3 gap-[10px] min-[560px]:gap-[14px]">
+                {[
+                  {
+                    src: "/work/pomes/leaflet/01_prepping.jpg",
+                    alt: "Prepping leaflets in bags labeled Indoor Elevators",
+                    rot: "-1.2deg",
+                    label: "01 · Prepping",
+                  },
+                  {
+                    src: "/work/pomes/leaflet/02_posting.jpg",
+                    alt: "Posting a leaflet outside a target building",
+                    rot: "0.8deg",
+                    label: "02 · Posting",
+                  },
+                  {
+                    src: "/work/pomes/leaflet/03_mailroom.jpg",
+                    alt: "Leaflet up on a mailroom wall",
+                    rot: "-0.6deg",
+                    label: "03 · Mailroom",
+                  },
+                ].map((p) => (
+                  <figure
+                    key={p.src}
+                    className="m-0"
+                    style={{ transform: `rotate(${p.rot})` }}
+                  >
+                    <div className="overflow-hidden rounded-[6px] border border-[#1F1F1F]/15 bg-white shadow-[0_2px_6px_rgba(0,0,0,0.06)]">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={p.src}
+                        alt={p.alt}
+                        className="block aspect-[4/3] h-auto w-full object-cover"
+                      />
+                    </div>
+                    <figcaption
+                      className="mt-[5px] text-[10px] tracking-[0.08em] text-[#A0A0A0]"
+                      style={{ fontFamily: MONO }}
+                    >
+                      {p.label}
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+
               {/* GTM evidence — NYC neighborhood map on the left, top-
-                  building conversion bar on the right.  Single full-width
-                  fig, no leaflet photos: tried adding them to the left in
-                  thumbnail form, but at small sizes they didn't add real
-                  information beyond what the body already says ("leafletted
-                  by hand"), so they were just decoration. */}
+                  building conversion bar on the right. */}
               <figure className="my-[24px] rounded-[12px] bg-[#F4F4F4] p-[24px]">
                 <div className="grid grid-cols-1 gap-[24px] min-[560px]:grid-cols-2">
                   <NycMapSvg />
