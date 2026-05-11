@@ -176,13 +176,17 @@ function SectionHero() {
 
       {/* Logo + wordmark — POMEs hero spec (68 / 92 / 128 px, font-semibold,
           tracking -0.05).  Alnylam brand mark sits on the same baseline
-          ramp as the wordmark; logo height tracks the wordmark line-height. */}
+          ramp as the wordmark; logo height tracks the wordmark line-height.
+          Source SVG (originally tri-colour blue/navy/light) recoloured to
+          the portfolio's #1F1F1F ink so the mark reads as a confident
+          monochrome signature next to "SSOT" instead of a small faded
+          PNG that the wordmark drowns out. */}
       <div className="mb-[48px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[64px] min-[560px]:gap-[28px] min-[960px]:mb-[72px]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="/work/logos/alnylamlogo.png"
+          src="/work/logos/Alnylam_logo.svg"
           alt="Alnylam"
-          className="h-[64px] w-auto shrink-0 object-contain min-[560px]:h-[82px] min-[960px]:h-[104px]"
+          className="h-[68px] w-auto shrink-0 min-[560px]:h-[88px] min-[960px]:h-[112px]"
         />
         <span className="text-[68px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
           SSOT
