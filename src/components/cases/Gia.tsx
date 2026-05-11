@@ -738,7 +738,7 @@ function Challenge2() {
       <SubH>2A · Forecasted Demand — the conflict</SubH>
 
       <p className="my-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
-        QUESTIONS TO ANSWER
+        ❓ QUESTIONS TO ANSWER
       </p>
       <Bullets
         items={[
@@ -754,7 +754,7 @@ function Challenge2() {
       <ExistingForecastChart />
 
       <p className="mt-[20px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
-        PROBLEMS
+        ⚠️ PROBLEMS
       </p>
       <Bullets
         items={[
@@ -777,7 +777,7 @@ function Challenge2() {
       />
 
       <p className="mt-[28px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
-        SOLVED BY
+        ✅ SOLVED BY
       </p>
       <Body>
         Setting the goal first and verifying the new visual answers it —
@@ -797,7 +797,7 @@ function Challenge2() {
       <SubH>2B · Financial / Operational Metrics — the conflict</SubH>
 
       <p className="my-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
-        QUESTIONS TO ANSWER
+        ❓ QUESTIONS TO ANSWER
       </p>
       <Bullets
         items={[
@@ -819,7 +819,7 @@ function Challenge2() {
       />
 
       <p className="mt-[20px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
-        PROBLEMS
+        ⚠️ PROBLEMS
       </p>
       <Bullets
         items={[
@@ -831,7 +831,7 @@ function Challenge2() {
       />
 
       <p className="mt-[28px] mb-[10px] text-[13px] tracking-[0.16em] font-medium text-[#5D5D5D]">
-        SOLVED BY
+        ✅ SOLVED BY
       </p>
       <Body>
         Working backwards from the questions, listing the data needed,
