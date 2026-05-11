@@ -1121,50 +1121,33 @@ export default function PomesCaseStudy() {
               />
               <Lede>
                 I didn&rsquo;t want to disappear into a build and drop a
-                finished app on my neighbors&rsquo; heads.  So from week 2 —
-                long before TestFlight existed — I sent weekly progress
-                reports into the apt group chat (PDFs below), and capped the
-                run with a personal demo walkthrough before launch.
+                finished app on my neighbors&rsquo; heads.  So from week 1 —
+                long before TestFlight existed — I sent progress reports
+                into the apt group chat (PDF below), and capped the run
+                with a personal demo walkthrough before launch.
               </Lede>
 
-              {/* 3-up grid: two PDF books (week 1 + week 2 updates,
-                  paginated via react-pdf) and the final week's video
-                  walkthrough.  Each cell stacks artifact above caption so
-                  the row aligns at the caption baseline even though PDF
-                  pages and a phone-portrait video have different aspects. */}
-              <div className="my-[18px] grid grid-cols-1 items-start gap-[20px] min-[560px]:grid-cols-3">
+              {/* 2-up artifact row: the week-1 community update (paginated
+                  via react-pdf) and the final-week YouTube Shorts
+                  walkthrough.  Sized so both cards land at ~360 px tall
+                  (PdfBook at width=260 → ~362 px, YT short at 9:16 with
+                  max-w 200 → ~356 px) and centered vertically in each
+                  column so the row reads level. */}
+              <div className="my-[18px] grid grid-cols-1 items-center justify-items-center gap-[28px] min-[560px]:grid-cols-2">
                 <div className="flex flex-col items-center gap-[10px]">
                   <PdfBook
                     src="/work/pomes/week1_updates.pdf"
-                    title="WEEK 1 · UPDATE"
+                    title="COMMUNITY UPDATE · WEEK 1"
                     width={260}
                   />
                   <p
-                    className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                    className="max-w-[260px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
                     style={{ fontStyle: "italic" }}
                   >
-                    Week 1 — apt group chat update.
+                    Mid-build progress note — posted to the apt group chat.
                   </p>
                 </div>
 
-                <div className="flex flex-col items-center gap-[10px]">
-                  <PdfBook
-                    src="/work/pomes/week2_updates.pdf"
-                    title="WEEK 2 · UPDATE"
-                    width={260}
-                  />
-                  <p
-                    className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
-                    style={{ fontStyle: "italic" }}
-                  >
-                    Week 2 — apt group chat update.
-                  </p>
-                </div>
-
-                {/* Final week — YouTube Shorts walkthrough I recorded and
-                    posted to the building chat.  9:16 native aspect; sized
-                    down to ~200 px wide so its height lands close to the
-                    PDF cards on the left and the row reads as one band. */}
                 <div className="flex flex-col items-center gap-[10px]">
                   <div className="relative aspect-[9/16] w-full max-w-[200px] overflow-hidden rounded-[12px] border-2 border-[#1F1F1F] bg-[#1F1F1F]">
                     <iframe
@@ -1176,10 +1159,10 @@ export default function PomesCaseStudy() {
                     />
                   </div>
                   <p
-                    className="text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
+                    className="max-w-[260px] text-center text-[12px] tracking-[0.04em] text-[#5D5D5D]"
                     style={{ fontStyle: "italic" }}
                   >
-                    Final — personal walkthrough Short before launch.
+                    Final walkthrough Short — sent before launch.
                   </p>
                 </div>
               </div>
