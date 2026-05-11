@@ -254,20 +254,15 @@ export default function PomesCaseStudy() {
       >
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Project number (canonical 01-09 marker, JBM Mono) + Logo +
-            giant POMEs wordmark — mirrors the landing list view's giant
-            mono number anchoring each tile.  Live store links sit on the
-            same row, anchored to the right, so the case opens with the
-            answer to "is it real?" before the read begins. */}
+        {/* Logo + POMEs wordmark.  Live store links sit on the same row,
+            anchored to the right, so the case opens with the answer to
+            "is it real?" before the read begins.  (The canonical 01–09
+            project marker still appears in the sticky CaseStudyNav above;
+            duplicating it in the hero was eating space without adding
+            information.) */}
         <div className="mb-[28px] flex flex-wrap items-end gap-[20px] leading-none min-[560px]:mb-[36px] min-[560px]:gap-[28px]">
-          <span
-            className="text-[64px] font-extrabold leading-[0.9] tracking-[-0.04em] text-[#1F1F1F] min-[560px]:text-[88px] min-[960px]:text-[120px]"
-            style={{ fontFamily: MONO }}
-          >
-            01
-          </span>
           <PomesLogoSvg className="h-[80px] w-auto shrink-0 text-[#1F1F1F] min-[560px]:h-[100px] min-[960px]:h-[124px]" />
-          <span className="text-[80px] font-black leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[110px] min-[960px]:text-[152px]">
+          <span className="text-[80px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[110px] min-[960px]:text-[152px]">
             POMEs
           </span>
 
