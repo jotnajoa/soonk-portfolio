@@ -129,6 +129,13 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
             >
               Work
             </Link>
+            {/* Indicator squares — bare 16×16 boxes by default; on hover
+                each expands into a pill that reveals the project's brand
+                name in line, pushing siblings to the right.  Implemented
+                with a max-w + pl transition on the label so the indicator
+                itself stays the same fixed size and the row reflows
+                smoothly.  duration-300 reads as a deliberate slide, not
+                a snap. */}
             {tiles.map((t) => {
               const active = t.slug === currentSlug;
               return (
@@ -136,11 +143,20 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
                   key={t.id}
                   href={`/work/${t.slug}`}
                   aria-label={`${t.id} · ${t.brand}`}
-                  title={`${t.id} · ${t.brand}`}
-                  className={`size-4 border border-[#1F1F1F] transition-colors ${
-                    active ? "bg-[#1F1F1F]" : "bg-transparent hover:bg-[#D9D9D9]"
-                  }`}
-                />
+                  className="group flex items-center no-underline"
+                >
+                  <span
+                    aria-hidden
+                    className={`block size-4 shrink-0 border border-[#1F1F1F] transition-colors ${
+                      active
+                        ? "bg-[#1F1F1F]"
+                        : "bg-transparent group-hover:bg-[#D9D9D9]"
+                    }`}
+                  />
+                  <span className="max-w-0 overflow-hidden pl-0 text-[13px] font-medium whitespace-nowrap text-[#1F1F1F] transition-all duration-300 ease-out group-hover:max-w-[180px] group-hover:pl-[8px]">
+                    {t.brand}
+                  </span>
+                </Link>
               );
             })}
           </div>
