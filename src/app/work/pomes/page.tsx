@@ -952,6 +952,7 @@ export default function PomesCaseStudy() {
                   {
                     label: "Chat opens",
                     note: "Both parties enter the item-scoped thread.",
+                    src: "/work/pomes/borrow/02_chat_opens.png",
                   },
                   {
                     label: "Owner lends item",
@@ -966,6 +967,7 @@ export default function PomesCaseStudy() {
                   {
                     label: "Owner confirms · thanks",
                     note: "Loop closes; thank-you note optional.",
+                    src: "/work/pomes/borrow/05_thanks.png",
                   },
                 ]}
               />
@@ -976,14 +978,17 @@ export default function PomesCaseStudy() {
                   {
                     label: "Offer or request favor",
                     note: "Offer side is the default.",
+                    src: "/work/pomes/favor/01_request.png",
                   },
                   {
                     label: "Favor exchanged",
                     note: "Time / place agreed in the thread.",
+                    src: "/work/pomes/favor/02_exchanged.png",
                   },
                   {
                     label: "Marked complete · thanks",
                     note: "Thank-you note optional.",
+                    src: "/work/pomes/favor/03_thanks.png",
                   },
                 ]}
               />
