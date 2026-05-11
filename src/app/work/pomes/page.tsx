@@ -267,20 +267,36 @@ export default function PomesCaseStudy() {
             POMEs
           </span>
 
-          {/* Live-link chips — TBD store URLs; placeholders link to "#" so
-              the visual lands now, swap href later. */}
-          <div className="flex flex-wrap items-center gap-[8px] self-end min-[960px]:ml-auto">
+          {/* Live store links — plain icon + text rows, stacked.
+              Replaces the earlier chunky black/outlined chips. */}
+          <div className="flex flex-col gap-[6px] self-end min-[960px]:ml-auto">
             <Link
               href="#"
-              className="inline-flex items-center gap-[6px] border-2 border-[#1F1F1F] bg-[#1F1F1F] px-[12px] py-[6px] text-[12px] font-medium tracking-[0.04em] text-[#F4F4F4] no-underline hover:bg-[#5D5D5D]"
+              className="inline-flex items-center gap-[8px] text-[14px] font-medium text-[#1F1F1F] no-underline hover:underline"
             >
-              ↗ App Store
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden
+                className="h-[18px] w-[18px] shrink-0"
+                fill="currentColor"
+              >
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+              </svg>
+              App Store
             </Link>
             <Link
               href="#"
-              className="inline-flex items-center gap-[6px] border-2 border-[#1F1F1F] px-[12px] py-[6px] text-[12px] font-medium tracking-[0.04em] text-[#1F1F1F] no-underline hover:bg-[#1F1F1F] hover:text-[#F4F4F4]"
+              className="inline-flex items-center gap-[8px] text-[14px] font-medium text-[#1F1F1F] no-underline hover:underline"
             >
-              ↗ Google Play
+              <svg
+                viewBox="0 0 24 24"
+                aria-hidden
+                className="h-[18px] w-[18px] shrink-0"
+                fill="currentColor"
+              >
+                <path d="M3.609 1.814 13.792 12 3.609 22.186a.996.996 0 0 1-.61-.92V2.734a1 1 0 0 1 .61-.92Zm10.89 10.886 2.302 2.302-12.6 7.227 10.298-9.529Zm3.692-3.69 2.434 1.4a1.5 1.5 0 0 1 0 2.6l-2.434 1.4-2.589-2.7 2.589-2.7Zm-1.39-.793L5.797 1.07l12.6 7.226-2.595 2.404-1-1Z" />
+              </svg>
+              Play Store
             </Link>
           </div>
         </div>
@@ -624,7 +640,6 @@ export default function PomesCaseStudy() {
                     src="https://jotnajoa.github.io/pbn-card-sorting/"
                     title="POMEs interview card-sorting game"
                     loading="lazy"
-                    sandbox="allow-scripts"
                     className="block h-[520px] w-full"
                   />
                 </div>
