@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { tiles } from "@/data/tiles";
 import { useEffect, useRef, useState } from "react";
 
@@ -52,14 +53,6 @@ export default function MobileNav() {
     setOpen(true);
   };
   const close = () => setOpen(false);
-  const goTo = (id: string) => {
-    close();
-    setTimeout(() => {
-      document
-        .querySelector(`[data-tile-list][data-tile-id="${id}"]`)
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 300);
-  };
 
   return (
     <>
@@ -154,24 +147,23 @@ export default function MobileNav() {
               <span aria-hidden className="text-[18px]">∧</span>
             </button>
 
-            {/* All projects render in uniform inactive style.  The
-                home-page hamburger menu is reached from the list view
-                where the user is browsing *all* projects — highlighting
-                whichever project happens to be scrolled into view
-                (with the bold + dot treatment) reads as "you're inside
-                this case study", which is misleading.  The bold + dot
-                indicator is reserved for the case-study CaseStudyNav,
-                where currentSlug actually means the user is on that
-                project's page. */}
+            {/* Project items navigate INTO the case-study route, not to
+                the home-page tile-list anchor — the menu is the user's
+                jump-into-a-case-study affordance, not a same-page scroll
+                shortcut.  All projects render in uniform inactive style;
+                the bold + dot "you're here" indicator is reserved for
+                the case-study CaseStudyNav (where currentSlug actually
+                means the user is on that project's page). */}
             <ul className="flex flex-col gap-[16px] pl-1">
               {tiles.map((t) => (
                 <li key={t.id} className="flex items-center gap-[16px]">
-                  <button
-                    onClick={() => goTo(t.id)}
-                    className="cursor-pointer text-left text-[24px] leading-[0.92] font-normal text-[#8E8E8E]"
+                  <Link
+                    href={`/work/${t.slug}`}
+                    onClick={close}
+                    className="text-left text-[24px] leading-[0.92] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
                   >
                     {t.brand}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
