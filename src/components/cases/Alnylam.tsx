@@ -166,40 +166,6 @@ function DesktopFrame({
   );
 }
 
-function HeroRibbon() {
-  const nodes: { date: string; label: string; detail: string }[] = [
-    { date: "Week 0", label: "Brief landed", detail: "Fixed clock · fixed budget" },
-    { date: "Week 1", label: "First “wrong” sketch", detail: "Drawn to be reacted to" },
-    { date: "Wk 2–6", label: "War-room loop", detail: "Sketch → review, daily" },
-    { date: "Week 8", label: "Sign-off", detail: "Spec frozen, build started" },
-    { date: "Post", label: "Expansion", detail: "+4 engagements · +3 pharma" },
-  ];
-  // 5-col grid on desktop; on mobile, 2-up so the row stays readable
-  // without horizontal scrolling.  Brief asks "do NOT stack to 5 rows,"
-  // which 2-up honors (the 5 nodes break into 3 rows of 2 / 2 / 1).
-  return (
-    <div className="grid grid-cols-2 gap-y-[20px] gap-x-[14px] border-t border-b border-[#A0A0A0] py-[20px] min-[560px]:grid-cols-5 min-[560px]:gap-[12px]">
-      {nodes.map((n) => (
-        <div key={n.date} className="flex flex-col gap-[4px] px-[2px]">
-          <span aria-hidden className="block h-[18px] w-[2px] bg-[#1F1F1F]" />
-          <span className="text-[13px] font-medium leading-[1.2] text-[#1F1F1F]">
-            {n.date}
-          </span>
-          <span className="text-[12px] leading-[1.35] text-[#5D5D5D]">
-            {n.label}
-          </span>
-          <span
-            className="text-[10px] leading-[1.45] tracking-[0.04em] text-[#A0A0A0]"
-            style={MONO}
-          >
-            {n.detail}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function SectionHero() {
   return (
     <section
@@ -234,24 +200,16 @@ function SectionHero() {
 
           <dl className="border-t border-[#A0A0A0]">
             {[
-              ["Role", "Operator / strategist · war-room mode"],
-              [
-                "Scope",
-                "Single Source of Truth platform · sketch-first method under fixed timebox",
-              ],
+              ["Role", "Senior IC"],
               ["Timeline", "8 weeks fixed → engagement expanded"],
               [
-                "Status",
+                "Impact",
                 "Shipped · +690% YoY client revenue · 4 follow-on engagements",
-              ],
-              [
-                "Stack",
-                "Pen + paper · Figma · Power BI mockups · in-room iteration",
               ],
             ].map(([l, v]) => (
               <div
                 key={l}
-                className="grid grid-cols-[90px_1fr] items-baseline gap-[14px] border-b border-[#A0A0A0] py-[10px]"
+                className="grid grid-cols-[90px_1fr] items-baseline gap-[14px] border-b border-[#A0A0A0] py-[12px]"
               >
                 <dt
                   className="text-[11px] font-medium tracking-[0.06em] text-[#5D5D5D]"
@@ -259,7 +217,7 @@ function SectionHero() {
                 >
                   {l}
                 </dt>
-                <dd className="text-[13px] leading-[1.55] text-[#1F1F1F]">
+                <dd className="text-[14px] leading-[1.55] text-[#1F1F1F]">
                   {v}
                 </dd>
               </div>
@@ -267,15 +225,6 @@ function SectionHero() {
           </dl>
         </div>
       </div>
-
-      <HeroRibbon />
-
-      <p
-        className="mt-[40px] text-center text-[12px] tracking-[0.08em] text-[#5D5D5D]"
-        style={MONO}
-      >
-        ↓ Scroll for case study
-      </p>
     </section>
   );
 }
@@ -360,11 +309,12 @@ function SectionConstraint() {
 // §03 The method ★ — Workflow loop SVG + pull quote + body
 // ============================================================================
 
-// Inline SVG redraw of the war-room loop.  The "Sketch" node is the only
-// 2.2-px stroke, with a ★ glyph above and a mono WRONG-ON-PURPOSE micro-
-// label inside the box.  Two looping arrows close the cycle: sign-off →
-// build, build → SME input.  Monochrome — the only chromatic content
-// elsewhere on the page is the SME annotations inside the sketch images.
+// Inline SVG redraw of the war-room loop.  The "Sketch" node is filled
+// black with white text — visual inversion against the other open boxes
+// is the emphasis (Soonk's feedback: "Wrong on purpose 하이라이트 쌔게
+// 넣어줘").  Two looping arrows close the cycle: sign-off → build, build
+// → SME input.  Monochrome — the only chromatic content elsewhere on the
+// page is the SME annotations inside the sketch images.
 function WorkflowLoopDiagram() {
   return (
     <figure className="my-[28px] rounded-[10px] border-[1.5px] border-[#1F1F1F] bg-[#1F1F1F]/[0.03] px-[18px] py-[28px] tablet:px-[28px]">
@@ -397,24 +347,27 @@ function WorkflowLoopDiagram() {
             <path d="M0,0 L10,5 L0,10 z" fill="#1F1F1F" />
           </marker>
         </defs>
-        {/* Top row boxes — Sketch node carries the 2.2-px bold stroke */}
-        <g fill="none" stroke="#1F1F1F">
-          <rect x="20" y="40" width="120" height="68" rx="10" strokeWidth="1" />
-          <rect
-            x="170"
-            y="40"
-            width="120"
-            height="68"
-            rx="10"
-            strokeWidth="2.2"
-          />
-          <rect x="320" y="40" width="120" height="68" rx="10" strokeWidth="1" />
-          <rect x="470" y="40" width="120" height="68" rx="10" strokeWidth="1" />
-          <rect x="620" y="40" width="140" height="68" rx="10" strokeWidth="1" />
+        {/* Open boxes — every node except Sketch */}
+        <g fill="none" stroke="#1F1F1F" strokeWidth="1">
+          <rect x="20" y="40" width="120" height="68" rx="10" />
+          <rect x="320" y="40" width="120" height="68" rx="10" />
+          <rect x="470" y="40" width="120" height="68" rx="10" />
+          <rect x="620" y="40" width="140" height="68" rx="10" />
           {/* Bottom box — Build */}
-          <rect x="320" y="190" width="200" height="68" rx="10" strokeWidth="1" />
+          <rect x="320" y="190" width="200" height="68" rx="10" />
         </g>
-        {/* Labels */}
+        {/* Sketch node — solid black fill, the emphasis */}
+        <rect
+          x="170"
+          y="40"
+          width="120"
+          height="68"
+          rx="10"
+          fill="#1F1F1F"
+          stroke="#1F1F1F"
+          strokeWidth="1"
+        />
+        {/* Labels — open nodes (dark on cream) */}
         <g
           fill="#1F1F1F"
           fontFamily="-apple-system, Inter, sans-serif"
@@ -422,19 +375,6 @@ function WorkflowLoopDiagram() {
           textAnchor="middle"
         >
           <text x="80" y="78">SME Input</text>
-          <text x="230" y="74" fontWeight="600">
-            Sketch
-          </text>
-          <text
-            x="230"
-            y="92"
-            fontSize="10"
-            fill="#5D5D5D"
-            fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-            letterSpacing="0.05em"
-          >
-            WRONG-ON-PURPOSE
-          </text>
           <text x="380" y="70">Strategic</text>
           <text x="380" y="88">Alignment</text>
           <text x="530" y="70">Engineering</text>
@@ -444,6 +384,30 @@ function WorkflowLoopDiagram() {
           <text x="420" y="220">Build data pipeline</text>
           <text x="420" y="238">+ frontend</text>
         </g>
+        {/* Sketch labels — light on black, bigger & bolder */}
+        <text
+          x="230"
+          y="72"
+          fontFamily="-apple-system, Inter, sans-serif"
+          fontSize="15"
+          fontWeight="700"
+          fill="#F4F4F4"
+          textAnchor="middle"
+        >
+          Sketch
+        </text>
+        <text
+          x="230"
+          y="94"
+          fontSize="11"
+          fill="#F4F4F4"
+          fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
+          letterSpacing="0.12em"
+          fontWeight="600"
+          textAnchor="middle"
+        >
+          WRONG-ON-PURPOSE
+        </text>
         {/* Arrows — sequential top row */}
         <g
           stroke="#1F1F1F"
@@ -460,10 +424,6 @@ function WorkflowLoopDiagram() {
           {/* Build → SME Input (loop back left) */}
           <path d="M 320 224 H 80 V 112" />
         </g>
-        {/* Sketch ★ marker — sits above the Sketch box */}
-        <text x="278" y="50" fontSize="13" fontWeight="700" fill="#1F1F1F">
-          ★
-        </text>
       </svg>
       <figcaption
         className="mt-[16px] text-center text-[11px] tracking-[0.04em] text-[#5D5D5D]"
@@ -572,66 +532,22 @@ function SketchTile({
   );
 }
 
-function InteractionProof() {
-  const pairs: {
-    sel: string;
-    selAlt: string;
-    bars: string;
-    barsAlt: string;
-    caption: string;
-  }[] = [
-    {
-      sel: "/work/alnylam/interact-state1-select.png",
-      selAlt: "Select Milestones with 3 checked",
-      bars: "/work/alnylam/interact-state1-bars.png",
-      barsAlt: "Bar chart with 3 milestone markers",
-      caption: "3 milestones checked → 3 markers on each bar",
-    },
-    {
-      sel: "/work/alnylam/interact-state2-select.png",
-      selAlt: "Select Milestones with 2 checked",
-      bars: "/work/alnylam/interact-state2-bars.png",
-      barsAlt: "Bar chart with 2 milestone markers",
-      caption: "Uncheck Approved → marker disappears across all bars",
-    },
-  ];
+// 8-week emphasis callout — inverted dark slab.  Matches the
+// "Wrong-on-purpose" treatment in §03 (Sketch node fill) so the two
+// signature beats of the page share one visual grammar of emphasis.
+function EightWeekCallout() {
   return (
-    <aside className="mt-[32px] rounded-[8px] border border-dashed border-[#1F1F1F]/30 bg-[#1F1F1F]/[0.02] p-[20px]">
+    <aside className="my-[28px] max-w-[680px] rounded-[12px] bg-[#1F1F1F] px-[24px] py-[20px] tablet:px-[28px] tablet:py-[24px]">
       <p
-        className="mb-[14px] text-[10px] tracking-[0.08em] text-[#5D5D5D]"
+        className="text-[11px] tracking-[0.18em] font-medium text-[#A0A0A0]"
         style={MONO}
       >
-        SHIPPED INTERACTION PROOF · SAME WEEK AS THE SKETCH
+        8-WEEK CLOCK · AGGRESSIVE TIMELINE
       </p>
-      <div className="grid grid-cols-1 gap-[20px] min-[560px]:grid-cols-2">
-        {pairs.map((p) => (
-          <div key={p.caption} className="flex flex-col gap-[10px]">
-            <div className="grid grid-cols-[1fr_1.4fr] items-center gap-[8px] rounded-[6px] border border-[#1F1F1F]/15 bg-[#EEEEEE] p-[10px]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={p.sel}
-                alt={p.selAlt}
-                className="w-full rounded-[4px] border border-[#1F1F1F]/15"
-              />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={p.bars}
-                alt={p.barsAlt}
-                className="w-full rounded-[4px] border border-[#1F1F1F]/15"
-              />
-            </div>
-            <p className="text-center text-[11px] leading-[1.55] text-[#5D5D5D]">
-              {p.caption}
-            </p>
-          </div>
-        ))}
-      </div>
-      <p
-        className="mt-[14px] text-center text-[10px] tracking-[0.04em] text-[#5D5D5D]"
-        style={MONO}
-      >
-        Sketches turned into shipping logic, same week. Interaction state
-        proof.
+      <p className="mt-[10px] text-[18px] leading-[1.45] font-medium text-[#F4F4F4] tablet:text-[20px]">
+        No room for write-ups, debrief decks, or &ldquo;we&rsquo;ll circle
+        back on this.&rdquo; The room was fast because the room was
+        concrete.
       </p>
     </aside>
   );
@@ -711,14 +627,11 @@ function SectionPractice() {
         ↑ Annotation = spec. No translation step. ↑
       </p>
 
-      <InteractionProof />
+      <EightWeekCallout />
 
       <Body>
-        The room is fast because the room is concrete. The 8-week clock
-        didn&rsquo;t allow for write-ups, debrief decks, or &ldquo;we&rsquo;ll
-        circle back on this.&rdquo; Every sketch went out at end-of-day with
-        annotations on it. Every morning started with the next version of the
-        same sketch.
+        Every sketch went out at end-of-day with annotations on it. Every
+        morning started with the next version of the same sketch.
       </Body>
     </Section>
   );
@@ -867,29 +780,6 @@ function SectionOutcome() {
         />
       </div>
 
-      <figure className="mt-[36px]">
-        <p
-          className="mb-[10px] text-[11px] tracking-[0.08em] text-[#5D5D5D]"
-          style={MONO}
-        >
-          WHAT IT BECAME · REFINED POST-WAR-ROOM VERSION
-        </p>
-        <div className="overflow-hidden rounded-[6px] border border-[#1F1F1F]/15 bg-white">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/work/alnylam/shipped-program-milestone.jpeg"
-            alt="Power BI Program Milestone view — shipped version with phase-level Gantt, Recent Activities cards, and a milestone tooltip"
-            className="block w-full"
-          />
-        </div>
-        <figcaption
-          className="mt-[8px] text-[10px] tracking-[0.04em] text-[#5D5D5D]"
-          style={MONO}
-        >
-          Power BI Program Milestone view · phase-level Gantt · Recent
-          Activities cards · milestone tooltip · shipped
-        </figcaption>
-      </figure>
     </Section>
   );
 }
