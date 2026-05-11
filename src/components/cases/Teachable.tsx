@@ -167,14 +167,14 @@ function SectionHero() {
           </p>
         </div>
 
-        {/* Two-column row: hero image on the left + tagline on the right.
-            The tagline used to sit full-width above the image, which made
-            it read like a subtitle of the wordmark; pairing it with the
-            image instead reads as the project's thesis next to the
-            artifact that proves it.  Below the row, the meta dl runs as
-            a single horizontal strip — Role · Timeline · Outcome — so
-            it doesn't compete with the tagline for the right column. */}
-        <div className="grid gap-[36px] tablet:grid-cols-[1fr_360px] tablet:items-center tablet:gap-[48px]">
+        {/* Two-column row: hero image on the left, tagline + meta dl
+            stacked in the right column — POMEs hero rhythm.  The tagline
+            sits at the top of the right column right under the wordmark
+            so it reads as the project's thesis; the meta dl follows
+            immediately below it (Role · Timeline · Outcome) so all
+            "what is this" info lives in one column without a separate
+            full-width row underneath the image. */}
+        <div className="grid gap-[36px] tablet:grid-cols-[1fr_360px] tablet:items-start tablet:gap-[48px]">
           <div className="relative aspect-video w-full overflow-clip border-2 border-[#1F1F1F]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -184,46 +184,44 @@ function SectionHero() {
             />
           </div>
 
-          <p className="text-[22px] leading-[1.3] font-medium tracking-[-0.01em] text-[#1F1F1F] tablet:text-[28px]">
-            Designed the report. Designed how it would be measured. Then
-            refused to read low usage as failure.
-          </p>
-        </div>
+          <div className="flex flex-col gap-[24px] tablet:gap-[28px]">
+            <p className="text-[22px] leading-[1.3] font-medium tracking-[-0.01em] text-[#1F1F1F] tablet:text-[26px]">
+              Designed the report. Designed how it would be measured. Then
+              refused to read low usage as failure.
+            </p>
 
-        {/* Meta strip — horizontal 3-up (Role · Timeline · Outcome).
-            On mobile, the columns stack.  "Solo IC · end-to-end" trimmed
-            to just "Solo IC" — the case study text already shows it was
-            end-to-end, the extra phrase was filler. */}
-        <dl className="grid grid-cols-1 border-t border-[#1F1F1F]/30 tablet:grid-cols-[120px_120px_1fr]">
-          {[
-            { label: "Role", value: "Solo IC" },
-            { label: "Timeline", value: "2022" },
-            {
-              label: "Outcome",
-              value: "87% engagement vs previous 20% (4.4× lift)",
-              bold: true,
-            },
-          ].map(({ label, value, bold }) => (
-            <div
-              key={label}
-              className="flex flex-col gap-[6px] border-b border-[#1F1F1F]/30 py-[14px] tablet:py-[16px]"
-            >
-              <dt
-                className="text-[11px] tracking-[0.14em] font-medium text-[#5D5D5D]"
-                style={MONO}
-              >
-                {label.toUpperCase()}
-              </dt>
-              <dd
-                className={`text-[14px] leading-[1.5] text-[#1F1F1F] tablet:text-[15px] ${
-                  bold ? "font-semibold" : "font-normal"
-                }`}
-              >
-                {value}
-              </dd>
-            </div>
-          ))}
-        </dl>
+            <dl className="border-t border-[#1F1F1F]/30">
+              {[
+                { label: "Role", value: "Solo IC" },
+                { label: "Timeline", value: "2022" },
+                {
+                  label: "Outcome",
+                  value: "87% engagement vs previous 20% (4.4× lift)",
+                  bold: true,
+                },
+              ].map(({ label, value, bold }) => (
+                <div
+                  key={label}
+                  className="grid grid-cols-[90px_1fr] items-baseline gap-[14px] border-b border-[#1F1F1F]/30 py-[12px]"
+                >
+                  <dt
+                    className="text-[11px] tracking-[0.14em] font-medium text-[#5D5D5D]"
+                    style={MONO}
+                  >
+                    {label.toUpperCase()}
+                  </dt>
+                  <dd
+                    className={`text-[14px] leading-[1.5] text-[#1F1F1F] tablet:text-[15px] ${
+                      bold ? "font-semibold" : "font-normal"
+                    }`}
+                  >
+                    {value}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
       </div>
     </section>
   );
