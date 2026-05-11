@@ -233,13 +233,23 @@ function TileTeachable() {
 }
 
 // ---- 07 NYC parking ---------------------------------------------------------
+// Published case study at /work/parking — wraps the tile content with an
+// absolute-positioned Link the same way TilePomes does, so flying-squares
+// geometry + data-tile-id measurements stay intact.
 function TileNyc() {
   return (
     <article
       data-tile-id="07"
       data-tile-grid
-      className={`${SHELL} flex-col gap-[24px] px-[25px] py-[24px]`}
+      className={`${SHELL} group flex-col gap-[24px] px-[25px] py-[24px]`}
     >
+      <Link
+        href="/work/parking"
+        aria-label="Is street parking really free? — case study"
+        className="absolute inset-0 z-10"
+        onClick={killGridScrollTriggers}
+      />
+
       <TileLogo tileId="07" />
       <div className="w-full text-[30px] leading-[0.95] font-black text-[#1F1F1F]">
         <p className="leading-[0.95]">Is street parking</p>

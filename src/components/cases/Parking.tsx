@@ -16,15 +16,10 @@ import CaseStudyLeftNav, {
   type CaseStudySection,
 } from "@/components/cases/CaseStudyLeftNav";
 
-const MONO: React.CSSProperties = {
-  fontFamily:
-    "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace",
-};
-
 const SECTIONS: CaseStudySection[] = [
   { id: "premise", num: "02", label: "Premise" },
   { id: "data", num: "03", label: "The data" },
-  { id: "build", num: "04", label: "Build", star: true },
+  { id: "build", num: "04", label: "Build" },
   { id: "findings", num: "05", label: "Findings" },
   { id: "reflection", num: "06", label: "Reflection" },
 ];
@@ -134,14 +129,6 @@ function StatsCallout({
   );
 }
 
-function LinkOut({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-[12px] text-[#A0A0A0]">
-      ↗ link out: {children}
-    </p>
-  );
-}
-
 function SectionHeader({
   number,
   eyebrow,
@@ -186,38 +173,25 @@ function Hero() {
       <div className="mx-auto flex max-w-[1200px] flex-col gap-[36px] px-[32px]">
         <Eyebrow>+ 01 / Intro</Eyebrow>
 
-        {/* Display — project number + wordmark.  "07" is JBM Mono (the
-            only place JBM appears).  No glyph logo here — the question is
-            the brand. */}
-        <div className="flex flex-wrap items-baseline gap-[16px]">
-          <span
-            className="text-[64px] font-extrabold leading-[0.85] tracking-[-0.04em] text-[#1F1F1F] tablet:text-[120px]"
-            style={MONO}
-          >
-            07
-          </span>
-          <h1 className="max-w-[1100px] text-[40px] leading-[0.95] font-black tracking-[-0.03em] text-[#1F1F1F] tablet:text-[88px]">
-            Is street parking
-            <br aria-hidden />
-            really free?
-          </h1>
-        </div>
+        {/* Display — wordmark only. No glyph mark, no project number
+            prefix — the question is the brand. */}
+        <h1 className="max-w-[1100px] text-[40px] leading-[0.95] font-black tracking-[-0.03em] text-[#1F1F1F] tablet:text-[88px]">
+          Is street parking
+          <br aria-hidden />
+          really free?
+        </h1>
 
         {/* Hero grid — tagline + meta */}
         <div className="grid gap-[36px] tablet:grid-cols-[1fr_320px] tablet:items-start">
           <p className="max-w-[520px] text-[20px] leading-[1.4] font-medium text-[#1F1F1F] tablet:text-[21px]">
             A self-initiated investigation into 60,000 NYC parking tickets.
-            <br aria-hidden />
-            Spoiler in the title.
           </p>
 
           <dl className="border-t border-[#1F1F1F]/30">
             {[
               ["Role", "Solo · research, design, build"],
-              ["Stack", "Vue 3 · Vite · Pinia · Mapbox · Three.js · D3"],
               ["Data", "NYC Open Data — Parking Violations Issued"],
               ["Years", "2021 → 2025 (5y, 60k records)"],
-              ["Started", "2021 · rebuilt with current data, 2026"],
             ].map(([label, value]) => (
               <div
                 key={label}
@@ -284,7 +258,7 @@ function SectionPremise() {
       <div className="flex flex-col gap-[36px]">
         <SectionHeader
           number="02"
-          eyebrow="The receipt under my wiper"
+          eyebrow="Premise"
           headline={
             <>
               I came back from a trip and found
@@ -312,50 +286,30 @@ function SectionPremise() {
             </PullQuote>
           </div>
 
-          {/* Right column — "evidence, exhibit A" stub. Three placeholder
-              cards approximate the polaroid collage spec; swap with real
-              photos when available. */}
+          {/* Right column — "evidence, exhibit A": a single photo of the
+              actual ticket. Slight rotation gives it the pinned-to-the-
+              corkboard feel without leaning on multiple stub cards. */}
           <aside className="flex flex-col gap-[12px]">
-            <p
-              className="text-[12px] tracking-[0.16em] text-[#A0A0A0]"
-
-            >
+            <p className="text-[12px] tracking-[0.16em] text-[#A0A0A0]">
               EVIDENCE — EXHIBIT A
             </p>
-            <div className="flex flex-col gap-[14px]">
-              {[
-                {
-                  label: "Four tickets, one windshield",
-                  meta: "FA · 11 Oct 2021",
-                  rotate: "rotate-[1.5deg]",
-                },
-                {
-                  label: "Covered garage, four blocks away",
-                  meta: "$310 / month — search receipt",
-                  rotate: "-rotate-[2deg]",
-                },
-                {
-                  label: "Spreadsheet, row 1",
-                  meta: "Subtotal — $405",
-                  rotate: "rotate-[0.8deg]",
-                },
-              ].map((p) => (
-                <div
-                  key={p.label}
-                  className={`${p.rotate} flex aspect-[4/3] flex-col justify-end border-2 border-[#1F1F1F] bg-[#F8F8F8] p-[10px]`}
-                >
-                  <p className="text-[12px] leading-[1.35] font-medium text-[#1F1F1F]">
-                    {p.label}
-                  </p>
-                  <p
-                    className="text-[12px] tracking-[0.04em] text-[#A0A0A0]"
-
-                  >
-                    {p.meta}
-                  </p>
-                </div>
-              ))}
-            </div>
+            <figure className="rotate-[1.5deg] border-2 border-[#1F1F1F] bg-[#F8F8F8] p-[10px]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/work/parking/parking_ticket.jpeg"
+                alt="A parking ticket left on the windshield"
+                className="aspect-[4/3] w-full object-cover"
+                loading="lazy"
+              />
+              <figcaption className="mt-[10px] flex flex-col gap-[2px]">
+                <span className="text-[12px] leading-[1.35] font-medium text-[#1F1F1F]">
+                  Four tickets, one windshield
+                </span>
+                <span className="text-[12px] tracking-[0.04em] text-[#A0A0A0]">
+                  Brooklyn · Oct 2021
+                </span>
+              </figcaption>
+            </figure>
           </aside>
         </div>
       </div>
@@ -368,59 +322,68 @@ function SectionPremise() {
 // ============================================================================
 
 function FlowDiagram() {
-  const NODES: { label: string; sub?: string }[] = [
-    { label: "NYC Open Data", sub: "Issued violations" },
-    { label: "Fetcher", sub: "6 FY datasets · monthly pagination" },
-    { label: "Code → fine", sub: "DOF code map · MN-below-96 rate" },
-    { label: "Vue + Mapbox + 3JS + D3", sub: "Four scenes" },
+  // Three nodes — one per trick the body just described.
+  //   1. The source: NYC publishes Issued violations across 6 fiscal-year
+  //      datasets that run Jul → Jun.
+  //   2. The first stitch: regrouping by calendar year, paged monthly.
+  //   3. The second stitch: hydrating the bare violation code with $ via
+  //      the DOF code map, applying the higher Manhattan-below-96 rate.
+  // The implementation stack lives in the hero meta block — leaving it
+  // off this diagram keeps the focus on the data work the body claims.
+  const NODES: { label: string; sub: string }[] = [
+    {
+      label: "NYC Open Data",
+      sub: "6 fiscal-year datasets · Jul → Jun · Issued violations",
+    },
+    {
+      label: "Stitch + page",
+      sub: "Regroup by calendar year · monthly slices · 60k records",
+    },
+    {
+      label: "Hydrate with DOF code map",
+      sub: "Code (1–99) → fine $ · MN-below-96 = higher rate",
+    },
   ];
   return (
     <div className="border-2 border-[#1F1F1F] bg-[#1F1F1F]/[0.04] px-[20px] py-[28px] tablet:px-[28px] tablet:py-[32px]">
-      <div className="flex flex-col items-stretch gap-[14px] tablet:flex-row tablet:items-center tablet:gap-[10px]">
+      {/* Mobile: stack the 3 nodes top → bottom with ↓ between them.
+          Tablet+: strict 3-column grid with auto-width arrows in between
+          so the boxes share a baseline + can't wrap unpredictably. */}
+      <div className="grid items-stretch gap-y-[10px] tablet:grid-cols-[1fr_auto_1fr_auto_1fr] tablet:gap-x-[12px] tablet:gap-y-0">
         {NODES.map((n, i) => (
-          <div
-            key={n.label}
-            className="flex flex-1 items-center gap-[10px] tablet:flex-col tablet:items-start tablet:gap-[10px]"
-          >
-            <div className="flex w-full flex-col gap-[4px] border-2 border-[#1F1F1F] bg-[#EEEEEE] px-[12px] py-[10px]">
-              <p className="text-[12px] leading-[1.25] font-medium text-[#1F1F1F]">
+          <div key={n.label} className="contents">
+            <div className="flex h-full flex-col gap-[6px] border-2 border-[#1F1F1F] bg-[#EEEEEE] px-[14px] py-[12px]">
+              <p className="text-[13px] leading-[1.25] font-medium text-[#1F1F1F]">
                 {n.label}
               </p>
-              {n.sub && (
-                <p
-                  className="text-[12px] tracking-[0.04em] text-[#5D5D5D]"
-
-                >
-                  {n.sub}
-                </p>
-              )}
+              <p className="text-[12px] leading-[1.5] tracking-[0.02em] text-[#5D5D5D]">
+                {n.sub}
+              </p>
             </div>
-            {i < NODES.length - 1 && (
-              <span
-                className="text-[16px] text-[#5D5D5D] tablet:hidden"
 
-                aria-hidden
-              >
-                ↓
-              </span>
-            )}
             {i < NODES.length - 1 && (
-              <span
-                className="hidden text-[16px] text-[#5D5D5D] tablet:inline"
-
-                aria-hidden
-              >
-                →
-              </span>
+              <>
+                {/* Mobile arrow (stacked column) */}
+                <span
+                  className="self-center text-[16px] text-[#5D5D5D] tablet:hidden"
+                  aria-hidden
+                >
+                  ↓
+                </span>
+                {/* Tablet+ arrow (inline grid cell) */}
+                <span
+                  className="hidden self-center text-[16px] text-[#5D5D5D] tablet:inline"
+                  aria-hidden
+                >
+                  →
+                </span>
+              </>
             )}
           </div>
         ))}
       </div>
-      <p
-        className="mt-[20px] text-center text-[12px] tracking-[0.06em] text-[#A0A0A0]"
-
-      >
-        FIG. 1 — pipeline. NYC FYs run Jul → Jun, so each calendar year stitches two datasets.
+      <p className="mt-[20px] text-center text-[12px] tracking-[0.06em] text-[#A0A0A0]">
+        FIG. 1 — Two stitches: one across fiscal years, one across the fine schedule.
       </p>
     </div>
   );
@@ -435,7 +398,7 @@ function SectionData() {
       <div className="flex flex-col gap-[36px]">
         <SectionHeader
           number="03"
-          eyebrow="What the city actually publishes"
+          eyebrow="The data"
           headline={
             <>
               Every ticket the city writes.
@@ -464,10 +427,6 @@ function SectionData() {
             { number: "97", label: "distinct violation codes" },
           ]}
         />
-
-        <LinkOut>
-          fetcher script + DOF code map (open-source, on GitHub)
-        </LinkOut>
       </div>
     </section>
   );
@@ -536,7 +495,7 @@ function SectionBuild() {
       <div className="flex flex-col gap-[36px]">
         <SectionHeader
           number="04"
-          eyebrow="Where, what, when ★"
+          eyebrow="Build"
           headline={
             <>
               Three questions.
@@ -612,7 +571,7 @@ function SectionFindings() {
       <div className="flex flex-col gap-[36px]">
         <SectionHeader
           number="05"
-          eyebrow="Six numbers I didn't expect"
+          eyebrow="Findings"
           headline={
             <>
               Sample of 60,000 tickets.
@@ -652,12 +611,6 @@ function SectionFindings() {
           Scale this sample to the city's actual issuance volume and you're
           looking at billions in fines a year. Just from people parking.
         </Body>
-
-        <p className="text-[12px] leading-[1.6] text-[#A0A0A0]">
-          ↗ note: some of these are charged, some get paid, some get contested.
-          NYC publishes both — I built this off the issued side, because the
-          paid side runs ~12 months behind reality.
-        </p>
       </div>
     </section>
   );
@@ -676,7 +629,7 @@ function SectionReflection() {
       <div className="flex flex-col gap-[32px]">
         <SectionHeader
           number="06"
-          eyebrow="I came back to it five years later"
+          eyebrow="Reflection"
           headline={
             <>
               I built this in 2021.
