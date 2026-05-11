@@ -269,11 +269,13 @@ export default function PomesCaseStudy() {
             POMEs
           </span>
 
-          {/* Live store links — icon + label + ↗ arrow, stacked.  No
-              divider between them: the previous hairline made the block
-              read as a list/menu; without it the two stand as plain
-              CTAs with the underline only kicking in on hover. */}
-          <div className="flex flex-col self-end min-[960px]:ml-auto">
+          {/* Live store links.  Below the wide breakpoint they wrap
+              under the wordmark, so on mobile/tablet we lay them out
+              row-wise with justify-between (App Store flush left, Play
+              Store flush right) instead of a vertical stack that hugs
+              one side of the page.  At min-[960px] they jump back to a
+              stacked column on the right of the title row. */}
+          <div className="flex w-full flex-row items-center justify-between gap-[24px] self-end min-[960px]:ml-auto min-[960px]:w-auto min-[960px]:flex-col min-[960px]:items-stretch min-[960px]:justify-start">
             <Link
               href="https://apps.apple.com/us/app/pomes-borrow-help-meet/id6765548381"
               target="_blank"
