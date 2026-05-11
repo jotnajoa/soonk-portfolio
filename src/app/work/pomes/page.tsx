@@ -924,8 +924,8 @@ export default function PomesCaseStudy() {
                     note: "Both parties enter the item-scoped thread.",
                   },
                   {
-                    label: "Owner marks loan",
-                    note: "Item shifts to On loan — visible but unbookable.",
+                    label: "Owner lends item",
+                    note: "Item moves to On loan — still visible to the building, but not bookable until it's returned.",
                   },
                   {
                     label: "Borrower returns",
