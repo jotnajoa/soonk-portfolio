@@ -676,9 +676,8 @@ export default function PomesCaseStudy() {
                 title="Each screen is the answer to a specific finding."
               />
               <Lede>
-                Five screens, five decisions — and the most important decision
-                isn&rsquo;t a screen at all. The research from Section 04 is in
-                every one. Let me show you.
+                Five MVP features for a community that connects neighbors and
+                grows mutual help.
               </Lede>
 
               {/* Nav-strip reference — the app has 5 tabs.  Home and Feed
@@ -1656,22 +1655,18 @@ function InversionDiagramSvg() {
       >
         &ldquo;Help me with X&rdquo;
       </text>
-      <line x1="300" y1="84" x2="300" y2="124" stroke="#1F1F1F" strokeWidth="2" />
-      <polygon points="300,124 292,114 308,114" fill="#1F1F1F" />
-      <rect x="40" y="142" width="520" height="84" fill="#1F1F1F" rx="4" />
+      <line x1="300" y1="84" x2="300" y2="146" stroke="#1F1F1F" strokeWidth="2" />
+      <polygon points="300,146 292,136 308,136" fill="#1F1F1F" />
       <text
         x="300"
-        y="184"
+        y="200"
         textAnchor="middle"
-        fontSize="26"
-        fontWeight="500"
-        fill="#EEEEEE"
+        fontSize="32"
+        fontWeight="600"
+        fill="#1F1F1F"
         fontFamily="Archivo, sans-serif"
       >
         &ldquo;I can help with X&rdquo;
-      </text>
-      <text x="300" y="210" textAnchor="middle" fontSize="14" fill="#A0A0A0" fontFamily="Archivo, sans-serif">
-        → grows the app
       </text>
     </svg>
   );
