@@ -69,10 +69,16 @@ const NUM_MOBILE =
 const NUM_DESKTOP =
   "hidden shrink-0 tablet:order-1 tablet:block tablet:text-[120px] tablet:leading-[0.92] tablet:font-extrabold tablet:whitespace-nowrap tablet:text-black";
 
+// CONTENT_COL absorbs all available row width via flex-1 (no max-w) so the
+// thumb sibling naturally settles at the row's right edge when both fit on
+// one line — replacing the old `ml-auto` push that broke on wrap.  The
+// readable-width cap moves down to SUB_BLOCK so the text inside still
+// stops at ~480 px.
 const CONTENT_COL =
-  "flex flex-1 flex-col items-start gap-4 min-w-[240px] tablet:order-2 tablet:max-w-[480px]";
+  "flex flex-1 flex-col items-start gap-4 min-w-[240px] tablet:order-2";
 
-const SUB_BLOCK = "flex w-full flex-col items-start gap-2";
+const SUB_BLOCK =
+  "flex w-full flex-col items-start gap-2 tablet:max-w-[480px]";
 
 const BRAND_ROW = "flex flex-wrap items-center gap-3";
 
@@ -96,8 +102,11 @@ const QUOTE =
 
 // Thumbs sit beside content when row has space, wrap below when narrow.
 // shrink-0 so they take their natural width (set per-thumb-component).
+// No ml-auto: CONTENT_COL's flex-1 already pushes thumbs to the right edge
+// on same-line layouts, AND when the thumb wraps to its own row, the
+// absence of ml-auto lets it left-align naturally.
 const THUMBS_WRAP =
-  "flex shrink-0 items-center gap-2 tablet:order-3 tablet:ml-auto tablet:items-stretch tablet:self-stretch tablet:gap-3";
+  "flex shrink-0 items-center gap-2 tablet:order-3 tablet:items-stretch tablet:self-stretch tablet:gap-3";
 
 // ----- Thumb primitives ------------------------------------------------------
 
