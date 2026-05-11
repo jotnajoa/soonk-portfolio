@@ -653,14 +653,11 @@ export default function PomesCaseStudy() {
               </dl>
 
               <SubH>The synthesis: an inversion</SubH>
-              <Body>
-                People <Strong>love publicly showing their generosity</Strong>{" "}
-                — but feel uncomfortable asking for things. So I let the app
-                lead with what neighbors <em>can offer</em> (lend, help with,
-                host) rather than what they <em>need</em>. Others see those
-                offers and request — the request becomes the easy half of the
-                exchange, not the heavy half.
-              </Body>
+              <PullQuote>
+                People love publicly showing their generosity — but feel
+                uncomfortable asking for things. So I let the app lead with
+                what neighbors can offer (lend, help with, host).
+              </PullQuote>
 
               {/* Fig. 2 — The inversion */}
               <figure className="my-[28px] rounded-[12px] bg-[#F4F4F4] px-[28px] pt-[40px] pb-[22px]">
@@ -1649,7 +1646,7 @@ function InversionDiagramSvg() {
     >
       <text
         x="300"
-        y="42"
+        y="58"
         textAnchor="middle"
         fontSize="20"
         fontWeight="400"
@@ -1659,10 +1656,7 @@ function InversionDiagramSvg() {
       >
         &ldquo;Help me with X&rdquo;
       </text>
-      <text x="300" y="70" textAnchor="middle" fontSize="13" fill="#A0A0A0" fontFamily="Archivo, sans-serif">
-        → kills the app
-      </text>
-      <line x1="300" y1="92" x2="300" y2="124" stroke="#1F1F1F" strokeWidth="2" />
+      <line x1="300" y1="84" x2="300" y2="124" stroke="#1F1F1F" strokeWidth="2" />
       <polygon points="300,124 292,114 308,114" fill="#1F1F1F" />
       <rect x="40" y="142" width="520" height="84" fill="#1F1F1F" rx="4" />
       <text
