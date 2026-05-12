@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
 import ProjectNav from "@/components/ProjectNav";
+import TranslateGuard from "@/components/TranslateGuard";
 import "./globals.css";
 
 // Archivo — primary type family for everything.  Italic variant included
@@ -57,6 +58,10 @@ export default function RootLayout({
       className={`${archivo.variable} ${archivo.className} ${jetbrainsMono.variable} notranslate h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
+        {/* Runtime safety net for browser auto-translate — strips the
+            Google Translate injection that would otherwise crash React
+            with "Failed to execute 'removeChild' on 'Node'". */}
+        <TranslateGuard />
         {/* Global desktop header — appears on every route.  On the landing
             it starts at opacity 0 and is faded in by FlyingSquares as the
             grid scrolls into view.  On every other route it renders

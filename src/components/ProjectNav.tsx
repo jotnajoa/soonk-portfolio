@@ -43,6 +43,19 @@ export default function ProjectNav() {
     ? null
     : PATH_TO_TILE_ID[pathname ?? ""] ?? tiles[0]?.id ?? null;
   const [activeId, setActiveId] = useState<string | null>(fallbackActive);
+  // ProjectNav lives in the root layout so it doesn't remount across
+  // routes — the useState initializer only runs once.  Without this
+  // sync effect, activeId carried over from / (the last tile the
+  // user had in view) would stay lit when they navigated to /about.
+  // Reset activeId every time pathname changes so /about reads as
+  // "no work tile is current."
+  useEffect(() => {
+    setActiveId(
+      pathname === "/about"
+        ? null
+        : PATH_TO_TILE_ID[pathname ?? ""] ?? tiles[0]?.id ?? null,
+    );
+  }, [pathname]);
   // True when the landing-page scroll has crossed into the Lecture &
   // Publication section (the sibling of ProjectList).  Drives the
   // bold/gray swap between the "Work" label and the "Lecture &

@@ -219,7 +219,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
         }}
       >
         <div
-          className={`flex h-full flex-col gap-[32px] p-[24px] transition-opacity duration-200 ${
+          className={`flex h-full flex-col gap-[32px] overflow-y-auto p-[24px] transition-opacity duration-200 ${
             open ? "opacity-100 delay-300" : "opacity-0"
           }`}
         >
