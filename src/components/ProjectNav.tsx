@@ -32,7 +32,15 @@ const PATH_TO_TILE_ID: Record<string, string> = {
 export default function ProjectNav() {
   const pathname = usePathname();
   const isLanding = pathname === "/";
-  const fallbackActive = PATH_TO_TILE_ID[pathname ?? ""] ?? tiles[0]?.id ?? null;
+  // /about is its OWN section in the nav (the third pill).  On this
+  // route no work tile is current and no publication scroll state
+  // applies, so we explicitly clear activeId — without this fallback
+  // override the first tile (01 POMEs) lights up by default and reads
+  // as if WORK were the active section.
+  const isAbout = pathname === "/about";
+  const fallbackActive = isAbout
+    ? null
+    : PATH_TO_TILE_ID[pathname ?? ""] ?? tiles[0]?.id ?? null;
   const [activeId, setActiveId] = useState<string | null>(fallbackActive);
   // True when the landing-page scroll has crossed into the Lecture &
   // Publication section (the sibling of ProjectList).  Drives the
@@ -189,11 +197,13 @@ export default function ProjectNav() {
 
         <div className="flex items-center gap-2">
           {/* Work label — bold/black when its section is in view, gray
-              normal once scroll crosses into Lecture & Publication. */}
+              normal once scroll crosses into Lecture & Publication OR
+              the user has navigated to /about (which owns its own bold
+              state in the third nav pill below). */}
           <Link
             href="/#work-list"
             className={`text-[16px] leading-[0.92] whitespace-nowrap ${
-              inPublication
+              inPublication || isAbout
                 ? "font-normal text-[#A0A0A0] hover:text-black"
                 : "font-semibold text-black"
             }`}
@@ -267,11 +277,12 @@ export default function ProjectNav() {
 
         <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
         {/* Mirror of the Work label — bold/black when the publication
-            section is in view, gray normal otherwise. */}
+            section is in view, gray normal otherwise.  /about pins
+            About me bold instead, so this stays gray on that route. */}
         <Link
           href="/#publication"
           className={`text-[16px] leading-[0.92] whitespace-nowrap ${
-            inPublication
+            inPublication && !isAbout
               ? "font-semibold text-black"
               : "font-normal text-[#A0A0A0] hover:text-black"
           }`}
@@ -280,8 +291,12 @@ export default function ProjectNav() {
         </Link>
         <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
         <Link
-          href="/#about"
-          className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#A0A0A0] hover:text-black"
+          href="/about"
+          className={`text-[16px] leading-[0.92] whitespace-nowrap ${
+            isAbout
+              ? "font-semibold text-black"
+              : "font-normal text-[#A0A0A0] hover:text-black"
+          }`}
         >
           About me
         </Link>

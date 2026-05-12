@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { tiles } from "@/data/tiles";
 import { useEffect, useRef, useState } from "react";
 
@@ -16,11 +17,18 @@ import { useEffect, useRef, useState } from "react";
 // via getBoundingClientRect on [data-section="publication"] in the same
 // scroll handler that flips the sticky-active drop-shadow.
 //
+// /about route: same bar, title reads "About me", always stuck (no
+// scroll-based fade-in — there's no hero on the about page to push it
+// down).  Hamburger menu's "About me" entry shows the active treatment.
+//
 // Two visual states for the bar chrome:
 //   162:3935 — bar visible, no shadow (initial / about-to-stick).
 //   162:4000 — sticky-active: bottom border + drop-shadow.
 
 export default function MobileNav() {
+  const pathname = usePathname();
+  const isAbout = pathname === "/about";
+
   const barRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
@@ -75,7 +83,7 @@ export default function MobileNav() {
       <div
         ref={barRef}
         className={`sticky top-0 z-30 bg-[#EEEEEE] tablet:hidden transition-shadow duration-200 ${
-          stuck
+          stuck || isAbout
             ? "border-b border-black shadow-[0_2px_1px_rgba(0,0,0,0.25)]"
             : ""
         }`}
@@ -84,8 +92,14 @@ export default function MobileNav() {
           {/* Title swaps based on which section is in view.  WORK keeps
               its punchy 48 px treatment; "Lecture & Publication" drops to
               28 px and wraps onto two lines so the longer label still
-              fits within the same 80 px bar without truncation. */}
-          {inPublication ? (
+              fits within the same 80 px bar without truncation.  On the
+              /about route the bar reads "About me" at the same 48 px
+              page-header treatment as WORK. */}
+          {isAbout ? (
+            <p className="text-[48px] leading-[0.92] font-black text-[#1F1F1F]">
+              About me
+            </p>
+          ) : inPublication ? (
             <p className="text-[28px] leading-[0.92] font-black text-[#1F1F1F]">
               Lecture &amp;<br />Publication
             </p>
@@ -104,10 +118,10 @@ export default function MobileNav() {
             ref={buttonRef}
             onClick={openMenu}
             aria-label="Open menu"
-            aria-hidden={!stuck}
-            tabIndex={stuck ? 0 : -1}
+            aria-hidden={!(stuck || isAbout)}
+            tabIndex={stuck || isAbout ? 0 : -1}
             className={`flex size-[56px] cursor-pointer flex-col items-center justify-center gap-[5px] rounded-full bg-[#1F1F1F] shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-[opacity,transform,box-shadow] duration-300 ease-out hover:-translate-y-[2px] hover:shadow-[0_8px_16px_rgba(0,0,0,0.25)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.15)] ${
-              stuck
+              stuck || isAbout
                 ? "pointer-events-auto translate-x-0 opacity-100"
                 : "pointer-events-none translate-x-4 opacity-0"
             }`}
@@ -164,23 +178,26 @@ export default function MobileNav() {
           <div className="flex flex-col gap-[16px]">
             {/* Bold + bullet when this section is the one in view, gray
                 otherwise.  Mirrors the desktop ProjectNav bold/gray swap
-                so the menu reflects where the user currently is. */}
-            <button
+                so the menu reflects where the user currently is.  On the
+                /about route, Work falls back to the inactive treatment
+                because the user is on a different route entirely. */}
+            <Link
+              href="/"
               onClick={close}
-              className={`flex cursor-pointer items-center gap-[16px] text-[32px] leading-[0.92] ${
-                inPublication
+              className={`flex cursor-pointer items-center gap-[16px] text-[32px] leading-[0.92] no-underline ${
+                isAbout || inPublication
                   ? "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
                   : "font-bold text-[#F4F4F4]"
               }`}
             >
               <span>Work</span>
-              {!inPublication && (
+              {!isAbout && !inPublication && (
                 <span
                   aria-hidden
                   className="size-3 shrink-0 rounded-full bg-[#F4F4F4]"
                 />
               )}
-            </button>
+            </Link>
 
             {/* Project items navigate INTO the case-study route, not to
                 the home-page tile-list anchor — the menu is the user's
@@ -208,18 +225,19 @@ export default function MobileNav() {
 
           {/* Hash link to the section on the home page.  When the user
               is already in that section, mirror the Work entry's active
-              treatment (bold + bullet). */}
+              treatment (bold + bullet).  On /about this falls back to
+              inactive (user is on a different route). */}
           <Link
             href="/#publication"
             onClick={close}
             className={`flex items-center gap-[16px] self-start text-[32px] leading-[0.92] no-underline ${
-              inPublication
+              inPublication && !isAbout
                 ? "font-bold text-[#F4F4F4]"
                 : "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
             }`}
           >
             <span>Lecture &amp; Publication</span>
-            {inPublication && (
+            {inPublication && !isAbout && (
               <span
                 aria-hidden
                 className="size-3 shrink-0 rounded-full bg-[#F4F4F4]"
@@ -227,12 +245,24 @@ export default function MobileNav() {
             )}
           </Link>
 
+          {/* About me — gets the bold + bullet treatment when the user
+              is on the /about route (mirrors Work's active state on /). */}
           <Link
-            href="/#about"
+            href="/about"
             onClick={close}
-            className="self-start text-[32px] leading-[0.92] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
+            className={`flex items-center gap-[16px] self-start text-[32px] leading-[0.92] no-underline ${
+              isAbout
+                ? "font-bold text-[#F4F4F4]"
+                : "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
+            }`}
           >
-            About me
+            <span>About me</span>
+            {isAbout && (
+              <span
+                aria-hidden
+                className="size-3 shrink-0 rounded-full bg-[#F4F4F4]"
+              />
+            )}
           </Link>
         </div>
       </div>
