@@ -77,14 +77,24 @@ function YearCard({
     </span>
   );
 
-  // Empty cell — no entry covers this year.  Dashed border reads as "TBD"
-  // (the 2027 column in the user's sketch).  Year chip floats inside the
-  // same way as filled cells for visual consistency.
+  // Empty cell — no entry covers this year.  Two flavors:
+  //   - Future (year > current): dashed border, transparent fill —
+  //     reads as "not yet, TBD" (the 2027 column in the sketch).
+  //   - Past (year < current): faded solid border + light-gray fill —
+  //     reads as "happened, but not documented here".  Earlier both
+  //     used the dashed treatment, which made the user read past gaps
+  //     ("2016–2020") as if those years hadn't happened yet either.
   if (!entry) {
+    const currentYear = new Date().getFullYear();
+    const isFuture = year > currentYear;
     return (
       <div
         aria-hidden
-        className="relative flex h-[160px] items-center justify-center border border-dashed border-[#1F1F1F]/30 bg-transparent"
+        className={
+          isFuture
+            ? "relative flex h-[160px] items-center justify-center border border-dashed border-[#1F1F1F]/30 bg-transparent"
+            : "relative flex h-[160px] items-center justify-center border border-[#1F1F1F]/15 bg-[#1F1F1F]/[0.03]"
+        }
       >
         {yearLabel}
       </div>
