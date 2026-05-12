@@ -184,7 +184,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
           </Link>
           <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
           <Link
-            href="/#about"
+            href="/about"
             className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#5D5D5D] hover:text-[#1F1F1F]"
           >
             About me
@@ -253,7 +253,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
               <span>Work</span>
             </Link>
 
-            <ul className="flex flex-col gap-[16px] pl-1">
+            <ul className="flex flex-col gap-[16px] pl-[24px]">
               {tiles.map((t) => {
                 const active = t.slug === currentSlug;
                 return (
@@ -292,7 +292,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
           </Link>
 
           <Link
-            href="/#about"
+            href="/about"
             onClick={close}
             className="self-start text-[32px] leading-[0.92] font-normal text-[#A0A0A0] hover:text-[#F4F4F4] no-underline"
           >
