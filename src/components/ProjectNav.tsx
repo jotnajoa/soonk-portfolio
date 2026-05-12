@@ -157,11 +157,22 @@ export default function ProjectNav() {
   };
 
   // On the landing the nav starts hidden — FlyingSquares fades it in via
-  // GSAP as the grid scrolls into view.  On every other page we render
-  // it immediately at full opacity so the user always has a header.
+  // GSAP as the grid scrolls into view.  On every other page we explicitly
+  // re-assert opacity:1 / pointerEvents:auto in the style prop (instead of
+  // leaving the prop undefined).
+  //
+  // Why explicit on non-landing: when the user clicks a top-nav Link from
+  // home, FlyingSquares unmounts → useGSAP's gsap.context.revert() resets
+  // every GSAP-set property back to its mount-time value, which was the
+  // landing's opacity:0 / pointerEvents:none.  React then re-renders
+  // ProjectNav with new pathname, but if `style` becomes `undefined` the
+  // reconciler doesn't reliably overwrite inline styles GSAP wrote
+  // directly to the DOM (React tracks what *React* set, not what GSAP
+  // set).  Explicit visible-state values keep React in authority and
+  // guarantee the nav appears on /about, /work/{slug}, etc.
   const initialStyle = isLanding
     ? { opacity: 0, pointerEvents: "none" as const }
-    : undefined;
+    : { opacity: 1, pointerEvents: "auto" as const };
 
   return (
     <div
