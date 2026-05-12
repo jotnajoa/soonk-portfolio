@@ -12,6 +12,7 @@
 //   §01 Hero       — full-bleed, no left nav (max-w-[1200px] internal)
 //   §02–06         — left sticky nav (140px) + content column (~960px)
 
+import UpRightArrowIcon from "@/components/UpRightArrowIcon";
 import CaseStudyLeftNav, {
   type CaseStudySection,
 } from "@/components/cases/CaseStudyLeftNav";
@@ -691,18 +692,20 @@ function SectionReflection() {
               href="https://github.com/jotnajoa/nycproject"
               target="_blank"
               rel="noreferrer"
-              className="underline-offset-[3px] hover:underline"
+              className="inline-flex items-baseline gap-[6px] underline-offset-[3px] hover:underline"
             >
-              GitHub ↗
+              <span>GitHub</span>
+              <UpRightArrowIcon className="h-[10px] w-[10px] -rotate-45 self-center" />
             </a>
             {"   ·   "}
             <a
               href="https://www.soonkdesign.com/personal-1/project-two-ky966-lnbgh-smsgj-fxf46"
               target="_blank"
               rel="noreferrer"
-              className="underline-offset-[3px] hover:underline"
+              className="inline-flex items-baseline gap-[6px] underline-offset-[3px] hover:underline"
             >
-              The original 2021 version ↗
+              <span>The original 2021 version</span>
+              <UpRightArrowIcon className="h-[10px] w-[10px] -rotate-45 self-center" />
             </a>
           </p>
         </div>

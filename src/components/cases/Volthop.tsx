@@ -18,6 +18,7 @@
 //                     read-time string.
 
 import Link from "next/link";
+import UpRightArrowIcon from "@/components/UpRightArrowIcon";
 import CaseStudyLeftNav, {
   type CaseStudySection,
 } from "@/components/cases/CaseStudyLeftNav";
@@ -224,12 +225,10 @@ function Hero() {
               <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
                 App Store
               </span>
-              <span
+              <UpRightArrowIcon
                 aria-hidden
-                className="ml-auto text-[16px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]"
-              >
-                ↗
-              </span>
+                className="ml-auto h-[14px] w-[14px] -rotate-45 transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]"
+              />
             </Link>
             <Link
               href="https://play.google.com/store/apps/details?id=com.soonk.volthop"
@@ -248,12 +247,10 @@ function Hero() {
               <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
                 Play Store
               </span>
-              <span
+              <UpRightArrowIcon
                 aria-hidden
-                className="ml-auto text-[16px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]"
-              >
-                ↗
-              </span>
+                className="ml-auto h-[14px] w-[14px] -rotate-45 transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]"
+              />
             </Link>
           </div>
         </div>
@@ -1153,8 +1150,9 @@ function SectionGtm() {
             </figure>
           </div>
 
-          <p className="text-[12px] text-[#A0A0A0]">
-            ↗ link out:{" "}
+          <p className="inline-flex items-center gap-[6px] text-[12px] text-[#A0A0A0]">
+            <UpRightArrowIcon className="h-[10px] w-[10px] -rotate-45" />
+            <span>link out:</span>{" "}
             <a
               href="https://volthop.app/blog"
               target="_blank"

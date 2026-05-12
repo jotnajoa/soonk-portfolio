@@ -18,6 +18,7 @@
 //   §01 Hero       — full-bleed, no left nav
 //   §02–04         — left sticky nav (140px) + content column (~960px)
 
+import UpRightArrowIcon from "@/components/UpRightArrowIcon";
 import CaseStudyLeftNav, {
   type CaseStudySection,
 } from "@/components/cases/CaseStudyLeftNav";
@@ -595,10 +596,10 @@ function SectionFindings() {
         </Body>
 
         <p
-          className="text-[11px] tracking-[0.04em] text-[#5D5D5D]"
+          className="inline-flex items-baseline gap-[6px] text-[11px] tracking-[0.04em] text-[#5D5D5D]"
           style={MONO}
         >
-          ↗{" "}
+          <UpRightArrowIcon className="h-[10px] w-[10px] -rotate-45 self-center" />
           <a
             href="https://jotnajoa.github.io/wordup"
             target="_blank"

@@ -5,6 +5,7 @@ import CaseStudyLeftNav, {
   type CaseStudySection,
 } from "@/components/cases/CaseStudyLeftNav";
 import PdfBook from "./PdfBook";
+import UpRightArrowIcon from "@/components/UpRightArrowIcon";
 
 // POMEs case study — single long-scroll page, light-mode editorial.
 // Aligned with the landing's design system: Archivo (display + body) +
@@ -298,9 +299,10 @@ export default function PomesCaseStudy() {
               <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
                 App Store
               </span>
-              <span aria-hidden className="ml-auto text-[16px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
-                ↗
-              </span>
+              <UpRightArrowIcon
+                aria-hidden
+                className="ml-auto h-[14px] w-[14px] -rotate-45 transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]"
+              />
             </Link>
             <Link
               href="https://play.google.com/store/apps/details?id=com.soonk.pomes"
@@ -319,9 +321,10 @@ export default function PomesCaseStudy() {
               <span className="underline decoration-transparent underline-offset-[5px] transition-[text-decoration-color] duration-150 group-hover:decoration-[#1F1F1F]">
                 Play Store
               </span>
-              <span aria-hidden className="ml-auto text-[16px] transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]">
-                ↗
-              </span>
+              <UpRightArrowIcon
+                aria-hidden
+                className="ml-auto h-[14px] w-[14px] -rotate-45 transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]"
+              />
             </Link>
           </div>
         </div>
@@ -656,9 +659,10 @@ export default function PomesCaseStudy() {
                     href="https://jotnajoa.github.io/pbn-card-sorting/"
                     target="_blank"
                     rel="noreferrer"
-                    className="text-[12px] tracking-[0.08em] text-[#5D5D5D] hover:text-[#1F1F1F]"
+                    className="group inline-flex items-center gap-[6px] text-[12px] tracking-[0.08em] text-[#5D5D5D] no-underline hover:text-[#1F1F1F]"
                   >
-                    ↗ Open in new tab
+                    <UpRightArrowIcon className="h-[10px] w-[10px] -rotate-45 transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
+                    <span>Open in new tab</span>
                   </a>
                 </div>
                 <div className="mt-[10px] overflow-clip rounded-[8px] border-2 border-[#1F1F1F] bg-[#F4F4F4]">
@@ -1667,14 +1671,29 @@ function ChatFlow({
   );
 }
 
-// OtherReports — small list of report titles + ↗ link.  Treated as
+// OtherReports — small list of report titles + Open link.  Treated as
 // footnotes rather than feature cards so they don't compete with the
-// main competitor grid.
+// main competitor grid.  Each href points at the real research doc
+// served from /public/research/ (DOCX + PPTX — browsers download them
+// for offline viewing).  Type hint shows next to the title so users
+// know whether they're opening a doc or a deck before clicking.
 function OtherReports() {
-  const reports: { title: string; href: string }[] = [
-    { title: "DUMBO demographics + renter churn 2024", href: "#" },
-    { title: "Trust formation in residential buildings — academic synthesis", href: "#" },
-    { title: "Building-scale community dynamics — case-study reviews", href: "#" },
+  const reports: { title: string; href: string; kind: string }[] = [
+    {
+      title: "DUMBO demographics + renter churn",
+      href: "/research/DUMBO_Demographics_Research.docx",
+      kind: "DOCX",
+    },
+    {
+      title: "Trust formation in residential buildings — academic synthesis",
+      href: "/research/Trust_Dynamics_Slide_Deck.pptx",
+      kind: "PPTX",
+    },
+    {
+      title: "Building-scale community dynamics — research synthesis",
+      href: "/research/Research_Synthesis.pptx",
+      kind: "PPTX",
+    },
   ];
   return (
     <ul className="my-[14px] flex flex-col border-t border-[#A0A0A0]">
@@ -1683,14 +1702,26 @@ function OtherReports() {
           key={r.title}
           className="flex items-baseline justify-between gap-[12px] border-b border-[#A0A0A0] py-[12px] last:border-b-0"
         >
-          <span className="text-[16px] leading-[1.4] text-[#1F1F1F]">
+          <span className="flex flex-wrap items-baseline gap-[10px] text-[16px] leading-[1.4] text-[#1F1F1F]">
             {r.title}
+            <span
+              className="text-[10px] tracking-[0.12em] font-medium text-[#A0A0A0]"
+              style={{
+                fontFamily:
+                  "var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, Menlo, monospace",
+              }}
+            >
+              {r.kind}
+            </span>
           </span>
           <a
             href={r.href}
-            className="shrink-0 text-[12px] tracking-[0.08em] text-[#5D5D5D] hover:text-[#1F1F1F]"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex shrink-0 items-center gap-[6px] text-[12px] tracking-[0.08em] text-[#5D5D5D] no-underline hover:text-[#1F1F1F]"
           >
-            ↗ Open
+            <UpRightArrowIcon className="h-[10px] w-[10px] -rotate-45 transition-transform group-hover:-translate-y-[1px] group-hover:translate-x-[1px]" />
+            <span>Open</span>
           </a>
         </li>
       ))}

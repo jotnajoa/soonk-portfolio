@@ -6,6 +6,7 @@ import {
   type Lecture,
   type Publication,
 } from "@/data/publications";
+import UpRightArrowIcon from "@/components/UpRightArrowIcon";
 
 // LecturePublicationList — sits BELOW ProjectList on the home page.  Same
 // section-shell pattern (full-bleed bg, inner 1200px column at px-[32px])
@@ -56,12 +57,9 @@ function ArrowLink({ href, label }: { href: string; label: string }) {
       aria-label={`Open: ${label}`}
       className="group/arrow flex h-[48px] w-[64px] shrink-0 items-center justify-center self-center no-underline tablet:h-[56px] tablet:w-[80px]"
     >
-      <span
-        aria-hidden
-        className="inline-block text-[28px] leading-none font-bold text-[#1F1F1F] transition-transform duration-200 ease-out group-hover/arrow:-translate-y-[3px] group-hover/arrow:translate-x-[3px] group-hover/arrow:scale-[1.25] tablet:text-[32px]"
-      >
-        ↗
-      </span>
+      <UpRightArrowIcon
+        className="h-[24px] w-[24px] -rotate-45 text-[#1F1F1F] transition-transform duration-200 ease-out group-hover/arrow:-translate-y-[3px] group-hover/arrow:translate-x-[3px] group-hover/arrow:scale-[1.25] tablet:h-[28px] tablet:w-[28px]"
+      />
     </Link>
   );
 }
