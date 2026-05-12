@@ -190,15 +190,17 @@ export default function Hero() {
 
       tl.play(0);
 
-      // Lock scroll for the first ~3s of the landing animation so the
-      // user can't blast past the dark phase.  Body-style mutation is
-      // outside GSAP's tracking, so we still need an explicit cleanup
-      // function below.
+      // Lock scroll for the first ~1.5s of the landing animation so the
+      // user can't blast past the dark phase — long enough to keep the
+      // rect-slides-out + portrait-fade beat readable, short enough not
+      // to feel jammed (Soonk's tuning).  Body-style mutation is outside
+      // GSAP's tracking, so we still need an explicit cleanup function
+      // below.
       const prevOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       const unlockId = window.setTimeout(() => {
         document.body.style.overflow = prevOverflow;
-      }, 3000);
+      }, 1500);
 
       return () => {
         window.clearTimeout(unlockId);

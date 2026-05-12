@@ -164,11 +164,26 @@ export default function ProjectNav() {
           itself caps at 1200px (centered) so it doesn't sprawl on
           ultra-wide screens. */}
       <nav className="mx-auto flex max-w-[1200px] items-center gap-4 px-[32px] py-4">
+        {/* Brand: [logo + Soonk] as one clickable mark.  Both are inside
+            the same Link so anywhere the user grabs goes back to /
+            (the hero animation page).  Logo inherits text color via
+            currentColor, so the hover transition Mute → Black lifts the
+            whole brand together. */}
         <Link
           href="/"
-          className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#A0A0A0] hover:text-black"
+          className="group flex items-center gap-[10px] whitespace-nowrap text-[#A0A0A0] no-underline transition-colors hover:text-black"
+          aria-label="Soonk — home"
         >
-          Soonk
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/soonk_logo_mark.svg"
+            alt=""
+            aria-hidden
+            className="h-[24px] w-auto shrink-0"
+          />
+          <span className="text-[16px] leading-[0.92] font-normal">
+            Soonk
+          </span>
         </Link>
         <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
 
@@ -265,10 +280,10 @@ export default function ProjectNav() {
         </Link>
         <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
         <Link
-          href="/#resume"
+          href="/#about"
           className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#A0A0A0] hover:text-black"
         >
-          Resume
+          About me
         </Link>
       </nav>
     </div>

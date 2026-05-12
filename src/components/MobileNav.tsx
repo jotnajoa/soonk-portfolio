@@ -227,12 +227,13 @@ export default function MobileNav() {
             )}
           </Link>
 
-          <button
+          <Link
+            href="/#about"
             onClick={close}
-            className="cursor-pointer text-left text-[32px] leading-[0.92] font-normal text-[#8E8E8E]"
+            className="self-start text-[32px] leading-[0.92] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
           >
-            Resume
-          </button>
+            About me
+          </Link>
         </div>
       </div>
     </>
