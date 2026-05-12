@@ -35,6 +35,21 @@ export function killGridScrollTriggers() {
   ScrollTrigger.getAll().forEach((t) => t.kill());
 }
 
+// killGridScrollTriggers, but only fires if the target href changes the
+// pathname.  Hash-only navigation on the SAME page (e.g. /→/#work-list)
+// doesn't trigger React unmount, so there's no pin-spacer removeChild
+// crash to defend against — and firing kill() in that case reverts the
+// nav's opacity tween, which makes the sticky header disappear ("URL에
+// # 뜨는 순간 헤더가 없어진다" report).  This helper preserves the unmount
+// defense for real route changes while letting hash links stay on page.
+export function killGridScrollTriggersIfLeavingPage(href: string) {
+  if (typeof window === "undefined") return;
+  const currentPath = window.location.pathname || "/";
+  const targetPath = href.split("#")[0] || currentPath;
+  if (targetPath === currentPath) return;
+  killGridScrollTriggers();
+}
+
 // FlyingSquares — desktop scroll-driven transition from grid view to nav.
 //
 // Why useGSAP (and not a plain useEffect): ScrollTrigger with `pin: true`

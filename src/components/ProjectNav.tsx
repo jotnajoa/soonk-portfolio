@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { tiles } from "@/data/tiles";
 import { useEffect, useState } from "react";
-import { killGridScrollTriggers } from "@/components/FlyingSquares";
+import { killGridScrollTriggersIfLeavingPage } from "@/components/FlyingSquares";
 
 // Figma node 101:1972 / 101:1656.
 //   Soonk · | · Work [9 indicator squares] | · Publication · | · Resume
@@ -191,7 +191,7 @@ export default function ProjectNav() {
             whole brand together. */}
         <Link
           href="/"
-          onClick={killGridScrollTriggers}
+          onClick={() => killGridScrollTriggersIfLeavingPage("/")}
           className="group flex items-center gap-[10px] whitespace-nowrap text-[#A0A0A0] no-underline transition-colors hover:text-black"
           aria-label="Soonk — home"
         >
@@ -215,7 +215,7 @@ export default function ProjectNav() {
               state in the third nav pill below). */}
           <Link
             href="/#work-list"
-            onClick={killGridScrollTriggers}
+            onClick={() => killGridScrollTriggersIfLeavingPage("/#work-list")}
             className={`text-[16px] leading-[0.92] whitespace-nowrap ${
               inPublication || isAbout
                 ? "font-normal text-[#A0A0A0] hover:text-black"
@@ -295,7 +295,7 @@ export default function ProjectNav() {
             About me bold instead, so this stays gray on that route. */}
         <Link
           href="/#publication"
-          onClick={killGridScrollTriggers}
+          onClick={() => killGridScrollTriggersIfLeavingPage("/#publication")}
           className={`text-[16px] leading-[0.92] whitespace-nowrap ${
             inPublication && !isAbout
               ? "font-semibold text-black"
@@ -307,7 +307,7 @@ export default function ProjectNav() {
         <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
         <Link
           href="/about"
-          onClick={killGridScrollTriggers}
+          onClick={() => killGridScrollTriggersIfLeavingPage("/about")}
           className={`text-[16px] leading-[0.92] whitespace-nowrap ${
             isAbout
               ? "font-semibold text-black"
