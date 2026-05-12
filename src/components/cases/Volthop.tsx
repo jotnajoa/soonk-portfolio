@@ -120,13 +120,26 @@ function Hero() {
             (logo + wordmark + thesis), JBM only for the eyebrow / small
             accents kept outside the strip. */}
         <div className="relative aspect-[21/9] w-full overflow-clip border-2 border-[#1F1F1F] bg-[#1F1F1F]">
+          {/* Loading spinner sits BEHIND the <video> (earlier in DOM
+              order at the same z).  While the video has no first frame
+              to paint, its box is transparent and the spinner shows
+              through; the instant the video starts rendering frames it
+              covers the spinner with object-cover.  No `poster` here
+              on purpose — the old NYC-map poster was the "weird map"
+              flashing in before the video loaded. */}
+          <div
+            className="absolute inset-0 flex items-center justify-center"
+            aria-hidden
+          >
+            <div className="h-[40px] w-[40px] animate-spin rounded-full border-[3px] border-[#F4F4F4]/20 border-t-[#F4F4F4]/80" />
+          </div>
           <video
             src="/work/volthop/hero.mp4"
-            poster="/work/volthop/volthop-map-nyc.png"
             autoPlay
             loop
             muted
             playsInline
+            preload="auto"
             className="absolute inset-0 h-full w-full object-cover"
             aria-label="Volthop app demo loop"
           />

@@ -66,12 +66,18 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
   return (
     <>
       <header className="sticky top-0 z-40 border-b-2 border-[#1F1F1F] bg-[#EEEEEE]/95 backdrop-blur">
-        {/* ---- Mobile bar (<800) — project number + logo + name + hamburger ---- */}
+        {/* ---- Mobile bar (<800) — project number + logo + name + hamburger ----
+            The breadcrumb is a button that scrolls to the top of the
+            current case study, NOT a back-to-portfolio link.  Tapping
+            the project logo to navigate home was misleading (it reads
+            as an identity badge, not a back affordance); the hamburger
+            drawer's "Work > {project}" list is the deliberate path
+            back to the portfolio. */}
         <div className="flex h-[64px] items-center justify-between px-[24px] tablet:hidden">
-          <Link
-            href={tile ? `/#work-list-${tile.id}` : "/"}
-            className="flex items-center gap-[10px] no-underline"
-            aria-label="Back to portfolio"
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="flex cursor-pointer items-center gap-[10px]"
+            aria-label={`Scroll to top of ${tile?.brand ?? "case study"}`}
           >
             {tile && (
               <span
@@ -88,7 +94,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
             <span className="text-[16px] leading-[0.92] font-bold text-[#1F1F1F]">
               {tile?.brand ?? "Soonk"}
             </span>
-          </Link>
+          </button>
 
           <button
             ref={buttonRef}
