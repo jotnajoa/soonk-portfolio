@@ -155,7 +155,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
                   <Link
                     href={`/work/${t.slug}`}
                     aria-label={`${t.id} · ${t.brand}`}
-                    className={`block size-4 border border-[#1F1F1F] transition-colors ${
+                    className={`block size-4 cursor-pointer border border-[#1F1F1F] transition-colors ${
                       active
                         ? "bg-[#1F1F1F] group-hover:bg-[#00FB00]"
                         : "bg-transparent group-hover:bg-[#00FB00]"

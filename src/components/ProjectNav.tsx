@@ -290,7 +290,7 @@ export default function ProjectNav() {
             // Hover bg uses the green accent (#00FB00) — same treatment
             // as the case-study CaseStudyNav so the two nav surfaces
             // share a single hover language.
-            const indicatorClasses = `block size-4 border border-[#1F1F1F] transition-colors ${
+            const indicatorClasses = `block size-4 cursor-pointer border border-[#1F1F1F] transition-colors ${
               active
                 ? "bg-[#1F1F1F] group-hover:bg-[#00FB00]"
                 : "bg-transparent group-hover:bg-[#00FB00]"
