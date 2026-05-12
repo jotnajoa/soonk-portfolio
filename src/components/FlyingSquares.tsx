@@ -124,15 +124,31 @@ export default function FlyingSquares() {
       //   #work-grid          ← "Work" label in CaseStudyNav
       //   #work-list-XX       ← "← BACK TO PORTFOLIO" + project nav indicators
       const hash = typeof window !== "undefined" ? window.location.hash : "";
-      const isDeepLink =
-        hash === "#work-grid" || /^#work-list-\d{2}$/.test(hash);
+      const isWorkListHash = /^#work-list-\d{2}$/.test(hash);
+      const isWorkGridHash = hash === "#work-grid";
+      const isDeepLink = isWorkListHash || isWorkGridHash;
       if (isDeepLink) {
-        const showNav = contextSafe!(() => {
+        const apply = contextSafe!(() => {
           const nav = document.querySelector<HTMLElement>("[data-project-nav]");
           if (nav) gsap.set(nav, { opacity: 1, pointerEvents: "auto" });
+          // For #work-list-XX deep links (e.g. arriving from a case
+          // study's "← BACK TO PORTFOLIO" with a project in mind),
+          // collapse the grid section entirely.  Without this the user
+          // sees a fully-rendered 3×3 grid sitting just above the WORK
+          // list — visually redundant with the list itself, since the
+          // animation that would normally morph it into the nav
+          // indicators never ran.  display:none also removes the grid
+          // from layout flow, so the WORK list moves up and there's no
+          // empty 100vh band when the user scrolls back up.
+          // (#work-grid does the opposite — the user WANTS the grid,
+          // so we leave it visible.)
+          if (isWorkListHash) {
+            const grid = document.querySelector<HTMLElement>("#work-grid");
+            if (grid) gsap.set(grid, { display: "none" });
+          }
         });
         // setTimeout so the nav has actually mounted before we touch it.
-        const navId = window.setTimeout(showNav, 50);
+        const navId = window.setTimeout(apply, 50);
         return () => window.clearTimeout(navId);
       }
 
