@@ -742,14 +742,14 @@ function SectionMvp() {
 // ============================================================================
 
 function SectionIterations() {
-  // §05 Iterations — THE main act.  Three things shipped because the
-  // community asked for them:
+  // §05 Iterations — community-driven product changes that shipped:
   //   1. EU + multi-country support  (real demand is US→EU air travellers)
   //   2. Deposit suggestion          (people worried about theft)
-  //   3. Brompton meetups            (in-person install acquisition)
   //
-  // Old Closed-Testing-timeline / 4-rung-ladder / per-comment scaffolding
-  // is gone — Soonk flagged it as dense and off-topic.  Bullets do the work.
+  // Note: in-person Brompton meetups (which drove install acquisition,
+  // not product iteration) used to live here as Iteration 03 — Soonk
+  // pointed out it isn't really iteration but GTM, so it now opens the
+  // §06 GTM section instead.
   return (
     <section
       id="iterations"
@@ -766,7 +766,7 @@ function SectionIterations() {
               They wrote the product.
             </>
           }
-          lede="The community didn't just validate the idea — it shipped the next three changes for me. Each one started in a comment or a face-to-face conversation, and each one re-shaped what got built."
+          lede="The community didn't just validate the idea — it shipped the next product changes for me. Each one started in a comment thread, and each one re-shaped what got built."
         />
 
         {/* ---- Iteration 01 — Europe & multi-country expansion --------
@@ -886,16 +886,21 @@ function SectionIterations() {
           </header>
 
           {/* Layout matches Iteration 01 / §03 Validation: screenshots on
-              the LEFT, organized content on the RIGHT.  Two phone screens
-              stacked vertically in the left column (deal accepted → deposit
-              modal); right column carries the callout + three curated
-              community quotes + a short summary.  Quotes pulled from the
-              Reddit/Facebook threads Soonk surfaced (r/ebikes, r/Brompton,
+              the LEFT, organized content on the RIGHT.  Quotes pulled from
+              the Reddit/Facebook threads Soonk surfaced (r/ebikes, r/Brompton,
               Brompton Electric Owners FB group) — 11 comments narrowed to
-              the three sharpest. */}
-          <div className="grid gap-[24px] tablet:grid-cols-[200px_1fr] tablet:items-start tablet:gap-[32px]">
-            {/* LEFT — deal accepted + deposit modal, stacked */}
-            <div className="flex flex-col gap-[16px]">
+              the three sharpest.
+
+              Responsive screen pair:
+                - tablet+ (≥800):  screens side-by-side LEFT, text RIGHT
+                - <800, ≥400:      screens still side-by-side (top), text
+                                   wraps below
+                - <400:            screens stack vertically (deal accepted
+                                   → deposit modal) so each phone reads at
+                                   a comfortable width on tiny viewports */}
+          <div className="grid gap-[24px] tablet:grid-cols-[360px_1fr] tablet:items-start tablet:gap-[32px]">
+            {/* LEFT — deal accepted + deposit modal, side-by-side */}
+            <div className="grid grid-cols-1 gap-[12px] min-[400px]:grid-cols-2 min-[400px]:gap-[16px]">
               <figure className="flex flex-col gap-[8px]">
                 <div className="relative aspect-[1179/2556] w-full overflow-clip border-2 border-[#1F1F1F]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -990,14 +995,44 @@ function SectionIterations() {
           </div>
         </article>
 
-        {/* ---- Iteration 03 — Brompton meetups (IRL distribution) ---- */}
+      </div>
+    </section>
+  );
+}
+
+// ============================================================================
+// §06 GTM — in-person + SEO + AEO
+// ============================================================================
+
+function SectionGtm() {
+  // §06 GTM — three distribution channels for the live app:
+  //   1. In-person  — Brompton meetups (the install-acquisition story
+  //                   that used to live in §05 Iterations as Iteration 03)
+  //   2. SEO        — marketing site at volthop.app indexed deliberately
+  //   3. AEO        — answer-first article structure for AI assistants
+  // SEO + AEO content pulled directly from volthop.app (the live
+  // marketing site); meetup photos under /work/volthop/.
+  return (
+    <section
+      id="channels"
+      className="border-t border-[#1F1F1F]/30 py-[48px] first:border-t-0 first:pt-0 tablet:py-[64px]"
+    >
+      <div className="flex flex-col gap-[36px]">
+        <SectionHeader
+          number="06"
+          eyebrow="GTM"
+          headline="Finding them in the wild."
+          lede="Once v1 was live, the channels mattered. Three tracks: showing up where Brompton riders already gather (in-person), classic search (SEO), and AI-assistant retrieval (AEO)."
+        />
+
+        {/* ---- In-Person — Brompton meetups (IRL distribution) ------- */}
         <article className="flex flex-col gap-[16px]">
           <header className="flex flex-wrap items-center gap-[10px]">
             <span
               className="bg-[#1F1F1F] px-[8px] py-[2px] text-[10px] tracking-[0.1em] text-[#F4F4F4]"
               style={MONO}
             >
-              ITERATION 03
+              IN-PERSON
             </span>
             <h3 className="text-[18px] leading-[1.3] font-medium text-[#1F1F1F] tablet:text-[20px]">
               Showed up at Brompton meetups, came home with installs.
@@ -1031,32 +1066,6 @@ function SectionIterations() {
             ))}
           </div>
         </article>
-      </div>
-    </section>
-  );
-}
-
-// ============================================================================
-// §06 SEO & AEO — marketing site + AI-assistant retrieval
-// ============================================================================
-
-function SectionGtm() {
-  // §06 SEO & AEO — content pulled directly from volthop.app (the live
-  // marketing site).  Screenshots (home + blog index) captured headless
-  // and stored under /work/volthop/marketing/.  Bullets describe what's
-  // visible on the site rather than what I'd LIKE to be there.
-  return (
-    <section
-      id="channels"
-      className="border-t border-[#1F1F1F]/30 py-[48px] first:border-t-0 first:pt-0 tablet:py-[64px]"
-    >
-      <div className="flex flex-col gap-[36px]">
-        <SectionHeader
-          number="06"
-          eyebrow="SEO & AEO"
-          headline="Finding them in the wild."
-          lede="Once v1 was live, the channels mattered. Two tracks: classic search (SEO) and AI-assistant retrieval (AEO).  Both small, both focused."
-        />
 
         {/* ---- SEO --------------------------------------------------- */}
         <article className="flex flex-col gap-[16px]">
@@ -1229,7 +1238,7 @@ const SECTIONS: CaseStudySection[] = [
   { id: "validation", num: "03", label: "Validation" },
   { id: "scope", num: "04", label: "MVP scope" },
   { id: "iterations", num: "05", label: "Iterations", star: true },
-  { id: "channels", num: "06", label: "SEO & AEO" },
+  { id: "channels", num: "06", label: "GTM" },
 ];
 
 export default function VolthopCaseStudy() {

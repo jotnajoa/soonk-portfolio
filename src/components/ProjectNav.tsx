@@ -34,6 +34,14 @@ export default function ProjectNav() {
   const isLanding = pathname === "/";
   const fallbackActive = PATH_TO_TILE_ID[pathname ?? ""] ?? tiles[0]?.id ?? null;
   const [activeId, setActiveId] = useState<string | null>(fallbackActive);
+  // True when the landing-page scroll has crossed into the Lecture &
+  // Publication section (the sibling of ProjectList).  Drives the
+  // bold/gray swap between the "Work" label and the "Lecture &
+  // Publication" link, and clears the 9 work-tile indicators so the
+  // last tile doesn't stay lit just because its top scrolled offscreen.
+  // Always false on non-landing pages — those routes don't render the
+  // publication section, so there's no scroll-state to track.
+  const [inPublication, setInPublication] = useState(false);
 
   // Hash-based scroll-to-tile on landing.
   //
@@ -83,6 +91,19 @@ export default function ProjectNav() {
     if (!isLanding) return;
 
     const compute = () => {
+      // Section-in-view check first.  Once scroll crosses into the
+      // Lecture & Publication section, NO work tile is "current" — the
+      // last tile (GTM, 09) would otherwise stay lit just because its
+      // top scrolled past the trigger.  Clearing activeId turns every
+      // indicator into the unfilled state.
+      const pubEl = document.querySelector('[data-section="publication"]');
+      const pubInView = !!pubEl && pubEl.getBoundingClientRect().top <= 56;
+      setInPublication(pubInView);
+      if (pubInView) {
+        setActiveId(null);
+        return;
+      }
+
       const els = Array.from(
         document.querySelectorAll<HTMLElement>("[data-tile-list]"),
       );
@@ -152,9 +173,18 @@ export default function ProjectNav() {
         <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
 
         <div className="flex items-center gap-2">
-          <span className="text-[16px] leading-[0.92] font-semibold whitespace-nowrap text-black">
+          {/* Work label — bold/black when its section is in view, gray
+              normal once scroll crosses into Lecture & Publication. */}
+          <Link
+            href="/#work-list"
+            className={`text-[16px] leading-[0.92] whitespace-nowrap ${
+              inPublication
+                ? "font-normal text-[#A0A0A0] hover:text-black"
+                : "font-semibold text-black"
+            }`}
+          >
             Work
-          </span>
+          </Link>
           {tiles.map((t) => {
             const active = t.id === activeId;
             // Hover bg uses the green accent (#00FB00) — same treatment
@@ -221,9 +251,15 @@ export default function ProjectNav() {
         </div>
 
         <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
+        {/* Mirror of the Work label — bold/black when the publication
+            section is in view, gray normal otherwise. */}
         <Link
           href="/#publication"
-          className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#A0A0A0] hover:text-black"
+          className={`text-[16px] leading-[0.92] whitespace-nowrap ${
+            inPublication
+              ? "font-semibold text-black"
+              : "font-normal text-[#A0A0A0] hover:text-black"
+          }`}
         >
           Lecture &amp; Publication
         </Link>

@@ -35,10 +35,9 @@ const SERIF: React.CSSProperties = {
 
 const SECTIONS: CaseStudySection[] = [
   { id: "constraint", num: "02", label: "Constraint" },
-  { id: "method", num: "03", label: "Method", star: true },
-  { id: "practice", num: "04", label: "In practice", star: true },
-  { id: "outcome", num: "05", label: "Outcome" },
-  { id: "reflection", num: "06", label: "Reflection" },
+  { id: "practice", num: "03", label: "In practice", star: true },
+  { id: "outcome", num: "04", label: "Outcome" },
+  { id: "reflection", num: "05", label: "Reflection" },
 ];
 
 // ============================================================================
@@ -188,7 +187,13 @@ function SectionHero() {
           alt="Alnylam"
           className="h-[68px] w-auto shrink-0 min-[560px]:h-[88px] min-[960px]:h-[112px]"
         />
+        {/* Wordmark renders on TWO lines so the long "Alnylam SSOT" pair
+            never gets clipped on the right at narrow viewports — at 128 px
+            font-semibold the single-line version overflows the 1200 px
+            container minus padding on tablet widths. */}
         <span className="text-[68px] font-semibold leading-[0.9] tracking-[-0.05em] text-[#1F1F1F] min-[560px]:text-[92px] min-[960px]:text-[128px]">
+          Alnylam
+          <br aria-hidden />
           SSOT
         </span>
       </div>
@@ -316,193 +321,11 @@ function SectionConstraint() {
 }
 
 // ============================================================================
-// §03 The method ★ — Workflow loop SVG + pull quote + body
+// §03 In practice ★ — Sketch gallery (2×2) + shipped-interaction sub-block
 // ============================================================================
-
-// Inline SVG redraw of the war-room loop.  The "Sketch" node is filled
-// black with white text — visual inversion against the other open boxes
-// is the emphasis (Soonk's feedback: "Wrong on purpose 하이라이트 쌔게
-// 넣어줘").  Two looping arrows close the cycle: sign-off → build, build
-// → SME input.  Monochrome — the only chromatic content elsewhere on the
-// page is the SME annotations inside the sketch images.
-function WorkflowLoopDiagram() {
-  return (
-    <figure className="my-[28px] rounded-[10px] border-[1.5px] border-[#1F1F1F] bg-[#1F1F1F]/[0.03] px-[18px] py-[28px] tablet:px-[28px]">
-      <svg
-        viewBox="0 0 800 280"
-        xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="xMidYMid meet"
-        className="block h-auto w-full"
-        role="img"
-        aria-labelledby="alnylam-wf-title alnylam-wf-desc"
-      >
-        <title id="alnylam-wf-title">War-room workflow loop</title>
-        <desc id="alnylam-wf-desc">
-          Daily war-room loop: SME Input feeds a deliberately-flawed Sketch
-          (the wrong-on-purpose step), which routes through Strategic
-          Alignment, Engineering Feasibility, and Sign-off; sign-off then
-          triggers the Build of the data pipeline and frontend, which loops
-          back to SME Input for the next iteration.
-        </desc>
-        <defs>
-          <marker
-            id="alnylam-arr"
-            viewBox="0 0 10 10"
-            refX="9"
-            refY="5"
-            markerWidth="6"
-            markerHeight="6"
-            orient="auto-start-reverse"
-          >
-            <path d="M0,0 L10,5 L0,10 z" fill="#1F1F1F" />
-          </marker>
-        </defs>
-        {/* Open boxes — every node except Sketch */}
-        <g fill="none" stroke="#1F1F1F" strokeWidth="1">
-          <rect x="20" y="40" width="120" height="68" rx="10" />
-          <rect x="320" y="40" width="120" height="68" rx="10" />
-          <rect x="470" y="40" width="120" height="68" rx="10" />
-          <rect x="620" y="40" width="140" height="68" rx="10" />
-          {/* Bottom box — Build */}
-          <rect x="320" y="190" width="200" height="68" rx="10" />
-        </g>
-        {/* Sketch node — solid black fill, the emphasis */}
-        <rect
-          x="170"
-          y="40"
-          width="120"
-          height="68"
-          rx="10"
-          fill="#1F1F1F"
-          stroke="#1F1F1F"
-          strokeWidth="1"
-        />
-        {/* Labels — open nodes (dark on cream) */}
-        <g
-          fill="#1F1F1F"
-          fontFamily="-apple-system, Inter, sans-serif"
-          fontSize="13"
-          textAnchor="middle"
-        >
-          <text x="80" y="78">SME Input</text>
-          <text x="380" y="70">Strategic</text>
-          <text x="380" y="88">Alignment</text>
-          <text x="530" y="70">Engineering</text>
-          <text x="530" y="88">Feasibility</text>
-          <text x="690" y="70">Sign-off for</text>
-          <text x="690" y="88">the approach</text>
-          <text x="420" y="220">Build data pipeline</text>
-          <text x="420" y="238">+ frontend</text>
-        </g>
-        {/* Sketch labels — light on black, bigger & bolder */}
-        <text
-          x="230"
-          y="72"
-          fontFamily="-apple-system, Inter, sans-serif"
-          fontSize="15"
-          fontWeight="700"
-          fill="#F4F4F4"
-          textAnchor="middle"
-        >
-          Sketch
-        </text>
-        <text
-          x="230"
-          y="94"
-          fontSize="11"
-          fill="#F4F4F4"
-          fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-          letterSpacing="0.12em"
-          fontWeight="600"
-          textAnchor="middle"
-        >
-          WRONG-ON-PURPOSE
-        </text>
-        {/* Arrows — sequential top row */}
-        <g
-          stroke="#1F1F1F"
-          strokeWidth="1"
-          fill="none"
-          markerEnd="url(#alnylam-arr)"
-        >
-          <line x1="142" y1="74" x2="166" y2="74" />
-          <line x1="292" y1="74" x2="316" y2="74" />
-          <line x1="442" y1="74" x2="466" y2="74" />
-          <line x1="592" y1="74" x2="616" y2="74" />
-          {/* Sign-off → Build (down right) */}
-          <path d="M 690 110 V 165 H 520 V 188" />
-          {/* Build → SME Input (loop back left) */}
-          <path d="M 320 224 H 80 V 112" />
-        </g>
-      </svg>
-      <figcaption
-        className="mt-[16px] text-center text-[11px] tracking-[0.04em] text-[#5D5D5D]"
-        style={MONO}
-      >
-        Fig. 1 · The loop runs daily, not weekly. Wrong-on-purpose lives at
-        Sketch.
-      </figcaption>
-    </figure>
-  );
-}
-
-function SectionMethod() {
-  return (
-    <Section id="method">
-      <Eyebrow>+ The method</Eyebrow>
-      <SectionHead
-        n="03"
-        title={
-          <>
-            I drew the wrong thing first —<br />
-            on purpose.
-          </>
-        }
-      />
-      <Lede>
-        In a room of senior stakeholders, abstract questions get diplomatic
-        answers. Concrete artifacts get specific ones. A deliberately-flawed
-        sketch gives the room a target to disagree with — which is the only
-        kind of disagreement that&rsquo;s actionable. &ldquo;I&rsquo;m not
-        sure about the timeline view&rdquo; is a design problem. &ldquo;No,
-        that should be quarterly not monthly&rdquo; is a spec.
-      </Lede>
-
-      <WorkflowLoopDiagram />
-
-      <figure className="my-[28px] max-w-[560px] border-l-2 border-[#1F1F1F] pl-[18px]">
-        <blockquote
-          className="text-[20px] leading-[1.45] italic text-[#1F1F1F]"
-          style={SERIF}
-        >
-          &ldquo;Knowing individual batches&rsquo; time doesn&rsquo;t help.&rdquo;
-        </blockquote>
-        <figcaption
-          className="mt-[10px] text-[12px] text-[#5D5D5D]"
-          style={MONO}
-        >
-          — handwritten on the Lead Time dashboard, week one
-        </figcaption>
-      </figure>
-
-      <Body>
-        The annotation isn&rsquo;t feedback. It&rsquo;s the spec. By the time
-        an SME has written{" "}
-        <em>
-          &ldquo;Knowing individual batches&rsquo; time doesn&rsquo;t help&rdquo;
-        </em>{" "}
-        in red on a wireframe, the next sketch is already specified: kill the
-        per-batch view, build a phase-level rollup. No translation step. No
-        &ldquo;let me write that up.&rdquo; The artifact closes the loop.
-      </Body>
-    </Section>
-  );
-}
-
-// ============================================================================
-// §04 In practice ★ — Sketch gallery (2×2) + shipped-interaction sub-block
-// ============================================================================
-
+// (Was §04; §03 "The method" with the wrong-on-purpose workflow loop was
+//  removed per Soonk — the diagram alignment was off and the section was
+//  unlikely to be read.  Numbering collapsed so the nav reads 02→03→04→05.)
 function SketchTile({
   src,
   alt,
@@ -568,7 +391,7 @@ function SectionPractice() {
     <Section id="practice">
       <Eyebrow>+ In practice</Eyebrow>
       <SectionHead
-        n="04"
+        n="03"
         title={
           <>
             The annotations<br />
@@ -728,7 +551,7 @@ function SectionOutcome() {
     <Section id="outcome">
       <Eyebrow>+ The outcome</Eyebrow>
       <SectionHead
-        n="05"
+        n="04"
         title={
           <>
             Eight weeks in.<br />
@@ -846,7 +669,7 @@ function SectionReflection() {
     <Section id="reflection">
       <Eyebrow>+ Reflection</Eyebrow>
       <SectionHead
-        n="06"
+        n="05"
         title={
           <>
             Where this method<br />
@@ -936,7 +759,6 @@ export default function AlnylamCaseStudy() {
           />
           <div className="min-w-0 flex-1">
             <SectionConstraint />
-            <SectionMethod />
             <SectionPractice />
             <SectionOutcome />
             <SectionReflection />
