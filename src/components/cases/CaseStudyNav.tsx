@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { tiles } from "@/data/tiles";
-import { TileLogo } from "@/components/TileLogo";
 
 // CaseStudyNav — sticky top bar shared by every /work/[slug] page.
 //
@@ -90,7 +89,12 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
                 {tile.id}
               </span>
             )}
-            {tile && <TileLogo tileId={tile.id} />}
+            {/* TileLogo intentionally NOT rendered in the mobile bar —
+                project number + brand name are enough at this size, and
+                wide logos (notably 07 NYC OpenData at max-w-[260px])
+                squished the breadcrumb so the hamburger had no room.
+                The desktop bar keeps the logo because the indicator
+                squares already carry the visual identity there. */}
             <span className="text-[16px] leading-[0.92] font-bold text-[#1F1F1F]">
               {tile?.brand ?? "Soonk"}
             </span>
