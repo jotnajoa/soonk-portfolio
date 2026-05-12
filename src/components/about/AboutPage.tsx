@@ -53,7 +53,15 @@ export default function AboutPage() {
             </h1>
 
             <p className="max-w-[640px] text-[16px] leading-[1.4] font-medium text-[#5D5D5D] tablet:text-[20px] tablet:leading-[1.35]">
-              We are all changing slightly over time. Nothing is forever.
+              We are all changing slightly over time. Nothing is forever.{" "}
+              <a
+                href="/Soonk_Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-bold text-[#1F1F1F] underline decoration-[#1F1F1F] underline-offset-[4px] transition-colors hover:decoration-[#00FB00] hover:text-[#00FB00]"
+              >
+                Resume
+              </a>
             </p>
 
             <div className="flex flex-wrap items-center justify-between gap-[20px]">
