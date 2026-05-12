@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { tiles } from "@/data/tiles";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { killGridScrollTriggersIfLeavingPage } from "@/components/FlyingSquares";
 
 // Figma node 101:1972 / 101:1656.
@@ -174,8 +174,53 @@ export default function ProjectNav() {
     ? { opacity: 0, pointerEvents: "none" as const }
     : { opacity: 1, pointerEvents: "auto" as const };
 
+  // Force-show the nav whenever we land on a non-landing route.
+  //
+  // React's reconciler doesn't track inline styles GSAP wrote directly
+  // to the DOM during the landing's FlyingSquares timeline.  When the
+  // user clicks away from / to /about (or /work/{slug}), useGSAP's
+  // cleanup reverts the nav's opacity to its mount-time value (0).
+  // React's next render diff *looks* unchanged from its own bookkeeping
+  // (it last set opacity:0 itself on the landing render), so the DOM
+  // mutation is skipped — nav stays invisible until a manual refresh.
+  //
+  // This effect closes the gap: any time isLanding goes false, we
+  // imperatively reassert opacity:1 / pointerEvents:auto on the actual
+  // DOM node via the ref.  Runs in useEffect (post-paint) so it lands
+  // after the GSAP cleanup that would otherwise overwrite us.
+  const navRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (isLanding) return;
+    const el = navRef.current;
+    if (!el) return;
+    el.style.opacity = "1";
+    el.style.pointerEvents = "auto";
+  }, [isLanding]);
+
+  // Section-jump click handlers for Work and Lecture & Publication.
+  //
+  // Background: the Links target hash anchors on / (#work-list /
+  // #publication).  When the user is ALREADY on / with that hash,
+  // clicking the same Link again is a same-URL navigation — Next.js
+  // Link short-circuits it, and the browser doesn't refire the anchor
+  // scroll (the URL didn't change).  Visible failure: "/#publication
+  // 뜬 다음 scroll 위로 올리고 L&P 다시 클릭해도 안 내려감".
+  //
+  // Fix: on the landing route, intercept the click, preventDefault,
+  // and smooth-scrollIntoView the target section manually.  On other
+  // routes, let the Link's default behaviour navigate to /#section.
+  const handleSectionClick =
+    (id: string) => (e: React.MouseEvent) => {
+      if (!isLanding) return; // Link handles the route change.
+      e.preventDefault();
+      document
+        .getElementById(id)
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
   return (
     <div
+      ref={navRef}
       data-project-nav
       style={initialStyle}
       className="fixed top-0 right-0 left-0 z-40 hidden bg-[#EEEEEE]/95 backdrop-blur tablet:block"
@@ -215,7 +260,10 @@ export default function ProjectNav() {
               state in the third nav pill below). */}
           <Link
             href="/#work-list"
-            onClick={() => killGridScrollTriggersIfLeavingPage("/#work-list")}
+            onClick={(e) => {
+              killGridScrollTriggersIfLeavingPage("/#work-list");
+              handleSectionClick("work-list")(e);
+            }}
             className={`text-[16px] leading-[0.92] whitespace-nowrap ${
               inPublication || isAbout
                 ? "font-normal text-[#A0A0A0] hover:text-black"
@@ -295,7 +343,10 @@ export default function ProjectNav() {
             About me bold instead, so this stays gray on that route. */}
         <Link
           href="/#publication"
-          onClick={() => killGridScrollTriggersIfLeavingPage("/#publication")}
+          onClick={(e) => {
+            killGridScrollTriggersIfLeavingPage("/#publication");
+            handleSectionClick("publication")(e);
+          }}
           className={`text-[16px] leading-[0.92] whitespace-nowrap ${
             inPublication && !isAbout
               ? "font-semibold text-black"
