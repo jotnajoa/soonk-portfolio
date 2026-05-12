@@ -10,13 +10,18 @@ import { useEffect, useState } from "react";
 // kicked in.  The inline one is gone; this floater owns the role.
 //
 // Visibility lifecycle:
-//   1. Hidden for the first 1.6s after mount — covers the hero's 1.5s
-//      scroll-lock + a beat of buffer so the cue doesn't pop in DURING
-//      the dark-to-light cross-fade.
-//   2. Visible from then until the sticky ProjectNav has fully faded in
-//      (opacity ≥ 0.95).  We tie visibility to nav opacity (which
-//      FlyingSquares scrubs from 0 → 1) so the cue tracks the actual
-//      animation state, not a raw scroll threshold.
+//   1. Hidden for the first 3.5s after mount — covers the hero's
+//      scroll-lock (1.5s) plus the dark→light bg flip (~t=3.1) plus a
+//      beat of buffer, so the cue doesn't pop in DURING the
+//      cross-fade.  Earlier 1.6s gate fired the cue mid-fade because
+//      it only waited out the scroll-lock, not the visual transition.
+//   2. Visible from then until the user has scrolled past the hero
+//      (its bottom edge below 70% of viewport).  Earlier version
+//      tied visibility to ProjectNav opacity, which only animates on
+//      desktop via FlyingSquares — on mobile, where the nav is
+//      `tablet:block` (display:none) and FlyingSquares early-returns,
+//      the cue never disappeared.  Hero-scroll check works on both
+//      platforms with one rule.
 //
 // Visual treatment: the cue floats on top of arbitrary page content
 // (hero text, work tiles, list rows), so a transparent block of the
@@ -28,28 +33,31 @@ export default function ScrollHint() {
   const [heroReady, setHeroReady] = useState(false);
   const [visible, setVisible] = useState(false);
 
-  // First gate: wait out the hero's scroll-lock + the dark-phase
-  // cross-fade before the cue is allowed to show.  Independent of
-  // scroll position so we don't pop the cue in the middle of an
+  // First gate: wait out the hero's scroll-lock (1.5s) + the dark-phase
+  // cross-fade (bg flip lands at t=3.1) before the cue is allowed to
+  // show.  Independent of scroll position — don't pop the cue mid-
   // animation just because the user happened to scroll early.
   useEffect(() => {
-    const t = window.setTimeout(() => setHeroReady(true), 1600);
+    const t = window.setTimeout(() => setHeroReady(true), 3500);
     return () => window.clearTimeout(t);
   }, []);
 
-  // Second gate: hide once the ProjectNav has come into view.  The
-  // nav indicators are the "more" the cue was pointing at, so the
-  // cue's job is done the moment they're on screen.
+  // Second gate: hide once the user has scrolled meaningfully past
+  // the hero.  Single rule that works on mobile and desktop — the
+  // old nav-opacity check only fired on desktop (FlyingSquares is
+  // wide-only), leaving the cue stuck on screen forever on phones.
   useEffect(() => {
     if (!heroReady) return;
     const update = () => {
-      const nav = document.querySelector<HTMLElement>("[data-project-nav]");
-      const navOpacity = nav
-        ? parseFloat(getComputedStyle(nav).opacity || "0")
-        : 0;
-      // Threshold 0.95 (not 1.0) so the cue starts fading out a beat
-      // BEFORE the nav reaches full opacity — feels less abrupt.
-      setVisible(navOpacity < 0.95);
+      const hero = document.querySelector<HTMLElement>(".hero");
+      if (!hero) {
+        setVisible(false);
+        return;
+      }
+      const rect = hero.getBoundingClientRect();
+      // Visible while hero's bottom edge is still in the lower 30%
+      // of the viewport (i.e., user hasn't scrolled past it yet).
+      setVisible(rect.bottom > window.innerHeight * 0.7);
     };
     update();
     window.addEventListener("scroll", update, { passive: true });

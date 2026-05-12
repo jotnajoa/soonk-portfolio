@@ -291,10 +291,16 @@ export default function GtmCaseStudy() {
               {/* Comparison table — 5 rows × 3 cols.  Headers carry the
                   project marker; cells are plain prose.  Axis column at
                   160 px so longest labels ("CONCENTRATION", "VALIDATION
-                  SIGNAL") have headroom — earlier 100 px clipped them
-                  visually into the next cell. */}
-              <div className="my-[18px] overflow-hidden rounded-[10px] border border-[#1F1F1F]/20 bg-[#F4F4F4]">
-                <div className="grid grid-cols-[140px_1fr_1fr] items-stretch min-[700px]:grid-cols-[170px_1fr_1fr]">
+                  SIGNAL") have headroom.
+
+                  Mobile horizontal scroll: viewport widths under ~600px
+                  truncated the third column (VoltHop) earlier — the grid
+                  was clipped by overflow-hidden.  Switched the outer to
+                  overflow-x-auto and locked the inner grid to a 600px
+                  minimum so columns keep their proportions and the user
+                  can swipe to see the full table. */}
+              <div className="my-[18px] overflow-x-auto rounded-[10px] border border-[#1F1F1F]/20 bg-[#F4F4F4]">
+                <div className="grid min-w-[600px] grid-cols-[140px_1fr_1fr] items-stretch min-[700px]:min-w-0 min-[700px]:grid-cols-[170px_1fr_1fr]">
                   <div className="border-b border-[#1F1F1F]/15 px-[14px] py-[14px] text-[11px] tracking-[0.12em] font-medium text-[#5D5D5D]" style={{ fontFamily: MONO }}>
                     AXIS
                   </div>
