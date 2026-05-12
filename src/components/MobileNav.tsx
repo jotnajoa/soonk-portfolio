@@ -121,9 +121,33 @@ export default function MobileNav() {
 
   return (
     <>
-      {/* Sticky WORK + hamburger bar (mobile only).
-          z-30 so it sits above ProjectList content but BELOW the menu
-          overlay (z-50). Shadow + border appear only when sticky-active. */}
+      {/* Floating hamburger — fixed top-right, mobile only, visible from
+          the very first paint.  Earlier this button lived INSIDE the
+          sticky title bar and only slid in once the bar reached top:0
+          via scroll — but on the landing route the bar sits below the
+          hero in DOM, so during the entire hero animation phase the
+          user had no header control at all.  Detaching it gives them
+          a persistent way back to the menu from page load onward.
+
+          Visual: translucent light circle + #1F1F1F lines (instead of
+          the previous dark circle + light lines) so the button reads
+          on BOTH the hero's dark phase AND the light page background. */}
+      <button
+        ref={buttonRef}
+        onClick={openMenu}
+        aria-label="Open menu"
+        className="fixed top-[20px] right-[20px] z-40 flex size-[52px] cursor-pointer flex-col items-center justify-center gap-[5px] rounded-full border border-[#1F1F1F]/20 bg-[#F4F4F4]/95 shadow-[0_2px_8px_rgba(0,0,0,0.15)] backdrop-blur transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-[2px] hover:shadow-[0_8px_16px_rgba(0,0,0,0.25)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.15)] tablet:hidden"
+      >
+        <span className="block h-[2.5px] w-[26px] bg-[#1F1F1F]" />
+        <span className="block h-[2.5px] w-[26px] bg-[#1F1F1F]" />
+        <span className="block h-[2.5px] w-[26px] bg-[#1F1F1F]" />
+      </button>
+
+      {/* Sticky section-title bar (mobile only).  Renders nothing when
+          the user is still inside the hero phase (per Soonk: title
+          stays empty during the landing animation).  Once the bar
+          becomes sticky-active OR the user is on /about, the WORK /
+          Lecture & Publication / About me title appears. */}
       <div
         ref={barRef}
         className={`sticky top-0 z-30 bg-[#EEEEEE] tablet:hidden transition-shadow duration-200 ${
@@ -132,48 +156,30 @@ export default function MobileNav() {
             : ""
         }`}
       >
-        <div className="flex h-[80px] items-center justify-between px-[32px]">
+        <div className="flex h-[80px] items-center px-[32px]">
           {/* Title swaps based on which section is in view.  WORK keeps
               its punchy 48 px treatment; "Lecture & Publication" drops to
               28 px and wraps onto two lines so the longer label still
               fits within the same 80 px bar without truncation.  On the
               /about route the bar reads "About me" at the same 48 px
-              page-header treatment as WORK. */}
-          {isAbout ? (
-            <p className="text-[48px] leading-[0.92] font-black text-[#1F1F1F]">
-              About me
-            </p>
-          ) : inPublication ? (
-            <p className="text-[28px] leading-[0.92] font-black text-[#1F1F1F]">
-              Lecture &amp;<br />Publication
-            </p>
-          ) : (
-            <p className="text-[48px] leading-[0.92] font-black text-[#1F1F1F]">
-              WORK
-            </p>
-          )}
-          {/* Hamburger button — HIDDEN while the bar is in-flow.  Only
-              slides in once the bar has reached `top:0` (sticky-active).
-              This matches Figma 162:4106 (no hamburger) → 162:3935 (sticky
-              bar with hamburger).  The combined opacity + translate-x
-              transition makes the button feel like it slips in from the
-              right edge as the bar lands. */}
-          <button
-            ref={buttonRef}
-            onClick={openMenu}
-            aria-label="Open menu"
-            aria-hidden={!(stuck || isAbout)}
-            tabIndex={stuck || isAbout ? 0 : -1}
-            className={`flex size-[56px] cursor-pointer flex-col items-center justify-center gap-[5px] rounded-full bg-[#1F1F1F] shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-[opacity,transform,box-shadow] duration-300 ease-out hover:-translate-y-[2px] hover:shadow-[0_8px_16px_rgba(0,0,0,0.25)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.15)] ${
-              stuck || isAbout
-                ? "pointer-events-auto translate-x-0 opacity-100"
-                : "pointer-events-none translate-x-4 opacity-0"
-            }`}
-          >
-            <span className="block h-[3px] w-[30px] bg-[#F4F4F4]" />
-            <span className="block h-[3px] w-[30px] bg-[#F4F4F4]" />
-            <span className="block h-[3px] w-[30px] bg-[#F4F4F4]" />
-          </button>
+              page-header treatment as WORK.
+
+              Hidden entirely when not stuck (and not on /about) — keeps
+              the bar empty during the hero phase. */}
+          {(stuck || isAbout) &&
+            (isAbout ? (
+              <p className="text-[48px] leading-[0.92] font-black text-[#1F1F1F]">
+                About me
+              </p>
+            ) : inPublication ? (
+              <p className="text-[28px] leading-[0.92] font-black text-[#1F1F1F]">
+                Lecture &amp;<br />Publication
+              </p>
+            ) : (
+              <p className="text-[48px] leading-[0.92] font-black text-[#1F1F1F]">
+                WORK
+              </p>
+            ))}
         </div>
       </div>
 
