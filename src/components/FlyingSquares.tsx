@@ -90,24 +90,28 @@ export default function FlyingSquares() {
     (_ctx, contextSafe) => {
       if (!isWide) return;
 
-      // Returning-from-case-study fast path: when the user lands here
-      // with a `#work-list-XX` hash (set by the BACK TO PORTFOLIO link
-      // on case-study pages), skip the entire grid → indicators
-      // choreography.  Just make the top nav visible — that's the only
-      // bit of the timeline's end state that's actually in view at the
-      // work-list scroll position they're being scrolled to.
+      // Deep-link fast path: when the user lands here with a hash that
+      // targets a specific landing-page section (currently `#work-grid`
+      // or `#work-list-XX`), skip the entire grid → indicators choreography.
+      // Just make the top nav visible — that's the only bit of the
+      // timeline's end state that's actually in view at the scroll
+      // position the browser is sending them to.
       //
       // Why we can't just let the timeline run: ScrollTrigger.pin
       // creates a pin-spacer that adds ~600px of layout to the page.
       // If the user is already past the pin range when the spacer is
       // injected, their visible content shifts by 600px and they end
       // up above the tile the browser scrolled them to.  Skipping pin
-      // entirely sidesteps that — the grid stays static, the tile they
-      // want stays at the right Y position.
-      const returningToList =
-        typeof window !== "undefined" &&
-        /^#work-list-\d{2}$/.test(window.location.hash);
-      if (returningToList) {
+      // entirely sidesteps that — the grid stays static, the section
+      // they want stays at the right Y position.
+      //
+      // Hashes we treat as deep-links (no animation):
+      //   #work-grid          ← "Work" label in CaseStudyNav
+      //   #work-list-XX       ← "← BACK TO PORTFOLIO" + project nav indicators
+      const hash = typeof window !== "undefined" ? window.location.hash : "";
+      const isDeepLink =
+        hash === "#work-grid" || /^#work-list-\d{2}$/.test(hash);
+      if (isDeepLink) {
         const showNav = contextSafe!(() => {
           const nav = document.querySelector<HTMLElement>("[data-project-nav]");
           if (nav) gsap.set(nav, { opacity: 1, pointerEvents: "auto" });
