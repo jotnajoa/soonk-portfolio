@@ -1033,7 +1033,19 @@ function SectionGtm() {
           number="06"
           eyebrow="GTM"
           headline="Finding them in the wild."
-          lede="Once v1 was live, the channels mattered. Three tracks: showing up where Brompton riders already gather (in-person), classic search (SEO), and AI-assistant retrieval (AEO)."
+          lede={
+            <>
+              Once v1 was live, the channels mattered. Three tracks: showing
+              up where Brompton riders already gather (in-person), classic
+              search (SEO), and AI-assistant retrieval (AEO).{" "}
+              <Link
+                href="/work/gtm"
+                className="text-[#0066FF] underline decoration-[#0066FF]/60 underline-offset-4 hover:decoration-[#0066FF]"
+              >
+                For more → GTM page
+              </Link>
+            </>
+          }
         />
 
         {/* ---- In-Person — Brompton meetups (IRL distribution) ------- */}

@@ -1387,7 +1387,7 @@ export default function PomesCaseStudy() {
                 channel learnings →{" "}
                 <Link
                   href="/work/gtm"
-                  className="text-[#1F1F1F] underline decoration-[#A0A0A0] underline-offset-4"
+                  className="text-[#0066FF] underline decoration-[#0066FF]/60 underline-offset-4 hover:decoration-[#0066FF]"
                 >
                   GTM page
                 </Link>
