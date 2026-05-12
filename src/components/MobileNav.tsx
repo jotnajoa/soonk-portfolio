@@ -121,26 +121,24 @@ export default function MobileNav() {
 
   return (
     <>
-      {/* Floating hamburger — fixed top-right, mobile only, visible from
-          the very first paint.  Earlier this button lived INSIDE the
-          sticky title bar and only slid in once the bar reached top:0
-          via scroll — but on the landing route the bar sits below the
-          hero in DOM, so during the entire hero animation phase the
-          user had no header control at all.  Detaching it gives them
-          a persistent way back to the menu from page load onward.
+      {/* Floating hamburger — fixed top-right, mobile only, visible
+          from the very first paint.  Detached from the sticky title
+          bar so the user always has a way back to the menu, including
+          during the hero animation phase when the bar itself is still
+          below the viewport.
 
-          Visual: translucent light circle + #1F1F1F lines (instead of
-          the previous dark circle + light lines) so the button reads
-          on BOTH the hero's dark phase AND the light page background. */}
+          Visual: dark circle + light lines (the original treatment).
+          Briefly low-contrast against the hero's dark phase (~3s)
+          but pops on every other state — Soonk's call. */}
       <button
         ref={buttonRef}
         onClick={openMenu}
         aria-label="Open menu"
-        className="fixed top-[20px] right-[20px] z-40 flex size-[52px] cursor-pointer flex-col items-center justify-center gap-[5px] rounded-full border border-[#1F1F1F]/20 bg-[#F4F4F4]/95 shadow-[0_2px_8px_rgba(0,0,0,0.15)] backdrop-blur transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-[2px] hover:shadow-[0_8px_16px_rgba(0,0,0,0.25)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.15)] tablet:hidden"
+        className="fixed top-[20px] right-[20px] z-40 flex size-[52px] cursor-pointer flex-col items-center justify-center gap-[5px] rounded-full bg-[#1F1F1F] shadow-[0_2px_8px_rgba(0,0,0,0.15)] transition-[transform,box-shadow] duration-300 ease-out hover:-translate-y-[2px] hover:shadow-[0_8px_16px_rgba(0,0,0,0.25)] active:translate-y-0 active:shadow-[0_2px_8px_rgba(0,0,0,0.15)] tablet:hidden"
       >
-        <span className="block h-[2.5px] w-[26px] bg-[#1F1F1F]" />
-        <span className="block h-[2.5px] w-[26px] bg-[#1F1F1F]" />
-        <span className="block h-[2.5px] w-[26px] bg-[#1F1F1F]" />
+        <span className="block h-[2.5px] w-[26px] bg-[#F4F4F4]" />
+        <span className="block h-[2.5px] w-[26px] bg-[#F4F4F4]" />
+        <span className="block h-[2.5px] w-[26px] bg-[#F4F4F4]" />
       </button>
 
       {/* Sticky section-title bar (mobile only).  Renders nothing when
