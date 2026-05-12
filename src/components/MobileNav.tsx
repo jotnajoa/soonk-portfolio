@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { tiles } from "@/data/tiles";
 import { useEffect, useRef, useState } from "react";
+import { killGridScrollTriggers } from "@/components/FlyingSquares";
 
 // MobileNav — mobile-only (<800px) sticky bar PLUS the fullscreen menu
 // overlay.  Lives between <Hero/> and <ProjectList/> in DOM order so its
@@ -271,7 +272,10 @@ export default function MobileNav() {
               "sections don't get dots" rule). */}
           <Link
             href="/about"
-            onClick={close}
+            onClick={() => {
+              killGridScrollTriggers();
+              close();
+            }}
             className={`self-start text-[32px] leading-[0.92] no-underline ${
               isAbout
                 ? "font-bold text-[#F4F4F4]"
