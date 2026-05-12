@@ -459,7 +459,6 @@ function SectionAtmosphere() {
             src="/work/wordup/wordupclip1.gif"
             alt="Word Up — visualization of every word in the dataset"
             tag="ORIGINAL · 2021 · VISUALIZATION OF ENTIRE WORDS"
-            maxWidth={480}
             caption="The full word field — every word from every track in the dataset, rendered to canvas because svg would have crashed the browser. Decoration that's also a stress test."
           />
         </div>

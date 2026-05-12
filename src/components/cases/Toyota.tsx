@@ -198,30 +198,27 @@ function PcaApprovalFlow() {
     { num: "04", label: "UUU codes + function kind assigned" },
     { num: "05", label: "Guide approved, propagates downstream" },
   ];
+  // Left-aligned 5-up flow.  Every box renders at the SAME width — earlier
+  // versions had a chevron `›` between cells 1–4 inside the flex item, so
+  // cell 5's box grew by the chevron's width and the row read uneven on
+  // the right.  Chevrons removed; the grid gap carries the rhythm.
   return (
-    <div className="my-[28px] flex flex-col items-center gap-[10px]">
-      <div className="grid w-full max-w-[760px] grid-cols-1 gap-[10px] tablet:grid-cols-5">
-        {steps.map((s, i) => (
-          <div key={s.num} className="flex items-center gap-[6px]">
-            <div className="flex flex-1 flex-col items-start gap-[6px] border border-[#1F1F1F]/30 px-[12px] py-[10px]">
-              <span
-                className="text-[12px] tracking-[0.08em] text-[#A0A0A0]"
-                style={MONO}
-              >
-                {s.num}
-              </span>
-              <span className="text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
-                {s.label}
-              </span>
-            </div>
-            {i < steps.length - 1 && (
-              <span
-                className="hidden text-[12px] text-[#A0A0A0] tablet:inline"
-                aria-hidden
-              >
-                ›
-              </span>
-            )}
+    <div className="my-[28px] flex flex-col items-start gap-[10px]">
+      <div className="grid w-full max-w-[760px] grid-cols-1 gap-[10px] tablet:grid-cols-5 tablet:gap-[12px]">
+        {steps.map((s) => (
+          <div
+            key={s.num}
+            className="flex flex-col items-start gap-[6px] border border-[#1F1F1F]/30 px-[12px] py-[10px]"
+          >
+            <span
+              className="text-[12px] tracking-[0.08em] text-[#A0A0A0]"
+              style={MONO}
+            >
+              {s.num}
+            </span>
+            <span className="text-[12px] leading-[1.3] font-medium text-[#1F1F1F]">
+              {s.label}
+            </span>
           </div>
         ))}
       </div>
@@ -274,13 +271,10 @@ function SectionHero({ onOpenModal }: { onOpenModal: () => void }) {
           timeline / status. */}
       <dl className="mb-[40px] max-w-[760px] border-t border-[#A0A0A0]">
         {[
+          ["Role", "Senior designer"],
           [
-            "Role",
-            "Senior designer · brought in as emergency support after executive escalation",
-          ],
-          [
-            "Scope",
-            "Diagnose downstream symptoms → restructure the upstream BRD artifact",
+            "Impact",
+            "Client trust recovery · award reception",
           ],
           ["Timeline", "Sep 2023 – Dec 2023"],
           ["Status", "Shipped"],

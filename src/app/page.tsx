@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import Grid from "@/components/Grid";
 import ProjectList from "@/components/ProjectList";
+import LecturePublicationList from "@/components/LecturePublicationList";
 import MobileNav from "@/components/MobileNav";
 import ScrollHint from "@/components/ScrollHint";
 import FlyingSquares from "@/components/FlyingSquares";
@@ -25,6 +26,14 @@ export default function Home() {
 
       <ScrollHint />
       <ProjectList />
+
+      {/* Lecture & Publication section — scroll-sequenced sibling to the
+          work list (NOT a separate route).  MobileNav above swaps its
+          title from "WORK" to "Lecture & Publication" once scroll crosses
+          into this section; the desktop ProjectNav highlight does the
+          same. */}
+      <LecturePublicationList />
+
       <FlyingSquares />
 
       {/* Resize-aware scroll preservation.  Renders nothing; just keeps

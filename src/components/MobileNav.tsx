@@ -4,33 +4,46 @@ import Link from "next/link";
 import { tiles } from "@/data/tiles";
 import { useEffect, useRef, useState } from "react";
 
-// MobileNav — mobile-only (<800px) sticky WORK+hamburger bar PLUS the
-// fullscreen menu overlay.  Lives between <Hero/> and <ProjectList/> in DOM
-// order so its natural position is just-below the hero; as the user scrolls
-// past the hero the bar slides into view, then `position: sticky; top:0;`
-// pins it to the viewport top.
+// MobileNav — mobile-only (<800px) sticky bar PLUS the fullscreen menu
+// overlay.  Lives between <Hero/> and <ProjectList/> in DOM order so its
+// natural position is just-below the hero; as the user scrolls past the
+// hero the bar slides into view, then `position: sticky; top:0;` pins it
+// to the viewport top.
 //
-// Two visual states:
+// The bar title is dynamic: it reads "WORK" while the user is in the
+// ProjectList scroll range, then swaps to "Lecture & Publication" once
+// scroll crosses into the LecturePublicationList section below.  Detected
+// via getBoundingClientRect on [data-section="publication"] in the same
+// scroll handler that flips the sticky-active drop-shadow.
+//
+// Two visual states for the bar chrome:
 //   162:3935 — bar visible, no shadow (initial / about-to-stick).
 //   162:4000 — sticky-active: bottom border + drop-shadow.
-// State is detected by checking `getBoundingClientRect().top <= 0` on scroll.
 
 export default function MobileNav() {
   const barRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [open, setOpen] = useState(false);
   const [stuck, setStuck] = useState(false);
+  const [inPublication, setInPublication] = useState(false);
   // The clip-path circle for the menu open/close animation emanates from
   // the hamburger button.  Because the bar lives in normal flow until it
   // sticks, the button's viewport position depends on scroll — capture it
   // at click time instead of hard-coding a "calc(100% - 56px) X" value.
   const [clipOrigin, setClipOrigin] = useState("calc(100% - 60px) 32px");
 
-  // Sticky-active detection (for the drop-shadow visual cue).
+  // Sticky-active detection + section-in-view detection.  Both depend on
+  // the same scroll position, so one handler covers both.  The bar sits
+  // 80 px tall, so "in publication" means the section's top edge has
+  // crossed the bar's bottom edge.
   useEffect(() => {
     const onScroll = () => {
       if (!barRef.current) return;
       setStuck(barRef.current.getBoundingClientRect().top <= 0);
+      const pubEl = document.querySelector('[data-section="publication"]');
+      if (pubEl) {
+        setInPublication(pubEl.getBoundingClientRect().top <= 80);
+      }
     };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -68,9 +81,19 @@ export default function MobileNav() {
         }`}
       >
         <div className="flex h-[80px] items-center justify-between px-[32px]">
-          <p className="text-[48px] leading-[0.92] font-black text-[#1F1F1F]">
-            WORK
-          </p>
+          {/* Title swaps based on which section is in view.  WORK keeps
+              its punchy 48 px treatment; "Lecture & Publication" drops to
+              28 px and wraps onto two lines so the longer label still
+              fits within the same 80 px bar without truncation. */}
+          {inPublication ? (
+            <p className="text-[28px] leading-[0.92] font-black text-[#1F1F1F]">
+              Lecture &amp;<br />Publication
+            </p>
+          ) : (
+            <p className="text-[48px] leading-[0.92] font-black text-[#1F1F1F]">
+              WORK
+            </p>
+          )}
           {/* Hamburger button — HIDDEN while the bar is in-flow.  Only
               slides in once the bar has reached `top:0` (sticky-active).
               This matches Figma 162:4106 (no hamburger) → 162:3935 (sticky
@@ -139,12 +162,24 @@ export default function MobileNav() {
           <div className="h-[2px] w-full bg-[#F4F4F4]" />
 
           <div className="flex flex-col gap-[16px]">
+            {/* Bold + bullet when this section is the one in view, gray
+                otherwise.  Mirrors the desktop ProjectNav bold/gray swap
+                so the menu reflects where the user currently is. */}
             <button
               onClick={close}
-              className="flex cursor-pointer items-center gap-[8px] text-[32px] leading-[0.92] font-medium text-[#F4F4F4]"
+              className={`flex cursor-pointer items-center gap-[16px] text-[32px] leading-[0.92] ${
+                inPublication
+                  ? "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
+                  : "font-bold text-[#F4F4F4]"
+              }`}
             >
               <span>Work</span>
-              <span aria-hidden className="text-[18px]">∧</span>
+              {!inPublication && (
+                <span
+                  aria-hidden
+                  className="size-3 shrink-0 rounded-full bg-[#F4F4F4]"
+                />
+              )}
             </button>
 
             {/* Project items navigate INTO the case-study route, not to
@@ -171,20 +206,34 @@ export default function MobileNav() {
 
           <div className="h-[2px] w-full bg-[#F4F4F4]" />
 
-          <button
+          {/* Hash link to the section on the home page.  When the user
+              is already in that section, mirror the Work entry's active
+              treatment (bold + bullet). */}
+          <Link
+            href="/#publication"
             onClick={close}
-            className="flex cursor-pointer items-center gap-[8px] text-left text-[32px] leading-[0.92] font-normal text-[#8E8E8E]"
+            className={`flex items-center gap-[16px] self-start text-[32px] leading-[0.92] no-underline ${
+              inPublication
+                ? "font-bold text-[#F4F4F4]"
+                : "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
+            }`}
           >
             <span>Lecture &amp; Publication</span>
-            <span aria-hidden className="text-[18px]">∨</span>
-          </button>
+            {inPublication && (
+              <span
+                aria-hidden
+                className="size-3 shrink-0 rounded-full bg-[#F4F4F4]"
+              />
+            )}
+          </Link>
 
-          <button
+          <Link
+            href="/#about"
             onClick={close}
-            className="cursor-pointer text-left text-[32px] leading-[0.92] font-normal text-[#8E8E8E]"
+            className="self-start text-[32px] leading-[0.92] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
           >
-            Resume
-          </button>
+            About me
+          </Link>
         </div>
       </div>
     </>

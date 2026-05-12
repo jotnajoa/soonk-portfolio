@@ -104,11 +104,23 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
 
         {/* ---- Desktop bar (≥800) — full nav row ---- */}
         <nav className="mx-auto hidden max-w-[1200px] items-center gap-4 px-[32px] py-4 tablet:flex">
+          {/* Brand: [logo + Soonk] — matches the landing's ProjectNav so
+              the brand reads identically on every route. */}
           <Link
             href="/"
-            className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#5D5D5D] no-underline hover:text-[#1F1F1F]"
+            className="flex items-center gap-[10px] whitespace-nowrap text-[#5D5D5D] no-underline transition-colors hover:text-[#1F1F1F]"
+            aria-label="Soonk — home"
           >
-            Soonk
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/soonk_logo_mark.svg"
+              alt=""
+              aria-hidden
+              className="h-[24px] w-auto shrink-0"
+            />
+            <span className="text-[16px] leading-[0.92] font-normal">
+              Soonk
+            </span>
           </Link>
           <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
 
@@ -172,10 +184,10 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
           </Link>
           <span className="h-6 w-px bg-[#A0A0A0]" aria-hidden />
           <Link
-            href="/#resume"
+            href="/#about"
             className="text-[16px] leading-[0.92] font-normal whitespace-nowrap text-[#5D5D5D] hover:text-[#1F1F1F]"
           >
-            Resume
+            About me
           </Link>
 
           <Link
@@ -280,11 +292,11 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
           </Link>
 
           <Link
-            href="/#resume"
+            href="/#about"
             onClick={close}
             className="self-start text-[32px] leading-[0.92] font-normal text-[#A0A0A0] hover:text-[#F4F4F4] no-underline"
           >
-            Resume
+            About me
           </Link>
         </div>
       </div>
