@@ -76,15 +76,28 @@ export default function MobileNav() {
   };
   const close = () => setOpen(false);
 
-  // Section-jump helpers used by the in-drawer "Work" / "Lecture &
-  // Publication" labels.  Two gotchas the manual version has to handle:
+  // Section-jump click handlers for the in-drawer "Soonk" / "Work" /
+  // "Lecture & Publication" labels.  These render as Links so that on
+  // routes WITHOUT the target section (e.g. /about), the browser
+  // performs a real navigation back to /#section.  On the home route,
+  // we preventDefault and smooth-scroll within the page instead.
+  //
+  // Two gotchas the in-page version has to handle:
   //   1. Body overflow is locked while the drawer is open — we clear it
   //      synchronously so scrollIntoView/scrollTo can actually move the
   //      page (the useEffect that watches `open` runs on the next tick,
   //      too late for the immediate scroll).
   //   2. close() is async via React state, so wrap the scroll in rAF to
   //      let the clip-path begin animating before the page jumps.
-  const scrollToSection = (id: string) => {
+  const handleSectionClick = (id: string) => (e: React.MouseEvent) => {
+    if (isAbout) {
+      // Let the Link navigate to /#section.  Just close the drawer.
+      close();
+      return;
+    }
+    // On the home route the section is right here — short-circuit the
+    // navigation and smooth-scroll instead.
+    e.preventDefault();
     close();
     document.body.style.overflow = "";
     requestAnimationFrame(() => {
@@ -93,7 +106,12 @@ export default function MobileNav() {
         ?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   };
-  const scrollToTop = () => {
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (isAbout) {
+      close();
+      return;
+    }
+    e.preventDefault();
     close();
     document.body.style.overflow = "";
     requestAnimationFrame(() => {
@@ -180,10 +198,11 @@ export default function MobileNav() {
           {/* Top row: brand mark (clickable → top) + close.  Logo button
               has a generous hit area so a quick tap on the icon counts. */}
           <div className="flex items-start justify-between">
-            <button
-              onClick={scrollToTop}
-              aria-label="Soonk — back to top"
-              className="-m-1 flex cursor-pointer items-center p-1"
+            <Link
+              href="/"
+              onClick={handleHomeClick}
+              aria-label="Soonk — home"
+              className="-m-1 flex items-center p-1 no-underline"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -192,7 +211,7 @@ export default function MobileNav() {
                 aria-hidden
                 className="h-[48px] w-auto shrink-0"
               />
-            </button>
+            </Link>
             <button
               onClick={close}
               aria-label="Close menu"
@@ -202,12 +221,13 @@ export default function MobileNav() {
             </button>
           </div>
 
-          <button
-            onClick={scrollToTop}
-            className="cursor-pointer self-start text-[32px] leading-[0.92] font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
+          <Link
+            href="/"
+            onClick={handleHomeClick}
+            className="self-start text-[32px] leading-[0.92] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
           >
             Soonk
-          </button>
+          </Link>
 
           <div className="h-[2px] w-full bg-[#F4F4F4]" />
 
@@ -218,16 +238,17 @@ export default function MobileNav() {
                 — dots are reserved for "you're on this specific
                 project's page" in CaseStudyNav.  Clicking smooth-
                 scrolls the home page to the WORK list. */}
-            <button
-              onClick={() => scrollToSection("work-list")}
-              className={`cursor-pointer self-start text-[32px] leading-[0.92] ${
+            <Link
+              href="/#work-list"
+              onClick={handleSectionClick("work-list")}
+              className={`self-start text-[32px] leading-[0.92] no-underline ${
                 isAbout || inPublication
                   ? "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
                   : "font-bold text-[#F4F4F4]"
               }`}
             >
               Work
-            </button>
+            </Link>
 
             {/* Project items — children of the WORK section, so they
                 indent under it.  The drawer is always rendered on the
@@ -256,16 +277,17 @@ export default function MobileNav() {
               to the L&P section on home; no dot indicator (sections
               don't get dots, only project pages do).  On /about it
               falls back to inactive. */}
-          <button
-            onClick={() => scrollToSection("publication")}
-            className={`cursor-pointer self-start text-[32px] leading-[0.92] ${
+          <Link
+            href="/#publication"
+            onClick={handleSectionClick("publication")}
+            className={`self-start text-[32px] leading-[0.92] no-underline ${
               inPublication && !isAbout
                 ? "font-bold text-[#F4F4F4]"
                 : "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
             }`}
           >
             Lecture &amp; Publication
-          </button>
+          </Link>
 
           {/* About me — separate route, not a home-page section.  Bold
               when the user is on /about; no dot (consistent with the
