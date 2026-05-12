@@ -202,10 +202,11 @@ function Hero() {
 
           {/* Live store links — match the POMEs hero exactly: Apple/Play
               icon, label that underlines on hover, ↗ arrow that nudges
-              up-and-right on hover.  Below tablet they wrap under the
-              meta block (justify-between → App Store flush left, Play
-              Store flush right). */}
-          <div className="flex flex-row items-center justify-between gap-[24px] self-end tablet:flex-col tablet:items-stretch tablet:justify-start tablet:gap-[4px]">
+              up-and-right on hover.  Below tablet they stack left-
+              aligned (a flex-row justify-between mobile fallback put
+              the two store CTAs at opposite edges of the viewport,
+              which reads as random rather than paired). */}
+          <div className="flex flex-col items-start gap-[10px] self-start tablet:gap-[4px] tablet:self-end tablet:items-stretch">
             <Link
               href="https://apps.apple.com/us/app/volthop/id6759892609"
               target="_blank"

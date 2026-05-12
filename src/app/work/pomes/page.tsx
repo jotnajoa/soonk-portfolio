@@ -274,7 +274,13 @@ export default function PomesCaseStudy() {
             </span>
           </div>
 
-          <div className="flex flex-row items-center justify-between gap-[24px] self-end tablet:flex-col tablet:items-stretch tablet:justify-start tablet:gap-[4px]">
+          {/* Store links — left-aligned stack on every breakpoint.  An
+              earlier `flex-row justify-between` mobile fallback split
+              App Store flush-left and Play Store flush-right with
+              awkward whitespace between them on narrow viewports;
+              stacking left-aligned reads more like a list and skips
+              the "좌청룡 우백호" feel. */}
+          <div className="flex flex-col items-start gap-[10px] self-start tablet:gap-[4px] tablet:self-end tablet:items-stretch">
             <Link
               href="https://apps.apple.com/us/app/pomes-borrow-help-meet/id6765548381"
               target="_blank"
