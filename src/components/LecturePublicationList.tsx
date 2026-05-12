@@ -179,13 +179,18 @@ export default function LecturePublicationList() {
       className="flex w-full flex-col items-stretch bg-[#EEEEEE] pt-4 pb-24 tablet:pt-2"
     >
       <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-4 px-[32px]">
-        {/* Section heading matches the WORK title in ProjectList exactly
-            (text-[48px] leading-[0.92] font-black, no tablet size bump)
-            so the two siblings read at the same visual weight.  Mobile
-            users see the title via the sticky <MobileNav/> bar that swaps
-            from "WORK" to "Lecture & Publication" once scroll crosses
-            into this section, so the inline H2 is desktop-only. */}
-        <h2 className="mb-2 hidden text-[48px] leading-[0.92] font-black text-[#1F1F1F] tablet:block">
+        {/* Section heading matches the WORK title in ProjectList in size
+            (text-[48px] leading-[0.92] font-black) so the two siblings
+            read at the same visual weight.  Unlike WORK, this title
+            renders on BOTH mobile AND tablet+ — the sticky <MobileNav/>
+            bar swap (WORK → "Lecture & Publication") is triggered by
+            this section's top edge crossing the bar, and the inline H2
+            is the visual anchor the user sees crossing into view at
+            that moment.  Hiding it on mobile (as we used to) made the
+            sticky bar swap feel abrupt; the long title wraps to two
+            lines on narrow viewports, which mirrors the two-line
+            treatment inside the sticky bar. */}
+        <h2 className="mb-2 text-[40px] leading-[0.92] font-black text-[#1F1F1F] tablet:text-[48px]">
           Lecture &amp; Publication
         </h2>
 
