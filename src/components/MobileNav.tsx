@@ -191,7 +191,7 @@ export default function MobileNav() {
         }}
       >
         <div
-          className={`flex h-full flex-col gap-[32px] overflow-y-auto p-[24px] transition-opacity duration-200 ${
+          className={`flex h-full flex-col gap-[20px] overflow-y-auto p-[20px] transition-opacity duration-200 ${
             open ? "opacity-100 delay-300" : "opacity-0"
           }`}
         >
@@ -224,14 +224,14 @@ export default function MobileNav() {
           <Link
             href="/"
             onClick={handleHomeClick}
-            className="self-start text-[32px] leading-[0.92] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
+            className="self-start text-[26px] leading-[1] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
           >
             Soonk
           </Link>
 
           <div className="h-[2px] w-full bg-[#F4F4F4]" />
 
-          <div className="flex flex-col gap-[16px]">
+          <div className="flex flex-col gap-[12px]">
             {/* Section label.  Bold + white when the user is currently
                 inside the WORK scroll range AND on the home route, gray
                 otherwise (including on the /about route).  NO white dot
@@ -241,7 +241,7 @@ export default function MobileNav() {
             <Link
               href="/#work-list"
               onClick={handleSectionClick("work-list")}
-              className={`self-start text-[32px] leading-[0.92] no-underline ${
+              className={`self-start text-[26px] leading-[1] no-underline ${
                 isAbout || inPublication
                   ? "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
                   : "font-bold text-[#F4F4F4]"
@@ -256,13 +256,13 @@ export default function MobileNav() {
                 so these links navigate INTO the case-study route.  No
                 active state here — that's the case-study CaseStudyNav's
                 job. */}
-            <ul className="flex flex-col gap-[16px] pl-[24px]">
+            <ul className="flex flex-col gap-[10px] pl-[20px]">
               {tiles.map((t) => (
                 <li key={t.id} className="flex items-center gap-[16px]">
                   <Link
                     href={`/work/${t.slug}`}
                     onClick={close}
-                    className="text-left text-[24px] leading-[0.92] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
+                    className="text-left text-[18px] leading-[1] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
                   >
                     {t.brand}
                   </Link>
@@ -280,7 +280,7 @@ export default function MobileNav() {
           <Link
             href="/#publication"
             onClick={handleSectionClick("publication")}
-            className={`self-start text-[32px] leading-[0.92] no-underline ${
+            className={`self-start text-[26px] leading-[1] no-underline ${
               inPublication && !isAbout
                 ? "font-bold text-[#F4F4F4]"
                 : "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"
@@ -298,7 +298,7 @@ export default function MobileNav() {
               killGridScrollTriggersIfLeavingPage("/about");
               close();
             }}
-            className={`self-start text-[32px] leading-[0.92] no-underline ${
+            className={`self-start text-[26px] leading-[1] no-underline ${
               isAbout
                 ? "font-bold text-[#F4F4F4]"
                 : "font-normal text-[#8E8E8E] hover:text-[#F4F4F4]"

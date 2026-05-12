@@ -219,7 +219,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
         }}
       >
         <div
-          className={`flex h-full flex-col gap-[32px] overflow-y-auto p-[24px] transition-opacity duration-200 ${
+          className={`flex h-full flex-col gap-[20px] overflow-y-auto p-[20px] transition-opacity duration-200 ${
             open ? "opacity-100 delay-300" : "opacity-0"
           }`}
         >
@@ -243,23 +243,23 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
           <Link
             href="/"
             onClick={close}
-            className="self-start text-[32px] leading-[0.92] font-normal text-[#A0A0A0] no-underline hover:text-[#F4F4F4]"
+            className="self-start text-[26px] leading-[1] font-normal text-[#A0A0A0] no-underline hover:text-[#F4F4F4]"
           >
             Soonk
           </Link>
 
           <div className="h-[2px] w-full bg-[#F4F4F4]" />
 
-          <div className="flex flex-col gap-[16px]">
+          <div className="flex flex-col gap-[12px]">
             <Link
               href="/#work-grid"
               onClick={close}
-              className="flex items-center gap-[8px] self-start text-[32px] leading-[0.92] font-medium text-[#F4F4F4] no-underline"
+              className="flex items-center gap-[8px] self-start text-[26px] leading-[1] font-medium text-[#F4F4F4] no-underline"
             >
               <span>Work</span>
             </Link>
 
-            <ul className="flex flex-col gap-[16px] pl-[24px]">
+            <ul className="flex flex-col gap-[10px] pl-[20px]">
               {tiles.map((t) => {
                 const active = t.slug === currentSlug;
                 return (
@@ -267,7 +267,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
                     <Link
                       href={`/work/${t.slug}`}
                       onClick={close}
-                      className={`text-left text-[24px] leading-[0.92] no-underline ${
+                      className={`text-left text-[18px] leading-[1] no-underline ${
                         active
                           ? "font-bold text-[#F4F4F4]"
                           : "font-normal text-[#A0A0A0] hover:text-[#F4F4F4]"
@@ -292,7 +292,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
           <Link
             href="/#publication"
             onClick={close}
-            className="self-start text-[32px] leading-[0.92] font-normal text-[#A0A0A0] hover:text-[#F4F4F4] no-underline"
+            className="self-start text-[26px] leading-[1] font-normal text-[#A0A0A0] hover:text-[#F4F4F4] no-underline"
           >
             Lecture &amp; Publication
           </Link>
@@ -300,7 +300,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
           <Link
             href="/about"
             onClick={close}
-            className="self-start text-[32px] leading-[0.92] font-normal text-[#A0A0A0] hover:text-[#F4F4F4] no-underline"
+            className="self-start text-[26px] leading-[1] font-normal text-[#A0A0A0] hover:text-[#F4F4F4] no-underline"
           >
             About me
           </Link>
