@@ -100,9 +100,9 @@ function TaglineBlock() {
         I&rsquo;m a Product person
       </h2>
       <p className="mt-2 text-[16px] leading-snug font-normal tracking-[-0.05em] text-[#1F1F1F] xl:mt-4 xl:text-[24px] xl:tracking-normal">
-        Design is one of my tools, not my goal
+        Design is one of my tools, not my goal.
         <br />
-        I build to find out what&rsquo;s true
+        I build to find out what&rsquo;s true.
       </p>
     </div>
   );
