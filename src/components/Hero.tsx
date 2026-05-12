@@ -108,23 +108,13 @@ function TaglineBlock() {
   );
 }
 
-// "Scroll for more" + arrow icon.  Archivo Bold 24px (NOT JetBrains Mono).
-// Arrow uses /public/Downarrow.svg (filled solid arrow per Figma — NOT
-// the line-style placeholder I had earlier).
-function ScrollForMore() {
-  return (
-    <div className="flex flex-col items-center gap-2 text-[#5D5D5D]">
-      <p className="text-[24px] leading-[0.92] font-bold">Scroll for more</p>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/Downarrow.svg"
-        alt=""
-        aria-hidden
-        className="h-[20px] w-auto"
-      />
-    </div>
-  );
-}
+// (Removed) Inline ScrollForMore — Soonk noticed that the Hero's
+// statically-placed "Scroll for more" was being drawn at the same time
+// as the fixed <ScrollHint/> floater, so two of them showed up at once
+// once the hint kicked in.  The fixed ScrollHint at the bottom of the
+// viewport is now the single source of truth; it appears after the
+// hero animation's lock expires and follows the user until ProjectNav
+// fades in.
 
 export default function Hero() {
   // Lottie is mounted only when the timeline reaches the cross-fade beat —
@@ -334,18 +324,11 @@ export default function Hero() {
           <TaglineBlock />
         </div>
 
-        {/* Mobile: scroll-for-more at end of stack */}
-        <div style={{ opacity: 0 }}
-          className="hero-text-reveal order-4 mt-4 xl:hidden">
-          <ScrollForMore />
-        </div>
       </div>
 
-      {/* Desktop: scroll-for-more pinned to bottom-center of the section */}
-      <div style={{ opacity: 0 }}
-          className="hero-text-reveal pointer-events-none absolute bottom-12 left-1/2 hidden -translate-x-1/2 xl:block">
-        <ScrollForMore />
-      </div>
+      {/* No inline "Scroll for more" here — the fixed <ScrollHint/>
+          renders bottom-center for the entire post-hero scroll range
+          (see components/ScrollHint.tsx). */}
     </section>
   );
 }
