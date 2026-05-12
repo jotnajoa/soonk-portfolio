@@ -262,7 +262,7 @@ export default function MobileNav() {
                   <Link
                     href={`/work/${t.slug}`}
                     onClick={close}
-                    className="text-left text-[18px] leading-[1] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
+                    className="text-left text-[20px] leading-[1.05] font-normal text-[#8E8E8E] no-underline hover:text-[#F4F4F4]"
                   >
                     {t.brand}
                   </Link>

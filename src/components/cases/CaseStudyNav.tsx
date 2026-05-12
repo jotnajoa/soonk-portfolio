@@ -267,7 +267,7 @@ export default function CaseStudyNav({ currentSlug }: { currentSlug: string }) {
                     <Link
                       href={`/work/${t.slug}`}
                       onClick={close}
-                      className={`text-left text-[18px] leading-[1] no-underline ${
+                      className={`text-left text-[20px] leading-[1.05] no-underline ${
                         active
                           ? "font-bold text-[#F4F4F4]"
                           : "font-normal text-[#A0A0A0] hover:text-[#F4F4F4]"
