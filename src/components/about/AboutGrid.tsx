@@ -91,15 +91,18 @@ function YearCard({
     );
   }
 
-  // `hover:z-40` on the card lifts its stacking context above siblings
-  // so the tooltip (z-50 within the card) reads in front of neighbors.
-  // Without this, the next column's card forms its own stacking context
-  // (via the transform on hover) and the tooltip slipped behind.
+  // `hover:z-20` on the card lifts its stacking context above SIBLING
+  // cards (so the tooltip + the lifted card itself read in front of
+  // neighbors) but stays BELOW the sticky header bars (MobileNav z-30,
+  // ProjectNav z-40).  Without this cap, a hovered card scrolling under
+  // the header would render *above* the header — the year-grid's bug:
+  // hover a 2016 cell while the row is mid-scroll and the card popped
+  // out the top of "About me".
   return (
     <button
       onClick={() => onOpen(entry)}
       aria-label={`${entry.title}, ${entry.period}`}
-      className="group relative flex h-[160px] cursor-pointer items-center justify-center overflow-visible border border-[#1F1F1F] bg-transparent transition-[transform,box-shadow] duration-200 ease-out hover:z-40 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[3px_3px_0_0_#1F1F1F]"
+      className="group relative flex h-[160px] cursor-pointer items-center justify-center overflow-visible border border-[#1F1F1F] bg-transparent transition-[transform,box-shadow] duration-200 ease-out hover:z-20 hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[3px_3px_0_0_#1F1F1F]"
     >
       {yearLabel}
       <GlyphView entry={entry} />
@@ -107,12 +110,13 @@ function YearCard({
       {/* Tooltip — ProjectNav style (green bg, offset shadow, mono
           meta line on top + bold title underneath).  Appears below the
           card on hover; pointer-events-none so it never intercepts
-          clicks meant for the button.  z-50 + the card's hover:z-40
-          guarantee it floats above any neighboring card. */}
+          clicks meant for the button.  z-20 stacks above sibling cards
+          (which default to z-auto) but stays below the sticky headers
+          (MobileNav z-30, ProjectNav z-40). */}
       <span
         role="tooltip"
         aria-hidden
-        className="pointer-events-none absolute top-[calc(100%+12px)] left-1/2 z-50 w-max max-w-[140px] -translate-x-1/2 -translate-y-1 border-2 border-[#1F1F1F] bg-[#00FB00] px-[12px] py-[8px] text-left opacity-0 shadow-[4px_4px_0_0_#1F1F1F] transition-[opacity,transform] duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100 tablet:max-w-[240px] tablet:px-[14px] tablet:py-[10px]"
+        className="pointer-events-none absolute top-[calc(100%+12px)] left-1/2 z-20 w-max max-w-[140px] -translate-x-1/2 -translate-y-1 border-2 border-[#1F1F1F] bg-[#00FB00] px-[12px] py-[8px] text-left opacity-0 shadow-[4px_4px_0_0_#1F1F1F] transition-[opacity,transform] duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100 tablet:max-w-[240px] tablet:px-[14px] tablet:py-[10px]"
       >
         <span
           className="block text-[10px] tracking-[0.16em] font-medium text-[#1F1F1F]/70"
