@@ -761,7 +761,7 @@ export default function PomesCaseStudy() {
                 ].map((tab, i) => (
                   <div
                     key={tab.label}
-                    className={`flex items-center justify-center gap-[8px] py-[16px] text-[14px] font-medium tracking-[0.04em] text-[#1F1F1F] min-[560px]:text-[16px] ${
+                    className={`flex flex-col items-center justify-center gap-[6px] py-[12px] text-[11px] font-medium tracking-[0.04em] text-[#1F1F1F] min-[560px]:flex-row min-[560px]:gap-[8px] min-[560px]:py-[16px] min-[560px]:text-[16px] ${
                       i > 0 ? "border-l border-[#A0A0A0]" : ""
                     }`}
                   >
