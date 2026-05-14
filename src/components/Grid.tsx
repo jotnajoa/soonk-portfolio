@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { TileLogo } from "@/components/TileLogo";
-import { killGridScrollTriggers } from "@/components/FlyingSquares";
 
 // Grid 3×3 — Figma node 55:458 (Desktop-4).
 //
@@ -34,10 +32,12 @@ import { killGridScrollTriggers } from "@/components/FlyingSquares";
 const SHELL = "relative flex h-[280px] overflow-clip border-2 border-[#1F1F1F]";
 
 // ---- 01 POMEs ---------------------------------------------------------------
-// POMEs has a published case study at /work/pomes — the absolute-positioned
-// Link covers the whole tile (hover hint via `group-hover` if we want it
-// later).  All the layout content stays as-is so flying-squares geometry
-// and data-tile-id measurements are unchanged.
+// Grid tiles are NOT clickable — they're the animation source for
+// FlyingSquares (3×3 morphs into the nav indicators).  Navigation
+// happens through the list view below and through the indicator
+// squares.  Earlier this tile carried an absolute-positioned Link
+// over the whole tile, which made POMEs the only clickable cell in
+// the grid — inconsistent with the other 8.
 function TilePomes() {
   return (
     <article
@@ -45,13 +45,6 @@ function TilePomes() {
       data-tile-grid
       className={`${SHELL} group flex-col gap-[16px] px-[16px] py-[24px]`}
     >
-      <Link
-        href="/work/pomes"
-        aria-label="POMEs case study"
-        className="absolute inset-0 z-10"
-        onClick={killGridScrollTriggers}
-      />
-
       <div className="flex shrink-0 items-center gap-[12px]">
         <TileLogo tileId="01" />
         <h3 className="text-[30px] leading-[0.92] font-black text-[#1F1F1F]">
@@ -233,9 +226,10 @@ function TileTeachable() {
 }
 
 // ---- 07 NYC parking ---------------------------------------------------------
-// Published case study at /work/parking — wraps the tile content with an
-// absolute-positioned Link the same way TilePomes does, so flying-squares
-// geometry + data-tile-id measurements stay intact.
+// Decoration / animation source only — see TilePomes for the rule.
+// Earlier this tile carried an absolute-positioned Link to
+// /work/parking (mirroring the POMEs treatment); removed for
+// consistency with the rest of the grid.
 function TileNyc() {
   return (
     <article
@@ -243,13 +237,6 @@ function TileNyc() {
       data-tile-grid
       className={`${SHELL} group flex-col gap-[24px] px-[25px] py-[24px]`}
     >
-      <Link
-        href="/work/parking"
-        aria-label="Is street parking really free? — case study"
-        className="absolute inset-0 z-10"
-        onClick={killGridScrollTriggers}
-      />
-
       <TileLogo tileId="07" />
       <div className="w-full text-[30px] leading-[0.95] font-black text-[#1F1F1F]">
         <p className="leading-[0.95]">Is street parking</p>
